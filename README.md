@@ -6,3 +6,4 @@ This is a group project made for class at Full Sail University
 * Emily Underwood
 * Natalie Lubahn
 * Jacob Irvin
+* Kheera Maaranu
