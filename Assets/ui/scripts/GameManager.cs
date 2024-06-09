@@ -1,0 +1,91 @@
+//worked on by - natalie lubahn
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+
+public class GameManager : MonoBehaviour
+{
+    //main instance
+    public static GameManager instance;
+
+    //serialized fields
+    [SerializeField] GameObject menuActive;
+    [SerializeField] GameObject menuPause;
+    [SerializeField] GameObject menuWin;
+    [SerializeField] GameObject menuLose;
+    [SerializeField] TMP_Text enemyCountText;
+
+    //public variables
+    public Image playerHPBar;
+    public bool isPaused;
+
+    //private variables
+    private int enemyCount;
+    
+    //Calls "Awake" instead to run before the other Start methods
+    void Awake()
+    {
+        instance = this;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetButtonDown("Cancel"))
+        {
+            if(menuActive == null)
+            {
+                statePause();
+                menuActive = menuPause;
+                menuActive.SetActive(isPaused);
+            }
+            else if (menuActive == menuPause)
+            {
+                stateResume();
+            }
+        }
+        
+    }
+
+    //PAUSE METHODS
+    public void statePause()
+    {
+        isPaused = !isPaused;
+        Time.timeScale = 0;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
+    }
+    public void stateResume()
+    {
+        isPaused = !isPaused;
+        Time.timeScale = 1;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        menuActive.SetActive(isPaused);
+        menuActive = null;
+    }
+
+    //WIN/LOSE METHODS
+    public void updateEnemyAndWin(int amount)
+    {
+        enemyCount += amount;
+        enemyCountText.text = enemyCount.ToString("F0");
+
+        if(enemyCount <= 0)
+        {
+            statePause();
+            menuActive = menuWin;
+            menuActive.SetActive(isPaused);
+        }
+    }
+
+    public void gameLost()
+    {
+        statePause();
+        menuActive = menuLose;
+        menuActive.SetActive(isPaused);
+    }
+}
