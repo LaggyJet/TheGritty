@@ -1,3 +1,4 @@
+//worked on by - Joshua Furber, natalie lubahn
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,12 +15,12 @@ public class EnemyAI : MonoBehaviour, IDamage {
     bool isShooting;
 
     void Start() {
-        // GameManager.instance.UpdateGameGoal(1);    
+        GameManager.instance.updateEnemyAndWin(1);    
     }
 
 
     void Update() {
-        //agent.SetDestination(CURPLAYERPOS)
+        agent.SetDestination(GameManager.instance.player.transform.position);
         if (!isShooting)
             StartCoroutine(Shoot());
     }
@@ -35,7 +36,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
         hp -= amount;
         StartCoroutine(FlashDamage());
         if (hp <= 0) {
-            // GameManager.instance.UpdateGameGoal(-1);
+            GameManager.instance.updateEnemyAndWin(-1);
             Destroy(gameObject);
         }
 

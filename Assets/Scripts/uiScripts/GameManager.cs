@@ -21,14 +21,18 @@ public class GameManager : MonoBehaviour
     //public variables
     public Image playerHPBar;
     public bool isPaused;
+    public GameObject player;
+    public PlayerController playerScript;
 
     //private variables
     private int enemyCount;
-    
+
     //Calls "Awake" instead to run before the other Start methods
     void Awake()
     {
         instance = this;
+        player = GameObject.FindWithTag("Player");
+        playerScript = player.GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -36,7 +40,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            if(menuActive == null)
+            if (menuActive == null)
             {
                 statePause();
                 menuActive = menuPause;
@@ -47,7 +51,7 @@ public class GameManager : MonoBehaviour
                 stateResume();
             }
         }
-        
+
     }
 
     //PAUSE METHODS
@@ -74,7 +78,7 @@ public class GameManager : MonoBehaviour
         enemyCount += amount;
         enemyCountText.text = enemyCount.ToString("F0");
 
-        if(enemyCount <= 0)
+        if (enemyCount <= 0)
         {
             statePause();
             menuActive = menuWin;

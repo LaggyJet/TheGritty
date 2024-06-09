@@ -1,4 +1,4 @@
-//Worked on by : Jacob Irvin
+//Worked on by : Jacob Irvin, natalie lubahn
 
 using System.Collections;
 using System.Collections.Generic;
@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         //tracks our current hp and the hp we will update
         hpBase = hp;
+        updatePlayerUI();
     }
 
     // Update is called once per frame
@@ -103,5 +104,16 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         //subtract the damage from the player
         hp -= amount;
+        updatePlayerUI();
+
+        if(hp <= 0)
+        {
+            GameManager.instance.gameLost();
+        }
+    }
+
+    void updatePlayerUI()
+    {
+        GameManager.instance.playerHPBar.fillAmount = (float)hp / hpBase;
     }
 }

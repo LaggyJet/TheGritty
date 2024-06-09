@@ -1,6 +1,5 @@
 {
   "dependencies": {
-<<<<<<< HEAD
     "com.unity.2d.animation": {
       "version": "9.1.1",
       "depth": 1,
@@ -102,14 +101,15 @@
       "dependencies": {
         "com.unity.mathematics": "1.2.1",
         "com.unity.modules.jsonserialize": "1.0.0"
-=======
+        },
+          "url": "https://packages.unity.com"
+      },
     "com.unity.ai.navigation": {
       "version": "1.1.5",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.ai": "1.0.0"
->>>>>>> 98f9df0f90f2d5c36b5eabef1edb5414ebebb216
       },
       "url": "https://packages.unity.com"
     },
