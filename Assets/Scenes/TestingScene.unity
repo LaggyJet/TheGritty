@@ -261,6 +261,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 3225009941172319784, guid: 506c4967e28ef074eb1a0501a8861cb9, type: 3}
+      propertyPath: m_text
+      value: Thank you for clearing out the dungeon!
+      objectReference: {fileID: 0}
     - target: {fileID: 7626689478699948390, guid: 506c4967e28ef074eb1a0501a8861cb9, type: 3}
       propertyPath: menuWin
       value: 
@@ -273,6 +277,22 @@ PrefabInstance:
       propertyPath: enemyCountText
       value: 
       objectReference: {fileID: 137054714}
+    - target: {fileID: 7975670525912148564, guid: 506c4967e28ef074eb1a0501a8861cb9, type: 3}
+      propertyPath: m_text
+      value: 'remaning hp:'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7975670525912148564, guid: 506c4967e28ef074eb1a0501a8861cb9, type: 3}
+      propertyPath: m_margin.x
+      value: -39.488525
+      objectReference: {fileID: 0}
+    - target: {fileID: 7975670525912148564, guid: 506c4967e28ef074eb1a0501a8861cb9, type: 3}
+      propertyPath: m_margin.z
+      value: 44.34546
+      objectReference: {fileID: 0}
+    - target: {fileID: 8562992554092937410, guid: 506c4967e28ef074eb1a0501a8861cb9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 220
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
