@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour, IDamage
 {
     //this sets up our player controller variable to handle collision
-    [SerializeField] CharacterController controller;
+    public CharacterController controller;
 
     //these variables are modifiable in the editor
     [SerializeField] int hp;
@@ -26,12 +26,16 @@ public class PlayerController : MonoBehaviour, IDamage
     Vector3 moveDir;
     Vector3 playerV;
 
+    Vector3 startingLocation;
+
     // Start is called before the first frame update
     void Start()
     {
         //tracks our current hp and the hp we will update
         hpBase = hp;
         updatePlayerUI();
+        startingLocation = transform.position;
+
     }
 
     // Update is called once per frame
@@ -40,7 +44,7 @@ public class PlayerController : MonoBehaviour, IDamage
         Movement();
         Sprint();
 
-        if (Input.GetButton("Fire1") && !isShooting)
+        if (Input.GetButton("Fire1") && !isShooting && !GameManager.instance.isPaused)
         {
             StartCoroutine(Shoot());
         }
@@ -106,7 +110,7 @@ public class PlayerController : MonoBehaviour, IDamage
         hp -= amount;
         updatePlayerUI();
 
-        if(hp <= 0)
+        if (hp <= 0)
         {
             GameManager.instance.gameLost();
         }
@@ -114,6 +118,13 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void updatePlayerUI()
     {
+        GameManager.instance.playerHPBar.fillAmount = (float)hp / hpBase;
+    }
+    
+    public void Respawn()
+    {
+        this.transform.position = startingLocation;
+        hp = hpBase;
         GameManager.instance.playerHPBar.fillAmount = (float)hp / hpBase;
     }
 }

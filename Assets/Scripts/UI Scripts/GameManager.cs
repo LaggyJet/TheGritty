@@ -92,4 +92,16 @@ public class GameManager : MonoBehaviour
         menuActive = menuLose;
         menuActive.SetActive(isPaused);
     }
+
+    //RESPAWN METHODS
+    public void respawnAfterLost()
+    {
+        if(menuActive == menuLose)
+        {
+            playerScript.controller.enabled = false;
+            playerScript.Respawn();
+            playerScript.controller.enabled = true;
+        }
+        stateResume();
+    }
 }
