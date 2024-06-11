@@ -1,4 +1,4 @@
-//worked on by - natalie lubahn
+//worked on by - natalie lubahn, Keehra
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text enemyCountText;
+    
 
     //public variables
     public Image playerHPBar;
