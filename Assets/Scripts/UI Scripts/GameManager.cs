@@ -1,10 +1,11 @@
-//worked on by - natalie lubahn
+//worked on by - natalie lubahn and Emily Underwood
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Diagnostics.Contracts;
 
 public class GameManager : MonoBehaviour
 {
@@ -51,7 +52,6 @@ public class GameManager : MonoBehaviour
                 stateResume();
             }
         }
-
     }
 
     //PAUSE METHODS
@@ -73,17 +73,17 @@ public class GameManager : MonoBehaviour
     }
 
     //WIN/LOSE METHODS
-    public void updateEnemyAndWin(int amount)
+    public void updateEnemy(int amount)
     {
         enemyCount += amount;
         enemyCountText.text = enemyCount.ToString("F0");
+    }
 
-        if (enemyCount <= 0)
-        {
-            statePause();
-            menuActive = menuWin;
-            menuActive.SetActive(isPaused);
-        }
+    public void gameWon()
+    {
+        statePause();
+        menuActive = menuWin;
+        menuActive.SetActive(isPaused);
     }
 
     public void gameLost()

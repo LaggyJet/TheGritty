@@ -15,7 +15,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
     bool isShooting;
 
     void Start() {
-        GameManager.instance.updateEnemyAndWin(1);    
+        GameManager.instance.updateEnemy(1);    
     }
 
 
@@ -36,7 +36,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
         hp -= amount;
         StartCoroutine(FlashDamage());
         if (hp <= 0) {
-            GameManager.instance.updateEnemyAndWin(-1);
+            GameManager.instance.updateEnemy(-1);
             Destroy(gameObject);
         }
 
