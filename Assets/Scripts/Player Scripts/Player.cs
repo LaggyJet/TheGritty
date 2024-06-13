@@ -25,8 +25,11 @@ public class PlayerController : MonoBehaviour, IDamage
 
     Vector3 moveDir;
     Vector3 playerV;
+<<<<<<< Updated upstream
 
     Vector3 startingLocation;
+=======
+>>>>>>> Stashed changes
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +37,6 @@ public class PlayerController : MonoBehaviour, IDamage
         //tracks our current hp and the hp we will update
         hpBase = hp;
         updatePlayerUI();
-        startingLocation = transform.position;
 
     }
 
@@ -123,7 +125,7 @@ public class PlayerController : MonoBehaviour, IDamage
     
     public void Respawn()
     {
-        this.transform.position = startingLocation;
+        this.transform.position = GameManager.instance.playerLocation;
         hp = hpBase;
         GameManager.instance.playerHPBar.fillAmount = (float)hp / hpBase;
     }
