@@ -223,6 +223,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 3021415300450355064, guid: 506c4967e28ef074eb1a0501a8861cb9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3225009941172319784, guid: 506c4967e28ef074eb1a0501a8861cb9, type: 3}
       propertyPath: m_text
       value: Thank you for clearing out the dungeon!
@@ -508,7 +512,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 3ba501c1c89e36e45b54f90bb335b4be, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

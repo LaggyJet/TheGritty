@@ -1610,8 +1610,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 20.044382, y: 0, z: -13.385053}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1396546169263742916}
   - {fileID: 1739471855606350961}
@@ -1677,6 +1677,8 @@ MonoBehaviour:
   model: {fileID: 4910056736428453011}
   agent: {fileID: 8215577632261959257}
   anim: {fileID: 7612506926212756101}
+  isCaptain: 0
+  door: {fileID: 0}
   hp: 3
   animationTransitionSpeed: 8
   faceTargetSpeed: 5

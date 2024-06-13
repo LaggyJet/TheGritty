@@ -9,16 +9,12 @@ public class EnemySpawning : MonoBehaviour
     [SerializeField] GameObject SpawnPoint;
     [SerializeField] int numEnemies;
 
-    // Start is called before the first frame update
-    void Start() 
+    void Start()
     {
         spawn();
     }
 
-    // Update is called once per frame
-    void Update() {}
-
-    void spawn()
+        void spawn()
     {
         for (int i = 0; i < numEnemies; i++)
         {
