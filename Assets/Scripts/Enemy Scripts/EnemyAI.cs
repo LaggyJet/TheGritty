@@ -42,9 +42,12 @@ public class EnemyAI : MonoBehaviour, IDamage {
     IEnumerator Swing() {
         isAttacking = true;
         anim.SetTrigger("Attack");
+        weapon.GetComponent<MeshCollider>().isTrigger = true;
         yield return new WaitForSeconds(attackSpeed);
+        weapon.GetComponent<MeshCollider>().isTrigger = false;
         isAttacking = false;
     }
+
 
     public void TakeDamage(int amount) {
         hp -= amount;

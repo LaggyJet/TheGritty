@@ -16,6 +16,7 @@ public class Teleporter : MonoBehaviour
         {
             Player.SetActive(false);
             Player.transform.position = TPPoint.transform.position;
+            GameManager.instance.playerLocation = Player.transform.position;
             Player.SetActive(true);
         }
     }

@@ -3471,7 +3471,7 @@ GameObject:
   - component: {fileID: 2979299009176328540}
   - component: {fileID: 685545705500011639}
   - component: {fileID: 3526101620023783365}
-  - component: {fileID: 5910237771374478099}
+  - component: {fileID: 3382821769446731543}
   m_Layer: 0
   m_Name: Weapons_3_1
   m_TagString: Untagged
@@ -3563,8 +3563,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon: {fileID: 3826274451751055825}
   damage: 3
---- !u!65 &5910237771374478099
-BoxCollider:
+--- !u!64 &3382821769446731543
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3581,9 +3581,10 @@ BoxCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 1
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.02013712, y: 0.023767287, z: 0.008257323}
-  m_Center: {x: 0.0034641335, y: -0.0014882176, z: -0.0007437859}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &3830512903140369932
 GameObject:
   m_ObjectHideFlags: 0
