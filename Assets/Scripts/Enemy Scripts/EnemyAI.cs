@@ -1,4 +1,4 @@
-// Worked on by - Joshua Furber, Natalie Lubahn, PJ Glover
+// Worked on by - Joshua Furber, Natalie Lubahn, Kheera, PJ Glover
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

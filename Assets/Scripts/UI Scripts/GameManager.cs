@@ -1,4 +1,4 @@
-//worked on by - natalie lubahn and Emily Underwood
+// Worked on by - Natalie Lubahn, Emily Underwood, Kheera
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text enemyCountText;
+
+   
 
     //public variables
     public Image playerHPBar;
@@ -76,6 +78,8 @@ public class GameManager : MonoBehaviour
     public void updateEnemy(int amount)
     {
         enemyCount += amount;
+
+        /// Converting our enemy count to string 
         enemyCountText.text = enemyCount.ToString("F0");
     }
 
