@@ -18,7 +18,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
     bool isAttacking;
     Vector3 playerDirection;
 
-    void Start() { GameManager.instance.updateEnemyAndWin(1); }
+    void Start() { GameManager.instance.updateEnemy(1); }
 
 
     void Update() {
@@ -48,7 +48,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
         agent.SetDestination(GameManager.instance.player.transform.position);
         StartCoroutine(FlashDamage());
         if (hp <= 0) {
-            GameManager.instance.updateEnemyAndWin(-1);
+            GameManager.instance.updateEnemy(-1);
             StartCoroutine(DeathAnimation());
         }
 
