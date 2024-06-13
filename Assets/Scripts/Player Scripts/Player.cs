@@ -170,14 +170,14 @@ public class PlayerController : MonoBehaviour, IDamage
         // Storing 
         GameManager.instance.playerHPBar.fillAmount = healthRatio;
 
-        //if(healthRatio > 0.5f) // If health if more than 50% full
-        //{
-        //    GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthRatio - 0.5f) * 2);
-        //}
-        //else // If the health is less than 50%
-        //{
-        //    GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
-        //}
+        if (healthRatio > 0.5f) // If health if more than 50% full
+        {
+            GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthRatio - 0.5f) * 2);
+        }
+        else // If the health is less than 50%
+        {
+            GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
+        }
     }
     
     public void Respawn()
