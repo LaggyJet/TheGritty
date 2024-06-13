@@ -137,6 +137,7 @@ public class PlayerController : MonoBehaviour, IDamage
         //spawns our projectile
         else
         {
+            yield return new WaitForSeconds(.2f);
             Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
         }
         
