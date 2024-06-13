@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     public bool isPaused;
     public GameObject player;
     public PlayerController playerScript;
+    public Vector3 playerLocation;
 
     //private variables
     private int enemyCount;
@@ -34,8 +35,8 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        player = GameObject.FindWithTag("Player");
-        playerScript = player.GetComponent<PlayerController>();
+        playerLocation = player.transform.position;
+
     }
 
     // Update is called once per frame
@@ -102,10 +103,12 @@ public class GameManager : MonoBehaviour
     {
         if(menuActive == menuLose)
         {
+         
             playerScript.controller.enabled = false;
             playerScript.Respawn();
             playerScript.controller.enabled = true;
         }
         stateResume();
     }
+    
 }
