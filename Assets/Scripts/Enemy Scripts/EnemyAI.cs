@@ -18,9 +18,10 @@ public class EnemyAI : MonoBehaviour, IDamage {
     [SerializeField] GameObject weapon;
 
     bool isAttacking;
+    bool isDead;
     Vector3 playerDirection;
 
-    void Start() { GameManager.instance.updateEnemy(1); }
+    void Start() { GameManager.instance.updateEnemy(1); isDead = false; }
 
 
     void Update() {
@@ -49,7 +50,8 @@ public class EnemyAI : MonoBehaviour, IDamage {
         hp -= amount;
         agent.SetDestination(GameManager.instance.player.transform.position);
         StartCoroutine(FlashDamage());
-        if (hp <= 0) {
+        if (hp <= 0 && !isDead) {
+            isDead = true;
             GameManager.instance.updateEnemy(-1);
             if(isCaptain)
             {
