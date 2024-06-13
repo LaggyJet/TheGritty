@@ -18382,6 +18382,62 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4097693224372051451, guid: c066cd92a5e51d949b23feafcae07768, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4700701400302827834, guid: c066cd92a5e51d949b23feafcae07768, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.12192008
+      objectReference: {fileID: 0}
+    - target: {fileID: 4700701400302827834, guid: c066cd92a5e51d949b23feafcae07768, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.041785587
+      objectReference: {fileID: 0}
+    - target: {fileID: 4700701400302827834, guid: c066cd92a5e51d949b23feafcae07768, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.08974642
+      objectReference: {fileID: 0}
+    - target: {fileID: 4700701400302827834, guid: c066cd92a5e51d949b23feafcae07768, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.003224301
+      objectReference: {fileID: 0}
+    - target: {fileID: 4700701400302827834, guid: c066cd92a5e51d949b23feafcae07768, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0002269845
+      objectReference: {fileID: 0}
+    - target: {fileID: 4700701400302827834, guid: c066cd92a5e51d949b23feafcae07768, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0000090783
+      objectReference: {fileID: 0}
+    - target: {fileID: 4700701400302827834, guid: c066cd92a5e51d949b23feafcae07768, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.75515634
+      objectReference: {fileID: 0}
+    - target: {fileID: 4700701400302827834, guid: c066cd92a5e51d949b23feafcae07768, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.23815992
+      objectReference: {fileID: 0}
+    - target: {fileID: 4700701400302827834, guid: c066cd92a5e51d949b23feafcae07768, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.2671522
+      objectReference: {fileID: 0}
+    - target: {fileID: 4700701400302827834, guid: c066cd92a5e51d949b23feafcae07768, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.5492254
+      objectReference: {fileID: 0}
+    - target: {fileID: 4700701400302827834, guid: c066cd92a5e51d949b23feafcae07768, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 40.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 4700701400302827834, guid: c066cd92a5e51d949b23feafcae07768, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 10.799
+      objectReference: {fileID: 0}
+    - target: {fileID: 4700701400302827834, guid: c066cd92a5e51d949b23feafcae07768, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -68.033
+      objectReference: {fileID: 0}
     - target: {fileID: 5337811622532773547, guid: c066cd92a5e51d949b23feafcae07768, type: 3}
       propertyPath: m_Name
       value: OrcAssasinCaptain
@@ -25831,6 +25887,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mage
       objectReference: {fileID: 0}
+    - target: {fileID: 8103881619842969174, guid: cc49ce404f390c440b5085473052a07b, type: 3}
+      propertyPath: jumpMax
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8103881619842969174, guid: cc49ce404f390c440b5085473052a07b, type: 3}
+      propertyPath: jumpSpeed
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26131,6 +26195,10 @@ PrefabInstance:
     - target: {fileID: 1340864765035580914, guid: e16d10ee70a452a4db0811a894fb59f9, type: 3}
       propertyPath: m_Name
       value: FootmanEnemyCaptain
+      objectReference: {fileID: 0}
+    - target: {fileID: 6138262839819244145, guid: e16d10ee70a452a4db0811a894fb59f9, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8870294954119146194, guid: e16d10ee70a452a4db0811a894fb59f9, type: 3}
       propertyPath: m_LocalPosition.x

@@ -42,9 +42,19 @@ public class EnemyAI : MonoBehaviour, IDamage {
     IEnumerator Swing() {
         isAttacking = true;
         anim.SetTrigger("Attack");
-        weapon.GetComponent<MeshCollider>().isTrigger = true;
-        yield return new WaitForSeconds(attackSpeed);
-        weapon.GetComponent<MeshCollider>().isTrigger = false;
+        BoxCollider weaponCollider = weapon.GetComponent<BoxCollider>();
+        if(weaponCollider != null)
+        {
+            weapon.GetComponent<BoxCollider>().isTrigger = true;
+            yield return new WaitForSeconds(attackSpeed);
+            weapon.GetComponent<BoxCollider>().isTrigger = false;
+        }
+        else
+        {
+            weapon.GetComponent<MeshCollider>().isTrigger = true;
+            yield return new WaitForSeconds(attackSpeed);
+            weapon.GetComponent<MeshCollider>().isTrigger = false;
+        }
         isAttacking = false;
     }
 

@@ -3471,7 +3471,7 @@ GameObject:
   - component: {fileID: 2979299009176328540}
   - component: {fileID: 685545705500011639}
   - component: {fileID: 3526101620023783365}
-  - component: {fileID: 3382821769446731543}
+  - component: {fileID: 4471746484289511973}
   m_Layer: 0
   m_Name: Weapons_3_1
   m_TagString: Untagged
@@ -3488,7 +3488,7 @@ Transform:
   m_GameObject: {fileID: 3826274451751055825}
   serializedVersion: 2
   m_LocalRotation: {x: 0.36688918, y: 0.013159573, z: 0.120957494, w: 0.9222735}
-  m_LocalPosition: {x: -0.0054, y: 0.0219, z: 0.023}
+  m_LocalPosition: {x: -0.0017370647, y: 0.05175608, z: 0.049999315}
   m_LocalScale: {x: 2.9207153, y: 0.5581458, z: 1.1987768}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3563,8 +3563,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon: {fileID: 3826274451751055825}
   damage: 3
---- !u!64 &3382821769446731543
-MeshCollider:
+--- !u!65 &4471746484289511973
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3581,10 +3581,9 @@ MeshCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 1
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 3
+  m_Size: {x: 0.010152831, y: 0.02376729, z: 0.008257323}
+  m_Center: {x: -0.0005469073, y: -0.056757938, z: -0.00210643}
 --- !u!1 &3830512903140369932
 GameObject:
   m_ObjectHideFlags: 0
