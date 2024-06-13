@@ -1,4 +1,4 @@
-//Worked on by : Jacob Irvin, Natalie Lubahn
+//Worked on by : Jacob Irvin, Natalie Lubahn, Kheera
 
 using System.Collections;
 using System.Collections.Generic;
@@ -19,6 +19,11 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] int gravity;
     [SerializeField] int jumpMax;
     [SerializeField] int jumpSpeed;
+
+    // Health bar gradual fill 
+    [SerializeField] Color fullHealth; 
+    [SerializeField] Color midHealth; 
+    [SerializeField] Color criticalHealth; 
 
     //these are combat variables
     [SerializeField] int shootDamage;
@@ -158,6 +163,19 @@ public class PlayerController : MonoBehaviour, IDamage
     //the function for updating our ui
     void updatePlayerUI()
     {
-        GameManager.instance.playerHPBar.fillAmount = (float)hp / hpBase;
+        // Variable for filling bar 
+        float healthRatio = (float)hp / hpBase;
+
+        // Storing 
+        GameManager.instance.playerHPBar.fillAmount = healthRatio;
+
+        if(healthRatio > 0.5f) // If health if more than 50% full
+        {
+            GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthRatio - 0.5f) * 2);
+        }
+        else // If the health is less than 50%
+        {
+            GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
+        }
     }
 }
