@@ -3,12 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Teleporter
+  - Teleporter1
+  - Teleporter2
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PlayerModel
   - Water
   - UI
   - 
