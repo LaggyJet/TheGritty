@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         playerLocation = player.transform.position;
+        player = GameObject.FindWithTag("Player");
+        playerScript = player.GetComponent<PlayerController>();
 
     }
 
