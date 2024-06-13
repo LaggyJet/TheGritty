@@ -30,11 +30,15 @@ public class FireBall : MonoBehaviour
         IDamage dmg = other.GetComponent<IDamage>();
 
         //if there is an IDamage component we run the inside code
-        if (dmg != null)
+        if (dmg != null && !other.gameObject.CompareTag("Player"))
         {
             //deal damage to the object hit
             dmg.TakeDamage(damage);
             //destroy our projectile
+            Destroy(gameObject);
+        }
+        else if (!other.gameObject.CompareTag("Player"))
+        {
             Destroy(gameObject);
         }
 
