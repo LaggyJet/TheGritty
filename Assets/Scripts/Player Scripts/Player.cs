@@ -8,7 +8,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour, IDamage
 {
     //this sets up our player controller variable to handle collision
-    [SerializeField] CharacterController controller;
+    public CharacterController controller;
 
     //these variables are game function variables that may likely be changed
     [SerializeField] bool canJump;
@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
     Vector3 moveDir;
     Vector3 playerV;
-
+    Vector3 startingLocation;
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +53,8 @@ public class PlayerController : MonoBehaviour, IDamage
         hpBase = hp;
         //updates our ui to accurately show the player hp and other information
         updatePlayerUI();
+        startingLocation = transform.position;
+
     }
 
     // Update is called once per frame
@@ -62,8 +64,7 @@ public class PlayerController : MonoBehaviour, IDamage
         Movement();
         Sprint();
 
-        //checks whether the player can shoot or not
-        if (Input.GetButton("Fire1") && !isShooting)
+        if (Input.GetButton("Fire1") && !isShooting && !GameManager.instance.isPaused)
         {
             //starts our shooting function
             StartCoroutine(Shoot());
@@ -178,5 +179,12 @@ public class PlayerController : MonoBehaviour, IDamage
         {
             GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
         }
+    }
+    
+    public void Respawn()
+    {
+        this.transform.position = startingLocation;
+        hp = hpBase;
+        GameManager.instance.playerHPBar.fillAmount = (float)hp / hpBase;
     }
 }

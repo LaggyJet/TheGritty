@@ -1,10 +1,11 @@
-//worked on by - natalie lubahn
+// Worked on by - Natalie Lubahn, Emily Underwood, Kheera
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Diagnostics.Contracts;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text enemyCountText;
+
+   
 
     //public variables
     public Image playerHPBar;
@@ -51,7 +54,6 @@ public class GameManager : MonoBehaviour
                 stateResume();
             }
         }
-
     }
 
     //PAUSE METHODS
@@ -73,17 +75,19 @@ public class GameManager : MonoBehaviour
     }
 
     //WIN/LOSE METHODS
-    public void updateEnemyAndWin(int amount)
+    public void updateEnemy(int amount)
     {
         enemyCount += amount;
-        enemyCountText.text = enemyCount.ToString("F0");
 
-        if (enemyCount <= 0)
-        {
-            statePause();
-            menuActive = menuWin;
-            menuActive.SetActive(isPaused);
-        }
+        /// Converting our enemy count to string 
+        enemyCountText.text = enemyCount.ToString("F0");
+    }
+
+    public void gameWon()
+    {
+        statePause();
+        menuActive = menuWin;
+        menuActive.SetActive(isPaused);
     }
 
     public void gameLost()
@@ -91,5 +95,17 @@ public class GameManager : MonoBehaviour
         statePause();
         menuActive = menuLose;
         menuActive.SetActive(isPaused);
+    }
+
+    //RESPAWN METHODS
+    public void respawnAfterLost()
+    {
+        if(menuActive == menuLose)
+        {
+            playerScript.controller.enabled = false;
+            playerScript.Respawn();
+            playerScript.controller.enabled = true;
+        }
+        stateResume();
     }
 }
