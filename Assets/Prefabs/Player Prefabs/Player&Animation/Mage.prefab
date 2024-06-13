@@ -4785,11 +4785,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 8235687388584206639}
+  canJump: 0
   shootProjectile: 1
   hp: 10
   speed: 10
   sprintMod: 2
   gravity: 10
+  jumpMax: 0
+  jumpSpeed: 0
+  fullHealth: {r: 0.3254902, g: 0.34509805, b: 0.26666668, a: 0}
+  midHealth: {r: 0.9607843, g: 0.8862745, b: 0.27450982, a: 0}
+  criticalHealth: {r: 0.7058824, g: 0, b: 0, a: 0}
   shootDamage: 1
   shootRate: 1
   shootDistance: 100
