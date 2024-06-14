@@ -26809,6 +26809,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 6065645675104918856, guid: 4992f2c6c2782ce4f93c7ea8c368b2b9, type: 3}
+      propertyPath: m_text
+      value: 'remaining hp:'
+      objectReference: {fileID: 0}
     - target: {fileID: 7401893425757416468, guid: 4992f2c6c2782ce4f93c7ea8c368b2b9, type: 3}
       propertyPath: player
       value: 
