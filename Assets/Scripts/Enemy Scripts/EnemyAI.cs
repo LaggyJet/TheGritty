@@ -8,6 +8,8 @@ public class EnemyAI : MonoBehaviour, IDamage {
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator anim;
+    [SerializeField] bool isCaptain;
+    [SerializeField] GameObject door;
     [SerializeField] int hp;
     [SerializeField] int animationTransitionSpeed;
     [SerializeField] int faceTargetSpeed;
@@ -49,6 +51,10 @@ public class EnemyAI : MonoBehaviour, IDamage {
         StartCoroutine(FlashDamage());
         if (hp <= 0) {
             GameManager.instance.updateEnemy(-1);
+            if(isCaptain)
+            {
+                Destroy(door);
+            }
             StartCoroutine(DeathAnimation());
         }
 

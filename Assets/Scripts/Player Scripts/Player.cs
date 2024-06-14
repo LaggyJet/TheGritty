@@ -44,7 +44,6 @@ public class PlayerController : MonoBehaviour, IDamage
 
     Vector3 moveDir;
     Vector3 playerV;
-    Vector3 startingLocation;
 
     // Start is called before the first frame update
     void Start()
@@ -53,7 +52,6 @@ public class PlayerController : MonoBehaviour, IDamage
         hpBase = hp;
         //updates our ui to accurately show the player hp and other information
         updatePlayerUI();
-        startingLocation = transform.position;
 
     }
 
@@ -171,7 +169,7 @@ public class PlayerController : MonoBehaviour, IDamage
         // Storing 
         GameManager.instance.playerHPBar.fillAmount = healthRatio;
 
-        if(healthRatio > 0.5f) // If health if more than 50% full
+        if (healthRatio > 0.5f) // If health if more than 50% full
         {
             GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthRatio - 0.5f) * 2);
         }
@@ -183,7 +181,7 @@ public class PlayerController : MonoBehaviour, IDamage
     
     public void Respawn()
     {
-        this.transform.position = startingLocation;
+        this.transform.position = GameManager.instance.playerLocation;
         hp = hpBase;
         GameManager.instance.playerHPBar.fillAmount = (float)hp / hpBase;
     }
