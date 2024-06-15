@@ -21,6 +21,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
     Vector3 playerDirection;
 
     void Start() { 
+        wasKilled = false;
         GameManager.instance.updateEnemy(1); 
         weapon.AddComponent<WeaponController>().SetDamage(damage); 
     }
@@ -52,6 +53,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
         weapon.GetComponent<Collider>().enabled = false;
         isAttacking = false;
     }
+
 
     public void TakeDamage(int amount) {
         hp -= amount;

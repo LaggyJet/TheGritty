@@ -183,5 +183,6 @@ public class PlayerController : MonoBehaviour, IDamage
         this.transform.position = GameManager.instance.playerLocation;
         hp = hpBase;
         GameManager.instance.playerHPBar.fillAmount = (float)hp / hpBase;
+        updatePlayerUI();
     }
 }
