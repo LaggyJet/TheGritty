@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour, IDamage
     //these variables are game function variables that may likely be changed
     [SerializeField] bool canJump;
     [SerializeField] bool shootProjectile;
-    [SerializeField] int hp;
+    [SerializeField] float hp;
     [SerializeField] int speed;
     [SerializeField] int sprintMod;
     [SerializeField] int gravity;
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] Color criticalHealth; 
 
     //these are combat variables
-    [SerializeField] int shootDamage;
+    [SerializeField] float shootDamage;
     [SerializeField] float shootRate;
     [SerializeField] int shootDistance;
     [SerializeField] GameObject shootPosition;
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
     //these are variables used explicitly in functions
     int jumpCount;
-    int hpBase;
+    float hpBase;
     bool isShooting;
 
     Vector3 moveDir;
@@ -147,7 +147,7 @@ public class PlayerController : MonoBehaviour, IDamage
     }
 
     //this function happens when the player is called to take damage
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
         //subtract the damage from the player
         hp -= amount;

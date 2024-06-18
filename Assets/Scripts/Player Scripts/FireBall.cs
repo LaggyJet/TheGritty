@@ -10,7 +10,7 @@ public class FireBall : MonoBehaviour
     [SerializeField] Rigidbody rb;
 
     //game variables that may be tweaked
-    [SerializeField] int damage;
+    [SerializeField] float damage;
     [SerializeField] int speed;
     [SerializeField] int destroyTime;
 

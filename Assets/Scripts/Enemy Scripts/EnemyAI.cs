@@ -10,7 +10,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
     [SerializeField] Animator anim;
     [SerializeField] bool isCaptain;
     [SerializeField] GameObject door;
-    [SerializeField] int hp;
+    [SerializeField] float hp;
     [SerializeField] int animationTransitionSpeed;
     [SerializeField] int faceTargetSpeed;
     [SerializeField] int attackSpeed;
@@ -45,7 +45,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
         isAttacking = false;
     }
 
-    public void TakeDamage(int amount) {
+    public void TakeDamage(float amount) {
         hp -= amount;
         agent.SetDestination(GameManager.instance.player.transform.position);
         StartCoroutine(FlashDamage());
