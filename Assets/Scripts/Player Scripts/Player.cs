@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
 
     //these are variables used explicitly in functions
+    IDamage.DamageStatus status;
     int jumpCount;
     float hpBase;
     bool isShooting;
@@ -144,6 +145,10 @@ public class PlayerController : MonoBehaviour, IDamage
         //waits for x amount of time then sets shooting variable to false so we can fire again
         yield return new WaitForSeconds(shootRate);
         isShooting = false;
+    }
+    public void Afflict(IDamage.DamageStatus type)
+    {
+        status = type;
     }
 
     //this function happens when the player is called to take damage

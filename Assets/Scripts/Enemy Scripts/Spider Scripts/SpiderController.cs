@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using static IDamage;
 
 public class SpiderController : MonoBehaviour, IDamage {
     [SerializeField] Renderer model;
@@ -19,12 +20,13 @@ public class SpiderController : MonoBehaviour, IDamage {
     [SerializeField] int spawnRate;
     [SerializeField] int spawnAmount;
 
-    bool isAttacking, wasKilled, isSpawningSpiders;
+    bool isAttacking, wasKilled, isSpawningSpiders, isDOT;
+    DamageStatus status;
     Vector3 playerDirection;
     float currentAngle;
 
     void Awake() {
-        isAttacking = wasKilled = isSpawningSpiders = false;
+        isAttacking = wasKilled = isSpawningSpiders = isDOT = false;
         GameManager.instance.updateEnemy(1);
         agent.speed = distanceFromPlayer * 0.1875f;
         StartCoroutine(CirclePlayer());
@@ -35,6 +37,9 @@ public class SpiderController : MonoBehaviour, IDamage {
 
         // Circling animation
         // anim.SetFloat
+
+        if (!isDOT)
+            StartCoroutine(DamageOverTime());
 
         if (!wasKilled)
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(playerDirection), Time.deltaTime * faceTargetSpeed);
@@ -78,6 +83,7 @@ public class SpiderController : MonoBehaviour, IDamage {
     }
 
     public void TakeDamage(float amount) {
+
         hp -= amount;
         StartCoroutine(FlashDamage());
 
@@ -90,6 +96,31 @@ public class SpiderController : MonoBehaviour, IDamage {
 
         if (!isAttacking)
             StartCoroutine(Spit());
+    }
+
+    public void Afflict(DamageStatus type)
+    {
+        status = type;
+    }
+
+    IEnumerator DamageOverTime() {
+        isDOT = true;
+        Debug.Log("yap");
+        switch (status)
+        {
+            case DamageStatus.BURN:
+                TakeDamage(1);
+                break;
+            case DamageStatus.BLEED:
+                TakeDamage(1);
+                break;
+            case DamageStatus.POISON:
+                TakeDamage(1);
+                break;
+        }
+
+        yield return new WaitForSeconds(1);
+        isDOT = false;
     }
 
     IEnumerator DeathAnimation() {

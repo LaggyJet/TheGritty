@@ -17,6 +17,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
     [SerializeField] GameObject weapon;
     [SerializeField] float damage;
 
+    IDamage.DamageStatus status;
     bool isAttacking, wasKilled;
     Vector3 playerDirection;
 
@@ -59,8 +60,8 @@ public class EnemyAI : MonoBehaviour, IDamage {
     }
 
 
-    public void TakeDamage(float amount) {
-        hp -= amount;
+    public void TakeDamage(float damage) {
+        hp -= damage;
         agent.SetDestination(GameManager.instance.player.transform.position);
         StartCoroutine(FlashDamage());
         if (hp <= 0 && !wasKilled) {
@@ -70,6 +71,11 @@ public class EnemyAI : MonoBehaviour, IDamage {
             wasKilled = true;
         }
 
+    }
+
+    public void Afflict(IDamage.DamageStatus type)
+    {
+        status = type;
     }
 
     IEnumerator DeathAnimation() {

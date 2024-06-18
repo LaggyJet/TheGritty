@@ -34,6 +34,7 @@ public class FireBall : MonoBehaviour
         {
             //deal damage to the object hit
             dmg.TakeDamage(damage);
+            dmg.Afflict(IDamage.DamageStatus.BURN);
             //destroy our projectile
             Destroy(gameObject);
         }
