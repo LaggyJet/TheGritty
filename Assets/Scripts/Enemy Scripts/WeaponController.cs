@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponController : MonoBehaviour {
-    int damage_;
-    public void SetDamage(int damage) { damage_ = damage; }
+    float damage_;
+    public void SetDamage(float damage) { damage_ = damage; }
 
     private void OnTriggerEnter(Collider other) {
         if (other.isTrigger) return;

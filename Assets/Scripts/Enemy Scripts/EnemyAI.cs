@@ -8,20 +8,20 @@ public class EnemyAI : MonoBehaviour, IDamage {
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator anim;
-    [SerializeField] int hp;
+    [SerializeField] bool flipEnemyDirection;
+    [SerializeField] float hp;
     [SerializeField] int animationTransitionSpeed;
     [SerializeField] int faceTargetSpeed;
     [SerializeField] int attackSpeed;
     [SerializeField] int swingRadius;
     [SerializeField] GameObject weapon;
-    [SerializeField] int damage;
+    [SerializeField] float damage;
 
-    bool isAttacking;
-    bool wasKilled;
+    bool isAttacking, wasKilled;
     Vector3 playerDirection;
 
     void Start() { 
-        wasKilled = false;
+        isAttacking = wasKilled = false;
         GameManager.instance.updateEnemy(1); 
         weapon.AddComponent<WeaponController>().SetDamage(damage); 
     }
@@ -34,7 +34,8 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
         if (!wasKilled) {
             agent.SetDestination(GameManager.instance.player.transform.position);
-            if (agent.remainingDistance < agent.stoppingDistance)
+
+            if (agent.remainingDistance < agent.stoppingDistance || flipEnemyDirection)
                 FaceTarget();
         }
 
@@ -42,20 +43,23 @@ public class EnemyAI : MonoBehaviour, IDamage {
             StartCoroutine(Swing());
     }
 
-    void FaceTarget() { transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(playerDirection), Time.deltaTime * faceTargetSpeed); }
+    void FaceTarget() {
+        Quaternion rotation = Quaternion.LookRotation(playerDirection) * Quaternion.Euler(0, (flipEnemyDirection ? 180 : 0), 0);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * faceTargetSpeed); 
+    }
 
     IEnumerator Swing() {
         isAttacking = true;
         weapon.GetComponent<Collider>().enabled = true;
         anim.SetTrigger("Attack");
-
-        yield return new WaitForSeconds(attackSpeed);
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length / 2);
         weapon.GetComponent<Collider>().enabled = false;
+        yield return new WaitForSeconds(attackSpeed);
         isAttacking = false;
     }
 
 
-    public void TakeDamage(int amount) {
+    public void TakeDamage(float amount) {
         hp -= amount;
         agent.SetDestination(GameManager.instance.player.transform.position);
         StartCoroutine(FlashDamage());
@@ -73,7 +77,17 @@ public class EnemyAI : MonoBehaviour, IDamage {
         agent.SetDestination(transform.position);
         agent.radius = 0;
         anim.SetTrigger("Death");
-        yield return new WaitForSeconds(2);
+        List<Renderer> renderers = new List<Renderer>();
+        Renderer[] childRenders = transform.GetComponentsInChildren<Renderer>();
+        renderers.AddRange(childRenders);
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+        while (model.material.color.a > 0) {
+            foreach (Renderer render in renderers) {
+                float fadeSpeed = render.material.color.a - Time.deltaTime;
+                render.material.color = new Color(render.material.color.r, render.material.color.g, render.material.color.b, fadeSpeed);
+                yield return null;
+            }
+        }
         Destroy(gameObject);
     }
 
