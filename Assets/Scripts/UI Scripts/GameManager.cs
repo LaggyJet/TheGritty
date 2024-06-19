@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text enemyCountText;
 
-   
 
     //public variables
     public Image playerHPBar;
