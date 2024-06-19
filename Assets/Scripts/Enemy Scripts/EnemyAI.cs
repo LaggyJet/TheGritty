@@ -18,9 +18,10 @@ public class EnemyAI : MonoBehaviour, IDamage {
     [SerializeField] GameObject weapon;
 
     bool isAttacking;
+    bool isDead;
     Vector3 playerDirection;
 
-    void Start() { GameManager.instance.updateEnemy(1); }
+    void Start() { GameManager.instance.updateEnemy(1); isDead = false; }
 
 
     void Update() {
@@ -41,15 +42,29 @@ public class EnemyAI : MonoBehaviour, IDamage {
     IEnumerator Swing() {
         isAttacking = true;
         anim.SetTrigger("Attack");
-        yield return new WaitForSeconds(attackSpeed);
+        BoxCollider weaponCollider = weapon.GetComponent<BoxCollider>();
+        if(weaponCollider != null)
+        {
+            weapon.GetComponent<BoxCollider>().isTrigger = true;
+            yield return new WaitForSeconds(attackSpeed);
+            weapon.GetComponent<BoxCollider>().isTrigger = false;
+        }
+        else
+        {
+            weapon.GetComponent<MeshCollider>().isTrigger = true;
+            yield return new WaitForSeconds(attackSpeed);
+            weapon.GetComponent<MeshCollider>().isTrigger = false;
+        }
         isAttacking = false;
     }
+
 
     public void TakeDamage(int amount) {
         hp -= amount;
         agent.SetDestination(GameManager.instance.player.transform.position);
         StartCoroutine(FlashDamage());
-        if (hp <= 0) {
+        if (hp <= 0 && !isDead) {
+            isDead = true;
             GameManager.instance.updateEnemy(-1);
             if(isCaptain)
             {

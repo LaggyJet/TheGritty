@@ -23,7 +23,11 @@ public class PlayerController : MonoBehaviour, IDamage
     // Health bar gradual fill 
     [SerializeField] Color fullHealth; 
     [SerializeField] Color midHealth; 
-    [SerializeField] Color criticalHealth; 
+    [SerializeField] Color criticalHealth;
+
+    // HP bar shake
+    [Range(0f, 10f)] public float duration;  
+   
 
     //these are combat variables
     [SerializeField] int shootDamage;
@@ -168,13 +172,14 @@ public class PlayerController : MonoBehaviour, IDamage
         // Storing 
         GameManager.instance.playerHPBar.fillAmount = healthRatio;
 
-        if (healthRatio > 0.5f) // If health if more than 50% full
+        if (healthRatio > 0.5f || GameManager.instance.playerHPBar.color != midHealth) // If health is more than 50% full
         {
             GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthRatio - 0.5f) * 2);
         }
         else // If the health is less than 50%
         {
-            GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
+            GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2); 
+            Shake.instance.Shaking(duration);  
         }
     }
     
@@ -182,6 +187,6 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         this.transform.position = GameManager.instance.playerLocation;
         hp = hpBase;
-        GameManager.instance.playerHPBar.fillAmount = (float)hp / hpBase;
+        updatePlayerUI();
     }
 }
