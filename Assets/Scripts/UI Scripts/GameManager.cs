@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        
         playerLocation = player.transform.position;
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<PlayerController>();
