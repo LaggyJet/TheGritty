@@ -170,6 +170,7 @@ public class PlayerController : MonoBehaviour, IDamage
     }
 
     //the function for updating our ui
+    // The function for updating HP bar
     void updatePlayerUI()
     {
         // Variable for filling bar 
@@ -193,6 +194,7 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         this.transform.position = GameManager.instance.playerLocation;
         hp = hpBase;
+<<<<<<< Updated upstream
         updatePlayerUI();
     }
 }
