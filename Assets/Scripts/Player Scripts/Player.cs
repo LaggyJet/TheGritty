@@ -169,7 +169,6 @@ public class PlayerController : MonoBehaviour, IDamage
         }
     }
 
-    //the function for updating our ui
     // The function for updating HP bar
     void updatePlayerUI()
     {
@@ -196,5 +195,9 @@ public class PlayerController : MonoBehaviour, IDamage
         hp = hpBase;
 <<<<<<< Updated upstream
         updatePlayerUI();
+=======
+        //GameManager.instance.playerHPBar.fillAmount = (float)hp / hpBase;
+        updatePlayerUI(); 
+>>>>>>> Stashed changes
     }
 }
