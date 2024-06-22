@@ -1,10 +1,8 @@
 // Worked on by - Joshua Furber
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using static IDamage;
 
 public class SpiderController : MonoBehaviour, IDamage {
     [SerializeField] Renderer model;

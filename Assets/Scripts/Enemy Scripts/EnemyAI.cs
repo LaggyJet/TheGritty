@@ -10,40 +10,71 @@ public class EnemyAI : MonoBehaviour, IDamage {
     [SerializeField] Animator anim;
     [SerializeField] bool flipEnemyDirection;
     [SerializeField] float hp;
-    [SerializeField] int animationTransitionSpeed;
-    [SerializeField] int faceTargetSpeed;
-    [SerializeField] int attackSpeed;
-    [SerializeField] int swingRadius;
+    [SerializeField] int animationTransitionSpeed, faceTargetSpeed, attackSpeed, viewAngle;
+    [SerializeField] Transform headPosition;
+    [SerializeField] float swingRadius;
     [SerializeField] GameObject weapon;
     [SerializeField] float damage;
     [SerializeField] bool canDOT;
     [SerializeField] DamageStats type;
+    [SerializeField] EnemyLimiter enemyLimiter;
+    [SerializeField] int range;
 
     DamageStats status;
     bool isAttacking, wasKilled, isDOT;
     Vector3 playerDirection;
+    float originalStoppingDistance, adjustedStoppingDistance, angleToPlayer;
+    int id;
 
     void Start() { 
         isAttacking = wasKilled = isDOT = false;
         GameManager.instance.updateEnemy(1); 
-        weapon.AddComponent<WeaponController>().SetWeapon(damage, canDOT, type); 
+        weapon.AddComponent<WeaponController>().SetWeapon(damage, canDOT, type);
+        EnemyManager.Instance.AddEnemyType(enemyLimiter);
+        originalStoppingDistance = agent.stoppingDistance;
+        adjustedStoppingDistance = originalStoppingDistance * enemyLimiter.rangeMultiplier;
+        id = gameObject.GetInstanceID();
     }
 
 
     void Update() {
-        playerDirection = GameManager.instance.player.transform.position - transform.position;
-
         anim.SetFloat("Speed", Mathf.Lerp(anim.GetFloat("Speed"), agent.velocity.normalized.magnitude, Time.deltaTime * animationTransitionSpeed));
+        CanSeePlayer();
+    }
 
-        if (!wasKilled) {
-            agent.SetDestination(GameManager.instance.player.transform.position);
+    bool CanSeePlayer() {
+        playerDirection = GameManager.instance.player.transform.position - headPosition.position;
+        angleToPlayer = Vector3.Angle(new Vector3(playerDirection.x, playerDirection.y + 1, playerDirection.z), transform.forward);
+        if (flipEnemyDirection)
+            angleToPlayer = 180 - angleToPlayer;
 
-            if (agent.remainingDistance < agent.stoppingDistance || flipEnemyDirection)
-                FaceTarget();
+        if (Physics.Raycast(headPosition.position, playerDirection, out RaycastHit hit)) {
+            if (hit.collider.CompareTag("Player") && angleToPlayer < viewAngle) {
+                if (!wasKilled) {
+                    agent.SetDestination(GameManager.instance.player.transform.position);
+
+                    if (agent.remainingDistance < agent.stoppingDistance || flipEnemyDirection)
+                        FaceTarget();
+
+                    if (!EnemyManager.Instance.IsClose(enemyLimiter, id)) {
+                        if (EnemyManager.Instance.CanBeClose(enemyLimiter) && agent.remainingDistance < range && !agent.pathPending)
+                            EnemyManager.Instance.AddCloseEnemy(enemyLimiter, id);
+                        else if (!EnemyManager.Instance.CanBeClose(enemyLimiter))
+                            agent.stoppingDistance = adjustedStoppingDistance;
+                    }
+                    else if (EnemyManager.Instance.IsClose(enemyLimiter, id) && agent.remainingDistance > range) {
+                        EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
+                        agent.stoppingDistance = originalStoppingDistance;
+                    }
+
+                    if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter))
+                        StartCoroutine(Swing());
+                }
+
+                return true; 
+            }
         }
-
-        if (!isAttacking && agent.remainingDistance < swingRadius)
-            StartCoroutine(Swing());
+        return false;
     }
 
     void FaceTarget() {
@@ -54,18 +85,23 @@ public class EnemyAI : MonoBehaviour, IDamage {
     IEnumerator Swing() {
         isAttacking = true;
         anim.SetTrigger("Attack");
+        EnemyManager.Instance.AddAttackEnemy(enemyLimiter, id);
         yield return new WaitForSeconds(attackSpeed);
         isAttacking = false;
     }
 
     public void WeaponColliderOn() { weapon.GetComponent<Collider>().enabled = true; }
 
-    public void WeaponColliderOff() { weapon.GetComponent<Collider>().enabled = false; }
+    public void WeaponColliderOff() { 
+        weapon.GetComponent<Collider>().enabled = false;
+        EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
+    }
 
 
     public void TakeDamage(float damage) {
         hp -= damage;
-        agent.SetDestination(GameManager.instance.player.transform.position);
+        if (!isDOT)
+            agent.SetDestination(GameManager.instance.player.transform.position);
         if (hp > 0)
             StartCoroutine(FlashDamage());
         if (hp <= 0 && !wasKilled) {

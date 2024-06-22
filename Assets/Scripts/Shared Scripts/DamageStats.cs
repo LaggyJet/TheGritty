@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+// Worked on by - Joshua Furber
 using UnityEngine;
 
 [CreateAssetMenu]
