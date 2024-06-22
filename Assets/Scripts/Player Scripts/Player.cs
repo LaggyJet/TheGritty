@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 
     //these variables are game function variables that may likely be changed
     [SerializeField] bool shootProjectile;
-    [SerializeField] int hp;
+    [SerializeField] float hp;
     [SerializeField] int speed;
     [SerializeField] int sprintMod;
     [SerializeField] int gravity;
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
    
 
     //these are combat variables
-    [SerializeField] int shootDamage;
+    [SerializeField] float shootDamage;
     [SerializeField] float shootRate;
     [SerializeField] int shootDistance;
     [SerializeField] GameObject shootPosition;
@@ -41,9 +41,12 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 
 
     //these are variables used explicitly in functions
+    DamageStats status;
     int jumpCount;
-    int hpBase;
+    float hpBase;
     bool isShooting;
+    bool isDead;
+    bool isDOT;
 
     Vector3 moveDir;
     Vector3 playerV;
@@ -154,6 +157,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         //spawns our projectile
         else
         {
+            yield return new WaitForSeconds(.2f);
             Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
         }
         
@@ -162,17 +166,35 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         yield return new WaitForSeconds(shootRate);
         isShooting = false;
     }
+    public void Afflict(DamageStats type)
+    {
+        status = type;
+        if (!isDOT)
+            StartCoroutine(DamageOverTime());
+    }
+
+    IEnumerator DamageOverTime()
+    {
+        isDOT = true;
+        for (int i = 0; i < status.length; i++)
+        {
+            TakeDamage(status.damage);
+            yield return new WaitForSeconds(1);
+        }
+        isDOT = false;
+    }
 
     //this function happens when the player is called to take damage
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
         //subtract the damage from the player
         hp -= amount;
         //updates our ui to accurately show the players health
         updatePlayerUI();
         //if health drops below zero run our lose condition
-        if(hp <= 0)
+        if(hp <= 0 && !isDead)
         {
+            isDead = true;
             GameManager.instance.gameLost();
         }
     }

@@ -10,9 +10,10 @@ public class FireBall : MonoBehaviour
     [SerializeField] Rigidbody rb;
 
     //game variables that may be tweaked
-    [SerializeField] int damage;
+    [SerializeField] float damage;
     [SerializeField] int speed;
     [SerializeField] int destroyTime;
+    [SerializeField] DamageStats type;
 
 
     // Start is called before the first frame update
@@ -34,6 +35,7 @@ public class FireBall : MonoBehaviour
         {
             //deal damage to the object hit
             dmg.TakeDamage(damage);
+            dmg.Afflict(type);
             //destroy our projectile
             Destroy(gameObject);
         }
