@@ -22,7 +22,7 @@ public class SpiderController : MonoBehaviour, IDamage {
     Vector3 playerDirection;
     float currentAngle;
 
-    void Awake() {
+    void Start() {
         isAttacking = wasKilled = isSpawningSpiders = onCooldown = isDOT = false;
         acidPuddle.AddComponent<AcidPuddle>().SetDamageType(type);
         GameManager.instance.updateEnemy(1);
@@ -118,6 +118,15 @@ public class SpiderController : MonoBehaviour, IDamage {
         isDOT = false;
     }
 
+    bool IsSpitParticles(Transform transform) {
+        while (transform != null) {
+            if (transform.name == "SpitPosition")
+                return true;
+            transform = transform.parent;
+        }
+        return false;
+    }
+
     IEnumerator DeathAnimation() {
         yield return new WaitForSeconds(0.2f);
         agent.isStopped = true;
@@ -129,6 +138,8 @@ public class SpiderController : MonoBehaviour, IDamage {
         renderers.AddRange(childRenders);
         yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length * 2);
         foreach (Renderer render in renderers) {
+            if (IsSpitParticles(render.transform))
+                continue;
             float newAlpha = render.material.GetFloat("_Alpha");
             while (newAlpha > 0) {
                 newAlpha -= 0.5f * Time.deltaTime;
