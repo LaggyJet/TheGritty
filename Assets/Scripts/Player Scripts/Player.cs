@@ -5,13 +5,12 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IDamage
+public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 {
     //this sets up our player controller variable to handle collision
     public CharacterController controller;
 
     //these variables are game function variables that may likely be changed
-    [SerializeField] bool canJump;
     [SerializeField] bool shootProjectile;
     [SerializeField] int hp;
     [SerializeField] int speed;
@@ -45,6 +44,22 @@ public class PlayerController : MonoBehaviour, IDamage
     Vector3 moveDir;
     Vector3 playerV;
 
+    public static Vector3 spawnLocation;
+    public static Quaternion spawnRotation;
+
+    private void Awake()
+    {
+        if (spawnLocation == Vector3.zero)
+        {
+            this.transform.position = new Vector3(4.1992116f, 0.0799998641f, 49.6620026f);
+            this.transform.rotation = new Quaternion(0, 180.513367f, 0, 0);
+        }
+        else
+        {
+            this.transform.position = spawnLocation;
+            this.transform.rotation = spawnRotation;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -52,7 +67,6 @@ public class PlayerController : MonoBehaviour, IDamage
         hpBase = hp;
         //updates our ui to accurately show the player hp and other information
         updatePlayerUI();
-
     }
 
     // Update is called once per frame
@@ -79,7 +93,7 @@ public class PlayerController : MonoBehaviour, IDamage
             jumpCount = 0;
         }
         //runs a check for if player jumps
-        if (Input.GetButtonDown("Jump") && canJump)
+        if (Input.GetButtonDown("Jump") && GameManager.instance.canJump)
         {
             if (jumpCount < jumpMax)
             {
@@ -184,5 +198,15 @@ public class PlayerController : MonoBehaviour, IDamage
         hp = hpBase;
         GameManager.instance.playerHPBar.fillAmount = (float)hp / hpBase;
         updatePlayerUI();
+    }
+    public void LoadData(GameData data)
+    {
+        spawnLocation = data.playerPos;
+        spawnRotation = data.playerRot;
+    }
+    public void SaveData(ref GameData data)
+    {
+        data.playerPos = this.transform.position;
+        data.playerRot = this.transform.rotation;
     }
 }
