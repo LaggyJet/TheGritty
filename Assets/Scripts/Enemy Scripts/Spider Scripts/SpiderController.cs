@@ -11,22 +11,20 @@ public class SpiderController : MonoBehaviour, IDamage {
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator anim;
     [SerializeField] float hp;
-    [SerializeField] int faceTargetSpeed;
-    [SerializeField] int distanceFromPlayer;
-    [SerializeField] bool spinReversed;
-    [SerializeField] int spitRange;
-    [SerializeField] float spitDamage;
+    [SerializeField] int faceTargetSpeed, distanceFromPlayer, spitCooldown;
+    [SerializeField] GameObject spitEffectPS, acidPuddle;
+    [SerializeField] DamageStats type;
     [SerializeField] GameObject spider;
-    [SerializeField] int spawnRate;
-    [SerializeField] int spawnAmount;
+    [SerializeField] int spawnRate, spawnAmount;
 
-    bool isAttacking, wasKilled, isSpawningSpiders, isDOT;
-    DamageStatus status;
+    bool isAttacking, wasKilled, isSpawningSpiders, onCooldown, isDOT;
+    DamageStats status;
     Vector3 playerDirection;
     float currentAngle;
 
     void Awake() {
-        isAttacking = wasKilled = isSpawningSpiders = isDOT = false;
+        isAttacking = wasKilled = isSpawningSpiders = onCooldown = isDOT = false;
+        acidPuddle.AddComponent<AcidPuddle>().SetDamageType(type);
         GameManager.instance.updateEnemy(1);
         agent.speed = distanceFromPlayer * 0.1875f;
         StartCoroutine(CirclePlayer());
@@ -35,17 +33,13 @@ public class SpiderController : MonoBehaviour, IDamage {
     void Update() {
         playerDirection = GameManager.instance.player.transform.position - transform.position;
 
-        // Circling animation
-        // anim.SetFloat
-
-        if (!isDOT)
-            StartCoroutine(DamageOverTime());
-
-        if (!wasKilled)
+        if (!wasKilled) {
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(playerDirection), Time.deltaTime * faceTargetSpeed);
 
-        if (!isSpawningSpiders)
-            StartCoroutine(SpawnSpiders());
+            if (!isSpawningSpiders && !isAttacking)
+                StartCoroutine(SpawnSpiders());
+        }
+        
     }
 
     IEnumerator SpawnSpiders() {
@@ -62,30 +56,41 @@ public class SpiderController : MonoBehaviour, IDamage {
         float angleAdjustment = (Mathf.PI * 2) / 360;
         float thresh = 1f;
         while (true) {
-            float xOffset = (spinReversed ? (Mathf.Sin(currentAngle)) : (Mathf.Cos(currentAngle))) * distanceFromPlayer;
-            float zOffset = (spinReversed ? (Mathf.Cos(currentAngle)) : (Mathf.Sin(currentAngle))) * distanceFromPlayer;
-            Vector3 target = new Vector3(GameManager.instance.player.transform.position.x + xOffset, GameManager.instance.player.transform.position.y, GameManager.instance.player.transform.position.z + zOffset);
-            agent.SetDestination(target);
-            while (Vector3.Distance(agent.transform.position, target) > thresh)
+            if (isAttacking) {
+                agent.SetDestination(transform.position);
                 yield return null;
-            currentAngle += angleAdjustment * Time.deltaTime;
-            if (currentAngle > Mathf.PI * 2)
-                currentAngle -= Mathf.PI * 2;
+            }
+            else
+            {
+                float xOffset = Mathf.Sin(currentAngle) * distanceFromPlayer;
+                float zOffset = Mathf.Cos(currentAngle) * distanceFromPlayer;
+                var target = new Vector3(GameManager.instance.player.transform.position.x + xOffset, GameManager.instance.player.transform.position.y, GameManager.instance.player.transform.position.z + zOffset);
+                agent.SetDestination(target);
+                while (Vector3.Distance(agent.transform.position, target) > thresh)
+                    yield return null;
+                currentAngle += angleAdjustment * Time.deltaTime;
+                if (currentAngle > Mathf.PI * 2)
+                    currentAngle -= Mathf.PI * 2;
+            }
         }
     }
 
     IEnumerator Spit() {
-        isAttacking = true;
+        isAttacking = onCooldown = true;
+        yield return new WaitForSeconds(0.1f);
         anim.SetTrigger("Spit");
-        // Figure out time for wait then spawn acid ball (seperate script)
-        yield return new WaitForSeconds(2);
+        spitEffectPS.GetComponent<ParticleSystem>().Play();
+        yield return new WaitForSeconds(4);    
+        anim.SetTrigger("Circle");
         isAttacking = false;
+        yield return new WaitForSeconds(spitCooldown);
+        onCooldown = false;
     }
 
     public void TakeDamage(float amount) {
-
         hp -= amount;
-        StartCoroutine(FlashDamage());
+        if (hp > 0)
+            StartCoroutine(FlashDamage());
 
         if (hp <= 0 && !wasKilled) {
             GameManager.instance.updateEnemy(-1);
@@ -94,48 +99,40 @@ public class SpiderController : MonoBehaviour, IDamage {
             wasKilled = true;
         }
 
-        if (!isAttacking)
+        if (!isAttacking && !onCooldown)
             StartCoroutine(Spit());
     }
 
-    public void Afflict(DamageStatus type)
-    {
+    public void Afflict(DamageStats type) { 
         status = type;
+        if (!isDOT)
+            StartCoroutine(DamageOverTime());
     }
 
     IEnumerator DamageOverTime() {
         isDOT = true;
-        Debug.Log("yap");
-        switch (status)
-        {
-            case DamageStatus.BURN:
-                TakeDamage(1);
-                break;
-            case DamageStatus.BLEED:
-                TakeDamage(1);
-                break;
-            case DamageStatus.POISON:
-                TakeDamage(1);
-                break;
+        for (int i = 0; i < status.length; i++) {
+            TakeDamage(status.damage);
+            yield return new WaitForSeconds(1);
         }
-
-        yield return new WaitForSeconds(1);
         isDOT = false;
     }
 
     IEnumerator DeathAnimation() {
+        yield return new WaitForSeconds(0.2f);
         agent.isStopped = true;
         agent.SetDestination(transform.position);
         agent.radius = 0;
         anim.SetTrigger("Death");
-        List<Renderer> renderers = new List<Renderer>();
+        var renderers = new List<Renderer>();
         Renderer[] childRenders = transform.GetComponentsInChildren<Renderer>();
         renderers.AddRange(childRenders);
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
-        while (model.material.color.a > 0) {
-            foreach (Renderer render in renderers) {
-                float fadeSpeed = render.material.color.a - Time.deltaTime;
-                render.material.color = new Color(render.material.color.r, render.material.color.g, render.material.color.b, fadeSpeed);
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length * 2);
+        foreach (Renderer render in renderers) {
+            float newAlpha = render.material.GetFloat("_Alpha");
+            while (newAlpha > 0) {
+                newAlpha -= 0.5f * Time.deltaTime;
+                render.material.SetFloat("_Alpha", newAlpha);
                 yield return null;
             }
         }
@@ -145,6 +142,6 @@ public class SpiderController : MonoBehaviour, IDamage {
     IEnumerator FlashDamage() {
         model.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        model.material.color = Color.white;
+        model.material.color = new Color(0.5f, 0.5f, 0.5f, 1);
     }
 }

@@ -16,15 +16,17 @@ public class EnemyAI : MonoBehaviour, IDamage {
     [SerializeField] int swingRadius;
     [SerializeField] GameObject weapon;
     [SerializeField] float damage;
+    [SerializeField] bool canDOT;
+    [SerializeField] DamageStats type;
 
-    IDamage.DamageStatus status;
-    bool isAttacking, wasKilled;
+    DamageStats status;
+    bool isAttacking, wasKilled, isDOT;
     Vector3 playerDirection;
 
     void Start() { 
-        isAttacking = wasKilled = false;
+        isAttacking = wasKilled = isDOT = false;
         GameManager.instance.updateEnemy(1); 
-        weapon.AddComponent<WeaponController>().SetDamage(damage); 
+        weapon.AddComponent<WeaponController>().SetWeapon(damage, canDOT, type); 
     }
 
 
@@ -51,19 +53,21 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
     IEnumerator Swing() {
         isAttacking = true;
-        weapon.GetComponent<Collider>().enabled = true;
         anim.SetTrigger("Attack");
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length / 2);
-        weapon.GetComponent<Collider>().enabled = false;
         yield return new WaitForSeconds(attackSpeed);
         isAttacking = false;
     }
+
+    public void WeaponColliderOn() { weapon.GetComponent<Collider>().enabled = true; }
+
+    public void WeaponColliderOff() { weapon.GetComponent<Collider>().enabled = false; }
 
 
     public void TakeDamage(float damage) {
         hp -= damage;
         agent.SetDestination(GameManager.instance.player.transform.position);
-        StartCoroutine(FlashDamage());
+        if (hp > 0)
+            StartCoroutine(FlashDamage());
         if (hp <= 0 && !wasKilled) {
             GameManager.instance.updateEnemy(-1);
             gameObject.GetComponent<Collider>().enabled = false;
@@ -73,9 +77,25 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
     }
 
-    public void Afflict(IDamage.DamageStatus type)
-    {
+    public void Afflict(DamageStats type) {
         status = type;
+        if (!isDOT)
+            StartCoroutine(DamageOverTime());
+    }
+
+    IEnumerator DamageOverTime() {
+        isDOT = true;
+        for (int i = 0; i < status.length; i++) {
+            TakeDamage(status.damage);
+            yield return new WaitForSeconds(1);
+        }
+        isDOT = false;
+    }
+
+    IEnumerator FlashDamage() {
+        model.material.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        model.material.color = Color.white;
     }
 
     IEnumerator DeathAnimation() {
@@ -83,7 +103,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
         agent.SetDestination(transform.position);
         agent.radius = 0;
         anim.SetTrigger("Death");
-        List<Renderer> renderers = new List<Renderer>();
+        var renderers = new List<Renderer>();
         Renderer[] childRenders = transform.GetComponentsInChildren<Renderer>();
         renderers.AddRange(childRenders);
         yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
@@ -95,11 +115,5 @@ public class EnemyAI : MonoBehaviour, IDamage {
             }
         }
         Destroy(gameObject);
-    }
-
-    IEnumerator FlashDamage() {
-        model.material.color = Color.red;
-        yield return new WaitForSeconds(0.1f);
-        model.material.color = Color.white;
     }
 }

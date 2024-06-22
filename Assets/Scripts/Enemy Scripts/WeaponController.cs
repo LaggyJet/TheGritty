@@ -5,13 +5,23 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour {
     float damage_;
-    public void SetDamage(float damage) { damage_ = damage; }
+    bool canDOT;
+    DamageStats stats_;
+    
+    public void SetWeapon(float damage, bool dot, DamageStats type) { 
+        damage_ = damage; 
+        canDOT = dot;
+        stats_ = type;
+    }
 
     private void OnTriggerEnter(Collider other) {
         if (other.isTrigger) return;
 
         IDamage damageCheck = other.GetComponent<IDamage>();
-        if (damageCheck != null && other.CompareTag("Player"))
+        if (damageCheck != null && other.CompareTag("Player")) {
             damageCheck.TakeDamage(damage_);
+            if (canDOT)
+                damageCheck.Afflict(stats_);
+        }
     }
 }

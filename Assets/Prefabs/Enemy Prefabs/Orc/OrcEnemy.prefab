@@ -92,14 +92,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1594817991664589131}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 93.492, y: -0, z: 3.251}
   m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6300758469780496795}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!137 &3364280192433888286
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -232,6 +232,7 @@ MonoBehaviour:
   model: {fileID: 3364280192433888286}
   agent: {fileID: 3269552169091019610}
   anim: {fileID: 5855602775976195817}
+  flipEnemyDirection: 0
   hp: 7
   animationTransitionSpeed: 8
   faceTargetSpeed: 5
@@ -239,6 +240,8 @@ MonoBehaviour:
   swingRadius: 3
   weapon: {fileID: 4760056531188200402}
   damage: 3
+  canDOT: 1
+  type: {fileID: 11400000, guid: 19c1a9185716ec34884e00e951051bbd, type: 2}
 --- !u!136 &1421049694574580939
 CapsuleCollider:
   m_ObjectHideFlags: 0
