@@ -48,31 +48,27 @@ public class EnemyAI : MonoBehaviour, IDamage {
         if (flipEnemyDirection)
             angleToPlayer = 180 - angleToPlayer;
 
-        if (Physics.Raycast(headPosition.position, playerDirection, out RaycastHit hit)) {
-            if (hit.collider.CompareTag("Player") && angleToPlayer < viewAngle) {
-                if (!wasKilled) {
-                    agent.SetDestination(GameManager.instance.player.transform.position);
+        if (Physics.Raycast(headPosition.position, playerDirection, out RaycastHit hit) && hit.collider.CompareTag("Player") && angleToPlayer < viewAngle && !wasKilled) {
+            agent.SetDestination(GameManager.instance.player.transform.position);
 
-                    if (agent.remainingDistance < agent.stoppingDistance || flipEnemyDirection)
-                        FaceTarget();
+            if (agent.remainingDistance < agent.stoppingDistance || flipEnemyDirection)
+                FaceTarget();
 
-                    if (!EnemyManager.Instance.IsClose(enemyLimiter, id)) {
-                        if (EnemyManager.Instance.CanBeClose(enemyLimiter) && agent.remainingDistance < range && !agent.pathPending)
-                            EnemyManager.Instance.AddCloseEnemy(enemyLimiter, id);
-                        else if (!EnemyManager.Instance.CanBeClose(enemyLimiter))
-                            agent.stoppingDistance = adjustedStoppingDistance;
-                    }
-                    else if (EnemyManager.Instance.IsClose(enemyLimiter, id) && agent.remainingDistance > range) {
-                        EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
-                        agent.stoppingDistance = originalStoppingDistance;
-                    }
-
-                    if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter))
-                        StartCoroutine(Swing());
-                }
-
-                return true; 
+            if (!EnemyManager.Instance.IsClose(enemyLimiter, id)) {
+                if (EnemyManager.Instance.CanBeClose(enemyLimiter) && agent.remainingDistance < range && !agent.pathPending)
+                    EnemyManager.Instance.AddCloseEnemy(enemyLimiter, id);
+                else if (!EnemyManager.Instance.CanBeClose(enemyLimiter))
+                    agent.stoppingDistance = adjustedStoppingDistance;
             }
+            else if (EnemyManager.Instance.IsClose(enemyLimiter, id) && agent.remainingDistance > range) {
+                EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
+                agent.stoppingDistance = originalStoppingDistance;
+            }
+
+            if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter))
+                StartCoroutine(Swing());
+
+            return true; 
         }
         return false;
     }
