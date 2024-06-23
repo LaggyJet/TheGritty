@@ -950,11 +950,19 @@ MonoBehaviour:
   menuWin: {fileID: 3807958803390252355}
   menuLose: {fileID: 4287718220633527281}
   enemyCountText: {fileID: 7859526688692464786}
+  menuSettings: {fileID: 0}
+  sfxStarting: 0
+  bgmStarting: 0
   playerHPBar: {fileID: 8896175301942061614}
   isPaused: 0
   player: {fileID: 0}
   playerScript: {fileID: 0}
   playerLocation: {x: 0, y: 0, z: 0}
+  oldActiveMenu: {fileID: 0}
+  settingsPublicVers: {fileID: 0}
+  menuActivePublicVers: {fileID: 0}
+  canJump: 0
+  toggleScript: {fileID: 0}
 --- !u!114 &2448434801071253184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2974,6 +2982,55 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &6232129635916828265
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3409632313141537757}
+  - component: {fileID: 2771114792914459161}
+  m_Layer: 5
+  m_Name: Data Persistance Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3409632313141537757
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6232129635916828265}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4959938858605412400}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -960, y: -540}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2771114792914459161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6232129635916828265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d9ec3208a03d74d8567c32acbd0561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FileName: gameData.json
 --- !u!1 &6558149460351986262
 GameObject:
   m_ObjectHideFlags: 0
@@ -4023,6 +4080,7 @@ RectTransform:
   - {fileID: 4233910122089759966}
   - {fileID: 7430435217070807805}
   - {fileID: 5267957678795523985}
+  - {fileID: 3409632313141537757}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
