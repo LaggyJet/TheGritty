@@ -51,29 +51,30 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     Vector3 moveDir;
     Vector3 playerV;
 
+    //variables used for save/load
     public static Vector3 spawnLocation;
     public static Quaternion spawnRotation;
+    public static float spawnHp;
 
     private void Awake()
     {
+        //tracks our base hp and the current hp that will update as our player takes damage or gets health
+        hpBase = hp;
         if (spawnLocation == Vector3.zero)
         {
             this.transform.position = new Vector3(4.1992116f, 0.0799998641f, 49.6620026f);
             this.transform.rotation = new Quaternion(0, 180.513367f, 0, 0);
+            //updates our ui to accurately show the player hp and other information
+            updatePlayerUI();
         }
         else
         {
             this.transform.position = spawnLocation;
             this.transform.rotation = spawnRotation;
+            hp = spawnHp;
+            //updates our ui to accurately show the player hp and other information
+            updatePlayerUI();
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        //tracks our base hp and the current hp that will update as our player takes damage or gets health
-        hpBase = hp;
-        //updates our ui to accurately show the player hp and other information
-        updatePlayerUI();
     }
 
     // Update is called once per frame
@@ -229,10 +230,12 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     {
         spawnLocation = data.playerPos;
         spawnRotation = data.playerRot;
+        spawnHp = data.playerHp;
     }
     public void SaveData(ref GameData data)
     {
         data.playerPos = this.transform.position;
         data.playerRot = this.transform.rotation;
+        data.playerHp = hp;
     }
 }
