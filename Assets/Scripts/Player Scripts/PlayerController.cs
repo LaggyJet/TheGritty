@@ -68,6 +68,12 @@ public class PlayerController : MonoBehaviour, IDamage
             //starts our shooting function
             StartCoroutine(Shoot());
         }
+
+        else if (Input.GetButton("Ability1") && !isShooting && !GameManager.instance.isPaused)
+        {
+            //starts our shooting function
+            StartCoroutine(AbilityOne());
+        }
     }
 
     //calculates the player movement
@@ -146,6 +152,23 @@ public class PlayerController : MonoBehaviour, IDamage
         yield return new WaitForSeconds(shootRate);
         isShooting = false;
     }
+
+    IEnumerator AbilityOne()
+    {
+        //sets shootings variable to true so we can only fire once at a time
+        isShooting = true;
+
+        //plays our shooting animation
+        animate.SetTrigger("Ability One");
+        //spawns our projectile
+        yield return new WaitForSeconds(.2f);
+        Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
+
+        //waits for x amount of time then sets shooting variable to false so we can fire again
+        yield return new WaitForSeconds(shootRate);
+        isShooting = false;
+    }
+
     public void Afflict(IDamage.DamageStatus type)
     {
         status = type;
