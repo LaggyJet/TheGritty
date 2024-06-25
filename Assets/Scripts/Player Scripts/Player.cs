@@ -5,13 +5,12 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IDamage
+public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 {
     //this sets up our player controller variable to handle collision
     public CharacterController controller;
 
     //these variables are game function variables that may likely be changed
-    [SerializeField] bool canJump;
     [SerializeField] bool shootProjectile;
     [SerializeField] float hp;
     [SerializeField] int speed;
@@ -42,22 +41,40 @@ public class PlayerController : MonoBehaviour, IDamage
 
 
     //these are variables used explicitly in functions
-    IDamage.DamageStatus status;
+    DamageStats status;
     int jumpCount;
     float hpBase;
     bool isShooting;
+    bool isDead;
+    bool isDOT;
 
     Vector3 moveDir;
     Vector3 playerV;
 
-    // Start is called before the first frame update
-    void Start()
+    //variables used for save/load
+    public static Vector3 spawnLocation;
+    public static Quaternion spawnRotation;
+    public static float spawnHp;
+
+    private void Awake()
     {
         //tracks our base hp and the current hp that will update as our player takes damage or gets health
         hpBase = hp;
-        //updates our ui to accurately show the player hp and other information
-        updatePlayerUI();
-
+        if (spawnLocation == Vector3.zero)
+        {
+            this.transform.position = new Vector3(4.1992116f, 0.0799998641f, 49.6620026f);
+            this.transform.rotation = new Quaternion(0, 180.513367f, 0, 0);
+            //updates our ui to accurately show the player hp and other information
+            updatePlayerUI();
+        }
+        else
+        {
+            this.transform.position = spawnLocation;
+            this.transform.rotation = spawnRotation;
+            hp = spawnHp;
+            //updates our ui to accurately show the player hp and other information
+            updatePlayerUI();
+        }
     }
 
     // Update is called once per frame
@@ -84,7 +101,7 @@ public class PlayerController : MonoBehaviour, IDamage
             jumpCount = 0;
         }
         //runs a check for if player jumps
-        if (Input.GetButtonDown("Jump") && canJump)
+        if (Input.GetButtonDown("Jump") && GameManager.instance.canJump)
         {
             if (jumpCount < jumpMax)
             {
@@ -150,9 +167,22 @@ public class PlayerController : MonoBehaviour, IDamage
         yield return new WaitForSeconds(shootRate);
         isShooting = false;
     }
-    public void Afflict(IDamage.DamageStatus type)
+    public void Afflict(DamageStats type)
     {
         status = type;
+        if (!isDOT)
+            StartCoroutine(DamageOverTime());
+    }
+
+    IEnumerator DamageOverTime()
+    {
+        isDOT = true;
+        for (int i = 0; i < status.length; i++)
+        {
+            TakeDamage(status.damage);
+            yield return new WaitForSeconds(1);
+        }
+        isDOT = false;
     }
 
     //this function happens when the player is called to take damage
@@ -163,8 +193,9 @@ public class PlayerController : MonoBehaviour, IDamage
         //updates our ui to accurately show the players health
         updatePlayerUI();
         //if health drops below zero run our lose condition
-        if(hp <= 0)
+        if(hp <= 0 && !isDead)
         {
+            isDead = true;
             GameManager.instance.gameLost();
         }
     }
@@ -206,5 +237,17 @@ public class PlayerController : MonoBehaviour, IDamage
         this.transform.position = GameManager.instance.playerLocation;
         hp = hpBase;
         updatePlayerUI();
+    }
+    public void LoadData(GameData data)
+    {
+        spawnLocation = data.playerPos;
+        spawnRotation = data.playerRot;
+        spawnHp = data.playerHp;
+    }
+    public void SaveData(ref GameData data)
+    {
+        data.playerPos = this.transform.position;
+        data.playerRot = this.transform.rotation;
+        data.playerHp = hp;
     }
 }

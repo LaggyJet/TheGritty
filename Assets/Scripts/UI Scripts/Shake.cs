@@ -59,7 +59,7 @@ public class Shake : MonoBehaviour
         {
             if (GameManager.instance != null && !GameManager.instance.isPaused)  
             { 
-            // Generate random position, keep local position ( DO NOT ADJUST OBJECT LOCATION !!!)
+            // Generate random position, keep local position ( DO NOT ADJUST OBJECT LOCATION COMPLETELY !!!)
             var random = new Vector3(Random.Range(-1f, 1f) * intensity, Random.Range(-1f, 1f) * intensity, 0f);
             // Set random postion for object 
             targetObject.localPosition = initialPosition + random;
