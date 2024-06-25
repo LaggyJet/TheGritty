@@ -10,12 +10,15 @@ public class FileDataHandler
     //private variables
     private string dataDirPath = "";
     private string dataFileName = "";
+    private bool useEncryption = false;
+    private readonly string encryptionCodeWord = "word";
 
     //constructor
-    public FileDataHandler(string dataDirPath, string dataFileName)
+    public FileDataHandler(string dataDirPath, string dataFileName, bool useEncryption)
     {
         this.dataDirPath = dataDirPath;
         this.dataFileName = dataFileName;
+        this.useEncryption = useEncryption;
     }
 
     //loading files
@@ -35,6 +38,11 @@ public class FileDataHandler
                     {
                         dataToLoad = reader.ReadToEnd();
                     }
+                }
+
+                if (useEncryption) //decrypts the data if chosen
+                {
+                    dataToLoad = EncryptDecrypt(dataToLoad);
                 }
 
                 //deserializing the data back to C# from the Json
@@ -58,6 +66,11 @@ public class FileDataHandler
             
             string dataToStore = JsonUtility.ToJson(data, true); //serializing our current C# data into Json
 
+            if (useEncryption) //encrypts the data if chosen
+            {
+                dataToStore = EncryptDecrypt(dataToStore);
+            }
+
             //write the serialized Json data to the file
             using(FileStream stream = new FileStream(fullPath, FileMode.Create))
             {
@@ -72,5 +85,16 @@ public class FileDataHandler
         {
             Debug.LogError("Error occurred when trying to save data to file: " +  fullPath + "\n" + e);
         }
+    }
+
+    //simple xor encryption
+    private string EncryptDecrypt(string data)
+    {
+        string modifiedData = "";
+        for(int i = 0; i < data.Length; i++)
+        {
+            modifiedData += (char) (data[i] ^ encryptionCodeWord[i % encryptionCodeWord.Length]);
+        }
+        return modifiedData;
     }
 }
