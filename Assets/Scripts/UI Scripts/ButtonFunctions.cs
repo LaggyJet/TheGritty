@@ -30,18 +30,6 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.instance.respawnAfterLost();
     }
-    public void settings()
-    {
-        GameManager.instance.openSettings();
-    }
-    public void returnButton()
-    {
-        GameManager.instance.leaveSettings();
-    }
-    public void defaultButton()
-    {
-        GameManager.instance.defaultSettings();
-    }
     public void jumpToggle()
     {
         GameManager.instance.canJump = !GameManager.instance.canJump;

@@ -18,12 +18,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text enemyCountText;
-    [SerializeField] GameObject menuSettings;
-
-    [SerializeField] int sfxStarting;
-    [SerializeField] int bgmStarting;
-
-
 
     //public variables
     public Image playerHPBar;
@@ -31,11 +25,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public PlayerController playerScript;
     public Vector3 playerLocation;
-    public GameObject oldActiveMenu;
-    public GameObject settingsPublicVers;
-    public GameObject menuActivePublicVers;
     public bool canJump;
-    public ToggleFunctions toggleScript;
     public static int enemyCount = 0;
 
     //Calls "Awake" instead to run before the other Start methods
@@ -46,8 +36,6 @@ public class GameManager : MonoBehaviour
         playerLocation = player.transform.position;
         playerScript = player.GetComponent<PlayerController>();
         playerLocation = player.transform.position;
-        settingsPublicVers = menuSettings;
-
     }
 
     // Update is called once per frame
@@ -120,33 +108,5 @@ public class GameManager : MonoBehaviour
             playerScript.controller.enabled = true;
         }
         stateResume();
-    }
-
-    //SETTINGS METHODS
-    public void openSettings()
-    {
-        oldActiveMenu = menuActive;
-        isPaused = !isPaused;
-        menuActive.SetActive(isPaused);
-        menuActive = null;
-        isPaused = !isPaused;
-        menuActive = menuSettings;
-        menuActivePublicVers = menuSettings;
-        menuActive.SetActive(isPaused);
-    }
-    public void leaveSettings()
-    {
-        isPaused = !isPaused;
-        menuActive.SetActive(isPaused);
-        menuActive = null;
-        isPaused = !isPaused;
-        menuActive = oldActiveMenu;
-        menuActivePublicVers = oldActiveMenu;
-        menuActive.SetActive(isPaused);
-    }
-    public void defaultSettings()
-    {
-        canJump = false;
-        toggleScript.isOnToggle();
     }
 }
