@@ -6,7 +6,7 @@ public class AcidPuddle : MonoBehaviour {
 
     public void SetDamageType(DamageStats type) { stats_ = type; }
 
-    private void OnParticleCollision(GameObject other) {
+    private void OnTriggerEnter(Collider other) {
         IDamage damageCheck = other.GetComponent<IDamage>();
         if (damageCheck != null && other.CompareTag("Player"))
             damageCheck.Afflict(stats_);
