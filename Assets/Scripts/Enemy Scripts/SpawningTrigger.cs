@@ -23,7 +23,7 @@ public class SpawningTrigger : MonoBehaviour
     {
         if (other.gameObject.CompareTag(nameTag))
         {
-            spawn.spawn(roomOneCount, Enemy1, SpawnPoint);
+            spawn.spawn();
         }
     }
     //private void OnTriggerEnter(Collider other)
