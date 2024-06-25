@@ -1,4 +1,4 @@
-//Worked on by : Jacob Irvin, Natalie Lubahn, Kheera
+//Worked on by : Jacob Irvin, Natalie Lubahn, Kheera, Emily Underwood
 
 using System.Collections;
 using System.Collections.Generic;
@@ -198,6 +198,18 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             isDead = true;
             GameManager.instance.gameLost();
         }
+    }
+
+    //called when player picks up a health potion
+    public void AddHP(float amount)
+    {
+        if (hp + amount > hpBase) { //added amount would exceed max hp
+            hp = hpBase; //set to max hp
+        } else
+        {
+            hp += amount; //add amount to hp
+        }
+        updatePlayerUI();
     }
 
     //the function for updating our ui
