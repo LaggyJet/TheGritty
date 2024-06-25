@@ -8,6 +8,7 @@ public class DataPersistenceManager : MonoBehaviour
 {
     [Header("File Storage Config")]
     [SerializeField] private string FileName;
+    [SerializeField] private bool useEncryption;
 
     //private variables
     private static GameData gameData;
@@ -23,7 +24,7 @@ public class DataPersistenceManager : MonoBehaviour
         }
         Instance = this;
         dataPersistenceObjects = new List<IDataPersistence>();
-        this.dataHandler = new FileDataHandler(Application.persistentDataPath, FileName); //Application.persistentDataPath gives the operating system standard directory for persisting data in a unity project
+        this.dataHandler = new FileDataHandler(Application.persistentDataPath, FileName, useEncryption); //Application.persistentDataPath gives the operating system standard directory for persisting data in a unity project
     }
 
      private void Start() //method for starting the game

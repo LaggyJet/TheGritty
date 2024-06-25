@@ -25823,6 +25823,10 @@ PrefabInstance:
       propertyPath: playerScript
       value: 
       objectReference: {fileID: 3159709660856774718}
+    - target: {fileID: 2771114792914459161, guid: 506c4967e28ef074eb1a0501a8861cb9, type: 3}
+      propertyPath: useEncryption
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4959938858605412400, guid: 506c4967e28ef074eb1a0501a8861cb9, type: 3}
       propertyPath: m_Pivot.x
       value: 0
