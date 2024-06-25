@@ -36,7 +36,6 @@ public class EnemyAI : MonoBehaviour, IDamage {
         id = gameObject.GetInstanceID();
     }
 
-
     void Update() {
         anim.SetFloat("Speed", Mathf.Lerp(anim.GetFloat("Speed"), agent.velocity.normalized.magnitude, Time.deltaTime * animationTransitionSpeed));
         CanSeePlayer();
@@ -45,13 +44,15 @@ public class EnemyAI : MonoBehaviour, IDamage {
     bool CanSeePlayer() {
         playerDirection = GameManager.instance.player.transform.position - headPosition.position;
         angleToPlayer = Vector3.Angle(new Vector3(playerDirection.x, playerDirection.y + 1, playerDirection.z), transform.forward);
-        if (flipEnemyDirection)
+        if (flipEnemyDirection) {
+            FaceTarget();
             angleToPlayer = 180 - angleToPlayer;
+        }
 
         if (Physics.Raycast(headPosition.position, playerDirection, out RaycastHit hit) && hit.collider.CompareTag("Player") && angleToPlayer < viewAngle && !wasKilled) {
             agent.SetDestination(GameManager.instance.player.transform.position);
 
-            if (agent.remainingDistance < agent.stoppingDistance || flipEnemyDirection)
+            if (agent.remainingDistance < agent.stoppingDistance)
                 FaceTarget();
 
             if (!EnemyManager.Instance.IsClose(enemyLimiter, id)) {

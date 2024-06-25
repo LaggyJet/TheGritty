@@ -43,8 +43,8 @@ public class SpiderController : MonoBehaviour, IDamage {
     IEnumerator SpawnSpiders() {
         isSpawningSpiders = true;
         for (int i = 0; i < spawnAmount; i++) {
-            Instantiate(spider, transform.position, transform.rotation);
-            yield return new WaitForSeconds(0.25f);
+            Instantiate(spider, transform.position, Quaternion.LookRotation(playerDirection) * Quaternion.Euler(0, 180, 0));
+            yield return new WaitForSeconds(1f);
         }
         yield return new WaitForSeconds(spawnRate);
         isSpawningSpiders = false;
@@ -76,9 +76,12 @@ public class SpiderController : MonoBehaviour, IDamage {
     IEnumerator Spit() {
         isAttacking = onCooldown = true;
         yield return new WaitForSeconds(0.1f);
-        anim.SetTrigger("Spit");
+        acidPuddle.GetComponent<Collider>().enabled = true;
+        anim.enabled = false;
         spitEffectPS.GetComponent<ParticleSystem>().Play();
-        yield return new WaitForSeconds(4);    
+        yield return new WaitForSeconds(4);
+        anim.enabled = true;
+        acidPuddle.GetComponent<Collider>().enabled = false;
         anim.SetTrigger("Circle");
         isAttacking = false;
         yield return new WaitForSeconds(spitCooldown);
