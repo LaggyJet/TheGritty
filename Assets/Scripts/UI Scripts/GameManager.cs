@@ -1,10 +1,11 @@
-//worked on by - natalie lubahn
+// Worked on by - Natalie Lubahn, Emily Underwood, Kheera
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Diagnostics.Contracts;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,22 +18,36 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text enemyCountText;
+    [SerializeField] GameObject menuSettings;
+
+    [SerializeField] int sfxStarting;
+    [SerializeField] int bgmStarting;
+
+
 
     //public variables
     public Image playerHPBar;
     public bool isPaused;
     public GameObject player;
     public PlayerController playerScript;
-
-    //private variables
-    private int enemyCount;
+    public Vector3 playerLocation;
+    public GameObject oldActiveMenu;
+    public GameObject settingsPublicVers;
+    public GameObject menuActivePublicVers;
+    public bool canJump;
+    public ToggleFunctions toggleScript;
+    public static int enemyCount = 0;
 
     //Calls "Awake" instead to run before the other Start methods
     void Awake()
     {
         instance = this;
         player = GameObject.FindWithTag("Player");
+        playerLocation = player.transform.position;
         playerScript = player.GetComponent<PlayerController>();
+        playerLocation = player.transform.position;
+        settingsPublicVers = menuSettings;
+
     }
 
     // Update is called once per frame
@@ -51,7 +66,6 @@ public class GameManager : MonoBehaviour
                 stateResume();
             }
         }
-
     }
 
     //PAUSE METHODS
@@ -73,17 +87,19 @@ public class GameManager : MonoBehaviour
     }
 
     //WIN/LOSE METHODS
-    public void updateEnemyAndWin(int amount)
+    public void updateEnemy(int amount)
     {
         enemyCount += amount;
-        enemyCountText.text = enemyCount.ToString("F0");
 
-        if (enemyCount <= 0)
-        {
-            statePause();
-            menuActive = menuWin;
-            menuActive.SetActive(isPaused);
-        }
+        /// Converting our enemy count to string 
+        enemyCountText.text = enemyCount.ToString("F0");
+    }
+
+    public void gameWon()
+    {
+        statePause();
+        menuActive = menuWin;
+        menuActive.SetActive(isPaused);
     }
 
     public void gameLost()
@@ -96,12 +112,41 @@ public class GameManager : MonoBehaviour
     //RESPAWN METHODS
     public void respawnAfterLost()
     {
-        if(menuActive == menuLose)
+        if (menuActive == menuLose)
         {
+
             playerScript.controller.enabled = false;
             playerScript.Respawn();
             playerScript.controller.enabled = true;
         }
         stateResume();
+    }
+
+    //SETTINGS METHODS
+    public void openSettings()
+    {
+        oldActiveMenu = menuActive;
+        isPaused = !isPaused;
+        menuActive.SetActive(isPaused);
+        menuActive = null;
+        isPaused = !isPaused;
+        menuActive = menuSettings;
+        menuActivePublicVers = menuSettings;
+        menuActive.SetActive(isPaused);
+    }
+    public void leaveSettings()
+    {
+        isPaused = !isPaused;
+        menuActive.SetActive(isPaused);
+        menuActive = null;
+        isPaused = !isPaused;
+        menuActive = oldActiveMenu;
+        menuActivePublicVers = oldActiveMenu;
+        menuActive.SetActive(isPaused);
+    }
+    public void defaultSettings()
+    {
+        canJump = false;
+        toggleScript.isOnToggle();
     }
 }
