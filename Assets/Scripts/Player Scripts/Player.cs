@@ -56,6 +56,17 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     public static Quaternion spawnRotation;
     public static float spawnHp;
 
+    //Audio variables
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip[] footsteps;
+    [SerializeField] float footstepsVol;
+    [SerializeField] AudioClip[] hurt;
+    [SerializeField] float hurtVol;
+    [SerializeField] AudioClip[] attack;
+    [SerializeField] float attackVol;
+    bool isPlayingSteps;
+    bool isSprinting;
+
     private void Awake()
     {
         //tracks our base hp and the current hp that will update as our player takes damage or gets health
@@ -117,6 +128,11 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         controller.Move(moveDir * speed * Time.deltaTime);
         playerV.y -= gravity * Time.deltaTime;
         controller.Move(playerV * Time.deltaTime);
+
+        if (controller.isGrounded && moveDir.magnitude > 0.3 && !isPlayingSteps)
+        {
+            StartCoroutine(playSteps());
+        }
     }
 
     //calculates our speed if the player is sprinting
@@ -125,13 +141,30 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         //when Sprint is pressed apply the sprint modifier variable to our speed variable
         if (Input.GetButtonDown("Sprint"))
         {
+            isSprinting = true;
             speed *= sprintMod;
         }
         //when sprint is no longer being pressed we remove the sprint modifier from the speed variable
         else if (Input.GetButtonUp("Sprint"))
         {
+            isSprinting = false;
             speed /= sprintMod;
         }
+    }
+    IEnumerator playSteps() //playing footsteps sounds
+    {
+        isPlayingSteps = true;
+        audioSource.PlayOneShot(footsteps[Random.Range(0, footsteps.Length)], footstepsVol);
+
+        if (!isSprinting)
+        {
+            yield return new WaitForSeconds(0.3f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        isPlayingSteps = false;
     }
 
     //this function handles everything to do with the player shooting
@@ -139,6 +172,8 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     {
         //sets shootings variable to true so we can only fire once at a time
         isShooting = true;
+
+        audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
 
         //plays our shooting animation
         animate.SetTrigger("Shoot Fire");
@@ -193,6 +228,12 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     {
         //subtract the damage from the player
         hp -= amount;
+
+        if (!isPlayingSteps) //plays hurt sounds
+        {
+            audioSource.PlayOneShot(hurt[Random.Range(0, hurt.Length)], hurtVol);
+        }
+
         //updates our ui to accurately show the players health
         updatePlayerUI();
         //if health drops below zero run our lose condition
