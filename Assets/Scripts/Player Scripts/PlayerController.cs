@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     //these variables are game function variables that may likely be changed
     [SerializeField] bool shootProjectile;
     [SerializeField] float hp;
+    [SerializeField] int mana;
     [SerializeField] int speed;
     [SerializeField] int sprintMod;
     [SerializeField] int gravity;
@@ -44,6 +45,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     DamageStats status;
     int jumpCount;
     float hpBase;
+    int manaBase;
     bool isShooting;
     bool isDead;
     bool isDOT;
@@ -55,11 +57,13 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     public static Vector3 spawnLocation;
     public static Quaternion spawnRotation;
     public static float spawnHp;
+    public float spawnMana;
 
     private void Awake()
     {
         //tracks our base hp and the current hp that will update as our player takes damage or gets health
         hpBase = hp;
+        manaBase = mana;
         if (spawnLocation == Vector3.zero)
         {
             this.transform.position = new Vector3(4.1992116f, 0.0799998641f, 49.6620026f);
@@ -86,14 +90,8 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 
         if (Input.GetButton("Fire1") && !isShooting && !GameManager.instance.isPaused)
         {
-            //starts our shooting function
-            StartCoroutine(Shoot());
-        }
-
-        else if (Input.GetButton("Ability1") && !isShooting && !GameManager.instance.isPaused)
-        {
-            //starts our shooting function
-            StartCoroutine(AbilityOne());
+            //plays our shooting animation
+            animate.SetTrigger("Shoot Fire");
         }
     }
 
@@ -138,39 +136,12 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     }
 
     //this function handles everything to do with the player shooting
-    IEnumerator Shoot()
+    void ShootFire()
     {
         //sets shootings variable to true so we can only fire once at a time
         isShooting = true;
-
-        //plays our shooting animation
-        animate.SetTrigger("Shoot Fire");
-        //sets up our collision detection
-        if(!shootProjectile)
-        {
-            RaycastHit hit;
-            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDistance))
-            {
-                Debug.Log(hit.transform.name);
-
-                IDamage dmg = hit.collider.GetComponent<IDamage>();
-
-                if (hit.transform != transform && dmg != null)
-                {
-                    dmg.TakeDamage(shootDamage);
-                }
-            }
-        }
         //spawns our projectile
-        else
-        {
-            yield return new WaitForSeconds(.2f);
-            Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
-        }
-        
-
-        //waits for x amount of time then sets shooting variable to false so we can fire again
-        yield return new WaitForSeconds(shootRate);
+        Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
         isShooting = false;
     }
     public void Afflict(DamageStats type)
@@ -215,6 +186,12 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         // Storing 
         GameManager.instance.playerHPBar.fillAmount = healthRatio;
 
+        // Variable for filling bar 
+        float manaRatio = (float)mana / manaBase;
+
+        // Storing 
+        GameManager.instance.playerManaBar.fillAmount = manaRatio;
+
         if (healthRatio > 0.5f || GameManager.instance.playerHPBar.color != midHealth) // If health is more than 50% full
         {
             GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthRatio - 0.5f) * 2);
@@ -237,11 +214,14 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         spawnLocation = data.playerPos;
         spawnRotation = data.playerRot;
         spawnHp = data.playerHp;
+        spawnMana = data.playerMana;
+        
     }
     public void SaveData(ref GameData data)
     {
         data.playerPos = this.transform.position;
         data.playerRot = this.transform.rotation;
         data.playerHp = hp;
+        data.playerMana = mana;
     }
 }
