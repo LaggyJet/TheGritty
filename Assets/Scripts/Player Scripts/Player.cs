@@ -60,9 +60,12 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     {
         //tracks our base hp and the current hp that will update as our player takes damage or gets health
         hpBase = hp;
+        this.transform.position = Vector3.zero;
+        this.transform.rotation = Quaternion.identity;
+
         if (spawnLocation == Vector3.zero)
         {
-            this.transform.position = new Vector3(4.1992116f, 0.0799998641f, 49.6620026f);
+            this.transform.position = new Vector3(-18.7507896f, 0.108012557f, 81.6620026f);
             this.transform.rotation = new Quaternion(0, 180.513367f, 0, 0);
             //updates our ui to accurately show the player hp and other information
             updatePlayerUI();
