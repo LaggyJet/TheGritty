@@ -122,6 +122,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 267cf878cdf4ab94badf0e2824657c76, type: 2}
+--- !u!1001 &9448246
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3952302651033969864, guid: b282d3d623d76e24895406864c9db779, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 41.739353
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952302651033969864, guid: b282d3d623d76e24895406864c9db779, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952302651033969864, guid: b282d3d623d76e24895406864c9db779, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 39.803642
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952302651033969864, guid: b282d3d623d76e24895406864c9db779, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9994429
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952302651033969864, guid: b282d3d623d76e24895406864c9db779, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952302651033969864, guid: b282d3d623d76e24895406864c9db779, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.03337626
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952302651033969864, guid: b282d3d623d76e24895406864c9db779, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952302651033969864, guid: b282d3d623d76e24895406864c9db779, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952302651033969864, guid: b282d3d623d76e24895406864c9db779, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 3.825
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952302651033969864, guid: b282d3d623d76e24895406864c9db779, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8422594722746713565, guid: b282d3d623d76e24895406864c9db779, type: 3}
+      propertyPath: m_Name
+      value: QueenSpider
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b282d3d623d76e24895406864c9db779, type: 3}
 --- !u!1 &1002601477
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,7 +273,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1001 &1420180932
+--- !u!1001 &1300715218
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -458,4 +515,5 @@ SceneRoots:
   - {fileID: 1002601479}
   - {fileID: 2138062537}
   - {fileID: 1757964168}
-  - {fileID: 1420180932}
+  - {fileID: 9448246}
+  - {fileID: 1300715218}
