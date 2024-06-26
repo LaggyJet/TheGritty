@@ -1,26 +1,21 @@
 //Made by Emily Underwood
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DoorLower : MonoBehaviour
 {
 
     public GameObject door;
-    public int numEnemiesThreshold; //number of enemies to kill in order to lower door
-    public int enemiesKilled = 0;
+    public GameObject enemy; //enemy that needs killed to open door
 
 
     public void lowerDoor()
     {
-        if (enemiesKilled >= numEnemiesThreshold)
+        if (enemy.IsDestroyed())
         {
             Destroy(door);
         }
-    }
-
-    public void increaseEnemiesKilled()
-    {
-        enemiesKilled++;
     }
 }
