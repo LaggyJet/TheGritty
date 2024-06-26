@@ -7,6 +7,9 @@ TagManager:
   - Teleporter
   - Teleporter1
   - Teleporter2
+  - Room 1 Trigger
+  - Room 2 Trigger
+  - Room 3 Trigger
   layers:
   - Default
   - TransparentFX

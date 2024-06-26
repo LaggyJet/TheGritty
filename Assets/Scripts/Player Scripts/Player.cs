@@ -267,6 +267,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         }
     }
 
+    // The function for updating HP bar
     //called when player picks up a health potion
     public void AddHP(float amount)
     {
@@ -277,6 +278,18 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             hp += amount; //add amount to hp
         }
         updatePlayerUI();
+    }
+
+    //called when player runs into spiderwebs
+    public void Slow()
+    {
+        speed = speed / 2;
+    }
+
+    //called when player escapes spiderwebs
+    public void UnSlow()
+    {
+        speed = speed * 2;
     }
 
     //the function for updating our ui
@@ -308,7 +321,8 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     {
         this.transform.position = GameManager.instance.playerLocation;
         hp = hpBase;
-        updatePlayerUI();
+        //GameManager.instance.playerHPBar.fillAmount = (float)hp / hpBase;
+        updatePlayerUI(); 
     }
     public void LoadData(GameData data)
     {
