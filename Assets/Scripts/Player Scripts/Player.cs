@@ -2,8 +2,10 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 {
@@ -51,6 +53,8 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     Vector3 moveDir;
     Vector3 playerV;
 
+    [SerializeField] Sprite sprite;
+
     //variables used for save/load
     public static Vector3 spawnLocation;
     public static Quaternion spawnRotation;
@@ -67,8 +71,9 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     bool isPlayingSteps;
     bool isSprinting;
 
-    private void Awake()
+    private void Start()
     {
+        UnityEngine.UI.Image.DontDestroyOnLoad(GameManager.instance.playerHPBar);
         //tracks our base hp and the current hp that will update as our player takes damage or gets health
         hpBase = hp;
         this.transform.position = Vector3.zero;
@@ -257,23 +262,28 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     }
 
     //the function for updating our ui
-    void updatePlayerUI()
+    public void updatePlayerUI()
     {
+        if(GameManager.instance.playerHPBar == null)
+        {
+            Debug.LogError("HELPEE AFJI IM GOING INSANE");
+        }
+
         // Variable for filling bar 
         float healthRatio = (float)hp / hpBase;
 
         // Storing 
         GameManager.instance.playerHPBar.fillAmount = healthRatio;
 
-        if (healthRatio > 0.5f || GameManager.instance.playerHPBar.color != midHealth) // If health is more than 50% full
-        {
-            GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthRatio - 0.5f) * 2);
-        }
-        else // If the health is less than 50%
-        {
-            GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2); 
-            Shake.instance.Shaking(duration);  
-        }
+            if (healthRatio > 0.5f || GameManager.instance.playerHPBar.color != midHealth) // If health is more than 50% full
+            {
+                GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthRatio - 0.5f) * 2);
+            }
+            else // If the health is less than 50%
+            {
+                GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
+                Shake.instance.Shaking(duration);
+            }
     }
     
     public void Respawn()

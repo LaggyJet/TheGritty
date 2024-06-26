@@ -16,6 +16,8 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.enemyCount = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        PlayerController.spawnHp = 10;
+        GameManager.instance.playerScript.updatePlayerUI();
         GameManager.instance.stateResume();
     }
     public void quit()
