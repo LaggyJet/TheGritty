@@ -15,7 +15,6 @@ public class DoorLower : MonoBehaviour
     {
         if (enemiesKilled >= numEnemiesThreshold)
         {
-            //door.transform.position = new Vector3(door.transform.position.x-10, door.transform.position.y-10, door.transform.position.z-10); //lowering door
             Destroy(door);
         }
     }

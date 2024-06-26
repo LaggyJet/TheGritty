@@ -6,13 +6,18 @@ using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : MonoBehaviour
 {
+
     public void resume()
     {
         GameManager.instance.stateResume();
+       
     }
     public void restart()
     {
+        GameManager.enemyCount = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        PlayerController.spawnHp = 10;
+        GameManager.instance.playerScript.updatePlayerUI();
         GameManager.instance.stateResume();
     }
     public void quit()
@@ -26,5 +31,21 @@ public class ButtonFunctions : MonoBehaviour
     public void respawn()
     {
         GameManager.instance.respawnAfterLost();
+    }
+    public void jumpToggle()
+    {
+        GameManager.instance.canJump = !GameManager.instance.canJump;
+    }    
+    
+    //FOR TITLE SCREEN
+    public void newGame()
+    {
+        SceneManager.LoadScene("Map Scene");
+        DataPersistenceManager.Instance.NewGame();
+    }
+    public void loadGame()
+    {
+        SceneManager.LoadScene("Map Scene");
+        DataPersistenceManager.Instance.LoadGame();
     }
 }
