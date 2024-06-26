@@ -14,12 +14,17 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 
     //these variables are game function variables that may likely be changed
     [SerializeField] bool shootProjectile;
-    [SerializeField] float hp;
+    
     [SerializeField] int speed;
     [SerializeField] int sprintMod;
     [SerializeField] int gravity;
     [SerializeField] int jumpMax;
     [SerializeField] int jumpSpeed;
+
+    [Header("------- HP -------")]
+    
+    [Range(0f, 10f)] public float hp; 
+    float hpBase;
 
     // Health bar gradual fill 
     [SerializeField] Color fullHealth; 
@@ -27,7 +32,21 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [SerializeField] Color criticalHealth;
 
     // HP bar shake
-    [Range(0f, 10f)] public float duration;  
+    [Range(0f, 10f)] public float hpDuration;  
+
+    [Header("------- Stamina -------")]
+
+    [Range(0f, 10f)] public float stamina; 
+    float staminaBase; 
+    
+     // stamina bar gradual fill 
+    [SerializeField] Color fullstamina; 
+    [SerializeField] Color midstamina; 
+    [SerializeField] Color criticalstamina;
+
+    // stamina bar shake
+    [Range(0f, 10f)] public float stamDuration;   
+
    
 
     //these are combat variables
@@ -45,7 +64,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     //these are variables used explicitly in functions
     DamageStats status;
     int jumpCount;
-    float hpBase;
     bool isShooting;
     bool isDead;
     bool isDOT;
@@ -282,7 +300,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             else // If the health is less than 50%
             {
                 GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
-                Shake.instance.Shaking(duration);
+                Shake.instance.Shaking(hpDuration);  
             }
     }
     

@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     //main instance
     public static GameManager instance;
 
+    [Header("------ UI ------")]
+
     //serialized fields
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPause;
@@ -21,6 +23,7 @@ public class GameManager : MonoBehaviour
 
     //public variables
     public Image playerHPBar;
+    public Image staminaBar; 
     public bool isPaused;
     public GameObject player;
     public PlayerController playerScript;
