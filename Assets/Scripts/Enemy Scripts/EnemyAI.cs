@@ -10,38 +10,68 @@ public class EnemyAI : MonoBehaviour, IDamage {
     [SerializeField] Animator anim;
     [SerializeField] bool flipEnemyDirection;
     [SerializeField] float hp;
-    [SerializeField] int animationTransitionSpeed;
-    [SerializeField] int faceTargetSpeed;
-    [SerializeField] int attackSpeed;
-    [SerializeField] int swingRadius;
+    [SerializeField] int animationTransitionSpeed, faceTargetSpeed, attackSpeed, viewAngle;
+    [SerializeField] Transform headPosition;
+    [SerializeField] float swingRadius;
     [SerializeField] GameObject weapon;
     [SerializeField] float damage;
+    [SerializeField] bool canDOT;
+    [SerializeField] DamageStats type;
+    [SerializeField] EnemyLimiter enemyLimiter;
+    [SerializeField] int range;
 
-    IDamage.DamageStatus status;
-    bool isAttacking, wasKilled;
+    DamageStats status;
+    bool isAttacking, wasKilled, isDOT;
     Vector3 playerDirection;
+    float originalStoppingDistance, adjustedStoppingDistance, angleToPlayer;
+    int id;
 
     void Start() { 
-        isAttacking = wasKilled = false;
+        isAttacking = wasKilled = isDOT = false;
         GameManager.instance.updateEnemy(1); 
-        weapon.AddComponent<WeaponController>().SetDamage(damage); 
+        weapon.AddComponent<WeaponController>().SetWeapon(damage, canDOT, type);
+        EnemyManager.Instance.AddEnemyType(enemyLimiter);
+        originalStoppingDistance = agent.stoppingDistance;
+        adjustedStoppingDistance = originalStoppingDistance * enemyLimiter.rangeMultiplier;
+        id = gameObject.GetInstanceID();
     }
 
-
     void Update() {
-        playerDirection = GameManager.instance.player.transform.position - transform.position;
-
         anim.SetFloat("Speed", Mathf.Lerp(anim.GetFloat("Speed"), agent.velocity.normalized.magnitude, Time.deltaTime * animationTransitionSpeed));
+        CanSeePlayer();
+    }
 
-        if (!wasKilled) {
-            agent.SetDestination(GameManager.instance.player.transform.position);
-
-            if (agent.remainingDistance < agent.stoppingDistance || flipEnemyDirection)
-                FaceTarget();
+    bool CanSeePlayer() {
+        playerDirection = GameManager.instance.player.transform.position - headPosition.position;
+        angleToPlayer = Vector3.Angle(new Vector3(playerDirection.x, playerDirection.y + 1, playerDirection.z), transform.forward);
+        if (flipEnemyDirection) {
+            FaceTarget();
+            angleToPlayer = 180 - angleToPlayer;
         }
 
-        if (!isAttacking && agent.remainingDistance < swingRadius)
-            StartCoroutine(Swing());
+        if (Physics.Raycast(headPosition.position, playerDirection, out RaycastHit hit) && hit.collider.CompareTag("Player") && angleToPlayer < viewAngle && !wasKilled) {
+            agent.SetDestination(GameManager.instance.player.transform.position);
+
+            if (agent.remainingDistance < agent.stoppingDistance)
+                FaceTarget();
+
+            if (!EnemyManager.Instance.IsClose(enemyLimiter, id)) {
+                if (EnemyManager.Instance.CanBeClose(enemyLimiter) && agent.remainingDistance < range && !agent.pathPending)
+                    EnemyManager.Instance.AddCloseEnemy(enemyLimiter, id);
+                else if (!EnemyManager.Instance.CanBeClose(enemyLimiter))
+                    agent.stoppingDistance = adjustedStoppingDistance;
+            }
+            else if (EnemyManager.Instance.IsClose(enemyLimiter, id) && agent.remainingDistance > range) {
+                EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
+                agent.stoppingDistance = originalStoppingDistance;
+            }
+
+            if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter))
+                StartCoroutine(Swing());
+
+            return true; 
+        }
+        return false;
     }
 
     void FaceTarget() {
@@ -51,19 +81,26 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
     IEnumerator Swing() {
         isAttacking = true;
-        weapon.GetComponent<Collider>().enabled = true;
         anim.SetTrigger("Attack");
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length / 2);
-        weapon.GetComponent<Collider>().enabled = false;
+        EnemyManager.Instance.AddAttackEnemy(enemyLimiter, id);
         yield return new WaitForSeconds(attackSpeed);
         isAttacking = false;
+    }
+
+    public void WeaponColliderOn() { weapon.GetComponent<Collider>().enabled = true; }
+
+    public void WeaponColliderOff() { 
+        weapon.GetComponent<Collider>().enabled = false;
+        EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
     }
 
 
     public void TakeDamage(float damage) {
         hp -= damage;
-        agent.SetDestination(GameManager.instance.player.transform.position);
-        StartCoroutine(FlashDamage());
+        if (!isDOT)
+            agent.SetDestination(GameManager.instance.player.transform.position);
+        if (hp > 0)
+            StartCoroutine(FlashDamage());
         if (hp <= 0 && !wasKilled) {
             GameManager.instance.updateEnemy(-1);
             gameObject.GetComponent<Collider>().enabled = false;
@@ -73,9 +110,25 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
     }
 
-    public void Afflict(IDamage.DamageStatus type)
-    {
+    public void Afflict(DamageStats type) {
         status = type;
+        if (!isDOT)
+            StartCoroutine(DamageOverTime());
+    }
+
+    IEnumerator DamageOverTime() {
+        isDOT = true;
+        for (int i = 0; i < status.length; i++) {
+            TakeDamage(status.damage);
+            yield return new WaitForSeconds(1);
+        }
+        isDOT = false;
+    }
+
+    IEnumerator FlashDamage() {
+        model.material.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        model.material.color = Color.white;
     }
 
     IEnumerator DeathAnimation() {
@@ -83,7 +136,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
         agent.SetDestination(transform.position);
         agent.radius = 0;
         anim.SetTrigger("Death");
-        List<Renderer> renderers = new List<Renderer>();
+        var renderers = new List<Renderer>();
         Renderer[] childRenders = transform.GetComponentsInChildren<Renderer>();
         renderers.AddRange(childRenders);
         yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
@@ -95,11 +148,5 @@ public class EnemyAI : MonoBehaviour, IDamage {
             }
         }
         Destroy(gameObject);
-    }
-
-    IEnumerator FlashDamage() {
-        model.material.color = Color.red;
-        yield return new WaitForSeconds(0.1f);
-        model.material.color = Color.white;
     }
 }

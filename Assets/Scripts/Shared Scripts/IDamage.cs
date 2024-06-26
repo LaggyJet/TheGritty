@@ -4,14 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public interface IDamage {
-    public enum DamageStatus {
-        REGULAR,
-        BURN,
-        BLEED,
-        POISON
-    };
-
     public void TakeDamage(float damage);
 
-    public void Afflict(DamageStatus type);
+    public void Afflict(DamageStats type);
 }

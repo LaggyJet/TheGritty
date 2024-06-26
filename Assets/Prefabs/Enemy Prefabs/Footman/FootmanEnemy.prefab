@@ -429,7 +429,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 3116929254137260313}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 2
+  m_Radius: 0.75
   m_Speed: 3
   m_Acceleration: 32
   avoidancePriority: 50
@@ -478,13 +478,23 @@ MonoBehaviour:
   model: {fileID: 6040238113782857933}
   agent: {fileID: 177522156451135462}
   anim: {fileID: 4177812466157729367}
+  flipEnemyDirection: 0
   hp: 10
   animationTransitionSpeed: 8
   faceTargetSpeed: 5
   attackSpeed: 3
+  viewAngle: 45
+  headPosition: {fileID: 6869788845210930490}
   swingRadius: 2
   weapon: {fileID: 8725635775239810279}
   damage: 2
+  canDOT: 0
+  type: {fileID: 0}
+  enemyLimiter: {fileID: 11400000, guid: 490d4be5063f21941a5097da551ee8ad, type: 2}
+  range: 3
+  enemyCollider: {fileID: 1840865922723293605}
+  agentRadius: 0
+  agentHeight: 0
 --- !u!136 &1840865922723293605
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -502,7 +512,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.25
   m_Height: 1.25

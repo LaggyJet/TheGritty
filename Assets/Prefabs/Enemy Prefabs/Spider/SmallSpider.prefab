@@ -282,9 +282,16 @@ MonoBehaviour:
   animationTransitionSpeed: 8
   faceTargetSpeed: 5
   attackSpeed: 5
+  viewAngle: 45
+  headPosition: {fileID: 6866819418780406445}
   swingRadius: 1
   weapon: {fileID: 521330645707863815}
   damage: 1
+  canDOT: 0
+  type: {fileID: 0}
+  enemyLimiter: {fileID: 11400000, guid: 52dd14251c39b40478542e33d3e75e54, type: 2}
+  range: 0
+  enemyCollider: {fileID: 2474052871712407920}
 --- !u!195 &3866886637309567587
 NavMeshAgent:
   m_ObjectHideFlags: 0

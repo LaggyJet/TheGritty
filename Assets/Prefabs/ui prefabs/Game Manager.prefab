@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6368922927484919250}
   - component: {fileID: 4561744264399989897}
   - component: {fileID: 917853493718579307}
+  - component: {fileID: -1624096331206652662}
   m_Layer: 5
   m_Name: Game Manager
   m_TagString: Untagged
@@ -54,10 +55,19 @@ MonoBehaviour:
   menuWin: {fileID: 0}
   menuLose: {fileID: 0}
   enemyCountText: {fileID: 0}
+  menuSettings: {fileID: 0}
+  sfxStarting: 0
+  bgmStarting: 0
   playerHPBar: {fileID: 0}
   isPaused: 0
   player: {fileID: 0}
   playerScript: {fileID: 0}
+  playerLocation: {x: 0, y: 0, z: 0}
+  oldActiveMenu: {fileID: 0}
+  settingsPublicVers: {fileID: 0}
+  menuActivePublicVers: {fileID: 0}
+  canJump: 0
+  toggleScript: {fileID: 0}
 --- !u!114 &917853493718579307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,3 +80,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d286e4efc2d00b47a45932840855c7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!222 &-1624096331206652662
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3766053907536934778}
+  m_CullTransparentMesh: 1
