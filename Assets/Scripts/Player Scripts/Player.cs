@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     //these variables are game function variables that may likely be changed
     [SerializeField] bool shootProjectile;
     [SerializeField] float hp;
-    [SerializeField] int speed;
+    [SerializeField] float speed;
     [SerializeField] int sprintMod;
     [SerializeField] int gravity;
     [SerializeField] int jumpMax;
@@ -259,13 +259,13 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     //called when player runs into spiderwebs
     public void Slow()
     {
-        speed = speed / 2;
+        speed = speed / 7;
     }
 
     //called when player escapes spiderwebs
     public void UnSlow()
     {
-        speed = speed * 2;
+        speed = speed * 7;
     }
 
     //the function for updating our ui
