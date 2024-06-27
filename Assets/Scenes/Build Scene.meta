@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/Kheera Scene.unity.meta
+guid: 56ebdc4984188a446a85610dc39976e2
+========
 guid: 84e7829c9b8b97e4d9094d7fdde75b4d
 folderAsset: yes
+>>>>>>>> e56996ecc976f3493d11dc568501bb46ec6fb89f:Assets/Scenes/Build Scene.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
