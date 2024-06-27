@@ -280,6 +280,33 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         updatePlayerUI();
     }
 
+    // Subtract & add function for stamina
+    public void AddStamina(float amount)
+    {
+        if (stamina + amount > staminaBase) 
+        { 
+            stamina = staminaBase; 
+        } 
+        else
+        {
+            stamina += amount; 
+        }
+        updatePlayerUI();
+    }
+
+    public void SubtractStamina(float amount) 
+    {
+        if (stamina - amount > staminaBase) 
+        { 
+            stamina = staminaBase; 
+        } 
+        else
+        {
+            stamina -= amount; 
+        }
+        updatePlayerUI();
+    }
+
     //called when player runs into spiderwebs
     public void Slow()
     {
@@ -295,18 +322,23 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     //the function for updating our ui
     public void updatePlayerUI()
     {
-        if(GameManager.instance.playerHPBar == null)
+        if(GameManager.instance.playerHPBar == null || GameManager.instance.staminaBar == null)
         {
             Debug.LogError("HELPEE AFJI IM GOING INSANE");
         }
 
         // Variable for filling bar 
         float healthRatio = (float)hp / hpBase;
+        float staminaRatio = (float)stamina / staminaBase; 
 
         // Storing 
-        GameManager.instance.playerHPBar.fillAmount = healthRatio;
+        GameManager.instance.playerHPBar.fillAmount = healthRatio; 
+        GameManager.instance.staminaBar.fillAmount = staminaRatio;
 
-            if (healthRatio > 0.5f || GameManager.instance.playerHPBar.color != midHealth) // If health is more than 50% full
+      
+       
+            // If health is more than 50% full
+            if (healthRatio > 0.5f || GameManager.instance.playerHPBar.color != midHealth) 
             {
                 GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthRatio - 0.5f) * 2);
             }
@@ -315,6 +347,21 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
                 GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
                 Shake.instance.Shaking(hpShakeDuration);  
             }
+       
+       
+       
+            // If stamina is more than 50% full 
+            if (staminaRatio > 0.5f || GameManager.instance.staminaBar.color != midstamina) 
+            {
+                GameManager.instance.staminaBar.color = Color.Lerp(midstamina, fullstamina, (staminaRatio - 0.5f) * 2); 
+            }
+            else // If the stamina is less than 50%
+            {
+                GameManager.instance.staminaBar.color = Color.Lerp(criticalstamina, midstamina, staminaRatio * 2);
+                Shake.instance.Shaking(stamShakeDuration);  
+            }
+       
+        
     }
     
     public void Respawn()
