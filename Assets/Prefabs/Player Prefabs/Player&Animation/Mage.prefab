@@ -1885,7 +1885,7 @@ MonoBehaviour:
   shootRate: 1
   shootDistance: 100
   shootPosition: {fileID: 4185506747812628586}
-  projectile: {fileID: 2534988432703087702, guid: 50fd18d0dda421e4f90ecc0323d89222, type: 3}
+  projectile: {fileID: 2534988432703087702, guid: 0484adfc589ea004caa211680812ec51, type: 3}
   animate: {fileID: 2654759320713316378}
   animationTransSpeed: 1
   sprite: {fileID: 21300000, guid: 8e4680958c649e642b0dae1c48a3e1ca, type: 3}
