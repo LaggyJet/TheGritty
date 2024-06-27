@@ -296,6 +296,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         {
             isDead = true;
             GameManager.instance.gameLost();
+            isDead = false;
         }
     }
 
