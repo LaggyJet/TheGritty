@@ -1,4 +1,4 @@
-// Worked on by - Natalie Lubahn, Emily Underwood, Kheera
+// Worked on by - Natalie Lubahn, Emily Underwood, Kheera, Jacob Irvin
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,32 +12,35 @@ public class GameManager : MonoBehaviour
     //main instance
     public static GameManager instance;
 
+    [Header("------ UI ------")]
+
     //serialized fields
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text enemyCountText;
-
+    [SerializeField] GameObject charSelect;
+    public bool hasRespawned = false; 
 
     //public variables
     public Image playerHPBar;
+    public Image staminaBar; 
     public bool isPaused;
     public GameObject player;
     public PlayerController playerScript;
     public Vector3 playerLocation;
-
-    //private variables
-    private int enemyCount;
+    public bool canJump;
+    public static int enemyCount = 0;
 
     //Calls "Awake" instead to run before the other Start methods
     void Awake()
     {
         instance = this;
-        playerLocation = player.transform.position;
         player = GameObject.FindWithTag("Player");
+        playerLocation = player.transform.position;
         playerScript = player.GetComponent<PlayerController>();
-
+        playerLocation = player.transform.position;
     }
 
     // Update is called once per frame
@@ -102,14 +105,20 @@ public class GameManager : MonoBehaviour
     //RESPAWN METHODS
     public void respawnAfterLost()
     {
-        if(menuActive == menuLose)
+        if (menuActive == menuLose)
         {
-         
+
             playerScript.controller.enabled = false;
             playerScript.Respawn();
             playerScript.controller.enabled = true;
         }
         stateResume();
     }
-    
+
+    public void charSelectionMenu()
+    {
+        statePause();
+        menuActive = charSelect;
+        menuActive.SetActive(isPaused);
+    }
 }

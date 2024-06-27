@@ -6,19 +6,29 @@ using UnityEngine;
 public class EnemySpawning : MonoBehaviour
 {
     [SerializeField] GameObject Enemy;
-    [SerializeField] GameObject SpawnPoint;
+    [SerializeField] Transform[] SpawnPoints;
     [SerializeField] int numEnemies;
 
-    void Start()
+    bool isSpawning;
+
+    private void OnTriggerEnter(Collider other)
     {
-        spawn();
+        if (other.CompareTag("Player"))
+        {
+            if (!isSpawning)
+            {
+                isSpawning = true;
+                spawn();
+            }
+        }
     }
 
-        void spawn()
+    public void spawn()
     {
         for (int i = 0; i < numEnemies; i++)
         {
-            Instantiate(Enemy, SpawnPoint.transform.position, transform.rotation);
+            int arrayPosition = Random.Range(0, SpawnPoints.Length);
+            Instantiate(Enemy, SpawnPoints[arrayPosition].position, SpawnPoints[arrayPosition].rotation);
         }
     }
 }
