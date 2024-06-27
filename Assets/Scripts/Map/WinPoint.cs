@@ -6,13 +6,17 @@ using UnityEngine;
 
 public class WinPoint : MonoBehaviour
 {
-    public GameObject Player;
 
-    private void OnTriggerEnter(Collider collide)
+    private void Update()
     {
-        if (collide.gameObject.CompareTag("Player"))
+        if (this.GetComponent<SpiderController>().wasKilled)
         {
-            GameManager.instance.gameWon();
+            Invoke("Win", 2); //done to prevent glitchy menu
         }
+    }
+
+    private void Win()
+    {
+        GameManager.instance.gameWon();
     }
 }

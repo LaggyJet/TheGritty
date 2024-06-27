@@ -15,7 +15,7 @@ public class SpiderController : MonoBehaviour, IDamage {
     [SerializeField] GameObject spider;
     [SerializeField] int spawnRate, spawnAmount;
 
-    bool isAttacking, wasKilled, isSpawningSpiders, onCooldown, isDOT;
+    public bool isAttacking, wasKilled, isSpawningSpiders, onCooldown, isDOT;
     DamageStats status;
     Vector3 playerDirection;
     float currentAngle;
