@@ -44498,6 +44498,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8103881619842969174, guid: cc49ce404f390c440b5085473052a07b, type: 3}
+      propertyPath: hpDuration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8103881619842969174, guid: cc49ce404f390c440b5085473052a07b, type: 3}
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 1510071345}
