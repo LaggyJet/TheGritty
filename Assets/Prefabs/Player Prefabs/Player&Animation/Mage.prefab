@@ -1866,6 +1866,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 3116865600634008479}
   shootProjectile: 1
+  hp: 10
+  mana: 30
   speed: 10
   sprintMod: 2
   gravity: 10
