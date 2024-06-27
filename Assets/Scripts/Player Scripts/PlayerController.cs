@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     public CharacterController controller;
 
     //these variables are game function variables that may likely be changed
-    [SerializeField] bool shootProjectile;
     
     [SerializeField] float speed;
     [SerializeField] int sprintMod;
@@ -56,6 +55,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [SerializeField] int shootDistance;
     [SerializeField] GameObject shootPosition;
     [SerializeField] GameObject projectile;
+    [SerializeField] GameObject fireSpray;
 
     //these are animation variables
     [SerializeField] Animator animate;
@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             //plays our primary shooting animation
             animate.SetTrigger("PrimaryFire");
         }
-        else if (!isShooting && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
+        else if (Input.GetButtonDown("Fire2")  && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
         {
             SecondaryFireCheck();
         }
@@ -210,15 +210,16 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 
     void SecondaryFireCheck()
     {
-        if (Input.GetButtonDown("Fire2"))
+        if (!isShooting)
         {
             isShooting = true;
-            animate.SetTrigger("SecondaryFireDown");
+            animate.SetTrigger("SecondaryFireStart");
         }
-        else if (Input.GetButtonUp("Fire2"))
+        else if (isShooting)
         {
             isShooting = false;
-            animate.SetTrigger("SecondaryFireUp");
+            animate.SetTrigger("SecondaryFireStop");
+            SecondaryFireStop();
         }
     }
 
@@ -226,7 +227,35 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     {
         audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
 
+        fireSpray.SetActive(true);
+        fireSpray.GetComponent<ParticleSystem>().Play();
 
+    }
+
+    private void OnParticleCollision(GameObject other)
+    {
+        float damage = 0.2f;
+        //when encountering a collision trigger it checks for component IDamage
+        IDamage dmg = other.GetComponent<IDamage>();
+
+        //if there is an IDamage component we run the inside code
+        if (dmg != null && !other.gameObject.CompareTag("Player"))
+        {
+            //deal damage to the object hit
+            dmg.TakeDamage(damage);
+            //destroy our projectile
+            Destroy(gameObject);
+        }
+        else if (!other.gameObject.CompareTag("Player") && !other.GetComponent<Collider>().isTrigger)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void SecondaryFireStop()
+    {
+        fireSpray.SetActive(false);
+        fireSpray.GetComponent<ParticleSystem>().Play(false);
     }
 
 
