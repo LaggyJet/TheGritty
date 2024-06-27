@@ -1875,12 +1875,12 @@ MonoBehaviour:
   fullHealth: {r: 0.24978681, g: 0.42352942, b: 0.20718746, a: 1}
   midHealth: {r: 0.9892183, g: 0.43262324, b: 0.046661116, a: 1}
   criticalHealth: {r: 0.7058824, g: 0, b: 0, a: 1}
-  hpDuration: 0
+  hpShakeDuration: 1
   stamina: 10
   fullstamina: {r: 0.09290466, g: 0.5564428, b: 0.9191374, a: 1}
   midstamina: {r: 0.08121482, g: 0.35876235, b: 0.76280314, a: 1}
   criticalstamina: {r: 0.7058824, g: 0, b: 0, a: 1}
-  stamDuration: 0
+  stamShakeDuration: 1
   shootDamage: 1
   shootRate: 1
   shootDistance: 100

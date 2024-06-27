@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [SerializeField] Color criticalHealth;
 
     // HP bar shake
-    [Range(0f, 10f)] public float hpDuration;  
+    [Range(0f, 10f)] public float hpShakeDuration;  
 
     [Header("------- Stamina -------")]
 
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [SerializeField] Color criticalstamina;
 
     // stamina bar shake
-    [Range(0f, 10f)] public float stamDuration;   
+    [Range(0f, 10f)] public float stamShakeDuration;   
 
    
 
@@ -313,7 +313,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             else // If the health is less than 50%
             {
                 GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
-                Shake.instance.Shaking(hpDuration);  
+                Shake.instance.Shaking(hpShakeDuration);  
             }
     }
     
