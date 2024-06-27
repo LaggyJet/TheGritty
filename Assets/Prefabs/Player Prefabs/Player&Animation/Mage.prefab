@@ -732,7 +732,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1320277730570690597}
   - component: {fileID: 6357772243440338526}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Hands
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1568,7 +1568,7 @@ GameObject:
   - component: {fileID: 1537025446260223012}
   - component: {fileID: 2219527623056716613}
   - component: {fileID: 2625777737895790806}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Main Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1922,14 +1922,14 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 1.8
+  m_Height: 2.4
   m_Direction: 1
-  m_Center: {x: 0, y: 0.9, z: 0}
+  m_Center: {x: 0, y: 0.7, z: 0}
 --- !u!143 &3116865600634008479
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2541,7 +2541,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4402565725919371198}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ProjectileSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4139,7 +4139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4897214989674303655}
   - component: {fileID: 2467254604467546479}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Starter_Gloves
   m_TagString: Untagged
   m_Icon: {fileID: 0}

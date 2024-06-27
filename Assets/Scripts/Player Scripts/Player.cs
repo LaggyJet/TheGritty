@@ -280,6 +280,18 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         updatePlayerUI();
     }
 
+    //called when player runs into spiderwebs
+    public void Slow()
+    {
+        speed = speed / 2;
+    }
+
+    //called when player escapes spiderwebs
+    public void UnSlow()
+    {
+        speed = speed * 2;
+    }
+
     //the function for updating our ui
     public void updatePlayerUI()
     {
