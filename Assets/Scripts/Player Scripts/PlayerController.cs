@@ -79,6 +79,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     public static Quaternion spawnRotation;
     public static float spawnHp;
 
+    [Header("--audio--")]
     //Audio variables
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip[] footsteps;
