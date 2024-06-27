@@ -12,16 +12,19 @@ public class GameManager : MonoBehaviour
     //main instance
     public static GameManager instance;
 
+    [Header("------ UI ------")]
+
     //serialized fields
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text enemyCountText;
+    [SerializeField] GameObject charSelect;
 
     //public variables
     public Image playerHPBar;
-    public Image playerManaBar;
+    public Image staminaBar; 
     public bool isPaused;
     public GameObject player;
     public PlayerController playerScript;
@@ -109,5 +112,12 @@ public class GameManager : MonoBehaviour
             playerScript.controller.enabled = true;
         }
         stateResume();
+    }
+
+    public void charSelectionMenu()
+    {
+        statePause();
+        menuActive = charSelect;
+        menuActive.SetActive(isPaused);
     }
 }
