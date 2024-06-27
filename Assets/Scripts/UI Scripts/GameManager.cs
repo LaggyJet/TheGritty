@@ -1,4 +1,4 @@
-// Worked on by - Natalie Lubahn, Emily Underwood, Kheera
+// Worked on by - Natalie Lubahn, Emily Underwood, Kheera, Jacob Irvin
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
 
     //public variables
     public Image playerHPBar;
+    public Image playerManaBar;
     public bool isPaused;
     public GameObject player;
     public PlayerController playerScript;

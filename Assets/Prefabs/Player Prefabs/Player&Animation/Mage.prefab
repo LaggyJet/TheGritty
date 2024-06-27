@@ -1866,6 +1866,7 @@ MonoBehaviour:
   controller: {fileID: 3116865600634008479}
   shootProjectile: 1
   hp: 10
+  mana: 30
   speed: 10
   sprintMod: 2
   gravity: 10
@@ -1882,6 +1883,7 @@ MonoBehaviour:
   projectile: {fileID: 2534988432703087702, guid: 50fd18d0dda421e4f90ecc0323d89222, type: 3}
   animate: {fileID: 2654759320713316378}
   animationTransSpeed: 1
+  spawnMana: 0
 --- !u!136 &4363267446184540556
 CapsuleCollider:
   m_ObjectHideFlags: 0

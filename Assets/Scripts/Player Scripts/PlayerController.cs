@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     public CharacterController controller;
 
     //these variables are game function variables that may likely be changed
-    [SerializeField] bool shootProjectile;
     [SerializeField] float hp;
     [SerializeField] int speed;
     [SerializeField] int sprintMod;
@@ -98,11 +97,13 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         Movement();
         Sprint();
 
-        if (Input.GetButton("Fire1") && !isShooting && !GameManager.instance.isPaused)
+        if (Input.GetButton("Fire1") && !GameManager.instance.isPaused)
         {
-            //starts our shooting function
-            StartCoroutine(Shoot());
+            //plays our shooting animation
+            animate.SetTrigger("Shoot Fire");
         }
+
+        SecondaryFireCheck();
     }
 
     //calculates the player movement
@@ -168,7 +169,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     }
 
     //this function handles everything to do with the player shooting
-    IEnumerator Shoot()
+    void ShootFire()
     {
         //sets shootings variable to true so we can only fire once at a time
         isShooting = true;
@@ -194,16 +195,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             }
         }
         //spawns our projectile
-        else
-        {
-            yield return new WaitForSeconds(.2f);
-            Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
-        }
-        
-
-        //waits for x amount of time then sets shooting variable to false so we can fire again
-        yield return new WaitForSeconds(shootRate);
-        isShooting = false;
+        Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
     }
     public void Afflict(DamageStats type)
     {
@@ -299,6 +291,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         spawnLocation = data.playerPos;
         spawnRotation = data.playerRot;
         spawnHp = data.playerHp;
+        
     }
     public void SaveData(ref GameData data)
     {
