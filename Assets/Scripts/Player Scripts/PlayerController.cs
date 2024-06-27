@@ -243,7 +243,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 
     private void OnParticleCollision(GameObject other)
     {
-        float damage = 0.2f;
+        int damage = 1;
         //when encountering a collision trigger it checks for component IDamage
         IDamage dmg = other.GetComponent<IDamage>();
 
@@ -253,10 +253,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             //deal damage to the object hit
             dmg.TakeDamage(damage);
             //destroy our projectile
-            Destroy(gameObject);
-        }
-        else if (!other.gameObject.CompareTag("Player") && !other.GetComponent<Collider>().isTrigger)
-        {
             Destroy(gameObject);
         }
     }
@@ -304,6 +300,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         {
             isDead = true;
             GameManager.instance.gameLost();
+            isDead = false;
         }
     }
 
