@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c21166604d5c0bb478856dabb53fe88f
+guid: e487d3680e9eb444ab919d2f9855308f
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
@@ -78,8 +78,8 @@ ModelImporter:
       name: CastingLoop
       takeName: CastingLoop
       internalID: 0
-      firstFrame: 2
-      lastFrame: 66
+      firstFrame: 37
+      lastFrame: 59
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -102,7 +102,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 2
     isReadable: 0
   meshes:
     lODScreenPercentages: []
