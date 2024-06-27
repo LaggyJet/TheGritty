@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 
     private void Start()
     {
-        UnityEngine.UI.Image.DontDestroyOnLoad(GameManager.instance.playerHPBar);
+        //UnityEngine.UI.Image.DontDestroyOnLoad(GameManager.instance.playerHPBar);
         //tracks our base hp and the current hp that will update as our player takes damage or gets health
         hpBase = hp;
         this.transform.position = Vector3.zero;
@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         {
             isSprinting = true;
             speed *= sprintMod;
-            SubtractStamina(0.5f);
+            //SubtractStamina(0.5f);
         }
         //when sprint is no longer being pressed we remove the sprint modifier from the speed variable
         else if (Input.GetButtonUp("Sprint"))
