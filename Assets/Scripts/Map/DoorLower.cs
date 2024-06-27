@@ -6,14 +6,14 @@ using UnityEngine;
 
 public class DoorLower : MonoBehaviour
 {
-    public GameObject enemy; //enemy that needs killed to open door
+    public GameObject door;
 
 
-    public void lowerDoor()
+    private void Update()
     {
-        if (enemy.IsDestroyed())
+        if (this.GetComponent<EnemyAI>().wasKilled)
         {
-            Destroy(gameObject);
+            Destroy(door);
         }
     }
 }

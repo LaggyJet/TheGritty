@@ -21,7 +21,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
     [SerializeField] int range;
 
     DamageStats status;
-    bool isAttacking, wasKilled, isDOT;
+    public bool isAttacking, wasKilled, isDOT;
     Vector3 playerDirection;
     float originalStoppingDistance, adjustedStoppingDistance, angleToPlayer;
     int id;
