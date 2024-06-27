@@ -1866,8 +1866,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 3116865600634008479}
   shootProjectile: 1
-  hp: 10
-  mana: 30
   speed: 10
   sprintMod: 2
   gravity: 10
@@ -1909,6 +1907,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7b23b370da80193418f54c9375a7388a, type: 3}
   - {fileID: 8300000, guid: 20e13996ad7bb3d42b207ccd996f63f7, type: 3}
   attackVol: 0.2
+  filledStam:
+  - {fileID: 8300000, guid: 317e04ed5a1a2b74894b83ff236ba923, type: 3}
+  filledStamVol: 0.2
 --- !u!136 &4363267446184540556
 CapsuleCollider:
   m_ObjectHideFlags: 0
