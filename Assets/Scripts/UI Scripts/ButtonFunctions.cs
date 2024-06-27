@@ -40,12 +40,12 @@ public class ButtonFunctions : MonoBehaviour
     //FOR TITLE SCREEN
     public void newGame()
     {
-        SceneManager.LoadScene("Map Scene");
+        SceneManager.LoadScene("Build Scene");
         DataPersistenceManager.Instance.NewGame();
     }
     public void loadGame()
     {
-        SceneManager.LoadScene("Map Scene");
+        SceneManager.LoadScene("Build Scene");
         DataPersistenceManager.Instance.LoadGame();
     }
     public void startNewGame()
