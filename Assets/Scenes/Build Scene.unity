@@ -8765,6 +8765,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 892893851}
     m_Modifications:
+    - target: {fileID: 261014354361983763, guid: 49b7a2f3db469bc4dae4da6fc95c1610, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2753023797341921035, guid: 49b7a2f3db469bc4dae4da6fc95c1610, type: 3}
       propertyPath: m_Name
       value: TPPoint
@@ -23697,7 +23701,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6894336194453183952, guid: bacae234a29827c49897023b7e995649, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: 6894336194453183952, guid: bacae234a29827c49897023b7e995649, type: 3}
       propertyPath: m_LocalPosition.z
