@@ -1,4 +1,4 @@
-// Worked on by - Natalie Lubahn, Emily Underwood, Kheera
+// Worked on by - Natalie Lubahn, Emily Underwood, Kheera, Jacob Irvin
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;

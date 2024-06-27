@@ -124,8 +124,8 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 
         if (Input.GetButton("Fire1") && !isShooting && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
         {
-            //starts our shooting function
-            StartCoroutine(Shoot());
+            //plays our shooting animation
+            animate.SetTrigger("Shoot Fire");
         }
     }
 
@@ -192,15 +192,13 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     }
 
     //this function handles everything to do with the player shooting
-    IEnumerator Shoot()
+    void ShootFire()
     {
         //sets shootings variable to true so we can only fire once at a time
         isShooting = true;
 
         audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
 
-        //plays our shooting animation
-        animate.SetTrigger("Shoot Fire");
         //sets up our collision detection
         if(!shootProjectile)
         {
@@ -218,16 +216,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             }
         }
         //spawns our projectile
-        else
-        {
-            yield return new WaitForSeconds(.2f);
-            Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
-        }
-        
-
-        //waits for x amount of time then sets shooting variable to false so we can fire again
-        yield return new WaitForSeconds(shootRate);
-        isShooting = false;
+        Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
     }
     public void Afflict(DamageStats type)
     {
@@ -328,6 +317,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         spawnLocation = data.playerPos;
         spawnRotation = data.playerRot;
         spawnHp = data.playerHp;
+        
     }
     public void SaveData(ref GameData data)
     {
