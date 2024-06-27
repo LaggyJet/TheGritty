@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
@@ -103,7 +104,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         Movement();
         Sprint();
 
-        if (Input.GetButton("Fire1") && !isShooting && !GameManager.instance.isPaused)
+        if (Input.GetButton("Fire1") && !isShooting && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
         {
             //starts our shooting function
             StartCoroutine(Shoot());

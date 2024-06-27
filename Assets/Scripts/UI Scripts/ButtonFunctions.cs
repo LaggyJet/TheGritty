@@ -48,4 +48,25 @@ public class ButtonFunctions : MonoBehaviour
         SceneManager.LoadScene("Map Scene");
         DataPersistenceManager.Instance.LoadGame();
     }
+    public void startNewGame()
+    {
+        GameManager.instance.charSelectionMenu();
+    }
+
+    //CLASS SELECTION
+    public void wretch()
+    {
+        newGame();
+        GameManager.instance.stateResume();
+    }
+    public void mage()
+    {
+        newGame();
+        GameManager.instance.stateResume();
+    }
+    public void archer()
+    {
+        newGame();
+        GameManager.instance.stateResume();
+    }
 }

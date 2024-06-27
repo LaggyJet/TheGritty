@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text enemyCountText;
+    [SerializeField] GameObject charSelect;
 
     //public variables
     public Image playerHPBar;
@@ -108,5 +109,12 @@ public class GameManager : MonoBehaviour
             playerScript.controller.enabled = true;
         }
         stateResume();
+    }
+
+    public void charSelectionMenu()
+    {
+        statePause();
+        menuActive = charSelect;
+        menuActive.SetActive(isPaused);
     }
 }
