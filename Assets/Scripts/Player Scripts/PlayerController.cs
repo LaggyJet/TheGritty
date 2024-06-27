@@ -124,8 +124,12 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 
         if (Input.GetButton("Fire1") && !isShooting && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
         {
-            //plays our shooting animation
-            animate.SetTrigger("Shoot Fire");
+            //plays our primary shooting animation
+            animate.SetTrigger("PrimaryFire");
+        }
+        else if (!isShooting && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
+        {
+            SecondaryFireCheck();
         }
     }
 
@@ -192,32 +196,40 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     }
 
     //this function handles everything to do with the player shooting
-    void ShootFire()
+    void PrimaryFire()
     {
         //sets shootings variable to true so we can only fire once at a time
         isShooting = true;
 
         audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
-
-        //sets up our collision detection
-        if(!shootProjectile)
-        {
-            RaycastHit hit;
-            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDistance))
-            {
-                Debug.Log(hit.transform.name);
-
-                IDamage dmg = hit.collider.GetComponent<IDamage>();
-
-                if (hit.transform != transform && dmg != null)
-                {
-                    dmg.TakeDamage(shootDamage);
-                }
-            }
-        }
+  
         //spawns our projectile
         Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
+        isShooting = false;
     }
+
+    void SecondaryFireCheck()
+    {
+        if (Input.GetButtonDown("Fire2"))
+        {
+            isShooting = true;
+            animate.SetTrigger("SecondaryFireDown");
+        }
+        else if (Input.GetButtonUp("Fire2"))
+        {
+            isShooting = false;
+            animate.SetTrigger("SecondaryFireUp");
+        }
+    }
+
+    void SecondaryFire()
+    {
+        audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
+
+
+    }
+
+
     public void Afflict(DamageStats type)
     {
         status = type;
