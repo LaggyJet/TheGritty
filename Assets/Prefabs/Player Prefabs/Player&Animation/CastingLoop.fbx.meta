@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e487d3680e9eb444ab919d2f9855308f
+guid: c21166604d5c0bb478856dabb53fe88f
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
@@ -42,8 +42,8 @@ ModelImporter:
       name: CastingLoop (1)
       takeName: CastingLoop
       internalID: 0
-      firstFrame: 33
-      lastFrame: 66
+      firstFrame: 40
+      lastFrame: 47
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -62,7 +62,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.99267423
+        functionName: SecondaryFire
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

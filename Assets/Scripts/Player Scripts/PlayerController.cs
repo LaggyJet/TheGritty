@@ -2,8 +2,11 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 {
@@ -11,13 +14,17 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     public CharacterController controller;
 
     //these variables are game function variables that may likely be changed
-    [SerializeField] bool shootProjectile;
-    [SerializeField] float hp;
-    [SerializeField] int speed;
+    
+    [SerializeField] float speed;
     [SerializeField] int sprintMod;
     [SerializeField] int gravity;
     [SerializeField] int jumpMax;
     [SerializeField] int jumpSpeed;
+
+    [Header("------- HP -------")]
+    
+    [Range(0f, 10f)] public float hp; 
+    float hpBase;
 
     // Health bar gradual fill 
     [SerializeField] Color fullHealth; 
@@ -25,7 +32,21 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [SerializeField] Color criticalHealth;
 
     // HP bar shake
-    [Range(0f, 10f)] public float duration;  
+    [Range(0f, 10f)] public float hpDuration;  
+
+    [Header("------- Stamina -------")]
+
+    [Range(0f, 10f)] public float stamina; 
+    float staminaBase; 
+    
+     // stamina bar gradual fill 
+    [SerializeField] Color fullstamina; 
+    [SerializeField] Color midstamina; 
+    [SerializeField] Color criticalstamina;
+
+    // stamina bar shake
+    [Range(0f, 10f)] public float stamDuration;   
+
    
 
     //these are combat variables
@@ -34,6 +55,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [SerializeField] int shootDistance;
     [SerializeField] GameObject shootPosition;
     [SerializeField] GameObject projectile;
+    [SerializeField] GameObject fireSpray;
 
     //these are animation variables
     [SerializeField] Animator animate;
@@ -43,7 +65,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     //these are variables used explicitly in functions
     DamageStats status;
     int jumpCount;
-    float hpBase;
     bool isShooting;
     bool isDead;
     bool isDOT;
@@ -51,11 +72,14 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     Vector3 moveDir;
     Vector3 playerV;
 
+    [SerializeField] Sprite sprite;
+
     //variables used for save/load
     public static Vector3 spawnLocation;
     public static Quaternion spawnRotation;
     public static float spawnHp;
 
+    [Header("--audio--")]
     //Audio variables
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip[] footsteps;
@@ -67,8 +91,9 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     bool isPlayingSteps;
     bool isSprinting;
 
-    private void Awake()
+    private void Start()
     {
+        UnityEngine.UI.Image.DontDestroyOnLoad(GameManager.instance.playerHPBar);
         //tracks our base hp and the current hp that will update as our player takes damage or gets health
         hpBase = hp;
         this.transform.position = Vector3.zero;
@@ -98,10 +123,14 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         Movement();
         Sprint();
 
-        if (Input.GetButton("Fire1") && !isShooting && !GameManager.instance.isPaused)
+        if (Input.GetButton("Fire1") && !isShooting && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
         {
-            //starts our shooting function
-            StartCoroutine(Shoot());
+            //plays our primary shooting animation
+            animate.SetTrigger("PrimaryFire");
+        }
+        else if (Input.GetButtonDown("Fire2")  && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
+        {
+            SecondaryFireCheck();
         }
     }
 
@@ -168,43 +197,65 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     }
 
     //this function handles everything to do with the player shooting
-    IEnumerator Shoot()
+    void PrimaryFire()
     {
         //sets shootings variable to true so we can only fire once at a time
         isShooting = true;
 
         audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
-
-        //plays our shooting animation
-        animate.SetTrigger("Shoot Fire");
-        //sets up our collision detection
-        if(!shootProjectile)
-        {
-            RaycastHit hit;
-            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDistance))
-            {
-                Debug.Log(hit.transform.name);
-
-                IDamage dmg = hit.collider.GetComponent<IDamage>();
-
-                if (hit.transform != transform && dmg != null)
-                {
-                    dmg.TakeDamage(shootDamage);
-                }
-            }
-        }
+  
         //spawns our projectile
-        else
-        {
-            yield return new WaitForSeconds(.2f);
-            Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
-        }
-        
-
-        //waits for x amount of time then sets shooting variable to false so we can fire again
-        yield return new WaitForSeconds(shootRate);
+        Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
         isShooting = false;
     }
+
+    void SecondaryFireCheck()
+    {
+        if (!isShooting)
+        {
+            isShooting = true;
+            animate.SetTrigger("SecondaryFireStart");
+        }
+        else if (isShooting)
+        {
+            isShooting = false;
+            animate.SetTrigger("SecondaryFireStop");
+            SecondaryFireStop();
+        }
+    }
+
+    void SecondaryFire()
+    {
+        audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
+
+        fireSpray.SetActive(true);
+        fireSpray.GetComponent<ParticleSystem>().Play();
+
+    }
+
+    private void OnParticleCollision(GameObject other)
+    {
+        int damage = 1;
+        //when encountering a collision trigger it checks for component IDamage
+        IDamage dmg = other.GetComponent<IDamage>();
+
+        //if there is an IDamage component we run the inside code
+        if (dmg != null && !other.gameObject.CompareTag("Player"))
+        {
+            //deal damage to the object hit
+            dmg.TakeDamage(damage);
+            //destroy our projectile
+            Destroy(gameObject);
+        }
+    }
+
+    void SecondaryFireStop()
+    {
+        fireSpray.SetActive(false);
+        fireSpray.GetComponent<ParticleSystem>().Play(false);
+    }
+
+
     public void Afflict(DamageStats type)
     {
         status = type;
@@ -241,6 +292,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         {
             isDead = true;
             GameManager.instance.gameLost();
+            isDead = false;
         }
     }
 
@@ -260,33 +312,38 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     //called when player runs into spiderwebs
     public void Slow()
     {
-        speed = speed / 2;
+        speed = speed / 7;
     }
 
     //called when player escapes spiderwebs
     public void UnSlow()
     {
-        speed = speed * 2;
+        speed = speed * 7;
     }
 
     //the function for updating our ui
-    void updatePlayerUI()
+    public void updatePlayerUI()
     {
+        if(GameManager.instance.playerHPBar == null)
+        {
+            Debug.LogError("HELPEE AFJI IM GOING INSANE");
+        }
+
         // Variable for filling bar 
         float healthRatio = (float)hp / hpBase;
 
         // Storing 
         GameManager.instance.playerHPBar.fillAmount = healthRatio;
 
-        if (healthRatio > 0.5f || GameManager.instance.playerHPBar.color != midHealth) // If health is more than 50% full
-        {
-            GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthRatio - 0.5f) * 2);
-        }
-        else // If the health is less than 50%
-        {
-            GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2); 
-            Shake.instance.Shaking(duration);  
-        }
+            if (healthRatio > 0.5f || GameManager.instance.playerHPBar.color != midHealth) // If health is more than 50% full
+            {
+                GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthRatio - 0.5f) * 2);
+            }
+            else // If the health is less than 50%
+            {
+                GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
+                Shake.instance.Shaking(hpDuration);  
+            }
     }
     
     public void Respawn()
@@ -301,6 +358,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         spawnLocation = data.playerPos;
         spawnRotation = data.playerRot;
         spawnHp = data.playerHp;
+        
     }
     public void SaveData(ref GameData data)
     {

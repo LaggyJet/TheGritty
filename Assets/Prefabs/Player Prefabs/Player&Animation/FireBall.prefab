@@ -4892,7 +4892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 839220467295417479}
-  damage: 1
+  damage: 6
   speed: 12
   destroyTime: 2
   type: {fileID: 11400000, guid: 27fa8ba003ebf954c88b9820ded4995d, type: 2}
@@ -4924,7 +4924,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7f5c9d10ccff7294284744b04714e889, type: 2}
+  - {fileID: 2100000, guid: 4aac61b9c68630c49a23fe4a54d0a3b3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
