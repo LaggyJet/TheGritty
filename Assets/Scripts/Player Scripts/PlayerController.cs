@@ -179,6 +179,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         {
             isSprinting = true;
             speed *= sprintMod;
+            SubtractStamina(0.5f);
         }
         //when sprint is no longer being pressed we remove the sprint modifier from the speed variable
         else if (Input.GetButtonUp("Sprint"))
