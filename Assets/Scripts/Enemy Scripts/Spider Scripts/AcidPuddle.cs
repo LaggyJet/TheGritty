@@ -2,9 +2,9 @@
 using UnityEngine;
 
 public class AcidPuddle : MonoBehaviour {
-    DamageStats stats_;
+    [SerializeField] DamageStats stats_;
 
-    public void SetDamageType(DamageStats type) { stats_ = type; }
+    private void Start() { Destroy(gameObject, 4); }
 
     private void OnTriggerEnter(Collider other) {
         IDamage damageCheck = other.GetComponent<IDamage>();

@@ -10,19 +10,17 @@ public class SpiderController : MonoBehaviour, IDamage {
     [SerializeField] Animator anim;
     [SerializeField] float hp;
     [SerializeField] int faceTargetSpeed, distanceFromPlayer, spitCooldown;
-    [SerializeField] GameObject spitEffectPS, acidPuddle;
-    [SerializeField] DamageStats type;
-    [SerializeField] GameObject spider;
+    [SerializeField] GameObject spitEffectPS, acidStream, acidPuddle, spider;
     [SerializeField] int spawnRate, spawnAmount;
 
-    public bool isAttacking, wasKilled, isSpawningSpiders, onCooldown, isDOT;
+    public bool wasKilled;
+    bool isAttacking, isSpawningSpiders, onCooldown, isDOT;
     DamageStats status;
     Vector3 playerDirection;
     float currentAngle;
 
     void Start() {
         isAttacking = wasKilled = isSpawningSpiders = onCooldown = isDOT = false;
-        acidPuddle.AddComponent<AcidPuddle>().SetDamageType(type);
         GameManager.instance.updateEnemy(1);
         agent.speed = distanceFromPlayer * 0.1875f;
         StartCoroutine(CirclePlayer());
@@ -76,16 +74,50 @@ public class SpiderController : MonoBehaviour, IDamage {
     IEnumerator Spit() {
         isAttacking = onCooldown = true;
         yield return new WaitForSeconds(0.1f);
-        acidPuddle.GetComponent<Collider>().enabled = true;
         anim.enabled = false;
         spitEffectPS.GetComponent<ParticleSystem>().Play();
+        StartCoroutine(SpawnTracers());
         yield return new WaitForSeconds(4);
         anim.enabled = true;
-        acidPuddle.GetComponent<Collider>().enabled = false;
         anim.SetTrigger("Circle");
         isAttacking = false;
         yield return new WaitForSeconds(spitCooldown);
         onCooldown = false;
+    }
+
+    IEnumerator SpawnTracers() {
+        yield return new WaitForSeconds(1);
+        ParticleSystem pS = spitEffectPS.GetComponent<ParticleSystem>();
+        ParticleSystem.Particle[] p = new ParticleSystem.Particle[pS.main.maxParticles];
+        List<GameObject> curTracers = new();
+
+        while (curTracers.Count != 5) {
+            yield return null;
+            curTracers.Add(Instantiate(acidStream));
+        }
+
+        int particlesLeft = 0;
+        while (particlesLeft == 0) {
+            particlesLeft = pS.GetParticles(p);
+            yield return null;
+        }
+
+        while (particlesLeft != 0) {
+            particlesLeft = pS.GetParticles(p);
+            for (int i = 0, j = i * 3; i < curTracers.Count && j < particlesLeft; i++, j *= 3) {
+                if (i < particlesLeft && p[j].remainingLifetime > 0f)
+                    curTracers[i].transform.position = p[j].position;
+                else
+                {
+                    Instantiate(acidPuddle, curTracers[i].transform.position, Quaternion.identity);
+                    Destroy(curTracers[i]);
+                    curTracers.RemoveAt(i);
+                    i--;
+                }
+            }
+            
+            yield return null;
+        }
     }
 
     public void TakeDamage(float amount) {
