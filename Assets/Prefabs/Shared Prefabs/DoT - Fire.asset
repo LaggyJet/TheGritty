@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: DoT - Fire
   m_EditorClassIdentifier: 
   damage: 0.5
-  length: 3
+  length: 4
