@@ -104,6 +104,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
         if (hp > 0)
             StartCoroutine(FlashDamage());
         if (hp <= 0 && !wasKilled) {
+            EnemyManager.Instance.UpdateKillCounter(enemyLimiter);
             GameManager.instance.updateEnemy(-1);
             gameObject.GetComponent<Collider>().enabled = false;
             StartCoroutine(DeathAnimation());
