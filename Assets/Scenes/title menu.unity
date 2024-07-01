@@ -1396,7 +1396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FileName: gameData.json
-  useEncryption: 1
+  useEncryption: 0
 --- !u!4 &974418145
 Transform:
   m_ObjectHideFlags: 0
@@ -1718,7 +1718,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 974418146}
         m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
-        m_MethodName: quit
+        m_MethodName: quitApp
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3422,6 +3422,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: menuWin
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: menuLose
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: menuPause
+      value: 
+      objectReference: {fileID: 8423294724705715328, guid: fdd287ff229bead48b1e8c5f7c09788d, type: 3}
+    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: charSelect
       value: 
       objectReference: {fileID: 24485790}
@@ -3441,6 +3453,10 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 4004989034426352940, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
     - {fileID: 6111828029953289255, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+    - {fileID: 5757823241106493744, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+    - {fileID: 1888437935057294296, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+    - {fileID: 1575123365108065352, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+    - {fileID: 3198752123824579024, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
@@ -4166,7 +4182,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3724347166491129722}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.99999, z: 0, w: 0.0044767484}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: -0.00027681}
   m_LocalPosition: {x: 4.119768, y: 0.10801256, z: 49.06485}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4176,7 +4192,7 @@ Transform:
   - {fileID: 6007052765590110902}
   - {fileID: 1695524547312523765}
   m_Father: {fileID: 608123559}
-  m_LocalEulerAnglesHint: {x: 0, y: -179.487, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -539.968, z: 0}
 --- !u!1 &2576363814578502344
 GameObject:
   m_ObjectHideFlags: 0

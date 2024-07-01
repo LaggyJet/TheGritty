@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -83,6 +84,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     public static Quaternion spawnRotation;
     public static float spawnHp;
 
+
     [Header("------ Audio ------")]
 
     //Audio variables
@@ -100,7 +102,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 
     private void Start()
     {
-        //UnityEngine.UI.Image.DontDestroyOnLoad(GameManager.instance.playerHPBar);
+
         //tracks our base hp and the current hp that will update as our player takes damage or gets health
         hpBase = hp;
         staminaBase = stamina;
@@ -109,19 +111,28 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 
         if (spawnLocation == Vector3.zero)
         {
-            this.transform.position = new Vector3(-18.7507896f, 0.108012557f, 81.6620026f);
-            this.transform.rotation = new Quaternion(0, 180.513367f, 0, 0);
+            this.transform.position = GameManager.playerLocation;
+            this.transform.rotation = GameManager.instance.player.transform.rotation ;
             //updates our ui to accurately show the player hp and other information
             updatePlayerUI();
         }
         else
         {
+            
+            GameManager.playerLocation = spawnLocation;
             this.transform.position = spawnLocation;
             this.transform.rotation = spawnRotation;
             hp = spawnHp;
+            Physics.SyncTransforms();
             //updates our ui to accurately show the player hp / stamina and other information
             updatePlayerUI();
+            spawnLocation = Vector3.zero;
         }
+    }
+
+    void FixedUpdate()
+    {
+        //hp = hp+1;
     }
 
     // Update is called once per frame
@@ -430,7 +441,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     
     public void Respawn()
     {
-        this.transform.position = GameManager.instance.playerLocation;
+        this.transform.position = GameManager.playerLocation;
         hp = hpBase;
         stamina = staminaBase;
         updatePlayerUI(); 
@@ -439,8 +450,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     {
         spawnLocation = data.playerPos;
         spawnRotation = data.playerRot;
-        spawnHp = data.playerHp;
-        
+        spawnHp = data.playerHp; 
     }
     public void SaveData(ref GameData data)
     {
