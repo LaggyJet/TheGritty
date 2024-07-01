@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour {
+public class EnemyManager : MonoBehaviour
+{
     public static EnemyManager Instance;
 
     // Enemy Type, Close Range, Attacking
@@ -40,5 +41,5 @@ public class EnemyManager : MonoBehaviour {
 
     public void AddAttackEnemy(EnemyLimiter type, int id) { currentEnemies[GetEnemyIndex(type)].Item3.Add(id); }
 
-    public void RemoveAttackEnemy(EnemyLimiter type, int id) { currentEnemies[GetEnemyIndex(type)].Item3.Remove(id); }    
+    public void RemoveAttackEnemy(EnemyLimiter type, int id) { currentEnemies[GetEnemyIndex(type)].Item3.Remove(id); }
 }
