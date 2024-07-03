@@ -11,10 +11,10 @@ public class EnemySpawning : MonoBehaviourPunCallbacks {
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player") && !isSpawning)
-            Spawn();
+            spawn();
     }
 
-    public void Spawn() {
+    public void spawn() {
         isSpawning = true;
         for (int i = 0; i < numEnemies; i++) {
             int arrayPosition = Random.Range(0, SpawnPoints.Length);
