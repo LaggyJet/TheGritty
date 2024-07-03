@@ -61893,6 +61893,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2821050683010240155, guid: 7590d778c04698a41bd24210f4351062, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3782900674562684275, guid: 7590d778c04698a41bd24210f4351062, type: 3}
       propertyPath: m_Name
       value: spawn
