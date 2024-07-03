@@ -30,7 +30,7 @@ public class Class_Mage : MonoBehaviour
                 if (PhotonNetwork.IsConnected)
                     PhotonNetwork.Instantiate(player.combatObjects[2].name, player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation);
                 else if (!PhotonNetwork.IsConnected)
-                    Instantiate(player.combatObjects[2], player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation)
+                    Instantiate(player.combatObjects[2], player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation);
             }
         }
 
