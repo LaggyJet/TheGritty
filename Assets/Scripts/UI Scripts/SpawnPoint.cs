@@ -11,9 +11,9 @@ public class SpawnPoint : MonoBehaviourPunCallbacks
     void Start() {
         Instance = this;
 
-        if (PhotonNetwork.InLobby && player != null)
-            PhotonNetwork.Instantiate("Player/" + player.name, spawnPoint.position, Quaternion.identity);
-        else if (!PhotonNetwork.InLobby)
+        if (PhotonNetwork.IsConnected && player != null)
+            PhotonNetwork.Instantiate(player.name, spawnPoint.position, Quaternion.identity);
+        else if (!PhotonNetwork.IsConnected)
             Instantiate(player, spawnPoint.position, Quaternion.identity);
     }
 }
