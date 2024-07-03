@@ -52,7 +52,7 @@ MonoBehaviour:
   damage: 0.1
   speed: 3
   destroyTime: 1
-  type: {fileID: 0}
+  type: {fileID: 11400000, guid: 27fa8ba003ebf954c88b9820ded4995d, type: 2}
 --- !u!33 &1130463157407497396
 MeshFilter:
   m_ObjectHideFlags: 0
