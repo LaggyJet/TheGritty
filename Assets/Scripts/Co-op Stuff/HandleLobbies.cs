@@ -1,7 +1,6 @@
 //Worked on By - Joshua Furber
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine.SceneManagement;
 using UnityEngine;
 using TMPro;
 public class HandleLobbies : MonoBehaviourPunCallbacks {
@@ -9,7 +8,7 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
     [SerializeField] GameObject loadMenu, lobbyMenu;
 
     // Start the connection when loading screen plays
-    void Start() { PhotonNetwork.AutomaticallySyncScene = true; PhotonNetwork.ConnectUsingSettings(); }
+    void Start() { PhotonNetwork.AutomaticallySyncScene = false; PhotonNetwork.ConnectUsingSettings(); }
 
     // Have the player join the lobby once it loads
     public override void OnConnectedToMaster() { PhotonNetwork.JoinLobby(TypedLobby.Default); }

@@ -237,7 +237,7 @@ public class CoopPlayerController : MonoBehaviourPun, IDamage, IDataPersistence,
         audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
   
         //spawns our projectile
-        Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
+        PhotonNetwork.Instantiate(projectile.name, shootPosition.transform.position, shootPosition.transform.rotation);
         isShooting = false;
     }
 

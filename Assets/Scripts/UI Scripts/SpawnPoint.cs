@@ -4,20 +4,14 @@ using UnityEngine;
 
 public class SpawnPoint : MonoBehaviourPunCallbacks
 {
-    public static SpawnPoint instance { get; private set; }
+    public static SpawnPoint Instance { get; private set; }
     public Transform spawnPoint;
     public GameObject player;
 
-    void Start()
-    {
-        instance = this;
+    void Start() {
+        Instance = this;
 
-        if (PhotonNetwork.IsConnected)
-            InstantiatePlayer();
-    }
-
-    void InstantiatePlayer() {
-        if (player != null)
+        if (PhotonNetwork.IsConnected && player != null)
             PhotonNetwork.Instantiate(player.name, spawnPoint.position, Quaternion.identity);
     }
 }
