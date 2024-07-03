@@ -10,6 +10,7 @@ TagManager:
   - Room 1 Trigger
   - Room 2 Trigger
   - Room 3 Trigger
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - PlayerModel
   - Water
   - UI
-  - 
+  - SpiderStream
   - 
   - 
   - 

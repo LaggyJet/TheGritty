@@ -1,14 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
+//Worked on By : Joshua Furber
+using Photon.Pun;
 using UnityEngine;
 
-public class SpawnPoint : MonoBehaviour
+public class SpawnPoint : MonoBehaviourPunCallbacks
 {
-    public static SpawnPoint instance { get; private set; }
+    public static SpawnPoint Instance { get; private set; }
     public Transform spawnPoint;
+    public GameObject player;
 
-    public void Spawn()
-    {
-        transform.position = spawnPoint.position;
+    void Start() {
+        Instance = this;
+
+        if (PhotonNetwork.IsConnected && player != null)
+            PhotonNetwork.Instantiate(player.name, spawnPoint.position, Quaternion.identity);
     }
 }

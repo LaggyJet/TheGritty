@@ -40,8 +40,10 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         player = GameObject.FindWithTag("Player");
-        playerScript = player.GetComponent<PlayerController>();
-        playerLocation = player.transform.position;
+        if (player != null) {
+            playerScript = player.GetComponent<PlayerController>();
+            playerLocation = player.transform.position;
+        }
     }
 
     // Update is called once per frame
@@ -68,6 +70,13 @@ public class GameManager : MonoBehaviour
                 stateResume();
             }
         }
+    }
+
+    //Setter
+    public void SetPlayer() {
+        player = GameObject.FindWithTag("Player");
+        playerScript = player.GetComponent<PlayerController>();
+        playerLocation = player.transform.position;
     }
 
     //PAUSE METHODS

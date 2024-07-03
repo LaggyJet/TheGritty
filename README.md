@@ -4,7 +4,9 @@ This is a group project made for class at Full Sail University
 # -Members-
 * Josh Furber
 * PJ Glover
-* Emily Underwood
 * Natalie Lubahn
 * Jacob Irvin
 * Kheera Maaranu
+
+# -Former Collaborators-
+* Emily Underwood

@@ -1,7 +1,9 @@
+//Worked on By : Jacob Irvin, Joshua Furber
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class Class_Mage : MonoBehaviour
 {
@@ -25,7 +27,7 @@ public class Class_Mage : MonoBehaviour
         {
             FireCheck();
             if (sprayingFire)
-                Instantiate(player.combatObjects[2], player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation);
+                PhotonNetwork.Instantiate(player.combatObjects[2].name, player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation);
         }
     }
 
@@ -38,7 +40,7 @@ public class Class_Mage : MonoBehaviour
         player.PlaySound('A');
 
         //spawns our projectile
-        Instantiate(player.combatObjects[0], player.shootPosition.transform.position, player.shootPosition.transform.rotation);
+        PhotonNetwork.Instantiate(player.combatObjects[0].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
         isShooting = false;
     }
 

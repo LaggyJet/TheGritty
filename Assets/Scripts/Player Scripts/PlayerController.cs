@@ -1,5 +1,6 @@
-//Worked on by : Jacob Irvin, Natalie Lubahn, Kheera, Emily Underwood
+//Worked on by : Jacob Irvin, Natalie Lubahn, Kheera, Emily Underwood, Joshua Furber
 
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -9,7 +10,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
+public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPunObservable
 {
      public static PlayerController instance; 
 
@@ -67,6 +68,9 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     Vector3 moveDir;
     Vector3 playerV;
 
+    Vector3 networkPos;
+    Quaternion networkRot;
+
     [SerializeField] Sprite sprite;
 
     //variables used for save/load
@@ -92,12 +96,24 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 
     private void Start()
     {
+        // Prevent movement of other players
+        if (!GetComponent<PhotonView>().IsMine) {
+            Destroy(GetComponentInChildren<Camera>().gameObject);
+            Destroy(GetComponentInChildren<AudioListener>());
+            Destroy(this);
+            return;
+        }
+
+        if (instance == null) instance = this;
+        else { Destroy(gameObject); return; }
 
         //tracks our base hp and the current hp that will update as our player takes damage or gets health
         hpBase = hp;
         staminaBase = stamina;
         this.transform.position = Vector3.zero;
         this.transform.rotation = Quaternion.identity;
+
+        GameManager.instance.SetPlayer();
 
         if (spawnLocation == Vector3.zero)
         {
@@ -128,9 +144,16 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     // Update is called once per frame
     void Update()
     {
-        //runs our movement function to determine the player velocity each frame
-        Movement();
-        Sprint();
+        // Prevent movement of other players
+        if (GetComponent<PhotonView>().IsMine) {
+            //runs our movement function to determine the player velocity each frame
+            Movement();
+            Sprint();
+        }
+        else if (!GetComponent<PhotonView>().IsMine) {
+            transform.position = Vector3.Lerp(transform.position, networkPos, Time.deltaTime * 10);
+            transform.rotation = Quaternion.Lerp(transform.rotation, networkRot, Time.deltaTime * 10);
+        }
     }
 
     //calculates the player movement
@@ -206,14 +229,8 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         isPlayingSteps = true;
         audioSource.PlayOneShot(footsteps[Random.Range(0, footsteps.Length)], footstepsVol);
 
-        if (!isSprinting)
-        {
-            yield return new WaitForSeconds(0.3f);
-        }
-        else
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
+        // Ternary operator that checks isSprinting and returns .1f if strue and .3f if false
+        yield return new WaitForSeconds(isSprinting ? 0.1f : 0.3f);
         isPlayingSteps = false;
     }
 
@@ -392,5 +409,16 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         data.playerPos = this.transform.position;
         data.playerRot = this.transform.rotation;
         data.playerHp = hp;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+        if (stream.IsWriting) {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else {
+            networkPos = (Vector3)stream.ReceiveNext();
+            networkRot = (Quaternion)stream.ReceiveNext();
+        }
     }
 }

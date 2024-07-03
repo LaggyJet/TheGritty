@@ -452,7 +452,7 @@ Animator:
   m_GameObject: {fileID: 3116929254137260313}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 2cfba37fab445484d96249beba922637, type: 3}
-  m_Controller: {fileID: 9100000, guid: eee0cd3824124b642929fb0f72bfad1d, type: 2}
+  m_Controller: {fileID: 9100000, guid: d9f8cade30e1cc0438bc48114029d025, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -479,7 +479,7 @@ MonoBehaviour:
   agent: {fileID: 177522156451135462}
   anim: {fileID: 4177812466157729367}
   flipEnemyDirection: 0
-  hp: 10
+  hp: 8
   animationTransitionSpeed: 8
   faceTargetSpeed: 5
   attackSpeed: 3
@@ -492,6 +492,9 @@ MonoBehaviour:
   type: {fileID: 0}
   enemyLimiter: {fileID: 11400000, guid: 490d4be5063f21941a5097da551ee8ad, type: 2}
   range: 3
+  isAttacking: 0
+  wasKilled: 0
+  isDOT: 0
 --- !u!136 &1840865922723293605
 CapsuleCollider:
   m_ObjectHideFlags: 0
