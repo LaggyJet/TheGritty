@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Build Scene.unity
     guid: df32403ada5837b4bb6466bbfd8860e3
+  - enabled: 1
+    path: Assets/Scenes/Co-op Stuff/Lobby.unity
+    guid: 04ee35e4be398cf468d4880cfb65fa64
+  - enabled: 1
+    path: Assets/Scenes/Co-op Stuff/PlayScene.unity
+    guid: 1852afae0acbd8043950e1b3f56bc4dd
   m_configObjects: {}

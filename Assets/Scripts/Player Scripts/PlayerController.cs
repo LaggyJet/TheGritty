@@ -109,6 +109,8 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         this.transform.position = Vector3.zero;
         this.transform.rotation = Quaternion.identity;
 
+        GameManager.instance.SetPlayer();
+
         if (spawnLocation == Vector3.zero)
         {
             this.transform.position = GameManager.playerLocation;

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class ButtonFunctions : MonoBehaviour
 {
@@ -32,6 +33,10 @@ public class ButtonFunctions : MonoBehaviour
     public void quitGame()
     {
         SceneManager.LoadScene("title menu");
+
+        //Disconnect player from the server (if possible)
+        if (PhotonNetwork.IsConnected)
+            PhotonNetwork.Disconnect();
     }
 
     public void respawn()
@@ -77,4 +82,7 @@ public class ButtonFunctions : MonoBehaviour
         newGame();
         GameManager.instance.stateResume();
     }
+
+    // Co-op features
+    public void LoadMultiplayer() { SceneManager.LoadScene("Lobby"); }
 }
