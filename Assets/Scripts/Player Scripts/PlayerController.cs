@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [SerializeField] int gravity;
     [SerializeField] int jumpMax;
     [SerializeField] int jumpSpeed;
+    [SerializeField] public GameObject shootPosition;
+    [SerializeField] public GameObject[] combatObjects;
 
     [Header("------- HP -------")]
     
@@ -51,25 +53,13 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     // stamina bar shake
     [Range(0f, 10f)] public float stamShakeDuration;   
 
-   
-
-    //these are combat variables
-    [SerializeField] float shootDamage;
-    [SerializeField] float shootRate;
-    [SerializeField] int shootDistance;
-    [SerializeField] GameObject shootPosition;
-    [SerializeField] GameObject projectile;
-    [SerializeField] GameObject fireSpray;
-
     //these are animation variables
-    [SerializeField] Animator animate;
+    [SerializeField] public Animator animate;
     [SerializeField] float animationTransSpeed;
-
 
     //these are variables used explicitly in functions
     DamageStats status;
     int jumpCount;
-    bool isShooting;
     bool isDead;
     bool isDOT;
 
@@ -86,12 +76,12 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [Header("------ Audio ------")]
 
     //Audio variables
-    [SerializeField] AudioSource audioSource;
+    [SerializeField] public AudioSource audioSource;
     [SerializeField] AudioClip[] footsteps;
     [SerializeField] float footstepsVol;
     [SerializeField] AudioClip[] hurt;
     [SerializeField] float hurtVol;
-    [SerializeField] AudioClip[] attack;
+    [SerializeField] public AudioClip[] attack;
     [SerializeField] float attackVol;
     [SerializeField] AudioClip[] filledStam;
     [SerializeField] float filledStamVol;
@@ -130,16 +120,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         //runs our movement function to determine the player velocity each frame
         Movement();
         Sprint();
-
-        if (Input.GetButton("Fire1") && !isShooting && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu" && staminaCor == null)
-        {
-            //plays our primary shooting animation
-            animate.SetTrigger("PrimaryFire");
-        }
-        else if (Input.GetButtonDown("Fire2")  && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
-        {
-            SecondaryFireCheck();
-        }
     }
 
     //calculates the player movement
@@ -189,6 +169,27 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             speed /= sprintMod;
         }
     }
+
+    public void SetAnimationTrigger(string triggerName)
+    {
+        animate.SetTrigger(triggerName);
+    }
+    public void SetAnimationBool(string boolName, bool state)
+    {
+        animate.SetBool(boolName, state);
+    }
+
+    public void PlaySound(char context) // A for attack, 
+    {
+        switch (context)
+        {
+            case 'A':
+                audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
+                break;
+
+        }
+    }
+
     IEnumerator playSteps() //playing footsteps sounds
     {
         isPlayingSteps = true;
@@ -206,42 +207,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     }
 
     //this function handles everything to do with the player shooting
-    void PrimaryFire()
-    {
-        //sets shootings variable to true so we can only fire once at a time
-        isShooting = true;
-        
-
-        audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
-  
-        //spawns our projectile
-        Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
-        isShooting = false;
-    }
-
-    void SecondaryFireCheck()
-    {
-        if (!isShooting)
-        {
-            isShooting = true;
-            animate.SetTrigger("SecondaryFireStart");
-        }
-        else if (isShooting)
-        {
-            isShooting = false;
-            animate.SetTrigger("SecondaryFireStop");
-            SecondaryFireStop();
-        }
-    }
-
-    void SecondaryFire()
-    {
-        audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
-
-        fireSpray.SetActive(true);
-        fireSpray.GetComponent<ParticleSystem>().Play();
-
-    }
+    
 
     private void OnParticleCollision(GameObject other)
     {
@@ -257,12 +223,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             //destroy our projectile
             Destroy(gameObject);
         }
-    }
-
-    void SecondaryFireStop()
-    {
-        fireSpray.SetActive(false);
-        fireSpray.GetComponent<ParticleSystem>().Play(false);
     }
 
 
