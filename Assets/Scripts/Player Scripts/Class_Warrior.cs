@@ -8,10 +8,8 @@ public class Class_Warrior : MonoBehaviour
 {
     PlayerController player;
     bool isAttacking;
-    float damage = 100;
-    bool canDOT;
-    DamageStats type;
-    float swingRate;
+    float damage = 10;
+    bool canDOT = true;
 
     private void Start()
     {

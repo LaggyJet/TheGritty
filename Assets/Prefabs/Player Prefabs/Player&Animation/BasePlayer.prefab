@@ -5798,25 +5798,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5490131200860884166}
     m_Modifications:
-    - target: {fileID: 247565519084589400, guid: 22808a4b1e84b1c4d8d80311053e01f7, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 247565519084589400, guid: 22808a4b1e84b1c4d8d80311053e01f7, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 594627381867782194, guid: 22808a4b1e84b1c4d8d80311053e01f7, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1387238445777977831, guid: 22808a4b1e84b1c4d8d80311053e01f7, type: 3}
       propertyPath: m_Name
       value: Sword_Warrior
-      objectReference: {fileID: 0}
-    - target: {fileID: 1387238445777977831, guid: 22808a4b1e84b1c4d8d80311053e01f7, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1732661724855458653, guid: 22808a4b1e84b1c4d8d80311053e01f7, type: 3}
       propertyPath: m_LocalPosition.x
