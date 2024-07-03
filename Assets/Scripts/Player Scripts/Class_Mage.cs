@@ -26,9 +26,14 @@ public class Class_Mage : MonoBehaviour
         if (!GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
         {
             FireCheck();
-            if (sprayingFire)
-                PhotonNetwork.Instantiate(player.combatObjects[2].name, player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation);
+            if (sprayingFire) {
+                if (PhotonNetwork.IsConnected)
+                    PhotonNetwork.Instantiate(player.combatObjects[2].name, player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation);
+                else if (!PhotonNetwork.IsConnected)
+                    Instantiate(player.combatObjects[2], player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation)
+            }
         }
+
     }
 
     void PrimaryFire()
@@ -40,7 +45,10 @@ public class Class_Mage : MonoBehaviour
         player.PlaySound('A');
 
         //spawns our projectile
-        PhotonNetwork.Instantiate(player.combatObjects[0].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
+        if (PhotonNetwork.IsConnected)
+            PhotonNetwork.Instantiate(player.combatObjects[0].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
+        else if (!PhotonNetwork.IsConnected)
+            Instantiate(player.combatObjects[0], player.shootPosition.transform.position, player.shootPosition.transform.rotation);
         isShooting = false;
     }
 
