@@ -217,26 +217,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         isPlayingSteps = false;
     }
 
-    //this function handles everything to do with the player shooting
-    
-
-    private void OnParticleCollision(GameObject other)
-    {
-        int damage = 1;
-        //when encountering a collision trigger it checks for component IDamage
-        IDamage dmg = other.GetComponent<IDamage>();
-
-        //if there is an IDamage component we run the inside code
-        if (dmg != null && !other.gameObject.CompareTag("Player"))
-        {
-            //deal damage to the object hit
-            dmg.TakeDamage(damage);
-            //destroy our projectile
-            Destroy(gameObject);
-        }
-    }
-
-
     public void Afflict(DamageStats type)
     {
         status = type;
