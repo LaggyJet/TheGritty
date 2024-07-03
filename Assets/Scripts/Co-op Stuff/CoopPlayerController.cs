@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Photon.Pun;
 
-public class CoopPlayerController : MonoBehaviour, IDamage, IDataPersistence
+public class CoopPlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPunObservable
 {
      public static CoopPlayerController instance; 
 
@@ -70,6 +70,9 @@ public class CoopPlayerController : MonoBehaviour, IDamage, IDataPersistence
     bool isShooting;
     bool isDead;
     bool isDOT;
+
+    Vector3 networkPos;
+    Quaternion networkRot;
 
     Vector3 moveDir;
     Vector3 playerV;
@@ -161,6 +164,10 @@ public class CoopPlayerController : MonoBehaviour, IDamage, IDataPersistence
             {
                 SecondaryFireCheck();
             }
+        }
+        else if (!GetComponent<PhotonView>().IsMine) {
+            transform.position = Vector3.Lerp(transform.position, networkPos, Time.deltaTime * 10);
+            transform.rotation = Quaternion.Lerp(transform.rotation, networkRot, Time.deltaTime * 10);
         }
     }
 
@@ -461,5 +468,16 @@ public class CoopPlayerController : MonoBehaviour, IDamage, IDataPersistence
         data.playerPos = this.transform.position;
         data.playerRot = this.transform.rotation;
         data.playerHp = hp;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+        if (stream.IsWriting) {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else {
+            networkPos = (Vector3)stream.ReceiveNext();
+            networkRot = (Quaternion)stream.ReceiveNext();
+        }
     }
 }
