@@ -26,7 +26,7 @@ public class FileDataHandler
     {
         string fullPath = Path.Combine(dataDirPath, dataFileName);  //using Path.Combine to allow different path separators on different systems
         GameData loadedData = null;
-        if(File.Exists(fullPath))
+        if (File.Exists(fullPath))
         {
             try
             {
@@ -34,7 +34,7 @@ public class FileDataHandler
                 string dataToLoad = "";
                 using (FileStream stream = new FileStream(fullPath, FileMode.Open))
                 {
-                    using(StreamReader reader = new StreamReader(stream))
+                    using (StreamReader reader = new StreamReader(stream))
                     {
                         dataToLoad = reader.ReadToEnd();
                     }
@@ -63,7 +63,7 @@ public class FileDataHandler
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));  //creating the directory if doesn't already exist
-            
+
             string dataToStore = JsonUtility.ToJson(data, true); //serializing our current C# data into Json
 
             if (useEncryption) //encrypts the data if chosen
@@ -72,18 +72,18 @@ public class FileDataHandler
             }
 
             //write the serialized Json data to the file
-            using(FileStream stream = new FileStream(fullPath, FileMode.Create))
+            using (FileStream stream = new FileStream(fullPath, FileMode.Create))
             {
-                using(StreamWriter writer = new StreamWriter(stream))
+                using (StreamWriter writer = new StreamWriter(stream))
                 {
                     writer.Write(dataToStore);
                 }
             }
-        
+
         }
         catch (Exception e) //error catching/handling + logging to help us know the problem
         {
-            Debug.LogError("Error occurred when trying to save data to file: " +  fullPath + "\n" + e);
+            Debug.LogError("Error occurred when trying to save data to file: " + fullPath + "\n" + e);
         }
     }
 
@@ -91,9 +91,9 @@ public class FileDataHandler
     private string EncryptDecrypt(string data)
     {
         string modifiedData = "";
-        for(int i = 0; i < data.Length; i++)
+        for (int i = 0; i < data.Length; i++)
         {
-            modifiedData += (char) (data[i] ^ encryptionCodeWord[i % encryptionCodeWord.Length]);
+            modifiedData += (char)(data[i] ^ encryptionCodeWord[i % encryptionCodeWord.Length]);
         }
         return modifiedData;
     }

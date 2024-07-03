@@ -36,9 +36,8 @@ public class DataPersistenceManager : MonoBehaviour
     public void NewGame()
     {
         gameData = new GameData();
-        //this.dataHandler = new FileDataHandler(Application.persistentDataPath, FileName); //Application.persistentDataPath gives the operating system standard directory for persisting data in a unity project
-        //this.dataPersistenceObjects = FindAllDataPersistenceObjects();
         Debug.Log("Creating a new game file");
+        dataHandler.Save(gameData);
     }
     public void LoadGame() //load method
     {

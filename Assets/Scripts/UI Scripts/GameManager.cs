@@ -6,6 +6,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Diagnostics.Contracts;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,7 +30,8 @@ public class GameManager : MonoBehaviour
     public bool isPaused;
     public GameObject player;
     public PlayerController playerScript;
-    public Vector3 playerLocation;
+    public static Vector3 playerLocation;
+    public static Vector3 playerSpawnLocation;
     public bool canJump;
     public static int enemyCount = 0;
 
@@ -38,7 +40,6 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         player = GameObject.FindWithTag("Player");
-        playerLocation = player.transform.position;
         playerScript = player.GetComponent<PlayerController>();
         playerLocation = player.transform.position;
     }
@@ -48,7 +49,15 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            if (menuActive == null)
+            if (SceneManager.GetActiveScene().name == "title menu")
+            {
+                #if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false;
+                #else
+                    Application.Quit();
+                #endif
+            }
+            else if (menuActive == null)
             {
                 statePause();
                 menuActive = menuPause;
@@ -76,6 +85,14 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         menuActive.SetActive(isPaused);
+        menuActive = null;
+    }
+    public void stateResumeGameLoads()
+    {
+        isPaused = !isPaused;
+        Time.timeScale = 1;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         menuActive = null;
     }
 
