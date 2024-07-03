@@ -1,5 +1,6 @@
-//Worked on by : Jacob Irvin, Natalie Lubahn, Kheera, Emily Underwood
+//Worked on by : Jacob Irvin, Natalie Lubahn, Kheera, Emily Underwood, Joshua Furber
 
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -9,7 +10,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
+public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPunObservable
 {
      public static PlayerController instance; 
 
@@ -23,6 +24,8 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [SerializeField] int gravity;
     [SerializeField] int jumpMax;
     [SerializeField] int jumpSpeed;
+    [SerializeField] public GameObject shootPosition;
+    [SerializeField] public GameObject[] combatObjects;
 
     [Header("------- HP -------")]
     
@@ -52,30 +55,21 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     // stamina bar shake
     [Range(0f, 10f)] public float stamShakeDuration;   
 
-   
-
-    //these are combat variables
-    [SerializeField] float shootDamage;
-    [SerializeField] float shootRate;
-    [SerializeField] int shootDistance;
-    [SerializeField] GameObject shootPosition;
-    [SerializeField] GameObject projectile;
-    [SerializeField] GameObject fireSpray;
-
     //these are animation variables
-    [SerializeField] Animator animate;
+    [SerializeField] public Animator animate;
     [SerializeField] float animationTransSpeed;
-
 
     //these are variables used explicitly in functions
     DamageStats status;
     int jumpCount;
-    bool isShooting;
     bool isDead;
     bool isDOT;
 
     Vector3 moveDir;
     Vector3 playerV;
+
+    Vector3 networkPos;
+    Quaternion networkRot;
 
     [SerializeField] Sprite sprite;
 
@@ -88,12 +82,12 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [Header("------ Audio ------")]
 
     //Audio variables
-    [SerializeField] AudioSource audioSource;
+    [SerializeField] public AudioSource audioSource;
     [SerializeField] AudioClip[] footsteps;
     [SerializeField] float footstepsVol;
     [SerializeField] AudioClip[] hurt;
     [SerializeField] float hurtVol;
-    [SerializeField] AudioClip[] attack;
+    [SerializeField] public AudioClip[] attack;
     [SerializeField] float attackVol;
     [SerializeField] AudioClip[] filledStam;
     [SerializeField] float filledStamVol;
@@ -102,6 +96,16 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 
     private void Start()
     {
+        // Prevent movement of other players
+        if (!GetComponent<PhotonView>().IsMine) {
+            Destroy(GetComponentInChildren<Camera>().gameObject);
+            Destroy(GetComponentInChildren<AudioListener>());
+            Destroy(this);
+            return;
+        }
+
+        if (instance == null) instance = this;
+        else { Destroy(gameObject); return; }
 
         //tracks our base hp and the current hp that will update as our player takes damage or gets health
         hpBase = hp;
@@ -140,18 +144,15 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     // Update is called once per frame
     void Update()
     {
-        //runs our movement function to determine the player velocity each frame
-        Movement();
-        Sprint();
-
-        if (Input.GetButton("Fire1") && !isShooting && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu" && staminaCor == null)
-        {
-            //plays our primary shooting animation
-            animate.SetTrigger("PrimaryFire");
+        // Prevent movement of other players
+        if (GetComponent<PhotonView>().IsMine) {
+            //runs our movement function to determine the player velocity each frame
+            Movement();
+            Sprint();
         }
-        else if (Input.GetButtonDown("Fire2")  && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
-        {
-            SecondaryFireCheck();
+        else if (!GetComponent<PhotonView>().IsMine) {
+            transform.position = Vector3.Lerp(transform.position, networkPos, Time.deltaTime * 10);
+            transform.rotation = Quaternion.Lerp(transform.rotation, networkRot, Time.deltaTime * 10);
         }
     }
 
@@ -202,82 +203,36 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             speed /= sprintMod;
         }
     }
+
+    public void SetAnimationTrigger(string triggerName)
+    {
+        animate.SetTrigger(triggerName);
+    }
+    public void SetAnimationBool(string boolName, bool state)
+    {
+        animate.SetBool(boolName, state);
+    }
+
+    public void PlaySound(char context) // A for attack, 
+    {
+        switch (context)
+        {
+            case 'A':
+                audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
+                break;
+
+        }
+    }
+
     IEnumerator playSteps() //playing footsteps sounds
     {
         isPlayingSteps = true;
         audioSource.PlayOneShot(footsteps[Random.Range(0, footsteps.Length)], footstepsVol);
 
-        if (!isSprinting)
-        {
-            yield return new WaitForSeconds(0.3f);
-        }
-        else
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
+        // Ternary operator that checks isSprinting and returns .1f if strue and .3f if false
+        yield return new WaitForSeconds(isSprinting ? 0.1f : 0.3f);
         isPlayingSteps = false;
     }
-
-    //this function handles everything to do with the player shooting
-    void PrimaryFire()
-    {
-        //sets shootings variable to true so we can only fire once at a time
-        isShooting = true;
-        
-
-        audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
-  
-        //spawns our projectile
-        Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
-        isShooting = false;
-    }
-
-    void SecondaryFireCheck()
-    {
-        if (!isShooting)
-        {
-            isShooting = true;
-            animate.SetTrigger("SecondaryFireStart");
-        }
-        else if (isShooting)
-        {
-            isShooting = false;
-            animate.SetTrigger("SecondaryFireStop");
-            SecondaryFireStop();
-        }
-    }
-
-    void SecondaryFire()
-    {
-        audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
-
-        fireSpray.SetActive(true);
-        fireSpray.GetComponent<ParticleSystem>().Play();
-
-    }
-
-    private void OnParticleCollision(GameObject other)
-    {
-        int damage = 1;
-        //when encountering a collision trigger it checks for component IDamage
-        IDamage dmg = other.GetComponent<IDamage>();
-
-        //if there is an IDamage component we run the inside code
-        if (dmg != null && !other.gameObject.CompareTag("Player"))
-        {
-            //deal damage to the object hit
-            dmg.TakeDamage(damage);
-            //destroy our projectile
-            Destroy(gameObject);
-        }
-    }
-
-    void SecondaryFireStop()
-    {
-        fireSpray.SetActive(false);
-        fireSpray.GetComponent<ParticleSystem>().Play(false);
-    }
-
 
     public void Afflict(DamageStats type)
     {
@@ -394,11 +349,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     //the function for updating our ui
     public void updatePlayerUI()
     {
-        if(GameManager.instance.playerHPBar == null || GameManager.instance.staminaBar == null)
-        {
-            Debug.LogError("HELPEE AFJI IM GOING INSANE");
-        }
-
         // Variable for filling bar 
         float healthRatio = (float)hp / hpBase;
         float staminaRatio = (float)stamina / staminaBase; 
@@ -459,5 +409,16 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         data.playerPos = this.transform.position;
         data.playerRot = this.transform.rotation;
         data.playerHp = hp;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+        if (stream.IsWriting) {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else {
+            networkPos = (Vector3)stream.ReceiveNext();
+            networkRot = (Quaternion)stream.ReceiveNext();
+        }
     }
 }

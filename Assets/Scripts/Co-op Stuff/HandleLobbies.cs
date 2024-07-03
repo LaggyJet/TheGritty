@@ -1,4 +1,4 @@
-//Worked on By - Joshua Furber
+//Worked on By : Joshua Furber
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;

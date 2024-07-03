@@ -1809,7 +1809,7 @@ GameObject:
   - component: {fileID: 6409062874724261286}
   - component: {fileID: 2935539406514588987}
   m_Layer: 3
-  m_Name: Mage
+  m_Name: BasePlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1844,7 +1844,7 @@ Animator:
   m_GameObject: {fileID: 3724347164852896666}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 2255221d850daf642981c1a4eedf85a1, type: 3}
-  m_Controller: {fileID: 9100000, guid: f5124eb681c791e4a81648b2a3fff491, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5a6e8f5c31bd9224180b2924ffa0ed76, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1873,6 +1873,11 @@ MonoBehaviour:
   gravity: 10
   jumpMax: 1
   jumpSpeed: 3
+  shootPosition: {fileID: 4185506747812628586}
+  combatObjects:
+  - {fileID: 2534988432703087702, guid: 0484adfc589ea004caa211680812ec51, type: 3}
+  - {fileID: 6186270549528748386}
+  - {fileID: 2534988432703087702, guid: a20d7c4c73b755c4ca671ba73dcc6b70, type: 3}
   hp: 10
   fullHealth: {r: 0.24978681, g: 0.42352942, b: 0.20718746, a: 1}
   midHealth: {r: 0.9892183, g: 0.43262324, b: 0.046661116, a: 1}
@@ -1883,12 +1888,6 @@ MonoBehaviour:
   midstamina: {r: 0.08121482, g: 0.35876235, b: 0.76280314, a: 1}
   criticalstamina: {r: 0.7058824, g: 0, b: 0, a: 1}
   stamShakeDuration: 1
-  shootDamage: 1
-  shootRate: 1
-  shootDistance: 100
-  shootPosition: {fileID: 4185506747812628586}
-  projectile: {fileID: 2534988432703087702, guid: 0484adfc589ea004caa211680812ec51, type: 3}
-  fireSpray: {fileID: 6186270549528748386}
   animate: {fileID: 2654759320713316378}
   animationTransSpeed: 1
   sprite: {fileID: 21300000, guid: 8e4680958c649e642b0dae1c48a3e1ca, type: 3}
@@ -5772,6 +5771,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1819868529388052, guid: e72c21ab5d5b1cf47a784c3ea8eecedb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4584431484625042, guid: e72c21ab5d5b1cf47a784c3ea8eecedb, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.27
@@ -5786,15 +5789,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4584431484625042, guid: e72c21ab5d5b1cf47a784c3ea8eecedb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.09
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4584431484625042, guid: e72c21ab5d5b1cf47a784c3ea8eecedb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.204
+      value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: 4584431484625042, guid: e72c21ab5d5b1cf47a784c3ea8eecedb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.62
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 4584431484625042, guid: e72c21ab5d5b1cf47a784c3ea8eecedb, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5826,6 +5829,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4584431484625042, guid: e72c21ab5d5b1cf47a784c3ea8eecedb, type: 3}
       propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 199711072805571688, guid: e72c21ab5d5b1cf47a784c3ea8eecedb, type: 3}
+      propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
