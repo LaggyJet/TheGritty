@@ -352,11 +352,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     //the function for updating our ui
     public void updatePlayerUI()
     {
-        if(GameManager.instance.playerHPBar == null || GameManager.instance.staminaBar == null)
-        {
-            Debug.LogError("HELPEE AFJI IM GOING INSANE");
-        }
-
         // Variable for filling bar 
         float healthRatio = (float)hp / hpBase;
         float staminaRatio = (float)stamina / staminaBase; 

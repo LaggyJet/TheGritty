@@ -15,12 +15,12 @@ public class Class_Mage : MonoBehaviour
     private void Start()
     {
         player = GameManager.instance.player.GetComponent<PlayerController>();
+        player.combatObjects[1].SetActive(true);
+        player.combatObjects[1].GetComponent<ParticleSystem>().Stop();
     }
     
     void Update()
     {
-        player.combatObjects[1].SetActive(true);
-        player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true);
         if (!GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
         {
             FireCheck();
@@ -66,9 +66,7 @@ public class Class_Mage : MonoBehaviour
     {
         player.PlaySound('A');
         sprayingFire = true;
-        Debug.Log("Brother What");
         player.combatObjects[1].GetComponent<ParticleSystem>().Play();
-        player.combatObjects[1].GetComponent<ParticleSystem>().Stop(false);
     }
 
     void SecondaryFireStop()
