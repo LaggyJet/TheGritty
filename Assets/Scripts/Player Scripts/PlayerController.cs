@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
     [Range(0f, 10f)] public float stamShakeDuration;   
 
     //these are animation variables
-    [SerializeField] public Animator animate;
+    [SerializeField] Animator animate;
     [SerializeField] float animationTransSpeed;
 
     //these are variables used explicitly in functions

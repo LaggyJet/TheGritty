@@ -57,7 +57,7 @@ public class Class_Mage : MonoBehaviour
         if(Input.GetButtonDown("Fire1"))
         {
             //plays our primary shooting animation
-            player.animate.SetTrigger("Mage1");
+            player.SetAnimationTrigger("Mage1");
         }
         if(Input.GetButtonDown("Fire2") && !isShooting)
         {

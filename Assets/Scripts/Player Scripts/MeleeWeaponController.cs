@@ -18,10 +18,11 @@ public class MeleeWeaponController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.isTrigger) return;
-
+        
         IDamage damageCheck = other.GetComponent<IDamage>();
-        if (damageCheck != null && !other.CompareTag("Player"))
+        if (damageCheck != null && !other.CompareTag("PlayerChild") && !other.CompareTag("Player"))
         {
+            Debug.Log("Hit something or another who cares yeah");
             damageCheck.TakeDamage(damage_);
             if (canDOT)
                 damageCheck.Afflict(stats_);

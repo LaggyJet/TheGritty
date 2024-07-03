@@ -8,7 +8,7 @@ public class Class_Warrior : MonoBehaviour
 {
     PlayerController player;
     bool isAttacking;
-    float damage;
+    float damage = 100;
     bool canDOT;
     DamageStats type;
     float swingRate;
@@ -17,6 +17,7 @@ public class Class_Warrior : MonoBehaviour
     {
         player = GameManager.instance.player.GetComponent<PlayerController>();
         player.combatObjects[3].AddComponent<MeleeWeaponController>().SetWeapon(damage, canDOT, type);
+        player.combatObjects[3].SetActive(true);
     }
 
     // Update is called once per frame
@@ -46,20 +47,22 @@ public class Class_Warrior : MonoBehaviour
             player.SetAnimationBool("Warrior2", false);
         }
     }
-    public void WeaponColliderOn() 
+    void WeaponColliderOn() 
     {
         player.combatObjects[3].GetComponent<Collider>().enabled = true; 
     }
-    public void WeaponColliderOff() 
+    void WeaponColliderOff() 
     {
         player.combatObjects[3].GetComponent<Collider>().enabled = false; 
     }
 
-    IEnumerator Swing()
+    public void SwingStart()
     {
         isAttacking = true;
         WeaponColliderOn();
-        yield return new WaitForSeconds(swingRate);
+    }
+    public void SwingEnd()
+    {
         WeaponColliderOff();
         isAttacking = false;
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class ClassSelecter : MonoBehaviour
 {
     GameObject player;
+    [SerializeField] int selectedClass;
 
     public void AssignClass(int classNumber) // Class 0 is wretch(base class) class 1 is Mage, class 2 is Warrior, class 3 is archer
     {
@@ -28,6 +29,6 @@ public class ClassSelecter : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         player = GameManager.instance.player;
-        AssignClass(1);
+        AssignClass(selectedClass);
     }
 }
