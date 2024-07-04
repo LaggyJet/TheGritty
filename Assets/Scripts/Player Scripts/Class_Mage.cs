@@ -28,7 +28,7 @@ public class Class_Mage : MonoBehaviour
             FireCheck();
             if (sprayingFire) {
                 if (PhotonNetwork.InRoom)
-                    PhotonNetwork.Instantiate("Player" + player.combatObjects[2].name, player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation);
+                    PhotonNetwork.Instantiate("Player/" + player.combatObjects[2].name, player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation);
                 else if (!PhotonNetwork.InRoom)
                     Instantiate(player.combatObjects[2], player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation);
             }
@@ -46,7 +46,7 @@ public class Class_Mage : MonoBehaviour
 
         //spawns our projectile
         if (PhotonNetwork.InRoom)
-            PhotonNetwork.Instantiate("Player" + player.combatObjects[0].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
+            PhotonNetwork.Instantiate("Player/" + player.combatObjects[0].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
         else if (!PhotonNetwork.InRoom)
             Instantiate(player.combatObjects[0], player.shootPosition.transform.position, player.shootPosition.transform.rotation);
         isShooting = false;
