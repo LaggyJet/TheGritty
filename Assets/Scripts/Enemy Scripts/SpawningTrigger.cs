@@ -19,25 +19,8 @@ public class SpawningTrigger : MonoBehaviour
     // Update is called once per frame
     void Update(){}
 
-    void OnTriggerEnter(Collider other)
-    {
+    void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag(nameTag))
-        {
-            spawn.spawn();
-        }
+            spawn.Spawn();
     }
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("Room 2 Trigger"))
-    //    {
-    //        spawn(roomTwoCount, Enemy2);
-    //    }
-    //}
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("Room 3 Trigger"))
-    //    {
-    //        spawn(roomThreeCount, Enemy3);
-    //    }
-    //}
 }

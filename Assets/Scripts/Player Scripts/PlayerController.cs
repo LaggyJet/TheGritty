@@ -417,8 +417,12 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
             stream.SendNext(transform.rotation);
         }
         else {
-            networkPos = (Vector3)stream.ReceiveNext();
-            networkRot = (Quaternion)stream.ReceiveNext();
+            object receivedData = stream.ReceiveNext();
+            if (receivedData != null)
+                networkPos = (Vector3)stream.ReceiveNext();
+            receivedData = stream.ReceiveNext();
+            if (receivedData != null)
+                networkRot = (Quaternion)stream.ReceiveNext();
         }
     }
 }

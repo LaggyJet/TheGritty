@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
-public class EnemyAI : MonoBehaviour, IDamage {
+public class EnemyAI : MonoBehaviourPunCallbacks, IDamage {
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator anim;
@@ -150,6 +151,9 @@ public class EnemyAI : MonoBehaviour, IDamage {
                 yield return null;
             }
         }
-        Destroy(gameObject);
+        if (PhotonNetwork.InRoom)
+            PhotonNetwork.Destroy(gameObject);
+        else if (!PhotonNetwork.InRoom)
+            Destroy(gameObject);
     }
 }

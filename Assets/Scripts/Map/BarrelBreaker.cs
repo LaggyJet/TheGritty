@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class BarrelBreaker : MonoBehaviour
+public class BarrelBreaker : MonoBehaviourPunCallbacks
 {
     private void OnTriggerEnter(Collider other) //box collider will be placed above barrel model
     {
@@ -15,6 +16,9 @@ public class BarrelBreaker : MonoBehaviour
 
     private void DestroyBarrel()
     {
-        Destroy(gameObject);
+        if (PhotonNetwork.InRoom)
+            PhotonNetwork.Destroy(gameObject);
+        else if (!PhotonNetwork.InRoom)
+            Destroy(gameObject);
     }
 }

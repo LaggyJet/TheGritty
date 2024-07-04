@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class HPotPickUp : MonoBehaviour
+public class HPotPickUp : MonoBehaviourPunCallbacks
 {
     [SerializeField] float hpAdd; //amount of hp the potion adds to the player
     private void OnTriggerEnter(Collider other)
@@ -11,7 +12,10 @@ public class HPotPickUp : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             GameManager.instance.playerScript.AddHP(hpAdd);
-            Destroy(gameObject);
+            if (PhotonNetwork.InRoom)
+                PhotonNetwork.Destroy(gameObject);
+            else if (!PhotonNetwork.InRoom)
+                Destroy(gameObject);
         }
     }
 }

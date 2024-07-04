@@ -1,10 +1,11 @@
-//Worked on by : Jacob Irvin
+//Worked on by : Jacob Irvin, Joshua Furber
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class FireSpray : MonoBehaviour
+public class FireSpray : MonoBehaviourPunCallbacks
 {
     //the body of our projectile that will handle our physics
     [SerializeField] Rigidbody rb;
@@ -22,7 +23,15 @@ public class FireSpray : MonoBehaviour
         //moves our projectile forward based on its speed
         rb.velocity = transform.forward * speed;
         //after being alive so long our projectile will die
-        Destroy(gameObject, destroyTime);
+        if (PhotonNetwork.InRoom)
+            StartCoroutine(WaitThenDestroy(gameObject, destroyTime));
+        else if (!PhotonNetwork.InRoom)
+            Destroy(gameObject, destroyTime);
+    }
+
+    IEnumerator WaitThenDestroy(GameObject obj, float seconds) {
+        yield return new WaitForSeconds(seconds);
+        PhotonNetwork.Destroy(obj);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -37,11 +46,17 @@ public class FireSpray : MonoBehaviour
             dmg.TakeDamage(damage);
             dmg.Afflict(type);
             //destroy our projectile
-            Destroy(gameObject);
+            if (PhotonNetwork.InRoom)
+                PhotonNetwork.Destroy(gameObject);
+            else if (!PhotonNetwork.InRoom)
+                Destroy(gameObject);
         }
         else if (!other.gameObject.CompareTag("Player") && !other.isTrigger)
         {
-            Destroy(gameObject);
+            if (PhotonNetwork.InRoom)
+                PhotonNetwork.Destroy(gameObject);
+            else if (!PhotonNetwork.InRoom)
+                Destroy(gameObject);
         }
 
     }
