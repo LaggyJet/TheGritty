@@ -23,5 +23,5 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
     public void JoinRoom() { PhotonNetwork.JoinRoom(joinInput.text, null); }
 
     // Once player loads, load the scene
-    public override void OnJoinedRoom() { PhotonNetwork.LoadLevel("PlayScene"); }
+    public override void OnJoinedRoom() { PhotonNetwork.LoadLevel("Build Scene"); }
 }
