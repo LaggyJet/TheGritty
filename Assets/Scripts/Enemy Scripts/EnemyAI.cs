@@ -41,6 +41,8 @@ public class EnemyAI : MonoBehaviour, IDamage {
         CanSeePlayer();
     }
 
+    public EnemyLimiter GetEnemyLimiter() { return enemyLimiter; }
+
     bool CanSeePlayer() {
         playerDirection = GameManager.instance.player.transform.position - headPosition.position;
         angleToPlayer = Vector3.Angle(new Vector3(playerDirection.x, playerDirection.y + 1, playerDirection.z), transform.forward);
@@ -102,6 +104,8 @@ public class EnemyAI : MonoBehaviour, IDamage {
         if (hp > 0)
             StartCoroutine(FlashDamage());
         if (hp <= 0 && !wasKilled) {
+            EnemyManager.Instance.UpdateKillCounter(enemyLimiter);
+            PlayerController.instance.AddStamina(0.5f);  
             GameManager.instance.updateEnemy(-1);
             gameObject.GetComponent<Collider>().enabled = false;
             StartCoroutine(DeathAnimation());

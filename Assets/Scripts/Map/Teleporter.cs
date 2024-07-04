@@ -13,7 +13,6 @@ public class Teleporter : MonoBehaviour
     {
         if (collide.gameObject.CompareTag("Player"))
         {
-
             GameManager.instance.playerScript.controller.enabled = false;
             GameManager.instance.player.transform.position = TPPoint.transform.position;
             GameManager.playerLocation = GameManager.instance.player.transform.position;

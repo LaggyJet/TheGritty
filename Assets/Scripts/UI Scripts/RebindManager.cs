@@ -13,10 +13,6 @@ public class RebindManager : MonoBehaviour
     public InputActionReference secondaryFireRef;
     public InputActionReference abilityRef;
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     private void OnEnable()
     {
@@ -35,11 +31,5 @@ public class RebindManager : MonoBehaviour
         primaryFireRef.action.Enable();
         secondaryFireRef.action.Enable();
         abilityRef.action.Enable();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

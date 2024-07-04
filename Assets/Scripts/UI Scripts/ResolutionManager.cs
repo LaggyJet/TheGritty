@@ -28,13 +28,9 @@ public class ResolutionManager : MonoBehaviour
             resDropDown.ClearOptions();
             currentRefreshRate = (float)Screen.currentResolution.refreshRateRatio.value;
 
-            //debug log in case editor only bug during testing
-            Debug.Log("Current Refresh Rate: " + currentRefreshRate);
-
             //fills filtered list
             for (int i = 0; i < resolutions.Length; i++)
             {
-                Debug.Log("Resolution: " + resolutions[i]);
                 if ((float)resolutions[i].refreshRateRatio.value == currentRefreshRate)
                 {
                     filteredResolutions.Add(resolutions[i]);

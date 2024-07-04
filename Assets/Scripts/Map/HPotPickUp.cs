@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class HPotPickUp : MonoBehaviour
 {
-    [SerializeField] float hpAdd; //amount of hp the potion adds to the player
+    [SerializeField] float hpAdd; //amount of hp/stamina the potion adds to the player
+    [SerializeField] float staminaAdd; 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -14,4 +15,6 @@ public class HPotPickUp : MonoBehaviour
             Destroy(gameObject);
         }
     }
+// Need to adjust script to accept stamina potions 
+
 }
