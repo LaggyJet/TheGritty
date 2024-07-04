@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 
     [Range(0f, 10f)] public float stamina; 
     float staminaBase; 
-    //Coroutine staminaCor = null;
+    public Coroutine staminaCor = null;
     
     
      // stamina bar gradual fill 
@@ -163,7 +163,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             }
         }
     }
-    
     public void OnAbility1(InputAction.CallbackContext ctxt)
     {
         if (ctxt.performed)
@@ -177,7 +176,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     {
         //runs our movement function to determine the player velocity each frame
         Movement();
-        Sprint();
     }
 
     //calculates the player movement
@@ -200,25 +198,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             StartCoroutine(playSteps());
         }
     }
-
-    //calculates our speed if the player is sprinting
-    void Sprint()
-    {
-        //when Sprint is pressed apply the sprint modifier variable to our speed variable
-        if (Input.GetButtonDown("Sprint"))
-        {
-            isSprinting = true;
-            speed *= sprintMod;
-            SubtractStamina(0.5f);
-        }
-        //when sprint is no longer being pressed we remove the sprint modifier from the speed variable
-        else if (Input.GetButtonUp("Sprint"))
-        {
-            isSprinting = false;
-            speed /= sprintMod;
-        }
-    }
-
     public void SetAnimationTrigger(string triggerName)
     {
         animate.SetTrigger(triggerName);
@@ -254,9 +233,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         }
         isPlayingSteps = false;
     }
-
-    //this function handles everything to do with the player shooting
-    
 
     private void OnParticleCollision(GameObject other)
     {
