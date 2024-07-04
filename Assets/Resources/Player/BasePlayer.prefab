@@ -4978,7 +4978,6 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 3032393924960708288}
   - {fileID: 9135714929609224869}
   - {fileID: 8758786693865614102}
   sceneViewId: 0
@@ -5033,17 +5032,17 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: Mage1
   - Type: 4
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: Mage2
   m_SynchronizeLayers:
-  - SynchronizeType: 1
+  - SynchronizeType: 0
     LayerIndex: 0
-  - SynchronizeType: 1
+  - SynchronizeType: 0
     LayerIndex: 1
-  - SynchronizeType: 1
+  - SynchronizeType: 0
     LayerIndex: 2
 --- !u!1 &7973631658597747595
 GameObject:

@@ -112,7 +112,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
                     curTracers[i].transform.position = p[j].position;
                 else
                 {
-                    if (PhotonNetwork.InRoom) {
+                    if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine) {
                         PhotonNetwork.Instantiate("Enemy" + acidPuddle.name, curTracers[i].transform.position, Quaternion.identity);
                         PhotonNetwork.Destroy(curTracers[i]);
                     }
@@ -190,7 +190,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
                 yield return null;
             }
         }
-        if (PhotonNetwork.InRoom)
+        if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
             PhotonNetwork.Destroy(gameObject);
         else if (!PhotonNetwork.InRoom)
             Destroy(gameObject);

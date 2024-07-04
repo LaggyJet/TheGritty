@@ -10,13 +10,13 @@ public class BarrelBreaker : MonoBehaviourPunCallbacks
     {
         if (other.CompareTag("Player"))
         {
-            Invoke("DestroyBarrel", 3);
+            Invoke(nameof(DestroyBarrel), 3);
         }
     }
 
     private void DestroyBarrel()
     {
-        if (PhotonNetwork.InRoom)
+        if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
             PhotonNetwork.Destroy(gameObject);
         else if (!PhotonNetwork.InRoom)
             Destroy(gameObject);

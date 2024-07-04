@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPunObservable
+public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
 {
      public static PlayerController instance; 
 
@@ -136,10 +136,10 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
         }
     }
 
-    void FixedUpdate()
-    {
+    //void FixedUpdate()
+    //{
         //hp = hp+1;
-    }
+    //}
 
     // Update is called once per frame
     void Update()
@@ -409,20 +409,5 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
         data.playerPos = this.transform.position;
         data.playerRot = this.transform.rotation;
         data.playerHp = hp;
-    }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
-        if (stream.IsWriting) {
-            stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
-        }
-        else {
-            object receivedData = stream.ReceiveNext();
-            if (receivedData != null)
-                networkPos = (Vector3)stream.ReceiveNext();
-            receivedData = stream.ReceiveNext();
-            if (receivedData != null)
-                networkRot = (Quaternion)stream.ReceiveNext();
-        }
     }
 }

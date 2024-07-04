@@ -151,7 +151,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage {
                 yield return null;
             }
         }
-        if (PhotonNetwork.InRoom)
+        if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
             PhotonNetwork.Destroy(gameObject);
         else if (!PhotonNetwork.InRoom)
             Destroy(gameObject);

@@ -23,7 +23,7 @@ public class FireSpray : MonoBehaviourPunCallbacks
         //moves our projectile forward based on its speed
         rb.velocity = transform.forward * speed;
         //after being alive so long our projectile will die
-        if (PhotonNetwork.InRoom)
+        if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
             StartCoroutine(WaitThenDestroy(gameObject, destroyTime));
         else if (!PhotonNetwork.InRoom)
             Destroy(gameObject, destroyTime);
@@ -46,14 +46,14 @@ public class FireSpray : MonoBehaviourPunCallbacks
             dmg.TakeDamage(damage);
             dmg.Afflict(type);
             //destroy our projectile
-            if (PhotonNetwork.InRoom)
+            if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
                 PhotonNetwork.Destroy(gameObject);
             else if (!PhotonNetwork.InRoom)
                 Destroy(gameObject);
         }
         else if (!other.gameObject.CompareTag("Player") && !other.isTrigger)
         {
-            if (PhotonNetwork.InRoom)
+            if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
                 PhotonNetwork.Destroy(gameObject);
             else if (!PhotonNetwork.InRoom)
                 Destroy(gameObject);

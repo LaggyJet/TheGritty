@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4871486659913198372}
   - component: {fileID: 2335738390974649146}
   - component: {fileID: 7943685302846997082}
+  - component: {fileID: 9045230164206739488}
   m_Layer: 6
   m_Name: PoolCollider
   m_TagString: Untagged
@@ -67,3 +68,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats_: {fileID: 11400000, guid: 2f7d49d6d19189248a443272b9e9b73c, type: 2}
+--- !u!114 &9045230164206739488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3229947818037046156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

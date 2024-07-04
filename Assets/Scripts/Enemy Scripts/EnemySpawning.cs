@@ -19,7 +19,7 @@ public class EnemySpawning : MonoBehaviourPunCallbacks {
         for (int i = 0; i < numEnemies; i++) {
             int arrayPosition = Random.Range(0, SpawnPoints.Length);
             if (PhotonNetwork.InRoom)
-                PhotonNetwork.Instantiate(Enemy.name, SpawnPoints[arrayPosition].position, SpawnPoints[arrayPosition].rotation);
+                PhotonNetwork.Instantiate("Enemy/" + Enemy.name, SpawnPoints[arrayPosition].position, SpawnPoints[arrayPosition].rotation);
             else if (!PhotonNetwork.InRoom)
                 Instantiate(Enemy, SpawnPoints[arrayPosition].position, SpawnPoints[arrayPosition].rotation);
         }

@@ -12,7 +12,7 @@ public class HPotPickUp : MonoBehaviourPunCallbacks
         if (other.CompareTag("Player"))
         {
             GameManager.instance.playerScript.AddHP(hpAdd);
-            if (PhotonNetwork.InRoom)
+            if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
                 PhotonNetwork.Destroy(gameObject);
             else if (!PhotonNetwork.InRoom)
                 Destroy(gameObject);
