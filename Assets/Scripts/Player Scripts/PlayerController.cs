@@ -92,8 +92,19 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     bool isPlayingSteps;
     bool isSprinting;
 
+    //class variables
+    public Class_Mage mage;
+    public Class_Warrior warrior;
+    public Class_Archer archer;
+
     private void Start()
     {
+        mage = this.GetComponent<Class_Mage>();
+        warrior = this.GetComponent<Class_Warrior>();
+        archer = this.GetComponent<Class_Archer>();
+        mage.enabled = false;
+        warrior.enabled = false;
+        archer.enabled = false;
 
         //tracks our base hp and the current hp that will update as our player takes damage or gets health
         hpBase = hp;
@@ -156,7 +167,10 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
                 speed *= sprintMod;
                 SubtractStamina(0.5f);
             }
-            else if (isSprinting)
+        }
+        if(ctxt.canceled)
+        {
+            if (isSprinting)
             {
                 isSprinting = false;
                 speed /= sprintMod;
@@ -168,6 +182,36 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         if (ctxt.performed)
         {
             Debug.Log("stayc girls its going down!! (testing)");
+        }
+    }
+    public void OnPrimaryFire(InputAction.CallbackContext ctxt)
+    {
+        if (mage.enabled)
+        {
+            mage.OnPrimaryFire(ctxt);
+        }
+        else if (warrior.enabled)
+        {
+            warrior.OnPrimaryFire(ctxt);
+        }
+        else if (archer.enabled)
+        {
+            archer.OnPrimaryFire(ctxt);
+        }
+    }
+    public void OnSecondaryFire(InputAction.CallbackContext ctxt)
+    {
+        if (mage.enabled)
+        {
+            mage.OnSecondaryFire(ctxt);
+        }
+        else if (warrior.enabled)
+        {
+            warrior.OnSecondaryFire(ctxt);
+        }
+        else if (archer.enabled)
+        {
+            archer.OnSecondaryFire(ctxt);
         }
     }
 

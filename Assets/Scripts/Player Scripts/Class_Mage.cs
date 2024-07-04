@@ -41,13 +41,13 @@ public class Class_Mage : MonoBehaviour
                 if (sprayingFire)
                     Instantiate(player.combatObjects[2], player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation);
             }
-            else if (GameManager.instance.isShooting)
-            {
-                GameManager.instance.isShooting = false;
-                player.SetAnimationBool("Mage2", false);
-                SecondaryFireStop();
-            }
 
+        }
+        else if (ctxt.canceled && GameManager.instance.isShooting)
+        {
+            GameManager.instance.isShooting = false;
+            player.SetAnimationBool("Mage2", false);
+            SecondaryFireStop();
         }
     }
 
