@@ -20,8 +20,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject menuSettings;
     [SerializeField] TMP_Text enemyCountText;
     [SerializeField] GameObject charSelect;
+    [SerializeField] GameObject newGameWarning;
     public bool hasRespawned = false; 
 
     //public variables
@@ -34,6 +36,9 @@ public class GameManager : MonoBehaviour
     public static Vector3 playerSpawnLocation;
     public bool canJump;
     public static int enemyCount = 0;
+    public GameObject oldActiveMenu;
+    public GameObject settingsPublicVers;
+    public GameObject menuActivePublicVers;
 
     //Calls "Awake" instead to run before the other Start methods
     void Awake()
@@ -49,7 +54,12 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            if (SceneManager.GetActiveScene().name == "title menu")
+            if (menuActive == menuSettings)
+            {
+                leaveSettings();
+            }
+
+            else if (SceneManager.GetActiveScene().name == "title menu")
             {
                 #if UNITY_EDITOR
                     UnityEditor.EditorApplication.isPlaying = false;
@@ -96,6 +106,35 @@ public class GameManager : MonoBehaviour
         menuActive = null;
     }
 
+    //SETTINGS METHODS
+    public void openSettings()
+    {
+        if (menuActive != null)
+        {
+            oldActiveMenu = menuActive;
+            isPaused = !isPaused;
+            menuActive.SetActive(isPaused);
+            menuActive = null;
+        }
+        isPaused = !isPaused;
+        menuActive = menuSettings;
+        menuActivePublicVers = menuSettings;
+        menuActive.SetActive(isPaused);
+    }
+    public void leaveSettings()
+    {
+        isPaused = !isPaused;
+        menuActive.SetActive(isPaused);
+        menuActive = null;
+        if (oldActiveMenu != null)
+        {
+            isPaused = !isPaused;
+            menuActive = oldActiveMenu;
+            menuActivePublicVers = oldActiveMenu;
+            menuActive.SetActive(isPaused);
+        }
+    }
+
     //WIN/LOSE METHODS
     public void updateEnemy(int amount)
     {
@@ -132,10 +171,23 @@ public class GameManager : MonoBehaviour
         stateResume();
     }
 
+    //TITLE SCREEN METHODS
     public void charSelectionMenu()
     {
-        statePause();
+        if (menuActive != null)
+        {
+            isPaused = !isPaused;
+            menuActive.SetActive(isPaused);
+            menuActive = null;
+        }
+        isPaused = !isPaused;
         menuActive = charSelect;
+        menuActive.SetActive(isPaused);
+    }
+    public void Warning4NewGame()
+    {
+        statePause();
+        menuActive = newGameWarning;
         menuActive.SetActive(isPaused);
     }
 }
