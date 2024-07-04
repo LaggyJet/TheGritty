@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
 
     [Range(0f, 10f)] public float stamina; 
     float staminaBase; 
-    Coroutine staminaCor = null;
+    //Coroutine staminaCor = null;
     
     
      // stamina bar gradual fill 

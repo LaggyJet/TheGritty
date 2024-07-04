@@ -104,7 +104,11 @@ public class EnemyAI : MonoBehaviour, IDamage {
         if (hp > 0)
             StartCoroutine(FlashDamage());
         if (hp <= 0 && !wasKilled) {
+<<<<<<< Updated upstream
             EnemyManager.Instance.UpdateKillCounter(enemyLimiter);
+=======
+            PlayerController.instance.AddStamina(0.5f);  
+>>>>>>> Stashed changes
             GameManager.instance.updateEnemy(-1);
             gameObject.GetComponent<Collider>().enabled = false;
             StartCoroutine(DeathAnimation());
