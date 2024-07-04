@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [SerializeField] int gravity;
     [SerializeField] int jumpMax;
     [SerializeField] int jumpSpeed;
+    [SerializeField] public GameObject shootPosition;
+    [SerializeField] public GameObject[] combatObjects;
 
     [Header("------- HP -------")]
     
@@ -53,25 +55,13 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     // stamina bar shake
     [Range(0f, 10f)] public float stamShakeDuration;   
 
-   
-
-    //these are combat variables
-    [SerializeField] float shootDamage;
-    [SerializeField] float shootRate;
-    [SerializeField] int shootDistance;
-    [SerializeField] GameObject shootPosition;
-    [SerializeField] GameObject projectile;
-    [SerializeField] GameObject fireSpray;
-
     //these are animation variables
-    [SerializeField] Animator animate;
+    [SerializeField] public Animator animate;
     [SerializeField] float animationTransSpeed;
-
 
     //these are variables used explicitly in functions
     DamageStats status;
     int jumpCount;
-    bool isShooting;
     bool isDead;
     bool isDOT;
 
@@ -90,12 +80,12 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [Header("------ Audio ------")]
 
     //Audio variables
-    [SerializeField] AudioSource audioSource;
+    [SerializeField] public AudioSource audioSource;
     [SerializeField] AudioClip[] footsteps;
     [SerializeField] float footstepsVol;
     [SerializeField] AudioClip[] hurt;
     [SerializeField] float hurtVol;
-    [SerializeField] AudioClip[] attack;
+    [SerializeField] public AudioClip[] attack;
     [SerializeField] float attackVol;
     [SerializeField] AudioClip[] filledStam;
     [SerializeField] float filledStamVol;
@@ -202,6 +192,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     {
         //runs our movement function to determine the player velocity each frame
         Movement();
+        Sprint();
     }
 
     //calculates the player movement
@@ -224,6 +215,45 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             StartCoroutine(playSteps());
         }
     }
+
+    //calculates our speed if the player is sprinting
+    void Sprint()
+    {
+        //when Sprint is pressed apply the sprint modifier variable to our speed variable
+        if (Input.GetButtonDown("Sprint"))
+        {
+            isSprinting = true;
+            speed *= sprintMod;
+            SubtractStamina(0.5f);
+        }
+        //when sprint is no longer being pressed we remove the sprint modifier from the speed variable
+        else if (Input.GetButtonUp("Sprint"))
+        {
+            isSprinting = false;
+            speed /= sprintMod;
+        }
+    }
+
+    public void SetAnimationTrigger(string triggerName)
+    {
+        animate.SetTrigger(triggerName);
+    }
+    public void SetAnimationBool(string boolName, bool state)
+    {
+        animate.SetBool(boolName, state);
+    }
+
+    public void PlaySound(char context) // A for attack, 
+    {
+        switch (context)
+        {
+            case 'A':
+                audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
+                break;
+
+        }
+    }
+
     IEnumerator playSteps() //playing footsteps sounds
     {
         isPlayingSteps = true;
@@ -241,42 +271,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     }
 
     //this function handles everything to do with the player shooting
-    void PrimaryFire()
-    {
-        //sets shootings variable to true so we can only fire once at a time
-        isShooting = true;
-        
-        audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
-  
-        //spawns our projectile
-        Instantiate(projectile, shootPosition.transform.position, shootPosition.transform.rotation);
-        isShooting = false;
-    }
-
-    void SecondaryFireCheck()
-    {
-        if (!isShooting)
-        {
-            isShooting = true;
-            SubtractStamina(0.5f);
-            animate.SetTrigger("SecondaryFireStart");
-        }
-        else if (isShooting)
-        {
-            isShooting = false;
-            animate.SetTrigger("SecondaryFireStop");
-            SecondaryFireStop();
-        }
-    }
-
-    void SecondaryFire()
-    {
-        audioSource.PlayOneShot(attack[Random.Range(0, attack.Length)], attackVol);
-
-        fireSpray.SetActive(true);
-        fireSpray.GetComponent<ParticleSystem>().Play();
-
-    }
+    
 
     private void OnParticleCollision(GameObject other)
     {
@@ -292,12 +287,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             //destroy our projectile
             Destroy(gameObject);
         }
-    }
-
-    void SecondaryFireStop()
-    {
-        fireSpray.SetActive(false);
-        fireSpray.GetComponent<ParticleSystem>().Play(false);
     }
 
 
@@ -416,11 +405,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     //the function for updating our ui
     public void updatePlayerUI()
     {
-        if(GameManager.instance.playerHPBar == null || GameManager.instance.staminaBar == null)
-        {
-            Debug.LogError("HELPEE AFJI IM GOING INSANE");
-        }
-
         // Variable for filling bar 
         float healthRatio = (float)hp / hpBase;
         float staminaRatio = (float)stamina / staminaBase; 
