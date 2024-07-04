@@ -163,22 +163,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             }
         }
     }
-    public void OnPrimaryFire(InputAction.CallbackContext ctxt)
-    {
-
-        if (ctxt.performed && !isShooting && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu" && staminaCor == null)
-        {
-            animate.SetTrigger("PrimaryFire");
-            SubtractStamina(0.5f);
-        }
-    }
-    public void OnSecondaryFire(InputAction.CallbackContext ctxt)
-    {
-        if(ctxt.performed && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
-        {
-            SecondaryFireCheck();
-        }
-    }
+    
     public void OnAbility1(InputAction.CallbackContext ctxt)
     {
         if (ctxt.performed)

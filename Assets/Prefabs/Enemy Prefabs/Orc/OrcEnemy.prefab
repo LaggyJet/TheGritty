@@ -233,7 +233,7 @@ MonoBehaviour:
   agent: {fileID: 3269552169091019610}
   anim: {fileID: 5855602775976195817}
   flipEnemyDirection: 0
-  hp: 7
+  hp: 22
   animationTransitionSpeed: 8
   faceTargetSpeed: 5
   attackSpeed: 2
