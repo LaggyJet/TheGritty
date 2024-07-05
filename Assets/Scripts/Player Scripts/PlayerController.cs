@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
 {
@@ -44,7 +45,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
 
     [Range(0f, 10f)] public float stamina; 
     float staminaBase; 
-    Coroutine staminaCor = null;
+    public Coroutine staminaCor = null;
     
     
      // stamina bar gradual fill 
@@ -77,6 +78,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     public static Vector3 spawnLocation;
     public static Quaternion spawnRotation;
     public static float spawnHp;
+    public static float spawnStamina;
 
 
     [Header("------ Audio ------")]
@@ -94,6 +96,11 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     bool isPlayingSteps;
     bool isSprinting;
 
+    //class variables
+    public Class_Mage mage;
+    public Class_Warrior warrior;
+    public Class_Archer archer;
+
     private void Start()
     {
         // Prevent movement of other players
@@ -106,6 +113,13 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
 
         if (instance == null) instance = this;
         else { Destroy(gameObject); return; }
+        
+        mage = this.GetComponent<Class_Mage>();
+        warrior = this.GetComponent<Class_Warrior>();
+        archer = this.GetComponent<Class_Archer>();
+        mage.enabled = false;
+        warrior.enabled = false;
+        archer.enabled = false;
 
         //tracks our base hp and the current hp that will update as our player takes damage or gets health
         hpBase = hp;
@@ -129,6 +143,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             this.transform.position = spawnLocation;
             this.transform.rotation = spawnRotation;
             hp = spawnHp;
+            stamina = spawnStamina;
             Physics.SyncTransforms();
             //updates our ui to accurately show the player hp / stamina and other information
             updatePlayerUI();
@@ -136,20 +151,94 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         }
     }
 
-    //void FixedUpdate()
-    //{
-        //hp = hp+1;
-    //}
+    //methods for key binding/controls
+    public void OnMove(InputAction.CallbackContext ctxt)
+    {
+        Vector2 newMoveDir = ctxt.ReadValue<Vector2>();
+        moveDir.x = newMoveDir.x;
+        moveDir.z = newMoveDir.y;
+       
+    }
+    public void OnJump(InputAction.CallbackContext ctxt)
+    {
+        if (ctxt.performed && GameManager.instance.canJump)
+        {
+            if (jumpCount < jumpMax)
+            {
+                jumpCount++;
+                playerV.y = jumpSpeed;
+            }
+        }
+        controller.Move(moveDir * speed * Time.deltaTime);
+        playerV.y -= gravity * Time.deltaTime;
+        controller.Move(playerV * Time.deltaTime);
+
+    }
+    public void OnSprint(InputAction.CallbackContext ctxt)
+    {
+        if(ctxt.performed)
+        {
+            if (!isSprinting)
+            {
+                isSprinting = true;
+                speed *= sprintMod;
+                SubtractStamina(0.5f);
+            }
+        }
+        if(ctxt.canceled)
+        {
+            if (isSprinting)
+            {
+                isSprinting = false;
+                speed /= sprintMod;
+            }
+        }
+    }
+    public void OnAbility1(InputAction.CallbackContext ctxt)
+    {
+        if (ctxt.performed)
+        {
+            Debug.Log("stayc girls its going down!! (testing)");
+        }
+    }
+    public void OnPrimaryFire(InputAction.CallbackContext ctxt)
+    {
+        if (mage.enabled)
+        {
+            mage.OnPrimaryFire(ctxt);
+        }
+        else if (warrior.enabled)
+        {
+            warrior.OnPrimaryFire(ctxt);
+        }
+        else if (archer.enabled)
+        {
+            archer.OnPrimaryFire(ctxt);
+        }
+    }
+    public void OnSecondaryFire(InputAction.CallbackContext ctxt)
+    {
+        if (mage.enabled)
+        {
+            mage.OnSecondaryFire(ctxt);
+        }
+        else if (warrior.enabled)
+        {
+            warrior.OnSecondaryFire(ctxt);
+        }
+        else if (archer.enabled)
+        {
+            archer.OnSecondaryFire(ctxt);
+        }
+    }
 
     // Update is called once per frame
     void Update()
     {
         // Prevent movement of other players
-        if (GetComponent<PhotonView>().IsMine || !PhotonNetwork.InRoom) {
+        if (GetComponent<PhotonView>().IsMine || !PhotonNetwork.InRoom)
             //runs our movement function to determine the player velocity each frame
             Movement();
-            Sprint();
-        }
         else if (!GetComponent<PhotonView>().IsMine && PhotonNetwork.InRoom) {
             transform.position = Vector3.Lerp(transform.position, networkPos, Time.deltaTime * 10);
             transform.rotation = Quaternion.Lerp(transform.rotation, networkRot, Time.deltaTime * 10);
@@ -165,45 +254,17 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             playerV = Vector3.zero;
             jumpCount = 0;
         }
-        //runs a check for if player jumps
-        if (Input.GetButtonDown("Jump") && GameManager.instance.canJump)
-        {
-            if (jumpCount < jumpMax)
-            {
-                jumpCount++;
-                playerV.y = jumpSpeed;
-            }
-        }
         //gets our input and adjusts the players position using a velocity formula
-        moveDir = Input.GetAxis("Horizontal") * transform.right + Input.GetAxis("Vertical") * transform.forward;
-        controller.Move(moveDir * speed * Time.deltaTime);
+        Vector3 movement = moveDir.x * transform.right + moveDir.z * transform.forward;
+        controller.Move(movement * speed * Time.deltaTime);
         playerV.y -= gravity * Time.deltaTime;
         controller.Move(playerV * Time.deltaTime);
 
-        if (controller.isGrounded && moveDir.magnitude > 0.3 && !isPlayingSteps)
+        if (controller.isGrounded && movement.magnitude > 0.3 && !isPlayingSteps)
         {
             StartCoroutine(playSteps());
         }
     }
-
-    //calculates our speed if the player is sprinting
-    void Sprint()
-    {
-        //when Sprint is pressed apply the sprint modifier variable to our speed variable
-        if (Input.GetButtonDown("Sprint"))
-        {
-            isSprinting = true;
-            speed *= sprintMod;
-            SubtractStamina(0.5f);
-        }
-        //when sprint is no longer being pressed we remove the sprint modifier from the speed variable
-        else if (Input.GetButtonUp("Sprint"))
-        {
-            isSprinting = false;
-            speed /= sprintMod;
-        }
-    }
-
     public void SetAnimationTrigger(string triggerName)
     {
         animate.SetTrigger(triggerName);
@@ -223,7 +284,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
 
         }
     }
-
     IEnumerator playSteps() //playing footsteps sounds
     {
         isPlayingSteps = true;
@@ -233,6 +293,26 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         yield return new WaitForSeconds(isSprinting ? 0.1f : 0.3f);
         isPlayingSteps = false;
     }
+
+    private void OnParticleCollision(GameObject other)
+    {
+        int damage = 1;
+        //when encountering a collision trigger it checks for component IDamage
+        IDamage dmg = other.GetComponent<IDamage>();
+
+        //if there is an IDamage component we run the inside code
+        if (dmg != null && !other.gameObject.CompareTag("Player"))
+        {
+            //deal damage to the object hit
+            dmg.TakeDamage(damage);
+            //destroy our projectile
+            if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
+                PhotonNetwork.Destroy(gameObject);
+            else if (!PhotonNetwork.InRoom)
+                Destroy(gameObject);
+        }
+    }
+
 
     public void Afflict(DamageStats type)
     {
@@ -403,11 +483,13 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         spawnLocation = data.playerPos;
         spawnRotation = data.playerRot;
         spawnHp = data.playerHp; 
+        spawnStamina = data.playerStamina;
     }
     public void SaveData(ref GameData data)
     {
         data.playerPos = this.transform.position;
         data.playerRot = this.transform.rotation;
         data.playerHp = hp;
+        data.playerStamina = stamina;
     }
 }

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/Co-op Prefabs/spawn.prefab.meta
 guid: 7590d778c04698a41bd24210f4351062
+========
+guid: 6f7ac8ef38c3bba46ba6b3beae60958a
+>>>>>>>> f057fa45dbd37ee0c5360a9e46c89c052a79a527:Assets/Prefabs/ui prefabs/OldPrefabs/Lose Menu OLD.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

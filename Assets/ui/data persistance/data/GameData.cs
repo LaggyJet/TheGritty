@@ -11,11 +11,13 @@ public class GameData
     public Vector3 playerPos;
     public Quaternion playerRot;
     public float playerHp;
+    public float playerStamina;
 
     public GameData()  //constructor - values are the initial values when starting a game
     {
             this.playerPos = Vector3.zero;
             this.playerRot = Quaternion.identity;
             this.playerHp = 0;
+            this.playerStamina = 0;
     }
 }

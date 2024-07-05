@@ -22750,6 +22750,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
+    - target: {fileID: 720355426864771785, guid: cc49ce404f390c440b5085473052a07b, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1011144946502190045, guid: cc49ce404f390c440b5085473052a07b, type: 3}
       propertyPath: m_TagString
       value: Untagged

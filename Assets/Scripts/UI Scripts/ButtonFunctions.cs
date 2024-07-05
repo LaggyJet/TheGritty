@@ -43,6 +43,14 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.instance.respawnAfterLost();
     }
+    public void settings()
+    {
+        GameManager.instance.openSettings();
+    }
+    public void quitSettings()
+    {
+        GameManager.instance.leaveSettings();
+    }
     public void jumpToggle()
     {
         GameManager.instance.canJump = !GameManager.instance.canJump;
@@ -61,7 +69,11 @@ public class ButtonFunctions : MonoBehaviour
         DataPersistenceManager.Instance.LoadGame();
         GameManager.instance.stateResumeGameLoads();
     }
-    public void startNewGame()
+    public void startNewGamePart1()
+    {
+        GameManager.instance.Warning4NewGame();
+    }
+    public void startNewGamePart2()
     {
         GameManager.instance.charSelectionMenu();
     }
@@ -70,17 +82,14 @@ public class ButtonFunctions : MonoBehaviour
     public void warrior()
     {
         newGame();
-        GameManager.instance.stateResume();
     }
     public void mage()
     {
         newGame();
-        GameManager.instance.stateResume();
     }
     public void archer()
     {
         newGame();
-        GameManager.instance.stateResume();
     }
 
     // Co-op features

@@ -6,7 +6,8 @@ using Photon.Pun;
 
 public class HPotPickUp : MonoBehaviourPunCallbacks
 {
-    [SerializeField] float hpAdd; //amount of hp the potion adds to the player
+    [SerializeField] float hpAdd; //amount of hp/stamina the potion adds to the player
+    [SerializeField] float staminaAdd; 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -18,4 +19,6 @@ public class HPotPickUp : MonoBehaviourPunCallbacks
                 Destroy(gameObject);
         }
     }
+// Need to adjust script to accept stamina potions 
+
 }
