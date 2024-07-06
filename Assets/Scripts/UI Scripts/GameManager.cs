@@ -23,8 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuSettings;
     [SerializeField] TMP_Text enemyCountText;
     [SerializeField] GameObject charSelect;
-    [SerializeField] GameObject newGameWarning;
-    public bool hasRespawned = false; 
+    [SerializeField] GameObject GameWarning;
 
     //public variables
     public Image playerHPBar;
@@ -40,6 +39,9 @@ public class GameManager : MonoBehaviour
     public GameObject settingsPublicVers;
     public GameObject menuActivePublicVers;
     public bool isShooting;
+    public TextMeshProUGUI textMeshPro;
+    public float displayTime;
+    public bool hasRespawned = false;
 
     //Calls "Awake" instead to run before the other Start methods
     void Awake()
@@ -49,7 +51,6 @@ public class GameManager : MonoBehaviour
         playerScript = player.GetComponent<PlayerController>();
         playerLocation = player.transform.position;
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -79,6 +80,19 @@ public class GameManager : MonoBehaviour
                 stateResume();
             }
         }
+    }
+
+    //TEXT POP UPS
+    public void ShowText (string message)
+    {
+        textMeshPro.text = message;
+        textMeshPro.gameObject.SetActive(true);
+        Invoke("HideText", displayTime);
+    }
+
+    void HideText()
+    {
+        textMeshPro.gameObject.SetActive(false);
     }
 
     //PAUSE METHODS
@@ -188,7 +202,17 @@ public class GameManager : MonoBehaviour
     public void Warning4NewGame()
     {
         statePause();
-        menuActive = newGameWarning;
+        menuActive = GameWarning;
+        menuActive.SetActive(isPaused);
+    }
+    public void Warning4SaveProgress()
+    {
+        oldActiveMenu = menuActive;
+        isPaused = !isPaused;
+        menuActive.SetActive(isPaused);
+        menuActive = null;
+        statePause();
+        menuActive = GameWarning;
         menuActive.SetActive(isPaused);
     }
 }

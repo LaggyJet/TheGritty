@@ -6,11 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : MonoBehaviour
 {
-
     public void resume()
     {
         GameManager.instance.stateResume();
-       
     }
     public void restart()
     {
@@ -22,11 +20,11 @@ public class ButtonFunctions : MonoBehaviour
     }
     public void quitApp()
     {
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-    #else
+#else
         Application.Quit();
-    #endif
+#endif
     }
 
     public void quitGame()
@@ -45,10 +43,22 @@ public class ButtonFunctions : MonoBehaviour
     public void quitSettings()
     {
         GameManager.instance.leaveSettings();
+        if(SettingsManager.instance != null)
+        SettingsManager.instance.SavePrefs();
+        ResolutionManager.instance.SavePrefs();
     }
-    public void jumpToggle()
+
+    public void quitSaveWarning()
     {
-        GameManager.instance.canJump = !GameManager.instance.canJump;
+        DataPersistenceManager.gameData = DataPersistenceManager.Instance.dataHandler.Load();
+        if (DataPersistenceManager.gameData.playerPos != GameManager.instance.player.transform.position || DataPersistenceManager.gameData.playerHp != GameManager.instance.playerScript.hp || DataPersistenceManager.gameData.playerStamina != GameManager.instance.playerScript.stamina)
+        {
+            GameManager.instance.Warning4SaveProgress();
+        }
+        else
+        {
+            quitGame();
+        }
     }
 
     //FOR TITLE SCREEN

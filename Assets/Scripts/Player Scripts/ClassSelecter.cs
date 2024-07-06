@@ -47,4 +47,18 @@ public class ClassSelecter : MonoBehaviour
     {
         AssignClass(1);
     }
+
+    //buttons for selection in menu
+    public void MageSelect()
+    {
+        AssignClass(1);
+    }
+    public void WarriorSelect()
+    {
+        AssignClass(1);
+    }
+    public void ArcherSelect()
+    {
+        AssignClass(1);
+    }
 }

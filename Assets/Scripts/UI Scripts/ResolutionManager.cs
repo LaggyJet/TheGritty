@@ -4,17 +4,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Diagnostics.CodeAnalysis;
+using UnityEngine.Audio;
 
 public class ResolutionManager : MonoBehaviour
 {
     //variables
     [SerializeField] TMP_Dropdown resDropDown;
+    private static int resDDVal;
 
     private Resolution[] resolutions;
     private List<Resolution> filteredResolutions;
     private float currentRefreshRate;
     private int currentResolutionIndex;
+    public static ResolutionManager instance { get; private set; }
 
+    private void Awake()
+    {
+        instance = this;
+        if (instance != null)
+        {
+            LoadPrefs();
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -53,6 +64,10 @@ public class ResolutionManager : MonoBehaviour
             resDropDown.value = currentResolutionIndex;
             resDropDown.RefreshShownValue();
 
+            if(resDDVal != currentResolutionIndex)
+            {
+                SetResolution(resDDVal);
+            }
         }
 
     }
@@ -61,5 +76,16 @@ public class ResolutionManager : MonoBehaviour
     {
         Resolution resolution = filteredResolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, true);  
+        resDDVal = resDropDown.value;
+    }
+    public void SavePrefs()
+    {
+        PlayerPrefs.SetInt("resDrpDwnVal", resDDVal);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadPrefs()
+    {
+        resDDVal = PlayerPrefs.GetInt("resDrpDwnVal", resDDVal);
     }
 }
