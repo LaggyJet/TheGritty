@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [Header("------- Stamina -------")]
 
     [Range(0f, 10f)] public float stamina; 
+    [Range(0f, 10f)] public float staminaRegenerate; 
     float staminaBase; 
     public Coroutine staminaCor = null;
     
@@ -230,6 +231,8 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     {
         //runs our movement function to determine the player velocity each frame
         Movement();
+        // Regenerating over time ( can be adjusted in unity )
+        RegenrateStamina();
     }
 
     //calculates the player movement
@@ -408,17 +411,23 @@ private void StopSprinting()
         updatePlayerUI();
     }
 
-    IEnumerator StaminaDecreaseRoutine()
+    // Regenerates stamina overtime without stamina pickups 
+    private void RegenrateStamina()
     {
-        while(true) 
+        if(stamina < staminaBase)
         {
-            SubtractStamina(0.1f);
+           stamina += staminaRegenerate * Time.deltaTime;
 
-           yield return new WaitForSeconds(0.5f);
+           if(stamina > staminaBase)
+           {
+               stamina = staminaBase;
+           }
+
+           updatePlayerUI();
         }
-       
     }
 
+    
     //called when player runs into spiderwebs
     public void Slow()
     {
