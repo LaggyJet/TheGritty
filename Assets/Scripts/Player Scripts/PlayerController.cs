@@ -289,7 +289,6 @@ private void StopSprinting()
 
         }
     }
-
     IEnumerator playSteps() //playing footsteps sounds
     {
         isPlayingSteps = true;
