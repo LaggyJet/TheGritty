@@ -1,3 +1,5 @@
+// Jacob, Kheera 
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +13,9 @@ public class Class_Mage : MonoBehaviour
     //these are combat variables
     //public bool isShooting;  //CAN BE DELETED BUT JUST IN CASE U NEED IT (moved to game manager)
     bool sprayingFire;
+
+    [SerializeField] float primaryStamCost = 0.05f;  
+    [SerializeField] float secondaryStamCost = 0.5f; 
 
 
     private void Start()
@@ -64,16 +69,27 @@ public class Class_Mage : MonoBehaviour
 
     void PrimaryFire()
     {
+        if(player.stamina >= primaryStamCost)
+        {
+        // Subtracts stamina when fired (can change stam cost in fields)
+        player.SubtractStamina(primaryStamCost);
+
         //sets shootings variable to true so we can only fire once at a time
         GameManager.instance.isShooting = true;
-
 
         player.PlaySound('A');
 
         //spawns our projectile
         Instantiate(player.combatObjects[0], player.shootPosition.transform.position, player.shootPosition.transform.rotation);
         GameManager.instance.isShooting = false;
+        }
+        else
+        {
+           Debug.Log("No Staminaaaaaa :(");
+        }
+
     }
+   
 
     //CAN BE DELETED BUT JUST IN CASE U NEED IT
     //void FireCheck()
@@ -98,9 +114,20 @@ public class Class_Mage : MonoBehaviour
 
     void SecondaryFire()
     {
-        player.PlaySound('A');
-        sprayingFire = true;
-        player.combatObjects[1].GetComponent<ParticleSystem>().Play();
+        if(player.stamina >= secondaryStamCost)
+        {
+            // Subtracts stamina when fired (can change stam cost in fields)
+            player.SubtractStamina(secondaryStamCost);
+
+         player.PlaySound('A');
+         sprayingFire = true;
+         player.combatObjects[1].GetComponent<ParticleSystem>().Play();
+        }
+        else
+        {
+            Debug.Log("No staminaaaa :(");
+        }
+        
     }
 
     void SecondaryFireStop()
