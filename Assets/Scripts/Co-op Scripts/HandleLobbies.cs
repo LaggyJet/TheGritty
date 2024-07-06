@@ -47,6 +47,7 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
     public override void OnJoinedRoom() { StartCoroutine(WaitOnLobby()); }
 
     IEnumerator WaitOnLobby() {
+        infoText.color = Color.white;
         infoText.text = "Connected: Waiting for other";
         joinInput.interactable = joinButton.interactable = false;
         while (PhotonNetwork.CurrentRoom.PlayerCount != PhotonNetwork.CurrentRoom.MaxPlayers)
