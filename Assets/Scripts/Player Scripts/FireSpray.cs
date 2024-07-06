@@ -46,18 +46,17 @@ public class FireSpray : MonoBehaviourPunCallbacks
             dmg.TakeDamage(damage);
             dmg.Afflict(type);
             //destroy our projectile
-            if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
-                PhotonNetwork.Destroy(gameObject);
-            else if (!PhotonNetwork.InRoom)
-                Destroy(gameObject);
+            DestroyObject(gameObject);
         }
         else if (!other.gameObject.CompareTag("Player") && !other.isTrigger)
-        {
-            if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
-                PhotonNetwork.Destroy(gameObject);
-            else if (!PhotonNetwork.InRoom)
-                Destroy(gameObject);
-        }
+            DestroyObject(gameObject);
 
+    }
+
+    void DestroyObject(GameObject obj) {
+        if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
+            PhotonNetwork.Destroy(gameObject);
+        else if (!PhotonNetwork.InRoom)
+            Destroy(gameObject);
     }
 }

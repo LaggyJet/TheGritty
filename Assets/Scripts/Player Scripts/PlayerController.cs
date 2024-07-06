@@ -240,8 +240,8 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             //runs our movement function to determine the player velocity each frame
             Movement();
         else if (!GetComponent<PhotonView>().IsMine && PhotonNetwork.InRoom) {
-            transform.position = Vector3.Lerp(transform.position, networkPos, Time.deltaTime * 10);
-            transform.rotation = Quaternion.Lerp(transform.rotation, networkRot, Time.deltaTime * 10);
+            //transform.position = Vector3.Lerp(transform.position, networkPos, Time.deltaTime * 10);
+            //transform.rotation = Quaternion.Lerp(transform.rotation, networkRot, Time.deltaTime * 10);
         }
     }
 

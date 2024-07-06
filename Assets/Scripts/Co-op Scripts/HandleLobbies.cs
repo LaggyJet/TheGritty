@@ -3,12 +3,13 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using TMPro;
+using System.Collections;
 public class HandleLobbies : MonoBehaviourPunCallbacks {
     [SerializeField] TMP_InputField hostInput, joinInput;
     [SerializeField] GameObject loadMenu, lobbyMenu;
 
     // Start the connection when loading screen plays
-    void Start() { PhotonNetwork.AutomaticallySyncScene = false; PhotonNetwork.ConnectUsingSettings(); }
+    void Start() { PhotonNetwork.AutomaticallySyncScene = true; PhotonNetwork.ConnectUsingSettings(); }
 
     // Have the player join the lobby once it loads
     public override void OnConnectedToMaster() { PhotonNetwork.JoinLobby(TypedLobby.Default); }
@@ -23,5 +24,12 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
     public void JoinRoom() { PhotonNetwork.JoinRoom(joinInput.text, null); }
 
     // Once player loads, load the scene
-    public override void OnJoinedRoom() { PhotonNetwork.LoadLevel("Build Scene"); }
+    public override void OnJoinedRoom() { StartCoroutine(WaitOnLobby()); }
+
+    IEnumerator WaitOnLobby() {
+        while (PhotonNetwork.CurrentRoom.PlayerCount != 2)
+            yield return null;
+        if (PhotonNetwork.IsMasterClient)
+            PhotonNetwork.LoadLevel("Build Scene");
+    }
 }

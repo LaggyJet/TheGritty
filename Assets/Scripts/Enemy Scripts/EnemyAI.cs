@@ -22,7 +22,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage {
     [SerializeField] int range;
 
     DamageStats status;
-    public bool isAttacking, wasKilled, isDOT;
+    bool isAttacking, wasKilled, isDOT;
     Vector3 playerDirection;
     float originalStoppingDistance, adjustedStoppingDistance, angleToPlayer;
     int id;
