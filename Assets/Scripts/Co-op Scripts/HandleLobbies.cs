@@ -29,7 +29,7 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
     // Create room based on user input (max of 2 players)
     public void HostRoom() {
         for (int i = 0; i < rooms.Count; i++) {
-            if (rooms[i].Name == hostInput.text) {
+            if (rooms[i].Name == hostInput.text.ToLower()) {
                 RaiseWarning("Room with this name already exists");
                 return;
             }
@@ -48,7 +48,7 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
     // Join room based on user input
     public void JoinRoom() {
         for (int i = 0; i < rooms.Count; i++) {
-            if (rooms[i].Name == hostInput.name) {
+            if (rooms[i].Name == joinInput.text.ToLower()) {
                 if (rooms[i].PlayerCount != rooms[i].MaxPlayers)
                     PhotonNetwork.JoinRoom(joinInput.text.ToLower(), null);
                 else
@@ -66,7 +66,7 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
     IEnumerator WaitOnLobby() {
         infoText.color = Color.white;
         infoText.text = "Connected: Waiting for other";
-        joinInput.interactable = joinButton.interactable = false;
+        joinInput.interactable = joinButton.interactable = hostInput.interactable = false;
         while (PhotonNetwork.CurrentRoom.PlayerCount != PhotonNetwork.CurrentRoom.MaxPlayers)
             yield return null;
         if (PhotonNetwork.IsMasterClient)
