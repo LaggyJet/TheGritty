@@ -30,18 +30,35 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
     public void HostRoom() {
         for (int i = 0; i < rooms.Count; i++) {
             if (rooms[i].Name == hostInput.text) {
-                infoText.color = Color.red;
-                infoText.text = "Room with this name already exists";
+                RaiseWarning("Room with this name already exists");
+                return;
+            }
+        }
+
+        if (hostInput.text.Length == 0) {
+            RaiseWarning("Please enter a room name");
+            return;
+        }
+        
+
+        hostButton.interactable = false;
+        PhotonNetwork.CreateRoom(hostInput.text.ToLower(), new RoomOptions() { MaxPlayers = 2 }, null);
+    }
+
+    // Join room based on user input
+    public void JoinRoom() {
+        for (int i = 0; i < rooms.Count; i++) {
+            if (rooms[i].Name == hostInput.name) {
+                if (rooms[i].PlayerCount != rooms[i].MaxPlayers)
+                    PhotonNetwork.JoinRoom(joinInput.text.ToLower(), null);
+                else
+                    RaiseWarning("Room is full");
                 return;
             }
         }
         
-        hostButton.interactable = false;
-        PhotonNetwork.CreateRoom(hostInput.text, new RoomOptions() { MaxPlayers = 2 }, null);
+        RaiseWarning("Room doesn't exist");
     }
-
-    // Join room based on user input
-    public void JoinRoom() { PhotonNetwork.JoinRoom(joinInput.text, null); }
 
     // Once player loads, load the scene
     public override void OnJoinedRoom() { StartCoroutine(WaitOnLobby()); }
@@ -54,5 +71,10 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
             yield return null;
         if (PhotonNetwork.IsMasterClient)
             PhotonNetwork.LoadLevel("Build Scene");
+    }
+
+    void RaiseWarning(string message) {
+        infoText.color = Color.red;
+        infoText.text = message;
     }
 }
