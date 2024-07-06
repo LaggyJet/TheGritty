@@ -15,14 +15,13 @@ public class FireBall : MonoBehaviour
     [SerializeField] int destroyTime;
     [SerializeField] DamageStats type;
 
-
     // Start is called before the first frame update
     void Start()
     {
-        //moves our projectile forward based on its speed
-        rb.velocity = transform.forward * speed;
-        //after being alive so long our projectile will die
-        Destroy(gameObject, destroyTime);
+           //moves our projectile forward based on its speed
+           rb.velocity = transform.forward * speed;
+           //after being alive so long our projectile will die
+           Destroy(gameObject, destroyTime);
     }
 
     private void OnTriggerEnter(Collider other)

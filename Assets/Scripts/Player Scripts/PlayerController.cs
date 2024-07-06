@@ -159,23 +159,33 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     }
     public void OnSprint(InputAction.CallbackContext ctxt)
     {
-        if(ctxt.performed)
+        if(stamina > 0)
+        {
+           if(ctxt.performed)
         {
             if (!isSprinting)
             {
                 isSprinting = true;
-                speed *= sprintMod;
+                speed *= sprintMod; 
                 SubtractStamina(0.5f);
             }
         }
-        if(ctxt.canceled)
+        else if(ctxt.canceled)
         {
             if (isSprinting)
             {
                 isSprinting = false;
                 speed /= sprintMod;
+                
             }
         }
+        }
+        else
+        {
+            StopSprinting();
+            Debug.Log("No Stamina poo :(");    
+        }
+        
     }
     public void OnAbility1(InputAction.CallbackContext ctxt)
     {
@@ -242,6 +252,21 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             StartCoroutine(playSteps());
         }
     }
+
+    
+
+
+// // Added to fix sprinting not stopping on button up 
+private void StopSprinting()
+{
+    if (isSprinting)
+    {
+        isSprinting = false;
+        speed /= sprintMod;
+    }
+}
+    
+
     public void SetAnimationTrigger(string triggerName)
     {
         animate.SetTrigger(triggerName);
@@ -316,7 +341,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     public void TakeDamage(float amount)
     {
         //subtract the damage from the player
-        hp -= amount;
+        hp -= 0.5f; 
 
         if (!isPlayingSteps) //plays hurt sounds
         {
