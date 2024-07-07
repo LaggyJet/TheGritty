@@ -11,9 +11,10 @@ public class EnemySpawning : MonoBehaviourPunCallbacks {
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player") && !isSpawning)
-            Spawn();
+            PhotonView.Get(this).RPC(nameof(Spawn), RpcTarget.All);
     }
 
+    [PunRPC]
     public void Spawn() {
         isSpawning = true;
         for (int i = 0; i < numEnemies; i++) {

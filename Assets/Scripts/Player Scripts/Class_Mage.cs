@@ -14,7 +14,6 @@ public class Class_Mage : MonoBehaviour
     //public bool isShooting;  //CAN BE DELETED BUT JUST IN CASE U NEED IT (moved to game manager)
     bool sprayingFire;
 
-
     private void Start()
     {
         player = GameManager.instance.player.GetComponent<PlayerController>();
@@ -28,7 +27,7 @@ public class Class_Mage : MonoBehaviour
         {
             //FireCheck();
             if (sprayingFire) {
-                if (PhotonNetwork.InRoom)
+                if (PhotonNetwork.InRoom && GameManager.instance.player.GetComponent<PhotonView>().IsMine)
                     PhotonNetwork.Instantiate("Player/" + player.combatObjects[2].name, player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation);
                 else if (!PhotonNetwork.InRoom)
                     Instantiate(player.combatObjects[2], player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation);
@@ -50,7 +49,7 @@ public class Class_Mage : MonoBehaviour
                 player.SetAnimationBool("Mage2", true);
                 if (sprayingFire)
                 {
-                    if (PhotonNetwork.InRoom)
+                    if (PhotonNetwork.InRoom && player.GetComponent<PhotonView>().IsMine)
                         PhotonNetwork.Instantiate("Player/" + player.combatObjects[2].name, player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation);
                     else if (!PhotonNetwork.InRoom)
                         Instantiate(player.combatObjects[2], player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation);
@@ -86,7 +85,7 @@ public class Class_Mage : MonoBehaviour
         player.PlaySound('A');
 
         //spawns our projectile
-        if (PhotonNetwork.InRoom)
+        if (PhotonNetwork.InRoom && player.GetComponent<PhotonView>().IsMine)
             PhotonNetwork.Instantiate("Player/" + player.combatObjects[0].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
         else if (!PhotonNetwork.InRoom)
             Instantiate(player.combatObjects[0], player.shootPosition.transform.position, player.shootPosition.transform.rotation);

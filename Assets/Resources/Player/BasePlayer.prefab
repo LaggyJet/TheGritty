@@ -2342,8 +2342,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers: []
+  m_SynchronizeParameters:
+  - Type: 9
+    SynchronizeType: 1
+    Name: Mage1
+  - Type: 4
+    SynchronizeType: 0
+    Name: Mage2
+  m_SynchronizeLayers:
+  - SynchronizeType: 2
+    LayerIndex: 0
+  - SynchronizeType: 2
+    LayerIndex: 1
+  - SynchronizeType: 2
+    LayerIndex: 2
 --- !u!1 &3797678969013287520
 GameObject:
   m_ObjectHideFlags: 0

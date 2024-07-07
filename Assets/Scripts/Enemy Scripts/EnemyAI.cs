@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
+using System;
 
 public class EnemyAI : MonoBehaviourPunCallbacks, IDamage {
     [SerializeField] Renderer model;
@@ -97,6 +98,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage {
         EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
     }
 
+    [PunRPC]
+    void UpdateCounter() {
+        GameManager.instance.updateEnemy(-1);
+        EnemyManager.Instance.UpdateKillCounter(enemyLimiter);
+    }
+
 
     public void TakeDamage(float damage) {
         hp -= damage;
@@ -105,9 +112,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage {
         if (hp > 0)
             StartCoroutine(FlashDamage());
         if (hp <= 0 && !wasKilled) {
-            EnemyManager.Instance.UpdateKillCounter(enemyLimiter);
-            PlayerController.instance.AddStamina(0.5f);  
-            GameManager.instance.updateEnemy(-1);
+            PlayerController.instance.AddStamina(0.5f);
+            PhotonView.Get(this).RPC(nameof(UpdateCounter), RpcTarget.All);
             gameObject.GetComponent<Collider>().enabled = false;
             StartCoroutine(DeathAnimation());
             wasKilled = true;
