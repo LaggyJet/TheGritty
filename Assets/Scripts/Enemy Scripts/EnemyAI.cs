@@ -103,6 +103,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
     void UpdateCounter() {
         GameManager.instance.updateEnemy(-1);
         EnemyManager.Instance.UpdateKillCounter(enemyLimiter);
+        StartCoroutine(DeathAnimation());
     }
 
 
@@ -118,7 +119,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
             PlayerController.instance.AddStamina(0.5f);
             PhotonView.Get(this).RPC(nameof(UpdateCounter), RpcTarget.All);
             gameObject.GetComponent<Collider>().enabled = false;
-            StartCoroutine(DeathAnimation());
             wasKilled = true;
         }
 
