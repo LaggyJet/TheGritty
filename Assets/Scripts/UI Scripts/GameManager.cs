@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
     public GameObject settingsPublicVers;
     public GameObject menuActivePublicVers;
     public bool isShooting;
+    public bool spawnedEnemies;
 
     //Calls "Awake" instead to run before the other Start methods
     void Awake()

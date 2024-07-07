@@ -6,7 +6,7 @@ using UnityEngine.AI;
 using Photon.Pun;
 using System;
 
-public class EnemyAI : MonoBehaviourPunCallbacks, IDamage {
+public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator anim;
@@ -24,13 +24,13 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage {
 
     DamageStats status;
     bool isAttacking, wasKilled, isDOT;
-    Vector3 playerDirection;
+    Vector3 playerDirection, enemyTargetPosition;
     float originalStoppingDistance, adjustedStoppingDistance, angleToPlayer;
     int id;
 
-    void Start() { 
+    void Start() {
         isAttacking = wasKilled = isDOT = false;
-        GameManager.instance.updateEnemy(1); 
+        GameManager.instance.updateEnemy(1);
         weapon.AddComponent<WeaponController>().SetWeapon(damage, canDOT, type);
         EnemyManager.Instance.AddEnemyType(enemyLimiter);
         originalStoppingDistance = agent.stoppingDistance;
@@ -54,7 +54,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage {
         }
 
         if (Physics.Raycast(headPosition.position, playerDirection, out RaycastHit hit) && hit.collider.CompareTag("Player") && angleToPlayer < viewAngle && !wasKilled) {
-            agent.SetDestination(GameManager.instance.player.transform.position);
+            enemyTargetPosition = GameManager.instance.player.transform.position;
+            agent.SetDestination(enemyTargetPosition);
 
             if (agent.remainingDistance < agent.stoppingDistance)
                 FaceTarget();
@@ -73,14 +74,14 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage {
             if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter))
                 StartCoroutine(Swing());
 
-            return true; 
+            return true;
         }
         return false;
     }
 
     void FaceTarget() {
         Quaternion rotation = Quaternion.LookRotation(playerDirection) * Quaternion.Euler(0, (flipEnemyDirection ? 180 : 0), 0);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * faceTargetSpeed); 
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * faceTargetSpeed);
     }
 
     IEnumerator Swing() {
@@ -93,7 +94,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage {
 
     public void WeaponColliderOn() { weapon.GetComponent<Collider>().enabled = true; }
 
-    public void WeaponColliderOff() { 
+    public void WeaponColliderOff() {
         weapon.GetComponent<Collider>().enabled = false;
         EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
     }
@@ -107,9 +108,11 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage {
 
     public void TakeDamage(float damage) {
         hp -= damage;
-        if (!isDOT)
-            agent.SetDestination(GameManager.instance.player.transform.position);
-        if (hp > 0)
+        if (!isDOT) {
+            enemyTargetPosition = GameManager.instance.player.transform.position;
+            agent.SetDestination(enemyTargetPosition);
+        }
+            if (hp > 0)
             StartCoroutine(FlashDamage());
         if (hp <= 0 && !wasKilled) {
             PlayerController.instance.AddStamina(0.5f);
@@ -144,7 +147,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage {
 
     IEnumerator DeathAnimation() {
         agent.isStopped = true;
-        agent.SetDestination(transform.position);
+        enemyTargetPosition = transform.position;
+        agent.SetDestination(enemyTargetPosition);
         agent.radius = 0;
         anim.SetTrigger("Death");
         var renderers = new List<Renderer>();
@@ -162,5 +166,18 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage {
             PhotonNetwork.Destroy(gameObject);
         else if (!PhotonNetwork.InRoom)
             Destroy(gameObject);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+        if (stream.IsWriting) {
+            stream.SendNext(agent.transform.position);
+            stream.SendNext(enemyTargetPosition);
+            stream.SendNext(wasKilled);
+        }
+        else {
+            agent.transform.position = (Vector3)stream.ReceiveNext();
+            enemyTargetPosition = (Vector3)stream.ReceiveNext();
+            wasKilled = (bool)stream.ReceiveNext();
+        }
     }
 }

@@ -7,21 +7,18 @@ public class EnemySpawning : MonoBehaviourPunCallbacks {
     [SerializeField] Transform[] SpawnPoints;
     [SerializeField] int numEnemies;
 
-    bool isSpawning;
-
     private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player") && !isSpawning)
-            PhotonView.Get(this).RPC(nameof(Spawn), RpcTarget.All);
+        if (other.CompareTag("Player") && !GameManager.instance.spawnedEnemies && other.GetComponent<PhotonView>().IsMine)
+            Spawn();
     }
 
-    [PunRPC]
     public void Spawn() {
-        isSpawning = true;
+        GameManager.instance.spawnedEnemies = true;
         for (int i = 0; i < numEnemies; i++) {
             int arrayPosition = Random.Range(0, SpawnPoints.Length);
-            if (PhotonNetwork.InRoom)
+            if (PhotonNetwork.InRoom && Enemy != null)
                 PhotonNetwork.Instantiate("Enemy/" + Enemy.name, SpawnPoints[arrayPosition].position, SpawnPoints[arrayPosition].rotation);
-            else if (!PhotonNetwork.InRoom)
+            else if (!PhotonNetwork.InRoom && Enemy != null)
                 Instantiate(Enemy, SpawnPoints[arrayPosition].position, SpawnPoints[arrayPosition].rotation);
         }
     }
