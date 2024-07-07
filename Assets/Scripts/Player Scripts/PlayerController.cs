@@ -88,11 +88,29 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [SerializeField] float hurtVol;
     [SerializeField] public AudioClip[] attack;
     [SerializeField] float attackVol;
-    [SerializeField] AudioClip[] filledStam;
-    [SerializeField] float filledStamVol;
+
+    [Header("------ Sprint Audio ------")]
+    [SerializeField] public AudioSource sprintAudioSource;
+    [SerializeField] public AudioClip sprintSound;
+    [SerializeField] float sprintVol;
+    [SerializeField] public AudioClip[] noSprint;
+    [SerializeField] float noSprintVol; 
+
+    [Header("------ Stamina HP Audio ------")]
+    [SerializeField] public AudioSource staminaAudioSource;
+    [SerializeField] public AudioClip[] noHP;
+    [SerializeField] public float noHPvol;
+    [SerializeField] public AudioClip[] noAttack;
+    [SerializeField] public float noAttackVol;
+    
     bool isPlayingSteps;
     bool isSprinting;
+    public bool isPlayingStamina;  
+    public bool isPlayingNoSprinting;
+    public bool isPlayingNoHP = false;
+    private bool isRegenerating = false;
 
+    [Header("------ Classes ------")]
     //class variables
     public Class_Mage mage;
     public Class_Warrior warrior;
@@ -135,6 +153,16 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         }
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        //runs our movement function to determine the player velocity each frame
+        Movement();
+        // Regenerating over time ( can be adjusted in unity )
+        RegenerateStamina();
+
+    }
+
     //methods for key binding/controls
     public void OnMove(InputAction.CallbackContext ctxt)
     {
@@ -169,6 +197,9 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
                 isSprinting = true;
                 speed *= sprintMod; 
                 SubtractStamina(0.5f);
+                sprintAudioSource.clip = sprintSound;
+                sprintAudioSource.volume = sprintVol;
+                sprintAudioSource.Play();
             }
         }
         else if(ctxt.canceled)
@@ -181,9 +212,19 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
             }
         }
         }
-        else
-        {
+        else 
+        { 
             StopSprinting();
+
+            // Checking for audio ( preventing looping on sounds )
+            if(!sprintAudioSource.isPlaying)
+            {
+                // Playing out of stamina if sprinting is not allowed 
+             sprintAudioSource.PlayOneShot(noSprint[Random.Range(0, noSprint.Length)], noSprintVol);
+             isPlayingNoSprinting = true;
+            }
+            
+            isPlayingNoSprinting = sprintAudioSource.isPlaying;
             Debug.Log("No Stamina poo :(");    
         }
         
@@ -224,15 +265,6 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
         {
             archer.OnSecondaryFire(ctxt);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //runs our movement function to determine the player velocity each frame
-        Movement();
-        // Regenerating over time ( can be adjusted in unity )
-        RegenrateStamina();
     }
 
     //calculates the player movement
@@ -411,20 +443,38 @@ private void StopSprinting()
         updatePlayerUI();
     }
 
-    // Regenerates stamina overtime without stamina pickups 
-    private void RegenrateStamina()
+
+    // Regenerate stamina 
+    private void RegenerateStamina()
     {
-        if(stamina < staminaBase)
-        {
-           stamina += staminaRegenerate * Time.deltaTime;
+       if(stamina < staminaBase && !isRegenerating)
+       {
+           StartCoroutine(RegenStaminaDelay());
+       }
+    }
 
-           if(stamina > staminaBase)
-           {
-               stamina = staminaBase;
-           }
+    // Preventing stamina from regenerating too fast
+    private IEnumerator RegenStaminaDelay()
+    {
+       isRegenerating = true; 
 
-           updatePlayerUI();
-        }
+       yield return new WaitForSeconds(5);
+
+       if(stamina < staminaBase)
+       {
+          stamina += staminaRegenerate * Time.deltaTime;
+
+          if(stamina > staminaBase)
+          {
+            stamina = staminaBase;
+          }
+
+          updatePlayerUI();
+          yield return null;
+       }
+
+       isRegenerating = false;
+
     }
 
     
@@ -457,13 +507,29 @@ private void StopSprinting()
             if (healthRatio > 0.5f || GameManager.instance.playerHPBar.color != midHealth) 
             {
                 GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthRatio - 0.5f) * 2);
+                isPlayingNoHP = false;
             }
             else // If the health is less than 50%
             {
                 GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
-                if(healthRatio <= 0.5f ){
-                   Shake.instance.Shaking(hpShakeDuration); 
+
+                if(!isPlayingNoHP)
+                {
+                    if(!staminaAudioSource.isPlaying)
+                    {
+                        // Playing heart beat for low HP 
+                        staminaAudioSource.PlayOneShot(noHP[Random.Range(0, noHP.Length)], noHPvol);
+                        isPlayingNoHP = true;
+                    }
                 }
+
+                isPlayingNoHP = staminaAudioSource.isPlaying;
+                Debug.Log("No HP :(");
+               
+                // if(healthRatio <= 0.5f )
+                // {
+                //    Shake.instance.Shaking(hpShakeDuration); 
+                // }
                 
             }
        
@@ -484,6 +550,7 @@ private void StopSprinting()
             }
        
     }
+    
     
     public void Respawn()
     {

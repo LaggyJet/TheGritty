@@ -1886,6 +1886,7 @@ MonoBehaviour:
   criticalHealth: {r: 0.7058824, g: 0, b: 0, a: 1}
   hpShakeDuration: 1
   stamina: 10
+  staminaRegenerate: 0
   fullstamina: {r: 0.09290466, g: 0.5564428, b: 0.9191374, a: 1}
   midstamina: {r: 0.08121482, g: 0.35876235, b: 0.76280314, a: 1}
   criticalstamina: {r: 0.7058824, g: 0, b: 0, a: 1}
@@ -1911,9 +1912,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7b23b370da80193418f54c9375a7388a, type: 3}
   - {fileID: 8300000, guid: 20e13996ad7bb3d42b207ccd996f63f7, type: 3}
   attackVol: 0.2
-  filledStam:
-  - {fileID: 8300000, guid: 317e04ed5a1a2b74894b83ff236ba923, type: 3}
-  filledStamVol: 0.2
+  noSprint: {fileID: 8300000, guid: 4a5823ac4669ca2489afe114f796893f, type: 3}
+  noSprintVol: 0.5
+  noAttack: []
+  noAttackVol: 0
   mage: {fileID: 0}
   warrior: {fileID: 0}
   archer: {fileID: 0}
@@ -2098,6 +2100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 800c9edcfccdb8541880e3976727a979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  primaryStamCost: 0.05
+  secondaryStamCost: 0.5
 --- !u!114 &5181937840172003563
 MonoBehaviour:
   m_ObjectHideFlags: 0

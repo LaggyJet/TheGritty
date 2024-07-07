@@ -5,21 +5,42 @@ using UnityEngine;
 
 public class HPotPickUp : MonoBehaviour
 {
+
+    public enum SelectPotion {stamina, health}  
     // Amount of hp/stamina the potion adds to the player
-    [Range(0f, 10f)] public float hpAdd;  
-    [Range(0f, 10f)] public float staminaAdd; 
-    [SerializeField] public AudioSource Audio; 
+    [Range(0f, 10f)] public float Amount;  
+    public SelectPotion type;
+    [SerializeField] AudioSource Audio;  
     [SerializeField] AudioClip pickUp;
+    [SerializeField] float pickUpVol;
    
     
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            // Sound for player picking up potion 
             Audio.clip = pickUp; 
+            Audio.volume = pickUpVol;
             Audio.Play();
-            GameManager.instance.playerScript.AddHP(hpAdd);
-            GameManager.instance.playerScript.AddStamina(staminaAdd);
+            
+            // If stamina or health 
+            switch(type)
+            {
+                case SelectPotion.health:
+                GameManager.instance.playerScript.AddHP(Amount);
+                break;
+
+                case SelectPotion.stamina:
+                GameManager.instance.playerScript.AddStamina(Amount);
+                break;
+
+                default:
+                Debug.Log("Wine? :)");
+                break;
+            }
+            
+            // Clean up 
             Destroy(gameObject);
         }
     }

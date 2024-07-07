@@ -16,6 +16,7 @@ public class Class_Mage : MonoBehaviour
 
     [SerializeField] float primaryStamCost = 0.05f;  
     [SerializeField] float secondaryStamCost = 0.5f; 
+    
 
 
     private void Start()
@@ -85,6 +86,16 @@ public class Class_Mage : MonoBehaviour
         }
         else
         {
+            // Checking for audio ( preventing looping on sounds )
+            if(!player.staminaAudioSource.isPlaying)
+            {
+                // Play out of stamina sound 
+                player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
+                player.isPlayingStamina = true;
+            }
+           
+           player.isPlayingStamina = player.staminaAudioSource.isPlaying;
+
            Debug.Log("No Staminaaaaaa :(");
         }
 
@@ -125,7 +136,17 @@ public class Class_Mage : MonoBehaviour
         }
         else
         {
-            Debug.Log("No staminaaaa :(");
+            // Checking for audio ( preventing looping on sounds )
+            if(!player.staminaAudioSource.isPlaying)
+            {
+                // Play out of stamina sound
+                player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
+                player.isPlayingStamina = true;
+            }
+           
+           player.isPlayingStamina = player.staminaAudioSource.isPlaying;
+           
+           Debug.Log("No Staminaaaaaa :(");
         }
         
     }
