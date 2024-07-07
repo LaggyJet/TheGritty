@@ -32,7 +32,7 @@ public class Class_Mage : MonoBehaviour
         {
 
             player.animate.SetTrigger("Mage1");
-            player.SubtractStamina(0.5f);
+            player.SubtractStamina(0.2f);
         }
     }
     public void OnSecondaryFire(InputAction.CallbackContext ctxt)
@@ -41,7 +41,7 @@ public class Class_Mage : MonoBehaviour
         {
             if (!GameManager.instance.isShooting)
             {
-                player.SubtractStamina(0.5f);
+                player.SubtractStamina(0.2f);
                 GameManager.instance.isShooting = true;
                 player.SetAnimationBool("Mage2", true);
                 if (sprayingFire)

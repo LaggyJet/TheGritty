@@ -1884,13 +1884,13 @@ MonoBehaviour:
   fullHealth: {r: 0.24978681, g: 0.42352942, b: 0.20718746, a: 1}
   midHealth: {r: 0.9892183, g: 0.43262324, b: 0.046661116, a: 1}
   criticalHealth: {r: 0.7058824, g: 0, b: 0, a: 1}
-  hpShakeDuration: 1
+  hpShakeDuration: 0
   stamina: 10
-  staminaRegenerate: 0
+  staminaRegenerate: 50
   fullstamina: {r: 0.09290466, g: 0.5564428, b: 0.9191374, a: 1}
   midstamina: {r: 0.08121482, g: 0.35876235, b: 0.76280314, a: 1}
   criticalstamina: {r: 0.7058824, g: 0, b: 0, a: 1}
-  stamShakeDuration: 1
+  stamShakeDuration: 0
   animate: {fileID: 2654759320713316378}
   animationTransSpeed: 1
   sprite: {fileID: 21300000, guid: 8e4680958c649e642b0dae1c48a3e1ca, type: 3}
@@ -1912,10 +1912,22 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7b23b370da80193418f54c9375a7388a, type: 3}
   - {fileID: 8300000, guid: 20e13996ad7bb3d42b207ccd996f63f7, type: 3}
   attackVol: 0.2
-  noSprint: {fileID: 8300000, guid: 4a5823ac4669ca2489afe114f796893f, type: 3}
+  sprintAudioSource: {fileID: 7898868306004621137}
+  sprintSound: {fileID: 8300000, guid: 2317d27a2bbe7254888ee6e1d65fa753, type: 3}
+  sprintVol: 0.5
+  noSprint:
+  - {fileID: 8300000, guid: 4a5823ac4669ca2489afe114f796893f, type: 3}
   noSprintVol: 0.5
-  noAttack: []
-  noAttackVol: 0
+  staminaAudioSource: {fileID: 7898868306004621137}
+  noHP:
+  - {fileID: 8300000, guid: a2155caa9dc9b2c45ad55e311481098d, type: 3}
+  noHPvol: 0.5
+  noAttack:
+  - {fileID: 8300000, guid: 4a5823ac4669ca2489afe114f796893f, type: 3}
+  noAttackVol: 0.5
+  isPlayingStamina: 0
+  isPlayingNoSprinting: 0
+  isPlayingNoHP: 0
   mage: {fileID: 0}
   warrior: {fileID: 0}
   archer: {fileID: 0}

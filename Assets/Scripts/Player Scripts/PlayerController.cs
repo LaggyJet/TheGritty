@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [Header("------- Stamina -------")]
 
     [Range(0f, 10f)] public float stamina; 
-    [Range(0f, 10f)] public float staminaRegenerate; 
+    [Range(0f, 50f)] public float staminaRegenerate;  
     float staminaBase; 
     public Coroutine staminaCor = null;
     
