@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI textMeshPro;
     public float displayTime;
     public bool hasRespawned = false;
+    public static bool selectedMultiplayer = false;
 
     [Header("------ Audio ------")]
     [SerializeField] AudioSource soundTrackAud;
