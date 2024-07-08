@@ -37,8 +37,8 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [SerializeField] Color midHealth; 
     [SerializeField] Color criticalHealth;
 
-    // HP bar shake
-    [Range(0f, 10f)] public float hpShakeDuration;  
+    [SerializeField] Shake hpShake;
+
 
     [Header("------- Stamina -------")]
 
@@ -52,9 +52,8 @@ public class PlayerController : MonoBehaviour, IDamage, IDataPersistence
     [SerializeField] Color fullstamina; 
     [SerializeField] Color midstamina; 
     [SerializeField] Color criticalstamina;
+    [SerializeField] Shake stamShake; 
 
-    // stamina bar shake
-    [Range(0f, 10f)] public float stamShakeDuration;   
 
     //these are animation variables
     [SerializeField] public Animator animate;
@@ -513,6 +512,11 @@ private void StopSprinting()
             {
                 GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
 
+                if(healthRatio <= 0.5f )
+                {
+                    hpShake.Shaking(); 
+                }
+
                 if(!isPlayingNoHP)
                 {
                     if(!staminaAudioSource.isPlaying)
@@ -520,16 +524,10 @@ private void StopSprinting()
                         // Playing heart beat for low HP 
                         staminaAudioSource.PlayOneShot(noHP[Random.Range(0, noHP.Length)], noHPvol);
                         isPlayingNoHP = true;
+                        isPlayingNoHP = staminaAudioSource.isPlaying;
+                        Debug.Log("No HP :(");
                     }
-                }
-
-                isPlayingNoHP = staminaAudioSource.isPlaying;
-                Debug.Log("No HP :(");
-               
-                // if(healthRatio <= 0.5f )
-                // {
-                //    Shake.instance.Shaking(hpShakeDuration); 
-                // }
+                }  
                 
             }
        
@@ -543,8 +541,9 @@ private void StopSprinting()
             else // If the stamina is less than 50%
             {
                 GameManager.instance.staminaBar.color = Color.Lerp(criticalstamina, midstamina, staminaRatio * 2);
-                if(staminaRatio <= 0.5f){
-                   Shake.instance.Shaking(stamShakeDuration); 
+                if(staminaRatio <= 0.5f)
+                {
+                   stamShake.Shaking();  
                 }
                 
             }

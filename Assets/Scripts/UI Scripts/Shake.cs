@@ -9,19 +9,19 @@ public class Shake : MonoBehaviour
     // Determines the Position, Rotation, and Scale of said GameObject in the scene
     Transform targetObject;
     Vector3 initialPosition;
-    float shakeDuration = 0f;
+    [Range(0f, 10f)] public float shakeDuration;
     public bool isShaking = false; 
 
     // Implementing my 1-10 system 
     [Range(0f, 10f)]public float intensity; 
 
-    public static Shake instance;
+    //public static Shake instance;
 
     // Start is called before the first frame update
     void Start()
     {
         // In case anyone else would like to use this for other objects
-        instance = this;
+        //instance = this;
 
         // Storing position, rotate, scale in target
         targetObject = GetComponent<Transform>(); 
@@ -31,19 +31,23 @@ public class Shake : MonoBehaviour
     }
 
     
-    public void Shaking(float duration)
+    public void Shaking()
     {
-        
-        if (duration > 0)
+        // Duration should be set in unity
+        if (shakeDuration > 0)
         {
-          // Increase duration 
-          shakeDuration += duration;
 
-          if (!isShaking)
+          // Check to make sure shaking is not happening first 
+          if (isShaking)
           {
+            // Reset to start
+            StopCoroutine(DoShake());
+            isShaking = false;
+            targetObject.localPosition = initialPosition;
+          }
+
            // Begin shaking frames 
            StartCoroutine(DoShake());
-          }
         }
        
     }
@@ -54,10 +58,9 @@ public class Shake : MonoBehaviour
         GameManager.instance.hasRespawned = false;
         // Start shaking 
         isShaking = true;
+        float num = 0f;
 
-        // Stores the current time since the last frame 
-        float seconds = Time.time;
-        while (Time.time < seconds + shakeDuration)
+        while (num < shakeDuration)
         {
             if (GameManager.instance != null && !GameManager.instance.isPaused)   
             { 
@@ -69,13 +72,14 @@ public class Shake : MonoBehaviour
             }
             // Wait for Next frame 
             yield return null;
+            num += Time.deltaTime;
         }
 
         // Stop shaking - routine is finished 
         // Reset 
         targetObject.localPosition = initialPosition;
         isShaking = false;
-        shakeDuration = 0f; 
+       
     }
 
 }
