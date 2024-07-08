@@ -154,16 +154,15 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         this.transform.rotation = Quaternion.identity;
 
         //calls a function to set the player variable in the game manager
-        GameManager.instance.SetPlayer();
+       GameManager.instance.SetPlayer();
 
         //this is our spawn function
-        //!whoever knows what all these checks are and what this does pls comment it
-        if (spawnLocation == Vector3.zero)
+        if (spawnLocation == Vector3.zero) //checks if the spawnLocation is a vector 3 zero, meaning it is a new game
         {
             transform.position = GameManager.playerLocation;
             transform.rotation = GameManager.instance.player.transform.rotation ;
         }
-        else
+        else //otherwise the spawnLocation has a value and means the game is being resumed
         {
             GameManager.playerLocation = spawnLocation;
             transform.position = spawnLocation;
@@ -189,17 +188,15 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         }
     }
 
-    //methods for key binding/controls
-    //pls explain this better these methods DO NOT bind keys or controls
-    //also the OnMove function just doesnt do anything i dont believe
-    public void OnMove(InputAction.CallbackContext ctxt)
+    //methods for the controls that are utilized in the Player input map to control the player
+    public void OnMove(InputAction.CallbackContext ctxt) //moving
     {
         Vector2 newMoveDir = ctxt.ReadValue<Vector2>();
         moveDir.x = newMoveDir.x;
         moveDir.z = newMoveDir.y;
     }
 
-    public void OnJump(InputAction.CallbackContext ctxt)
+    public void OnJump(InputAction.CallbackContext ctxt) //jumping
     {
         if (ctxt.performed && GameManager.instance.canJump)
         {
@@ -214,7 +211,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         controller.Move(playerV * Time.deltaTime);
     }
 
-    public void OnSprint(InputAction.CallbackContext ctxt)
+    public void OnSprint(InputAction.CallbackContext ctxt) //sprinting
     {
         if(ctxt.performed && currentStamina >= 0.5f)
         {
@@ -254,14 +251,14 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         }
         
     }
-    public void OnAbility1(InputAction.CallbackContext ctxt)
+    public void OnAbility1(InputAction.CallbackContext ctxt) //ability1
     {
         if (mage != null)
         {
             mage.OnAbility(ctxt);
         }
     }
-    public void OnPrimaryFire(InputAction.CallbackContext ctxt)
+    public void OnPrimaryFire(InputAction.CallbackContext ctxt) //primary attack
     {
         if (mage != null)
         {
@@ -276,7 +273,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             archer.OnPrimaryFire(ctxt);
         }
     }
-    public void OnSecondaryFire(InputAction.CallbackContext ctxt)
+    public void OnSecondaryFire(InputAction.CallbackContext ctxt) //secondary attack
     {
         if (mage != null)
         {

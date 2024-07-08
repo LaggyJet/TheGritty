@@ -669,6 +669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d286e4efc2d00b47a45932840855c7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerClass: {fileID: 11400000, guid: aecd08a9e5e48a145914c754caeea9e3, type: 2}
 --- !u!1 &5374776291389268660
 GameObject:
   m_ObjectHideFlags: 0
@@ -2047,9 +2048,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1740105939030410756}
         m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: LoadMultiplayer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
