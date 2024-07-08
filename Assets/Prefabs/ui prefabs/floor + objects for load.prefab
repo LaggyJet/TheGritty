@@ -10098,7 +10098,7 @@ MonoBehaviour:
   textMeshPro: {fileID: 0}
   displayTime: 0
   hasRespawned: 0
-  soundTrackAud: {fileID: 0}
+  soundTrackAud: {fileID: 4812126170991636316}
   menuMusic: {fileID: 0}
   menuVol: 0
   gamePlayMusic: {fileID: 0}
