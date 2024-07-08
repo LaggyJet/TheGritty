@@ -1420,6 +1420,12 @@ MonoBehaviour:
   textMeshPro: {fileID: 0}
   displayTime: 0
   hasRespawned: 0
+  soundTrackAud: {fileID: 7204092341143623332}
+  menuMusic: {fileID: 8300000, guid: f39b92c74b1b2ca4dabdc1ae1b4a40f6, type: 3}
+  menuVol: 1
+  gamePlayMusic: {fileID: 8300000, guid: 86eaf3782e873b5429e27a17f9e4626a, type: 3}
+  gamePlayVol: 0.5
+  isPlayingSTA: 0
 --- !u!114 &1018335641024888473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1442,7 +1448,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -1406467276409959815, guid: 2750174cd80a8a24487fe1e49daaa371, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 86eaf3782e873b5429e27a17f9e4626a, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.517
   m_Pitch: 1
