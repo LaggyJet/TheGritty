@@ -183,7 +183,7 @@ public class Class_Mage : MonoBehaviour
     {
         //spawns our projectile either locally or in all lobbies depending on whether your playing solo or multiplayer
         if (PhotonNetwork.InRoom)
-             PhotonNetwork.Instantiate(player.combatObjects[0].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
+             PhotonNetwork.Instantiate("Player/" + player.combatObjects[0].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
         else if (!PhotonNetwork.InRoom)
              Instantiate(player.combatObjects[0], player.shootPosition.transform.position, player.shootPosition.transform.rotation); GameManager.instance.isShooting = false;
     }
@@ -223,7 +223,7 @@ public class Class_Mage : MonoBehaviour
                 player.currentStamina -= secondaryStamCost;
             //summons either locally or for all connected game instances
             if (PhotonNetwork.InRoom)
-                PhotonNetwork.Instantiate(player.combatObjects[2].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
+                PhotonNetwork.Instantiate("Player/" + player.combatObjects[2].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
             else if (!PhotonNetwork.InRoom)
                 Instantiate(player.combatObjects[2], player.shootPosition.transform.position, player.shootPosition.transform.rotation);
             //waits
