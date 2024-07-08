@@ -390,6 +390,10 @@ PrefabInstance:
       propertyPath: resDropDown
       value: 
       objectReference: {fileID: 473807181}
+    - target: {fileID: 8052391700180161907, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8148830016632361636, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.627643
@@ -669,6 +673,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1638426326}
+    - target: {fileID: 8777670139218801757, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8845188960016962055, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
