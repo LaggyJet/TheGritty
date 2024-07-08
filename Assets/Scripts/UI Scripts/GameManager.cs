@@ -20,9 +20,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject menuSettings;
     [SerializeField] TMP_Text enemyCountText;
     [SerializeField] GameObject charSelect;
-    public bool hasRespawned = false; 
+    [SerializeField] GameObject GameWarning;
 
     //public variables
     public Image playerHPBar;
@@ -34,6 +35,13 @@ public class GameManager : MonoBehaviour
     public static Vector3 playerSpawnLocation;
     public bool canJump;
     public static int enemyCount = 0;
+    public GameObject oldActiveMenu;
+    public GameObject settingsPublicVers;
+    public GameObject menuActivePublicVers;
+    public bool isShooting;
+    public TextMeshProUGUI textMeshPro;
+    public float displayTime;
+    public bool hasRespawned = false;
 
     //Calls "Awake" instead to run before the other Start methods
     void Awake()
@@ -45,13 +53,17 @@ public class GameManager : MonoBehaviour
             playerLocation = player.transform.position;
         }
     }
-
     // Update is called once per frame
     void Update()
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            if (SceneManager.GetActiveScene().name == "title menu")
+            if (menuActive == menuSettings)
+            {
+                leaveSettings();
+            }
+
+            else if (SceneManager.GetActiveScene().name == "title menu")
             {
                 #if UNITY_EDITOR
                     UnityEditor.EditorApplication.isPlaying = false;
@@ -73,10 +85,23 @@ public class GameManager : MonoBehaviour
     }
 
     //Setter
-    public void SetPlayer() {
+    public void SetPlayer()
+    {
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<PlayerController>();
         playerLocation = player.transform.position;
+    }
+    //TEXT POP UPS
+    public void ShowText (string message)
+    {
+        textMeshPro.text = message;
+        textMeshPro.gameObject.SetActive(true);
+        Invoke("HideText", displayTime);
+    }
+
+    void HideText()
+    {
+        textMeshPro.gameObject.SetActive(false);
     }
 
     //PAUSE METHODS
@@ -103,6 +128,35 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         menuActive = null;
+    }
+
+    //SETTINGS METHODS
+    public void openSettings()
+    {
+        if (menuActive != null)
+        {
+            oldActiveMenu = menuActive;
+            isPaused = !isPaused;
+            menuActive.SetActive(isPaused);
+            menuActive = null;
+        }
+        isPaused = !isPaused;
+        menuActive = menuSettings;
+        menuActivePublicVers = menuSettings;
+        menuActive.SetActive(isPaused);
+    }
+    public void leaveSettings()
+    {
+        isPaused = !isPaused;
+        menuActive.SetActive(isPaused);
+        menuActive = null;
+        if (oldActiveMenu != null)
+        {
+            isPaused = !isPaused;
+            menuActive = oldActiveMenu;
+            menuActivePublicVers = oldActiveMenu;
+            menuActive.SetActive(isPaused);
+        }
     }
 
     //WIN/LOSE METHODS
@@ -141,10 +195,35 @@ public class GameManager : MonoBehaviour
         stateResume();
     }
 
+    //TITLE SCREEN METHODS
     public void charSelectionMenu()
     {
-        statePause();
+        if (menuActive != null)
+        {
+            isPaused = !isPaused;
+            menuActive.SetActive(isPaused);
+            menuActive = null;
+        }
+        isPaused = !isPaused;
         menuActive = charSelect;
         menuActive.SetActive(isPaused);
     }
+    public void Warning4NewGame()
+    {
+        statePause();
+        menuActive = GameWarning;
+        menuActive.SetActive(isPaused);
+    }
+    public void Warning4SaveProgress()
+    {
+        oldActiveMenu = menuActive;
+        isPaused = !isPaused;
+        menuActive.SetActive(isPaused);
+        menuActive = null;
+        statePause();
+        menuActive = GameWarning;
+        menuActive.SetActive(isPaused);
+    }
+
+    
 }

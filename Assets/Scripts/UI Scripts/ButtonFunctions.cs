@@ -7,11 +7,9 @@ using Photon.Pun;
 
 public class ButtonFunctions : MonoBehaviour
 {
-
     public void resume()
     {
         GameManager.instance.stateResume();
-       
     }
     public void restart()
     {
@@ -23,11 +21,11 @@ public class ButtonFunctions : MonoBehaviour
     }
     public void quitApp()
     {
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-    #else
+#else
         Application.Quit();
-    #endif
+#endif
     }
 
     public void quitGame()
@@ -43,9 +41,29 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.instance.respawnAfterLost();
     }
-    public void jumpToggle()
+    public void settings()
     {
-        GameManager.instance.canJump = !GameManager.instance.canJump;
+        GameManager.instance.openSettings();
+    }
+    public void quitSettings()
+    {
+        GameManager.instance.leaveSettings();
+        if(SettingsManager.instance != null)
+        SettingsManager.instance.SavePrefs();
+        ResolutionManager.instance.SavePrefs();
+    }
+
+    public void quitSaveWarning()
+    {
+        DataPersistenceManager.gameData = DataPersistenceManager.Instance.dataHandler.Load();
+        if (DataPersistenceManager.gameData.playerPos != GameManager.instance.player.transform.position || DataPersistenceManager.gameData.playerHp != GameManager.instance.playerScript.hp || DataPersistenceManager.gameData.playerStamina != GameManager.instance.playerScript.stamina)
+        {
+            GameManager.instance.Warning4SaveProgress();
+        }
+        else
+        {
+            quitGame();
+        }
     }
 
     //FOR TITLE SCREEN
@@ -61,7 +79,11 @@ public class ButtonFunctions : MonoBehaviour
         DataPersistenceManager.Instance.LoadGame();
         GameManager.instance.stateResumeGameLoads();
     }
-    public void startNewGame()
+    public void startNewGamePart1()
+    {
+        GameManager.instance.Warning4NewGame();
+    }
+    public void startNewGamePart2()
     {
         GameManager.instance.charSelectionMenu();
     }
@@ -70,17 +92,14 @@ public class ButtonFunctions : MonoBehaviour
     public void warrior()
     {
         newGame();
-        GameManager.instance.stateResume();
     }
     public void mage()
     {
         newGame();
-        GameManager.instance.stateResume();
     }
     public void archer()
     {
         newGame();
-        GameManager.instance.stateResume();
     }
 
     // Co-op features

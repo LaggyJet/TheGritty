@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPunObservable
 {
@@ -43,9 +44,8 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
     [Header("------- Stamina -------")]
 
     [Range(0f, 10f)] public float stamina; 
+    [Range(0f, 50f)] public float staminaRegenerate;  
     float staminaBase; 
-    Coroutine staminaCor = null;
-    
     
      // stamina bar gradual fill 
     [SerializeField] Color fullstamina; 
@@ -77,6 +77,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
     public static Vector3 spawnLocation;
     public static Quaternion spawnRotation;
     public static float spawnHp;
+    public static float spawnStamina;
 
 
     [Header("------ Audio ------")]
@@ -89,10 +90,33 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
     [SerializeField] float hurtVol;
     [SerializeField] public AudioClip[] attack;
     [SerializeField] float attackVol;
-    [SerializeField] AudioClip[] filledStam;
-    [SerializeField] float filledStamVol;
+
+    [Header("------ Sprint Audio ------")]
+    [SerializeField] public AudioSource sprintAudioSource;
+    [SerializeField] public AudioClip sprintSound;
+    [SerializeField] float sprintVol;
+    [SerializeField] public AudioClip[] noSprint;
+    [SerializeField] float noSprintVol; 
+
+    [Header("------ Stamina HP Audio ------")]
+    [SerializeField] public AudioSource staminaAudioSource;
+    [SerializeField] public AudioClip[] noHP;
+    [SerializeField] public float noHPvol;
+    [SerializeField] public AudioClip[] noAttack;
+    [SerializeField] public float noAttackVol;
+    
     bool isPlayingSteps;
     bool isSprinting;
+    public bool isPlayingStamina;  
+    public bool isPlayingNoSprinting;
+    public bool isPlayingNoHP = false;
+    private bool isRegenerating = false;
+
+    [Header("------ Classes ------")]
+    //class variables
+    public Class_Mage mage;
+    public Class_Warrior warrior;
+    public Class_Archer archer;
 
     private void Start()
     {
@@ -106,6 +130,12 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
 
         if (instance == null) instance = this;
         else { Destroy(gameObject); return; }
+        mage = this.GetComponent<Class_Mage>();
+        warrior = this.GetComponent<Class_Warrior>();
+        archer = this.GetComponent<Class_Archer>();
+        mage.enabled = false;
+        warrior.enabled = false;
+        archer.enabled = false;
 
         //tracks our base hp and the current hp that will update as our player takes damage or gets health
         hpBase = hp;
@@ -129,6 +159,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
             this.transform.position = spawnLocation;
             this.transform.rotation = spawnRotation;
             hp = spawnHp;
+            stamina = spawnStamina;
             Physics.SyncTransforms();
             //updates our ui to accurately show the player hp / stamina and other information
             updatePlayerUI();
@@ -136,23 +167,128 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
         }
     }
 
-    void FixedUpdate()
-    {
-        //hp = hp+1;
-    }
-
     // Update is called once per frame
     void Update()
     {
         // Prevent movement of other players
-        if (GetComponent<PhotonView>().IsMine || !PhotonNetwork.InRoom) {
+        if (GetComponent<PhotonView>().IsMine || !PhotonNetwork.InRoom)
+        {
             //runs our movement function to determine the player velocity each frame
             Movement();
-            Sprint();
         }
-        else if (!GetComponent<PhotonView>().IsMine && PhotonNetwork.InRoom) {
+        else if (!GetComponent<PhotonView>().IsMine && PhotonNetwork.InRoom)
+        {
             transform.position = Vector3.Lerp(transform.position, networkPos, Time.deltaTime * 10);
             transform.rotation = Quaternion.Lerp(transform.rotation, networkRot, Time.deltaTime * 10);
+        }
+        //runs our movement function to determine the player velocity each frame
+        Movement();
+        // Regenerating over time ( can be adjusted in unity )
+        RegenerateStamina();
+
+    }
+
+    //methods for key binding/controls
+    public void OnMove(InputAction.CallbackContext ctxt)
+    {
+        Vector2 newMoveDir = ctxt.ReadValue<Vector2>();
+        moveDir.x = newMoveDir.x;
+        moveDir.z = newMoveDir.y;
+       
+    }
+    public void OnJump(InputAction.CallbackContext ctxt)
+    {
+        if (ctxt.performed && GameManager.instance.canJump)
+        {
+            if (jumpCount < jumpMax)
+            {
+                jumpCount++;
+                playerV.y = jumpSpeed;
+            }
+        }
+        controller.Move(moveDir * speed * Time.deltaTime);
+        playerV.y -= gravity * Time.deltaTime;
+        controller.Move(playerV * Time.deltaTime);
+
+    }
+    public void OnSprint(InputAction.CallbackContext ctxt)
+    {
+        if(stamina > 0)
+        {
+           if(ctxt.performed)
+        {
+            if (!isSprinting)
+            {
+                isSprinting = true;
+                speed *= sprintMod; 
+                SubtractStamina(0.5f);
+                sprintAudioSource.clip = sprintSound;
+                sprintAudioSource.volume = sprintVol;
+                sprintAudioSource.Play();
+            }
+        }
+        else if(ctxt.canceled)
+        {
+            if (isSprinting)
+            {
+                isSprinting = false;
+                speed /= sprintMod;
+                
+            }
+        }
+        }
+        else 
+        { 
+            StopSprinting();
+
+            // Checking for audio ( preventing looping on sounds )
+            if(!sprintAudioSource.isPlaying)
+            {
+                // Playing out of stamina if sprinting is not allowed 
+             sprintAudioSource.PlayOneShot(noSprint[Random.Range(0, noSprint.Length)], noSprintVol);
+             isPlayingNoSprinting = true;
+            }
+            
+            isPlayingNoSprinting = sprintAudioSource.isPlaying;
+            Debug.Log("No Stamina poo :(");    
+        }
+        
+    }
+    public void OnAbility1(InputAction.CallbackContext ctxt)
+    {
+        if (ctxt.performed)
+        {
+            Debug.Log("stayc girls its going down!! (testing)");
+        }
+    }
+    public void OnPrimaryFire(InputAction.CallbackContext ctxt)
+    {
+        if (mage.enabled)
+        {
+            mage.OnPrimaryFire(ctxt);
+        }
+        else if (warrior.enabled)
+        {
+            warrior.OnPrimaryFire(ctxt);
+        }
+        else if (archer.enabled)
+        {
+            archer.OnPrimaryFire(ctxt);
+        }
+    }
+    public void OnSecondaryFire(InputAction.CallbackContext ctxt)
+    {
+        if (mage.enabled)
+        {
+            mage.OnSecondaryFire(ctxt);
+        }
+        else if (warrior.enabled)
+        {
+            warrior.OnSecondaryFire(ctxt);
+        }
+        else if (archer.enabled)
+        {
+            archer.OnSecondaryFire(ctxt);
         }
     }
 
@@ -165,44 +301,31 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
             playerV = Vector3.zero;
             jumpCount = 0;
         }
-        //runs a check for if player jumps
-        if (Input.GetButtonDown("Jump") && GameManager.instance.canJump)
-        {
-            if (jumpCount < jumpMax)
-            {
-                jumpCount++;
-                playerV.y = jumpSpeed;
-            }
-        }
         //gets our input and adjusts the players position using a velocity formula
-        moveDir = Input.GetAxis("Horizontal") * transform.right + Input.GetAxis("Vertical") * transform.forward;
-        controller.Move(moveDir * speed * Time.deltaTime);
+        Vector3 movement = moveDir.x * transform.right + moveDir.z * transform.forward;
+        controller.Move(movement * speed * Time.deltaTime);
         playerV.y -= gravity * Time.deltaTime;
         controller.Move(playerV * Time.deltaTime);
 
-        if (controller.isGrounded && moveDir.magnitude > 0.3 && !isPlayingSteps)
+        if (controller.isGrounded && movement.magnitude > 0.3 && !isPlayingSteps)
         {
             StartCoroutine(playSteps());
         }
     }
 
-    //calculates our speed if the player is sprinting
-    void Sprint()
+    
+
+
+    //Added to fix sprinting not stopping on button up 
+    private void StopSprinting()
     {
-        //when Sprint is pressed apply the sprint modifier variable to our speed variable
-        if (Input.GetButtonDown("Sprint"))
+        if (isSprinting)
         {
-            isSprinting = true;
-            speed *= sprintMod;
-            SubtractStamina(0.5f);
-        }
-        //when sprint is no longer being pressed we remove the sprint modifier from the speed variable
-        else if (Input.GetButtonUp("Sprint"))
-        {
-            isSprinting = false;
-            speed /= sprintMod;
+           isSprinting = false;
+          speed /= sprintMod;
         }
     }
+    
 
     public void SetAnimationTrigger(string triggerName)
     {
@@ -256,7 +379,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
     public void TakeDamage(float amount)
     {
         //subtract the damage from the player
-        hp -= amount;
+        hp -= 0.5f; 
 
         if (!isPlayingSteps) //plays hurt sounds
         {
@@ -323,17 +446,41 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
         updatePlayerUI();
     }
 
-    IEnumerator StaminaDecreaseRoutine()
-    {
-        while(true) 
-        {
-            SubtractStamina(0.1f);
 
-           yield return new WaitForSeconds(0.5f);
-        }
-       
+    // Regenerate stamina 
+    private void RegenerateStamina()
+    {
+       if(stamina < staminaBase && !isRegenerating)
+       {
+           StartCoroutine(RegenStaminaDelay());
+       }
     }
 
+    // Preventing stamina from regenerating too fast
+    private IEnumerator RegenStaminaDelay()
+    {
+       isRegenerating = true; 
+
+       yield return new WaitForSeconds(5);
+
+       if(stamina < staminaBase)
+       {
+          stamina += staminaRegenerate * Time.deltaTime;
+
+          if(stamina > staminaBase)
+          {
+            stamina = staminaBase;
+          }
+
+          updatePlayerUI();
+          yield return null;
+       }
+
+       isRegenerating = false;
+
+    }
+
+    
     //called when player runs into spiderwebs
     public void Slow()
     {
@@ -363,13 +510,29 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
             if (healthRatio > 0.5f || GameManager.instance.playerHPBar.color != midHealth) 
             {
                 GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthRatio - 0.5f) * 2);
+                isPlayingNoHP = false;
             }
             else // If the health is less than 50%
             {
                 GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
-                if(healthRatio <= 0.5f ){
-                   Shake.instance.Shaking(hpShakeDuration); 
+
+                if(!isPlayingNoHP)
+                {
+                    if(!staminaAudioSource.isPlaying)
+                    {
+                        // Playing heart beat for low HP 
+                        staminaAudioSource.PlayOneShot(noHP[Random.Range(0, noHP.Length)], noHPvol);
+                        isPlayingNoHP = true;
+                    }
                 }
+
+                isPlayingNoHP = staminaAudioSource.isPlaying;
+                Debug.Log("No HP :(");
+               
+                // if(healthRatio <= 0.5f )
+                // {
+                //    Shake.instance.Shaking(hpShakeDuration); 
+                // }
                 
             }
        
@@ -391,6 +554,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
        
     }
     
+    
     public void Respawn()
     {
         this.transform.position = GameManager.playerLocation;
@@ -403,12 +567,14 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
         spawnLocation = data.playerPos;
         spawnRotation = data.playerRot;
         spawnHp = data.playerHp; 
+        spawnStamina = data.playerStamina;
     }
     public void SaveData(ref GameData data)
     {
         data.playerPos = this.transform.position;
         data.playerRot = this.transform.rotation;
         data.playerHp = hp;
+        data.playerStamina = stamina;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {

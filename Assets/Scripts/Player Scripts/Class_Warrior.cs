@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class Class_Warrior : MonoBehaviour
@@ -11,11 +12,32 @@ public class Class_Warrior : MonoBehaviour
     float damage = 10;
     bool canDOT = true;
 
-    private void Start()
+
+    // Start is called before the first frame update
+    void Start()
     {
         player = GameManager.instance.player.GetComponent<PlayerController>();
-        player.combatObjects[3].AddComponent<MeleeWeaponController>().SetWeapon(damage, canDOT, type);
+        player.combatObjects[3].AddComponent<MeleeWeaponController>().SetWeapon(damage, canDOT, null);
         player.combatObjects[3].SetActive(true);
+    }
+    public void OnPrimaryFire(InputAction.CallbackContext ctxt)
+    {
+
+        if (ctxt.performed && !GameManager.instance.isShooting && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
+        {
+
+        }
+    }
+    public void OnSecondaryFire(InputAction.CallbackContext ctxt)
+    {
+        if (ctxt.performed && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
+        {
+            
+        }
+        else if (ctxt.canceled && GameManager.instance.isShooting)
+        {
+
+        }
     }
 
     // Update is called once per frame
