@@ -224,6 +224,4 @@ public class GameManager : MonoBehaviour
         menuActive = GameWarning;
         menuActive.SetActive(isPaused);
     }
-
-    
 }

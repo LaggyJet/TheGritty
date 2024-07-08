@@ -18,6 +18,7 @@ public class Class_Mage : MonoBehaviour
 {
     PlayerController player;
 
+    bool holdingSecondary;
     bool fireSpraying;
 
     [SerializeField] float primaryStamCost = 0.05f;  
@@ -35,16 +36,32 @@ public class Class_Mage : MonoBehaviour
         player.combatObjects[1].GetComponent<ParticleSystem>().Stop();
     }
 
+    private void Update()
+    {
+        if (holdingSecondary) 
+        {
+            StartCoroutine(SummonFireSpray());
+        }
+    }
+
     //i imagine this gets called when the input associated with primary fire is triggered
     //i could not tell you what ctxt is or what information it holds or its importance though
     //i also have no idea why this function is public, that seems important though
     public void OnPrimaryFire(InputAction.CallbackContext ctxt)
     {
+        Debug.Log("Context is performed");
+        Debug.Log(ctxt.performed);
+        Debug.Log("Attack is Valid");
+        Debug.Log(ValidAttack());
+        Debug.Log("Stamina is Valid");
+        Debug.Log(StaminaCheck(primaryStamCost));
         //checks for if our input was performed and if its valid to attack
         //check the ValidAttack Function to see what quantifies as valid
         //also checks if we have the stamina to attack
         if (ctxt.performed && ValidAttack() && StaminaCheck(primaryStamCost))
         {
+            GameManager.instance.isShooting = true;
+            player.currentStamina -= primaryStamCost;
             //starts our mage primary attack animation and plays our associated sound
             player.SetAnimationTrigger("Mage1");
             player.PlaySound('A');
@@ -71,21 +88,18 @@ public class Class_Mage : MonoBehaviour
         //Checks the same things as primary attack
         if (ctxt.performed && ValidAttack() && StaminaCheck(secondaryStamCost))
         {
+            GameManager.instance.isShooting = true;
+            player.currentStamina -= secondaryStamCost;
             //sets our bool animator bool to true to start the animation and plays our associated audio
             player.SetAnimationBool("Mage2", true);
             player.PlaySound('A');
             //turns on our particle system and starts the coroutine that summons the damaging projectiles of our attack
             player.combatObjects[1].GetComponent<ParticleSystem>().Play();
-            StartCoroutine(SummonFireSpray());
+            holdingSecondary = true;
         }
         //if input is pressed and the context is valid but we don't have enough stamina run this code
         else if (ctxt.performed && ValidAttack() && !StaminaCheck(secondaryStamCost))
         {
-            //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
-            GameManager.instance.isShooting = false;
-            player.SetAnimationBool("Mage2", false);
-            player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
-            StopCoroutine(SummonFireSpray());
             // Checking for audio ( preventing looping on sounds )
             if (!player.staminaAudioSource.isPlaying)
             {
@@ -105,7 +119,7 @@ public class Class_Mage : MonoBehaviour
             GameManager.instance.isShooting = false;
             player.SetAnimationBool("Mage2", false);
             player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
-            StopCoroutine(SummonFireSpray());
+            holdingSecondary = false;
         }
     }
 
@@ -119,17 +133,43 @@ public class Class_Mage : MonoBehaviour
              Instantiate(player.combatObjects[0], player.shootPosition.transform.position, player.shootPosition.transform.rotation); GameManager.instance.isShooting = false;
     }
 
+    //this function is for stopping the fire spray attack if you run out of stamina
+    void EndSecondary()
+    {
+        //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
+        GameManager.instance.isShooting = false;
+        player.SetAnimationBool("Mage2", false);
+        player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        holdingSecondary = false;
+        // Checking for audio ( preventing looping on sounds )
+        if (!player.staminaAudioSource.isPlaying)
+        {
+            // Play out of stamina sound
+            player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
+            player.isPlayingStamina = true;
+        }
+
+        player.isPlayingStamina = player.staminaAudioSource.isPlaying;
+
+        Debug.Log("No Staminaaaaaa :(");
+    }
+
     //coroutine that takes in our adjustable timing and only summons a damage projectile every so often
     IEnumerator SummonFireSpray()
     {
-        if(!fireSpraying)
+        if(!StaminaCheck(secondaryStamCost))
+        {
+            EndSecondary();
+        }
+        else if(!fireSpraying)
         {
             fireSpraying = true;
+            player.currentStamina -= secondaryStamCost;
             //summons either locally or for all connected game instances
             if (PhotonNetwork.InRoom)
                 PhotonNetwork.Instantiate(player.combatObjects[2].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
             else if (!PhotonNetwork.InRoom)
-                Instantiate(player.combatObjects[2], player.combatObjects[1].transform.position, player.combatObjects[1].transform.rotation);
+                Instantiate(player.combatObjects[2], player.shootPosition.transform.position, player.shootPosition.transform.rotation);
             //waits
             yield return new WaitForSeconds(secondaryFireSpeed);
             fireSpraying = false;
@@ -145,7 +185,6 @@ public class Class_Mage : MonoBehaviour
         // 3. are we in a valid scene
         if (!GameManager.instance.isShooting && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
         {
-            GameManager.instance.isShooting = true;
             return true;
         }
         return false;
@@ -154,10 +193,8 @@ public class Class_Mage : MonoBehaviour
     //checks if we have the required stamina to perform the action
     bool StaminaCheck(float staminaRequired)
     {
-        if (player.stamina >= staminaRequired)
+        if (player.currentStamina >= staminaRequired)
         {
-            //removes our used stamina right here for simplicity in the function that need to use stamina
-            player.stamina -= staminaRequired;
             return true;
         }
         return false;

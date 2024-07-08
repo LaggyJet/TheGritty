@@ -1807,10 +1807,10 @@ GameObject:
   - component: {fileID: 4363267446184540556}
   - component: {fileID: 3116865600634008479}
   - component: {fileID: 7898868306004621137}
-  - component: {fileID: 4536270809785188097}
-  - component: {fileID: 720355426864771785}
-  - component: {fileID: 3185435775866704454}
   - component: {fileID: 5181937840172003563}
+  - component: {fileID: 6665335543444816129}
+  - component: {fileID: 1530042551993933754}
+  - component: {fileID: 5542085971826788276}
   m_Layer: 3
   m_Name: BasePlayer
   m_TagString: Player
@@ -1880,19 +1880,19 @@ MonoBehaviour:
   combatObjects:
   - {fileID: 2534988432703087702, guid: 0484adfc589ea004caa211680812ec51, type: 3}
   - {fileID: 6186270549528748386}
-  - {fileID: 2534988432703087702, guid: a20d7c4c73b755c4ca671ba73dcc6b70, type: 3}
+  - {fileID: 2534988432703087702, guid: 79f14246f9fb55b4382c274a1eb6290a, type: 3}
   - {fileID: 2388995724689237375}
-  hp: 10
+  currentHP: 10
   fullHealth: {r: 0.24978681, g: 0.42352942, b: 0.20718746, a: 1}
   midHealth: {r: 0.9892183, g: 0.43262324, b: 0.046661116, a: 1}
   criticalHealth: {r: 0.7058824, g: 0, b: 0, a: 1}
-  hpShakeDuration: 0
-  stamina: 10
+  HPShakeDuration: 0
+  currentStamina: 10
   staminaRegenerate: 50
-  fullstamina: {r: 0.09290466, g: 0.5564428, b: 0.9191374, a: 1}
-  midstamina: {r: 0.08121482, g: 0.35876235, b: 0.76280314, a: 1}
-  criticalstamina: {r: 0.7058824, g: 0, b: 0, a: 1}
-  stamShakeDuration: 0
+  fullStamina: {r: 0, g: 0.0030903816, b: 1, a: 0}
+  midStamina: {r: 0.46540874, g: 0, b: 0.42016062, a: 0}
+  criticalStamina: {r: 0.34591186, g: 0, b: 0.13190229, a: 0}
+  staminaShakeDuration: 0
   animate: {fileID: 2654759320713316378}
   animationTransSpeed: 1
   sprite: {fileID: 21300000, guid: 8e4680958c649e642b0dae1c48a3e1ca, type: 3}
@@ -1927,12 +1927,13 @@ MonoBehaviour:
   noAttack:
   - {fileID: 8300000, guid: 4a5823ac4669ca2489afe114f796893f, type: 3}
   noAttackVol: 0.5
-  isPlayingStamina: 0
-  isPlayingNoSprinting: 0
-  isPlayingNoHP: 0
+  playerClass: {fileID: 11400000, guid: aecd08a9e5e48a145914c754caeea9e3, type: 2}
   mage: {fileID: 0}
   warrior: {fileID: 0}
   archer: {fileID: 0}
+  isPlayingStamina: 0
+  isPlayingNoSprinting: 0
+  isPlayingNoHP: 0
 --- !u!136 &4363267446184540556
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2078,44 +2079,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4536270809785188097
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3724347164852896666}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4fecc861f705974498cc3b3708a4f3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &720355426864771785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3724347164852896666}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e0fe943d4c17e3488ec65a71f8b559d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3185435775866704454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3724347164852896666}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 800c9edcfccdb8541880e3976727a979, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  primaryStamCost: 0.05
-  secondaryStamCost: 0.5
 --- !u!114 &5181937840172003563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2286,6 +2249,97 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &6665335543444816129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3724347164852896666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 8103881619842969174}
+  - {fileID: 1530042551993933754}
+  - {fileID: 5542085971826788276}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &1530042551993933754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3724347164852896666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8efc6b1d64977384eb3405357896c656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PositionModel:
+    SynchronizeEnabled: 1
+    TeleportEnabled: 1
+    TeleportIfDistanceGreaterThan: 3
+    InterpolateOption: 2
+    InterpolateMoveTowardsSpeed: 1
+    InterpolateLerpSpeed: 1
+    ExtrapolateOption: 0
+    ExtrapolateSpeed: 1
+    ExtrapolateIncludingRoundTripTime: 1
+    ExtrapolateNumberOfStoredPositions: 1
+  m_RotationModel:
+    SynchronizeEnabled: 1
+    InterpolateOption: 0
+    InterpolateRotateTowardsSpeed: 180
+    InterpolateLerpSpeed: 5
+  m_ScaleModel:
+    SynchronizeEnabled: 0
+    InterpolateOption: 0
+    InterpolateMoveTowardsSpeed: 1
+    InterpolateLerpSpeed: 0
+--- !u!114 &5542085971826788276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3724347164852896666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 9
+    SynchronizeType: 1
+    Name: Mage1
+  - Type: 4
+    SynchronizeType: 1
+    Name: Mage2
+  - Type: 9
+    SynchronizeType: 0
+    Name: Warrior1
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0
+  - SynchronizeType: 1
+    LayerIndex: 1
+  - SynchronizeType: 1
+    LayerIndex: 2
+  - SynchronizeType: 0
+    LayerIndex: 3
 --- !u!1 &3797678969013287520
 GameObject:
   m_ObjectHideFlags: 0

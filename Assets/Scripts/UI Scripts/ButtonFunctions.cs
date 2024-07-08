@@ -1,4 +1,4 @@
-//worked on by - natalie lubahn
+//worked on by - natalie lubahn, Jacob Irvin
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +7,8 @@ using Photon.Pun;
 
 public class ButtonFunctions : MonoBehaviour
 {
+    [SerializeField] private ClassSelection playerClass;
+
     public void resume()
     {
         GameManager.instance.stateResume();
@@ -15,8 +17,8 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.enemyCount = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        PlayerController.spawnHp = 10;
-        GameManager.instance.playerScript.updatePlayerUI();
+        PlayerController.spawnHP = 10;
+        GameManager.instance.playerScript.UpdatePlayerUI();
         GameManager.instance.stateResume();
     }
     public void quitApp()
@@ -56,7 +58,7 @@ public class ButtonFunctions : MonoBehaviour
     public void quitSaveWarning()
     {
         DataPersistenceManager.gameData = DataPersistenceManager.Instance.dataHandler.Load();
-        if (DataPersistenceManager.gameData.playerPos != GameManager.instance.player.transform.position || DataPersistenceManager.gameData.playerHp != GameManager.instance.playerScript.hp || DataPersistenceManager.gameData.playerStamina != GameManager.instance.playerScript.stamina)
+        if (DataPersistenceManager.gameData.playerPos != GameManager.instance.player.transform.position || DataPersistenceManager.gameData.playerHp != GameManager.instance.playerScript.currentHP || DataPersistenceManager.gameData.playerStamina != GameManager.instance.playerScript.currentStamina)
         {
             GameManager.instance.Warning4SaveProgress();
         }
@@ -91,14 +93,18 @@ public class ButtonFunctions : MonoBehaviour
     //CLASS SELECTION
     public void warrior()
     {
+        playerClass.MyClass = 1;
         newGame();
     }
     public void mage()
     {
+        playerClass.MyClass = 2;
         newGame();
+
     }
     public void archer()
     {
+        playerClass.MyClass = 3;
         newGame();
     }
 
