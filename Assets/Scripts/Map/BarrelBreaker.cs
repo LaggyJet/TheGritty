@@ -2,19 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class BarrelBreaker : MonoBehaviour
+public class BarrelBreaker : MonoBehaviourPunCallbacks
 {
-    private void OnTriggerEnter(Collider other) //box collider will be placed above barrel model
-    {
+    private void OnTriggerEnter(Collider other) {//box collider will be placed above barrel model
         if (other.CompareTag("Player"))
-        {
-            Invoke("DestroyBarrel", 3);
-        }
+            Invoke(nameof(DestroyBarrel), 3);
     }
 
-    private void DestroyBarrel()
-    {
-        Destroy(gameObject);
+    private void DestroyBarrel() {
+        if (PhotonNetwork.InRoom)
+            PhotonNetwork.Destroy(gameObject);
+        else if (!PhotonNetwork.InRoom)
+            Destroy(gameObject);
     }
 }

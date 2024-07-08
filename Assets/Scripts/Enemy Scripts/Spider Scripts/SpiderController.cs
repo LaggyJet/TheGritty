@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
-public class SpiderController : MonoBehaviour, IDamage {
+public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator anim;
@@ -40,7 +41,10 @@ public class SpiderController : MonoBehaviour, IDamage {
     IEnumerator SpawnSpiders() {
         isSpawningSpiders = true;
         for (int i = 0; i < spawnAmount; i++) {
-            Instantiate(spider, transform.position, Quaternion.LookRotation(playerDirection) * Quaternion.Euler(0, 180, 0));
+            if (PhotonNetwork.InRoom)
+                PhotonNetwork.Instantiate("Enemy" + spider.name, transform.position, Quaternion.LookRotation(playerDirection) * Quaternion.Euler(0, 180, 0));
+            else if (!PhotonNetwork.InRoom)
+                Instantiate(spider, transform.position, Quaternion.LookRotation(playerDirection) * Quaternion.Euler(0, 180, 0));
             yield return new WaitForSeconds(1f);
         }
         yield return new WaitForSeconds(spawnRate);
@@ -108,8 +112,14 @@ public class SpiderController : MonoBehaviour, IDamage {
                     curTracers[i].transform.position = p[j].position;
                 else
                 {
-                    Instantiate(acidPuddle, curTracers[i].transform.position, Quaternion.identity);
-                    Destroy(curTracers[i]);
+                    if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine) {
+                        PhotonNetwork.Instantiate("Enemy" + acidPuddle.name, curTracers[i].transform.position, Quaternion.identity);
+                        PhotonNetwork.Destroy(curTracers[i]);
+                    }
+                    else if (!PhotonNetwork.InRoom) {
+                        Instantiate(acidPuddle, curTracers[i].transform.position, Quaternion.identity);
+                        Destroy(curTracers[i]);
+                    }
                     curTracers.RemoveAt(i);
                     i--;
                 }
@@ -180,7 +190,10 @@ public class SpiderController : MonoBehaviour, IDamage {
                 yield return null;
             }
         }
-        Destroy(gameObject);
+        if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
+            PhotonNetwork.Destroy(gameObject);
+        else if (!PhotonNetwork.InRoom)
+            Destroy(gameObject);
     }
 
     IEnumerator FlashDamage() {

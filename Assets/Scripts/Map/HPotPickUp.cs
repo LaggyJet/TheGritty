@@ -2,10 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class HPotPickUp : MonoBehaviour
+public class HPotPickUp : MonoBehaviourPunCallbacks
 {
-
     public enum SelectPotion {stamina, health}  
     // Amount of hp/stamina the potion adds to the player
     [Range(0f, 10f)] public float Amount;  
@@ -13,11 +13,10 @@ public class HPotPickUp : MonoBehaviour
     [SerializeField] AudioSource Audio;  
     [SerializeField] AudioClip pickUp;
     [SerializeField] float pickUpVol;
-   
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected))
         {
             // Sound for player picking up potion 
             Audio.clip = pickUp; 
@@ -41,7 +40,10 @@ public class HPotPickUp : MonoBehaviour
             }
             
             // Clean up 
-            Destroy(gameObject);
+            if (PhotonNetwork.InRoom && other.GetComponent<PhotonView>().IsMine)
+                PhotonNetwork.Destroy(gameObject);
+            else if (!PhotonNetwork.InRoom)
+                Destroy(gameObject);
         }
     }
 

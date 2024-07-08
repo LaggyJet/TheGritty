@@ -59,9 +59,11 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         player = GameObject.FindWithTag("Player");
-        playerScript = player.GetComponent<PlayerController>();
-        playerLocation = player.transform.position;
-        SoundTrackswitch(GameMusic.Gameplay); // TODO: this will need to change once we solidify awake screen
+        if (player != null) {
+            playerScript = player.GetComponent<PlayerController>();
+            playerLocation = player.transform.position;
+            SoundTrackswitch(GameMusic.Gameplay); // TODO: this will need to change once we solidify awake screen
+        }
     }
     // Update is called once per frame
     void Update()
@@ -94,6 +96,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Setter
+    public void SetPlayer()
+    {
+        player = GameObject.FindWithTag("Player");
+        playerScript = player.GetComponent<PlayerController>();
+        playerLocation = player.transform.position;
+    }
     //TEXT POP UPS
     public void ShowText (string message)
     {
@@ -267,8 +276,4 @@ public class GameManager : MonoBehaviour
           break;  
         }
     }
-
 }
-
-    
-

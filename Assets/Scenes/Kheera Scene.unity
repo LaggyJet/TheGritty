@@ -3210,9 +3210,6 @@ MonoBehaviour:
   type: {fileID: 11400000, guid: 19c1a9185716ec34884e00e951051bbd, type: 2}
   enemyLimiter: {fileID: 11400000, guid: 69592759934e6014b923381164fcf075, type: 2}
   range: 5
-  isAttacking: 0
-  wasKilled: 0
-  isDOT: 0
 --- !u!95 &88907683
 Animator:
   serializedVersion: 5
@@ -9736,9 +9733,6 @@ MonoBehaviour:
   type: {fileID: 11400000, guid: 19c1a9185716ec34884e00e951051bbd, type: 2}
   enemyLimiter: {fileID: 11400000, guid: 69592759934e6014b923381164fcf075, type: 2}
   range: 5
-  isAttacking: 0
-  wasKilled: 0
-  isDOT: 0
 --- !u!95 &290085654
 Animator:
   serializedVersion: 5
@@ -21741,63 +21735,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2819875332361676042, guid: c085d9e5966f8214aacfe5a9eb81ef4d, type: 3}
   m_PrefabInstance: {fileID: 707850087}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &708879055
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3412239730010997035, guid: 1fe80c92b3113574fae06f1526f5a9e6, type: 3}
-      propertyPath: m_Name
-      value: TestClass
-      objectReference: {fileID: 0}
-    - target: {fileID: 5846683530226125521, guid: 1fe80c92b3113574fae06f1526f5a9e6, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -18.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5846683530226125521, guid: 1fe80c92b3113574fae06f1526f5a9e6, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5846683530226125521, guid: 1fe80c92b3113574fae06f1526f5a9e6, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 77.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5846683530226125521, guid: 1fe80c92b3113574fae06f1526f5a9e6, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5846683530226125521, guid: 1fe80c92b3113574fae06f1526f5a9e6, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5846683530226125521, guid: 1fe80c92b3113574fae06f1526f5a9e6, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5846683530226125521, guid: 1fe80c92b3113574fae06f1526f5a9e6, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5846683530226125521, guid: 1fe80c92b3113574fae06f1526f5a9e6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5846683530226125521, guid: 1fe80c92b3113574fae06f1526f5a9e6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5846683530226125521, guid: 1fe80c92b3113574fae06f1526f5a9e6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1fe80c92b3113574fae06f1526f5a9e6, type: 3}
 --- !u!1001 &709233116
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25672,9 +25609,6 @@ MonoBehaviour:
   type: {fileID: 11400000, guid: 19c1a9185716ec34884e00e951051bbd, type: 2}
   enemyLimiter: {fileID: 11400000, guid: 69592759934e6014b923381164fcf075, type: 2}
   range: 5
-  isAttacking: 0
-  wasKilled: 0
-  isDOT: 0
 --- !u!95 &800562061
 Animator:
   serializedVersion: 5
@@ -37494,9 +37428,6 @@ MonoBehaviour:
   type: {fileID: 11400000, guid: 19c1a9185716ec34884e00e951051bbd, type: 2}
   enemyLimiter: {fileID: 11400000, guid: 69592759934e6014b923381164fcf075, type: 2}
   range: 5
-  isAttacking: 0
-  wasKilled: 0
-  isDOT: 0
 --- !u!95 &1198647494
 Animator:
   serializedVersion: 5
@@ -56734,9 +56665,6 @@ MonoBehaviour:
   type: {fileID: 11400000, guid: 19c1a9185716ec34884e00e951051bbd, type: 2}
   enemyLimiter: {fileID: 11400000, guid: 69592759934e6014b923381164fcf075, type: 2}
   range: 5
-  isAttacking: 0
-  wasKilled: 0
-  isDOT: 0
 --- !u!95 &1760297597
 Animator:
   serializedVersion: 5
@@ -105891,7 +105819,6 @@ SceneRoots:
   - {fileID: 176695409}
   - {fileID: 904524908}
   - {fileID: 513019423}
-  - {fileID: 5067700525553678390}
   - {fileID: 8706082125307516250}
   - {fileID: 1812840197}
   - {fileID: 6269550114722287224}

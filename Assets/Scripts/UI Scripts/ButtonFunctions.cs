@@ -1,11 +1,14 @@
-//worked on by - natalie lubahn
+//worked on by - natalie lubahn, Jacob Irvin
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class ButtonFunctions : MonoBehaviour
 {
+    [SerializeField] private ClassSelection playerClass;
+
     public void resume()
     {
         GameManager.instance.stateResume();
@@ -14,8 +17,8 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.enemyCount = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        PlayerController.spawnHp = 10;
-        GameManager.instance.playerScript.updatePlayerUI();
+        PlayerController.spawnHP = 10;
+        GameManager.instance.playerScript.UpdatePlayerUI();
         GameManager.instance.stateResume();
     }
     public void quitApp()
@@ -30,6 +33,10 @@ public class ButtonFunctions : MonoBehaviour
     public void quitGame()
     {
         SceneManager.LoadScene("title menu");
+
+        //Disconnect player from the server (if possible)
+        if (PhotonNetwork.IsConnected)
+            PhotonNetwork.Disconnect();
     }
 
     public void respawn()
@@ -52,7 +59,7 @@ public class ButtonFunctions : MonoBehaviour
     {
         DataPersistenceManager.gameData = DataPersistenceManager.Instance.dataHandler.Load();
         if ((int)GameManager.playerLocation.x != (int)GameManager.instance.player.transform.position.x && (int)GameManager.playerLocation.z != (int)GameManager.instance.player.transform.position.z 
-            || DataPersistenceManager.gameData.playerHp != GameManager.instance.playerScript.hp || DataPersistenceManager.gameData.playerStamina != GameManager.instance.playerScript.stamina)
+            || DataPersistenceManager.gameData.playerHp != GameManager.instance.playerScript.currentHP || DataPersistenceManager.gameData.playerStamina != GameManager.instance.playerScript.currentStamina)
         {
             GameManager.instance.Warning4SaveProgress();
         }
@@ -87,14 +94,24 @@ public class ButtonFunctions : MonoBehaviour
     //CLASS SELECTION
     public void warrior()
     {
-        newGame();
+        playerClass.MyClass = 1;
+        if (!PhotonNetwork.IsConnected)
+            newGame();
     }
     public void mage()
     {
-        newGame();
+        playerClass.MyClass = 2;
+        if (!PhotonNetwork.IsConnected)
+            newGame();
+
     }
     public void archer()
     {
-        newGame();
+        playerClass.MyClass = 3;
+        if (!PhotonNetwork.IsConnected)
+            newGame();
     }
+
+    // Co-op features
+    public void LoadMultiplayer() { GameManager.instance.charSelectionMenu(); SceneManager.LoadScene("Lobby"); }
 }
