@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Diagnostics.Contracts;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -43,6 +44,16 @@ public class GameManager : MonoBehaviour
     public float displayTime;
     public bool hasRespawned = false;
 
+    [Header("------ Audio ------")]
+    [SerializeField] AudioSource soundTrackAud;
+    [SerializeField] AudioClip menuMusic;
+    [SerializeField] public float menuVol;
+    [SerializeField] AudioClip gamePlayMusic;
+    [SerializeField] public float gamePlayVol;
+    public bool isPlayingSTA = false; // Sound Track Audio
+
+
+
     //Calls "Awake" instead to run before the other Start methods
     void Awake()
     {
@@ -51,6 +62,7 @@ public class GameManager : MonoBehaviour
         if (player != null) {
             playerScript = player.GetComponent<PlayerController>();
             playerLocation = player.transform.position;
+            SoundTrackswitch(GameMusic.Gameplay); // TODO: this will need to change once we solidify awake screen
         }
     }
     // Update is called once per frame
@@ -111,6 +123,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
+        SoundTrackswitch(GameMusic.Menu);
     }
     public void stateResume()
     {
@@ -120,6 +133,7 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         menuActive.SetActive(isPaused);
         menuActive = null;
+        SoundTrackswitch(GameMusic.Gameplay);
     }
     public void stateResumeGameLoads()
     {
@@ -128,6 +142,7 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         menuActive = null;
+        SoundTrackswitch(GameMusic.Gameplay);
     }
 
     //SETTINGS METHODS
@@ -144,6 +159,7 @@ public class GameManager : MonoBehaviour
         menuActive = menuSettings;
         menuActivePublicVers = menuSettings;
         menuActive.SetActive(isPaused);
+        SoundTrackswitch(GameMusic.Menu);
     }
     public void leaveSettings()
     {
@@ -157,6 +173,7 @@ public class GameManager : MonoBehaviour
             menuActivePublicVers = oldActiveMenu;
             menuActive.SetActive(isPaused);
         }
+        SoundTrackswitch(GameMusic.Gameplay);
     }
 
     //WIN/LOSE METHODS
@@ -173,6 +190,7 @@ public class GameManager : MonoBehaviour
         statePause();
         menuActive = menuWin;
         menuActive.SetActive(isPaused);
+        SoundTrackswitch(GameMusic.Menu);
     }
 
     public void gameLost()
@@ -180,6 +198,7 @@ public class GameManager : MonoBehaviour
         statePause();
         menuActive = menuLose;
         menuActive.SetActive(isPaused);
+        SoundTrackswitch(GameMusic.Menu);
     }
 
     //RESPAWN METHODS
@@ -207,12 +226,14 @@ public class GameManager : MonoBehaviour
         isPaused = !isPaused;
         menuActive = charSelect;
         menuActive.SetActive(isPaused);
+        SoundTrackswitch(GameMusic.Menu);
     }
     public void Warning4NewGame()
     {
         statePause();
         menuActive = GameWarning;
         menuActive.SetActive(isPaused);
+        SoundTrackswitch(GameMusic.Menu);
     }
     public void Warning4SaveProgress()
     {
@@ -223,5 +244,36 @@ public class GameManager : MonoBehaviour
         statePause();
         menuActive = GameWarning;
         menuActive.SetActive(isPaused);
+        SoundTrackswitch(GameMusic.Menu);
+    }
+
+    // Switch between which sounds you'd like for any created scenes
+    public enum GameMusic {Menu, Gameplay}
+
+    private void SoundTrackswitch(GameMusic music)
+    {
+       switch(music)
+       {
+          case GameMusic.Menu:
+          if(soundTrackAud.clip != menuMusic)
+          {
+            soundTrackAud.clip = menuMusic;
+            soundTrackAud.volume = menuVol; 
+            soundTrackAud.Play();
+            isPlayingSTA = true;
+          }
+          break;
+
+          case GameMusic.Gameplay:
+          if(soundTrackAud.clip != gamePlayMusic)
+          {
+            soundTrackAud.clip = gamePlayMusic;
+            soundTrackAud.volume = gamePlayVol;
+            soundTrackAud.Play();
+            isPlayingSTA = true;
+          }
+
+          break;  
+        }
     }
 }

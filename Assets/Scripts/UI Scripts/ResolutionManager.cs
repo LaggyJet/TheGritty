@@ -16,6 +16,7 @@ public class ResolutionManager : MonoBehaviour
     private List<Resolution> filteredResolutions;
     private float currentRefreshRate;
     private int currentResolutionIndex;
+    private Resolution resolution;
     public static ResolutionManager instance { get; private set; }
 
     private void Awake()
@@ -74,7 +75,7 @@ public class ResolutionManager : MonoBehaviour
 
     public void SetResolution(int resolutionIndex)
     {
-        Resolution resolution = filteredResolutions[resolutionIndex];
+        resolution = filteredResolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, true);  
         resDDVal = resDropDown.value;
     }

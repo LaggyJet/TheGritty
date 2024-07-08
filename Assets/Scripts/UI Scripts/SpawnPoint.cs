@@ -5,7 +5,6 @@ using UnityEngine;
 public class SpawnPoint : MonoBehaviourPunCallbacks
 {
     public static SpawnPoint Instance { get; private set; }
-    public Transform spawnPoint;
     public GameObject player;
 
     void Start() {
@@ -17,5 +16,5 @@ public class SpawnPoint : MonoBehaviourPunCallbacks
             Instantiate(player, GetRandomSpawn(), Quaternion.identity);
     }
 
-    Vector3 GetRandomSpawn() { return spawnPoint.position + new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2)); }
+    Vector3 GetRandomSpawn() { return gameObject.transform.position + new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2)); }
 }

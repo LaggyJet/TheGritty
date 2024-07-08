@@ -58,7 +58,8 @@ public class ButtonFunctions : MonoBehaviour
     public void quitSaveWarning()
     {
         DataPersistenceManager.gameData = DataPersistenceManager.Instance.dataHandler.Load();
-        if (DataPersistenceManager.gameData.playerPos != GameManager.instance.player.transform.position || DataPersistenceManager.gameData.playerHp != GameManager.instance.playerScript.currentHP || DataPersistenceManager.gameData.playerStamina != GameManager.instance.playerScript.currentStamina)
+        if ((int)GameManager.playerLocation.x != (int)GameManager.instance.player.transform.position.x && (int)GameManager.playerLocation.z != (int)GameManager.instance.player.transform.position.z 
+            || DataPersistenceManager.gameData.playerHp != GameManager.instance.playerScript.currentHP || DataPersistenceManager.gameData.playerStamina != GameManager.instance.playerScript.currentStamina)
         {
             GameManager.instance.Warning4SaveProgress();
         }
