@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Scenes/Lobby.unity.meta
-guid: 04ee35e4be398cf468d4880cfb65fa64
-========
-guid: f6995f4eab80237489ce6962c13d8372
->>>>>>>> f057fa45dbd37ee0c5360a9e46c89c052a79a527:Assets/Samples/Input System/1.7.0/Rebinding UI/RebindingUISampleScene.unity.meta
+guid: ddfcf4a34139958468e08e0bc2431228
 DefaultImporter:
   externalObjects: {}
   userData: 

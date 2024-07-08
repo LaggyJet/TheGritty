@@ -202,5 +202,9 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
         model.material.color = new Color(0.5f, 0.5f, 0.5f, 1);
     }
 
-    private void Win() { GameManager.instance.gameWon(); }
+    private void Win() 
+    { GameManager.instance.gameWon();
+      DataPersistenceManager.Instance.SaveGame();
+      GameManager.playerLocation = GameManager.instance.player.transform.position;
+    }
 }

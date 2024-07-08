@@ -16,7 +16,6 @@ public class FireBall : MonoBehaviourPunCallbacks
     [SerializeField] int destroyTime;
     [SerializeField] DamageStats type;
 
-
     // Start is called before the first frame update
     void Start()
     {

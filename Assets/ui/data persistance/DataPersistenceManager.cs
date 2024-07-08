@@ -11,9 +11,9 @@ public class DataPersistenceManager : MonoBehaviour
     [SerializeField] private bool useEncryption;
 
     //private variables
-    private static GameData gameData;
+    public static GameData gameData;
     private List<IDataPersistence> dataPersistenceObjects;
-    private FileDataHandler dataHandler;
+    public FileDataHandler dataHandler;
     public static DataPersistenceManager Instance { get; private set; }
 
     private void Awake() //makes sure there's only one instance (singleton)

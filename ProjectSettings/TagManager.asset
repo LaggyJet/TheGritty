@@ -11,6 +11,7 @@ TagManager:
   - Room 2 Trigger
   - Room 3 Trigger
   - Ground
+  - PlayerChild
   layers:
   - Default
   - TransparentFX
