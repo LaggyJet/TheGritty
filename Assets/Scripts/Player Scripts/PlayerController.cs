@@ -44,8 +44,8 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [SerializeField] Color midHealth; 
     [SerializeField] Color criticalHealth;
 
-    // currentHP bar shake duration
-    [Range(0f, 10f)] public float HPShakeDuration;
+    [SerializeField] Shake hpShake;
+
 
     //shows up as a divider in the script
     [Header("------- Stamina -------")]
@@ -54,13 +54,13 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [Range(0f, 50f)] public float staminaRegenerate;  
     float maxStamina; 
     
-     // currentStamina bar gradual fill 
-    [SerializeField] Color fullStamina; 
-    [SerializeField] Color midStamina; 
-    [SerializeField] Color criticalStamina;
+    
+     // stamina bar gradual fill 
+    [SerializeField] Color fullstamina; 
+    [SerializeField] Color midstamina; 
+    [SerializeField] Color criticalstamina;
+    [SerializeField] Shake stamShake; 
 
-    // currentStamina bar shake duration
-    [Range(0f, 10f)] public float staminaShakeDuration;   
 
     //these are animation variables
     [SerializeField] Animator animate;
@@ -485,6 +485,11 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             {
                 GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
 
+                if(healthRatio <= 0.5f )
+                {
+                    hpShake.Shaking(); 
+                }
+
                 if(!isPlayingNoHP)
                 {
                     if(!staminaAudioSource.isPlaying)
@@ -492,16 +497,18 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
                         // Playing heart beat for low currentHP 
                         staminaAudioSource.PlayOneShot(noHP[Random.Range(0, noHP.Length)], noHPvol);
                         isPlayingNoHP = true;
+                        isPlayingNoHP = staminaAudioSource.isPlaying;
+                        Debug.Log("No HP :(");
                     }
                 }
 
                 isPlayingNoHP = staminaAudioSource.isPlaying;
                 Debug.Log("No currentHP :(");
                
-                // if(healthRatio <= 0.5f )
-                // {
-                //    Shake.instance.Shaking(HPShakeDuration); 
-                // }
+                 if(healthRatio <= 0.5f )
+                 {
+                    hpShake.Shaking();   
+                 }
                 
             }
        
@@ -512,9 +519,10 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             }
             else // If the stamina is less than 50%
             {
-                GameManager.instance.staminaBar.color = Color.Lerp(criticalStamina, midStamina, staminaRatio * 2);
-                if(staminaRatio <= 0.5f){
-                   Shake.instance.Shaking(staminaShakeDuration); 
+                GameManager.instance.staminaBar.color = Color.Lerp(criticalstamina, midstamina, staminaRatio * 2);
+                if(staminaRatio <= 0.5f)
+                {
+                   stamShake.Shaking();  
                 }
                 
             }
