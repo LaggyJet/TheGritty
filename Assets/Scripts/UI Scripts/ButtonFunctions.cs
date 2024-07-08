@@ -8,6 +8,7 @@ using Photon.Pun;
 public class ButtonFunctions : MonoBehaviour
 {
     [SerializeField] private ClassSelection playerClass;
+    bool multiplayerSelected = false;
 
     public void resume()
     {
@@ -95,23 +96,30 @@ public class ButtonFunctions : MonoBehaviour
     public void warrior()
     {
         playerClass.MyClass = 1;
-        if (!PhotonNetwork.IsConnected)
+
+        if (multiplayerSelected)
+            SceneManager.LoadScene("Lobby");
+        else
             newGame();
     }
     public void mage()
     {
         playerClass.MyClass = 2;
-        if (!PhotonNetwork.IsConnected)
+        if (multiplayerSelected)
+            SceneManager.LoadScene("Lobby");
+        else
             newGame();
 
     }
     public void archer()
     {
         playerClass.MyClass = 3;
-        if (!PhotonNetwork.IsConnected)
+        if (multiplayerSelected)
+            SceneManager.LoadScene("Lobby");
+        else
             newGame();
     }
 
     // Co-op features
-    public void LoadMultiplayer() { GameManager.instance.charSelectionMenu(); SceneManager.LoadScene("Lobby"); }
+    public void LoadMultiplayer() { multiplayerSelected = true; GameManager.instance.charSelectionMenu(); }
 }

@@ -694,10 +694,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1638426326}
-    - target: {fileID: 1740105939030410756, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
-      propertyPath: playerClass
-      value: 
-      objectReference: {fileID: 11400000, guid: aecd08a9e5e48a145914c754caeea9e3, type: 2}
     - target: {fileID: 2603510153493071463, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -798,10 +794,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1638426326}
-    - target: {fileID: 8241866424879613638, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8845188960016962055, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

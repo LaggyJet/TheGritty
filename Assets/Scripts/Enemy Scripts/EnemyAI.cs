@@ -43,7 +43,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
     void Update() {
         anim.SetFloat("Speed", Mathf.Lerp(anim.GetFloat("Speed"), agent.velocity.normalized.magnitude, Time.deltaTime * animationTransitionSpeed));
 
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected)
             HandleHostLogic();
         else if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
             SmoothMovement();
