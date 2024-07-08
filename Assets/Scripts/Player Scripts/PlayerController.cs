@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
     [SerializeField] int jumpSpeed;
     [SerializeField] public GameObject shootPosition;
     [SerializeField] public GameObject[] combatObjects;
+    public bool useStamina = true;
+    public bool isBlocking = false;
 
     //shows up as a divider in the script
     [Header("------- HP -------")]
@@ -262,38 +264,37 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
     }
     public void OnAbility1(InputAction.CallbackContext ctxt)
     {
-        if (ctxt.performed)
+        if (mage != null)
         {
-            Debug.Log("stayc girls its going down!! (testing)");
+            mage.OnAbility(ctxt);
         }
     }
     public void OnPrimaryFire(InputAction.CallbackContext ctxt)
     {
         if (mage != null)
         {
-            Debug.Log("off to the mage script");
             mage.OnPrimaryFire(ctxt);
         }
-        else if (warrior.enabled)
+        else if (warrior != null)
         {
             warrior.OnPrimaryFire(ctxt);
         }
-        else if (archer.enabled)
+        else if (archer != null)
         {
             archer.OnPrimaryFire(ctxt);
         }
     }
     public void OnSecondaryFire(InputAction.CallbackContext ctxt)
     {
-        if (mage.enabled)
+        if (mage != null)
         {
             mage.OnSecondaryFire(ctxt);
         }
-        else if (warrior.enabled)
+        else if (warrior != null)
         {
             warrior.OnSecondaryFire(ctxt);
         }
-        else if (archer.enabled)
+        else if (archer != null)
         {
             archer.OnSecondaryFire(ctxt);
         }
@@ -344,9 +345,12 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
 
     public void Afflict(DamageStats type)
     {
-        status = type;
-        if (!isDOT)
-            StartCoroutine(DamageOverTime());
+        if(!isBlocking)
+        {
+            status = type;
+            if (!isDOT)
+                StartCoroutine(DamageOverTime());
+        }
     }
 
     IEnumerator DamageOverTime()
@@ -354,8 +358,18 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
         isDOT = true;
         for (int i = 0; i < status.length; i++)
         {
-            TakeDamage(status.damage);
-            yield return new WaitForSeconds(1);
+            if(currentHP > status.damage)
+            {
+                currentHP -= status.damage;
+                yield return new WaitForSeconds(1);
+            }
+            else if(currentHP <= status.damage && !isDead)
+            {
+                currentHP = 0;
+                isDead = true;
+                GameManager.instance.gameLost();
+                isDead = false;
+            }
         }
         isDOT = false;
     }
@@ -363,8 +377,12 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
     //this function happens when the player is called to take damage
     public void TakeDamage(float amount)
     {
-        //subtract the damage from the player
-        currentHP -= 0.5f; 
+        if(isBlocking)
+        {
+            currentStamina -= 1;
+        }
+        else
+            currentHP -= amount; 
 
         if (!isPlayingSteps) //plays hurt sounds
         {
@@ -373,6 +391,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence, IPu
         //if health drops below zero run our lose condition
         if(currentHP <= 0 && !isDead)
         {
+            currentHP = 0;
             isDead = true;
             GameManager.instance.gameLost();
             isDead = false;

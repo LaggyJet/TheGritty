@@ -20,10 +20,13 @@ public class Class_Mage : MonoBehaviour
 
     bool holdingSecondary;
     bool fireSpraying;
+    bool isCounting;
+    int abilityCoolDown;
+    int abilityActive;
 
-    [SerializeField] float primaryStamCost = 0.05f;  
-    [SerializeField] float secondaryStamCost = 0.5f;
-    [SerializeField] float secondaryFireSpeed = .5f;
+    float primaryStamCost = 0.05f;  
+    float secondaryStamCost = 0.5f;
+    float secondaryFireSpeed = .5f;
 
 
     //this is our start function that does a few important things
@@ -38,30 +41,30 @@ public class Class_Mage : MonoBehaviour
 
     private void Update()
     {
+        if(abilityActive > 0)
+        {
+            StartCoroutine(AbilityActive());
+        }
+        else if(abilityCoolDown > 0)
+        {
+            StartCoroutine(AbilityCountDown());
+        }
         if (holdingSecondary) 
         {
             StartCoroutine(SummonFireSpray());
         }
     }
 
-    //i imagine this gets called when the input associated with primary fire is triggered
-    //i could not tell you what ctxt is or what information it holds or its importance though
-    //i also have no idea why this function is public, that seems important though
     public void OnPrimaryFire(InputAction.CallbackContext ctxt)
     {
-        Debug.Log("Context is performed");
-        Debug.Log(ctxt.performed);
-        Debug.Log("Attack is Valid");
-        Debug.Log(ValidAttack());
-        Debug.Log("Stamina is Valid");
-        Debug.Log(StaminaCheck(primaryStamCost));
         //checks for if our input was performed and if its valid to attack
         //check the ValidAttack Function to see what quantifies as valid
         //also checks if we have the stamina to attack
         if (ctxt.performed && ValidAttack() && StaminaCheck(primaryStamCost))
         {
             GameManager.instance.isShooting = true;
-            player.currentStamina -= primaryStamCost;
+            if(player.useStamina)
+                player.currentStamina -= primaryStamCost;
             //starts our mage primary attack animation and plays our associated sound
             player.SetAnimationTrigger("Mage1");
             player.PlaySound('A');
@@ -89,12 +92,9 @@ public class Class_Mage : MonoBehaviour
         if (ctxt.performed && ValidAttack() && StaminaCheck(secondaryStamCost))
         {
             GameManager.instance.isShooting = true;
-            player.currentStamina -= secondaryStamCost;
             //sets our bool animator bool to true to start the animation and plays our associated audio
             player.SetAnimationBool("Mage2", true);
             player.PlaySound('A');
-            //turns on our particle system and starts the coroutine that summons the damaging projectiles of our attack
-            player.combatObjects[1].GetComponent<ParticleSystem>().Play();
             holdingSecondary = true;
         }
         //if input is pressed and the context is valid but we don't have enough stamina run this code
@@ -122,6 +122,61 @@ public class Class_Mage : MonoBehaviour
             holdingSecondary = false;
         }
     }
+
+    void StartParticles()
+    {
+        //turns on our particle system and starts the coroutine that summons the damaging projectiles of our attack
+        player.combatObjects[1].GetComponent<ParticleSystem>().Play();
+    }
+
+    //function for using our class ability, which gives us max stamina and makes us not use stamina for the next three seconds
+    public void OnAbility(InputAction.CallbackContext ctxt)
+    {
+        //checks that we are not on cooldown and not using the ability
+        if (ctxt.performed && ValidAttack() && abilityCoolDown == 0 && abilityActive == 0)
+        {
+            //plays our animation and sound for the ability
+            player.SetAnimationTrigger("Mage3");
+            player.PlaySound('A');
+            //sets our active time to 3 and our cooldown time to 10
+            abilityActive = 3;
+            abilityCoolDown = 10;
+            //makes stamina maximum so we pass all stamina checks during our ability time
+            player.currentStamina = 10;
+        }
+    }
+
+    //function for counting down our active time
+    IEnumerator AbilityActive()
+    {
+        if(!isCounting)
+        {
+            if(player.useStamina)
+            {
+                player.useStamina = false;
+            }
+            isCounting = true;
+            yield return new WaitForSeconds(1);
+            abilityActive--;
+            isCounting = false;
+        }
+    }
+    //function for counting down our cooldown
+    IEnumerator AbilityCountDown()
+    {
+        if (!isCounting)
+        {
+            if(!player.useStamina)
+            {
+                player.useStamina = true;
+            }
+            isCounting = true;
+            yield return new WaitForSeconds(1);
+            abilityCoolDown--;
+            isCounting = false;
+        }
+    }
+
 
     //This function is called as an animation event and it will summon our fireball at the appropriate time during the animation
     void PrimaryFire()
@@ -164,7 +219,8 @@ public class Class_Mage : MonoBehaviour
         else if(!fireSpraying)
         {
             fireSpraying = true;
-            player.currentStamina -= secondaryStamCost;
+            if (player.useStamina)
+                player.currentStamina -= secondaryStamCost;
             //summons either locally or for all connected game instances
             if (PhotonNetwork.InRoom)
                 PhotonNetwork.Instantiate(player.combatObjects[2].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
