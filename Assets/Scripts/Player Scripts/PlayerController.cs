@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     void Update()
     {
         // Prevent movement of other players
-        if (GetComponent<PhotonView>().IsMine || !PhotonNetwork.InRoom)
+        if (!PhotonNetwork.IsConnected || GetComponent<PhotonView>().IsMine)
         {
             //runs our movement function to determine the player velocity each frame
             Movement();

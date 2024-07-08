@@ -95,20 +95,23 @@ public class ButtonFunctions : MonoBehaviour
     public void warrior()
     {
         playerClass.MyClass = 1;
-        newGame();
+        if (!PhotonNetwork.IsConnected)
+            newGame();
     }
     public void mage()
     {
         playerClass.MyClass = 2;
-        newGame();
+        if (!PhotonNetwork.IsConnected)
+            newGame();
 
     }
     public void archer()
     {
         playerClass.MyClass = 3;
-        newGame();
+        if (!PhotonNetwork.IsConnected)
+            newGame();
     }
 
     // Co-op features
-    public void LoadMultiplayer() { SceneManager.LoadScene("Lobby"); }
+    public void LoadMultiplayer() { GameManager.instance.charSelectionMenu(); SceneManager.LoadScene("Lobby"); }
 }

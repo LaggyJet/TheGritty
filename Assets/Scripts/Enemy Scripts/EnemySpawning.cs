@@ -10,7 +10,7 @@ public class EnemySpawning : MonoBehaviourPunCallbacks, IPunObservable {
     bool isSpawning;
 
     private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player") && !isSpawning && other.GetComponent<PhotonView>().IsMine)
+        if (other.CompareTag("Player") && !isSpawning && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected))
             Spawn();
     }
 
