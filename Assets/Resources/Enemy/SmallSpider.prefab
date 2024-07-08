@@ -219,6 +219,7 @@ GameObject:
   - component: {fileID: 2474052871712407920}
   - component: {fileID: 367384930298704554}
   - component: {fileID: 3333980214400890618}
+  - component: {fileID: -4278638437202188907}
   m_Layer: 0
   m_Name: SmallSpider
   m_TagString: Untagged
@@ -293,9 +294,6 @@ MonoBehaviour:
   type: {fileID: 0}
   enemyLimiter: {fileID: 11400000, guid: 52dd14251c39b40478542e33d3e75e54, type: 2}
   range: 0
-  isAttacking: 0
-  wasKilled: 0
-  isDOT: 0
 --- !u!195 &3866886637309567587
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -354,10 +352,11 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 2
+  Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 2600471494783406786}
   - {fileID: 3333980214400890618}
   sceneViewId: 0
   InstantiationId: 0
@@ -395,6 +394,22 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &-4278638437202188907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 639156844943288045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters: []
+  m_SynchronizeLayers: []
 --- !u!1 &648088944824925864
 GameObject:
   m_ObjectHideFlags: 0

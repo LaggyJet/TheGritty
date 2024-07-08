@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
-using System;
 
 public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
     [SerializeField] Renderer model;
@@ -23,38 +22,38 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
     [SerializeField] int range;
 
     DamageStats status;
-    bool isAttacking, wasKilled, isDOT;
-    Vector3 playerDirection, enemyTargetPosition;
+    bool isAttacking, wasKilled, isDOT, isChasing;
+    Vector3 playerDirection, enemyTargetPosition, networkPosition;
+    Quaternion networkRotation;
     float originalStoppingDistance, adjustedStoppingDistance, angleToPlayer;
     int id;
 
     void Start() {
-        isAttacking = wasKilled = isDOT = false;
+        isAttacking = wasKilled = isDOT = isChasing = false;
         GameManager.instance.updateEnemy(1);
         weapon.AddComponent<WeaponController>().SetWeapon(damage, canDOT, type);
         EnemyManager.Instance.AddEnemyType(enemyLimiter);
         originalStoppingDistance = agent.stoppingDistance;
         adjustedStoppingDistance = originalStoppingDistance * enemyLimiter.rangeMultiplier;
         id = gameObject.GetInstanceID();
+        networkPosition = transform.position;
+        networkRotation = transform.rotation;
     }
 
     void Update() {
         anim.SetFloat("Speed", Mathf.Lerp(anim.GetFloat("Speed"), agent.velocity.normalized.magnitude, Time.deltaTime * animationTransitionSpeed));
-        CanSeePlayer();
+
+        if (PhotonNetwork.IsMasterClient)
+            HandleHostLogic();
+        else if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
+            SmoothMovement();
     }
 
     public EnemyLimiter GetEnemyLimiter() { return enemyLimiter; }
 
-    bool CanSeePlayer() {
-        playerDirection = GameManager.instance.player.transform.position - headPosition.position;
-        angleToPlayer = Vector3.Angle(new Vector3(playerDirection.x, playerDirection.y + 1, playerDirection.z), transform.forward);
-        if (flipEnemyDirection) {
-            FaceTarget();
-            angleToPlayer = 180 - angleToPlayer;
-        }
-
-        if (Physics.Raycast(headPosition.position, playerDirection, out RaycastHit hit) && hit.collider.CompareTag("Player") && angleToPlayer < viewAngle && !wasKilled) {
-            enemyTargetPosition = GameManager.instance.player.transform.position;
+    void HandleHostLogic() {
+        if (CanSeePlayer()) {
+            isChasing = true;
             agent.SetDestination(enemyTargetPosition);
 
             if (agent.remainingDistance < agent.stoppingDistance)
@@ -73,10 +72,48 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
 
             if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter))
                 StartCoroutine(Swing());
+        }
+        else
+            isChasing = false;
+    }
 
+    void SmoothMovement() {
+        agent.transform.position = Vector3.Lerp(agent.transform.position, networkPosition, Time.deltaTime * 10);
+        agent.transform.rotation = Quaternion.Lerp(agent.transform.rotation, networkRotation, Time.deltaTime * 10);
+    }
+
+    bool CanSeePlayer() {
+        GameObject closestPlayer = FindClosestPlayer();
+        if (closestPlayer == null) return false;
+
+        playerDirection = closestPlayer.transform.position - headPosition.position;
+        angleToPlayer = Vector3.Angle(new Vector3(playerDirection.x, playerDirection.y + 1, playerDirection.z), transform.forward);
+        if (flipEnemyDirection) {
+            FaceTarget();
+            angleToPlayer = 180 - angleToPlayer;
+        }
+
+        if (Physics.Raycast(headPosition.position, playerDirection, out RaycastHit hit) && hit.collider.CompareTag("Player") && angleToPlayer < viewAngle && !wasKilled) {
+            enemyTargetPosition = closestPlayer.transform.position;
             return true;
         }
         return false;
+    }
+
+    GameObject FindClosestPlayer() {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        GameObject closestPlayer = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (GameObject player in players) {
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestPlayer = player;
+            }
+        }
+
+        return closestPlayer;
     }
 
     void FaceTarget() {
@@ -99,29 +136,24 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
         EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
     }
 
-    [PunRPC]
-    void UpdateCounter() {
-        GameManager.instance.updateEnemy(-1);
-        EnemyManager.Instance.UpdateKillCounter(enemyLimiter);
-        StartCoroutine(DeathAnimation());
-    }
-
-
     public void TakeDamage(float damage) {
         hp -= damage;
         if (!isDOT) {
             enemyTargetPosition = GameManager.instance.player.transform.position;
             agent.SetDestination(enemyTargetPosition);
         }
-            if (hp > 0)
+
+        if (hp > 0)
             StartCoroutine(FlashDamage());
+
         if (hp <= 0 && !wasKilled) {
             PlayerController.instance.AddStamina(0.5f);
-            PhotonView.Get(this).RPC(nameof(UpdateCounter), RpcTarget.All);
+            GameManager.instance.updateEnemy(-1);
+            EnemyManager.Instance.UpdateKillCounter(enemyLimiter);
             gameObject.GetComponent<Collider>().enabled = false;
             wasKilled = true;
+            StartCoroutine(DeathAnimation());
         }
-
     }
 
     public void Afflict(DamageStats type) {
@@ -171,13 +203,15 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.IsWriting) {
             stream.SendNext(agent.transform.position);
+            stream.SendNext(agent.transform.rotation);
             stream.SendNext(enemyTargetPosition);
-            stream.SendNext(wasKilled);
+            stream.SendNext(isChasing);
         }
         else {
-            agent.transform.position = (Vector3)stream.ReceiveNext();
+            networkPosition = (Vector3)stream.ReceiveNext();
+            networkRotation = (Quaternion)stream.ReceiveNext();
             enemyTargetPosition = (Vector3)stream.ReceiveNext();
-            wasKilled = (bool)stream.ReceiveNext();
+            isChasing = (bool)stream.ReceiveNext();
         }
     }
 }
