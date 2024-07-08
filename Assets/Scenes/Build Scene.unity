@@ -51843,10 +51843,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 289639023}
     m_Modifications:
-    - target: {fileID: 1962642169128189769, guid: c77c0905966b0a94aa17221c9d5e0d46, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2347653257057319006, guid: 86375183df0529746956651b6db87458, type: 3}
       propertyPath: m_LocalPosition.x
       value: -76.04831
@@ -51890,6 +51886,10 @@ PrefabInstance:
     - target: {fileID: 3720974772391136777, guid: 86375183df0529746956651b6db87458, type: 3}
       propertyPath: m_Name
       value: HealthPotion New (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1962642169128189769, guid: c77c0905966b0a94aa17221c9d5e0d46, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
