@@ -16,7 +16,7 @@ public class Class_Archer : MonoBehaviour
     public void OnPrimaryFire(InputAction.CallbackContext ctxt)
     {
 
-        if (ctxt.performed && !GameManager.instance.isShooting && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu" && player.staminaCor == null)
+        if (ctxt.performed && !GameManager.instance.isShooting && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
         {
 
         }
