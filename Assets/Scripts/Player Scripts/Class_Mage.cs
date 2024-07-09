@@ -33,7 +33,7 @@ public class Class_Mage : MonoBehaviourPun
     private void Start()
     {
         //first we find our player and save him as an easily accessible variable
-        player = GameManager.instance.player.GetComponent<PlayerController>();
+        player = GetComponent<PlayerController>();
 
         if (photonView.IsMine) {
             //next we set our fire particle system to active and turn it off so we can toggle it easier later
@@ -97,7 +97,7 @@ public class Class_Mage : MonoBehaviourPun
             player.SetAnimationBool("Mage2", true);
             player.PlaySound('A');
             holdingSecondary = true;
-            photonView.RPC(nameof(StartParticles), RpcTarget.Others);
+            photonView.RPC(nameof(StartParticles), RpcTarget.All);
         }
         //if input is pressed and the context is valid but we don't have enough stamina run this code
         else if (ctxt.performed && ValidAttack() && !StaminaCheck(secondaryStamCost))
@@ -117,7 +117,7 @@ public class Class_Mage : MonoBehaviourPun
             //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
             GameManager.instance.isShooting = false;
             player.SetAnimationBool("Mage2", false);
-            photonView.RPC(nameof(StopParticles), RpcTarget.Others);
+            photonView.RPC(nameof(StopParticles), RpcTarget.All);
             holdingSecondary = false;
         }
     }
@@ -208,7 +208,7 @@ public class Class_Mage : MonoBehaviourPun
         //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
         GameManager.instance.isShooting = false;
         player.SetAnimationBool("Mage2", false);
-        photonView.RPC(nameof(StopParticles), RpcTarget.All);
+        photonView.RPC(nameof(StopParticles), RpcTarget.Others);
         holdingSecondary = false;
         // Checking for audio ( preventing looping on sounds )
         if (!player.staminaAudioSource.isPlaying)
