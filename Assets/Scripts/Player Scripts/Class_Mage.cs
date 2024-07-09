@@ -97,7 +97,8 @@ public class Class_Mage : MonoBehaviourPun
             player.SetAnimationBool("Mage2", true);
             player.PlaySound('A');
             holdingSecondary = true;
-            photonView.RPC(nameof(StartParticles), RpcTarget.All);
+            if (photonView.IsMine)
+                photonView.RPC(nameof(StartParticles), RpcTarget.All);
         }
         //if input is pressed and the context is valid but we don't have enough stamina run this code
         else if (ctxt.performed && ValidAttack() && !StaminaCheck(secondaryStamCost))
@@ -117,7 +118,8 @@ public class Class_Mage : MonoBehaviourPun
             //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
             GameManager.instance.isShooting = false;
             player.SetAnimationBool("Mage2", false);
-            photonView.RPC(nameof(StopParticles), RpcTarget.All);
+            if (photonView.IsMine)
+                photonView.RPC(nameof(StopParticles), RpcTarget.All);
             holdingSecondary = false;
         }
     }
@@ -192,12 +194,14 @@ public class Class_Mage : MonoBehaviourPun
     //RPC calls to sync the particle system
     [PunRPC]
     void StartParticles() {
-        player.combatObjects[1].GetComponent<ParticleSystem>().Play(); 
+        if (photonView.IsMine)
+            player.combatObjects[1].GetComponent<ParticleSystem>().Play(); 
     }
 
     [PunRPC]
     void StopParticles() {
-        player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting); 
+        if (photonView.IsMine)
+            player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting); 
     }
 
 
