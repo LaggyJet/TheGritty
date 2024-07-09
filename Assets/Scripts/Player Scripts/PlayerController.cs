@@ -541,9 +541,9 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             }
        
             // If stamina is more than 50% full 
-            if (staminaRatio > 0.5f || GameManager.instance.staminaBar.color != midstamina) 
+            if (staminaRatio > 0.5f || GameManager.instance.staminaBar.color != midStamina) 
             {
-                GameManager.instance.staminaBar.color = Color.Lerp(midstamina, fullstamina, (staminaRatio - 0.5f) * 2); 
+                GameManager.instance.staminaBar.color = Color.Lerp(midStamina, fullStamina, (staminaRatio - 0.5f) * 2); 
             }
             else // If the stamina is less than 50%
             {

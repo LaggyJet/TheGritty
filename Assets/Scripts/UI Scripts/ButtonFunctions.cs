@@ -90,6 +90,17 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.instance.charSelectionMenu();
     }
+    public void credits()
+    {
+        SceneManager.LoadScene("credits");
+        StartCoroutine(returnToTitleMenu());
+    }
+
+    IEnumerator returnToTitleMenu()
+    {
+        yield return new WaitForSeconds(8f);
+        SceneManager.LoadScene("title menu");
+    }
 
     //CLASS SELECTION
     public void warrior()
