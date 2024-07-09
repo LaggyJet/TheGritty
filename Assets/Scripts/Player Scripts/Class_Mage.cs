@@ -191,13 +191,15 @@ public class Class_Mage : MonoBehaviourPun
     //RPC calls to sync the particle system
     [PunRPC]
     void StartParticles() {
-        player = GetComponent<PlayerController>();
+        if (player == null)
+            player = GetComponent<PlayerController>();
         player.combatObjects[1].GetComponent<ParticleSystem>().Play(); 
     }
 
     [PunRPC]
-    void StopParticles() { 
-        player = GetComponent<PlayerController>();
+    void StopParticles() {
+        if (player == null)
+            player = GetComponent<PlayerController>();
         player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting); 
     }
 
