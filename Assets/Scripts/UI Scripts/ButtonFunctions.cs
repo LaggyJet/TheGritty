@@ -59,7 +59,7 @@ public class ButtonFunctions : MonoBehaviour
     {
         DataPersistenceManager.gameData = DataPersistenceManager.Instance.dataHandler.Load();
         if ((int)GameManager.playerLocation.x != (int)GameManager.instance.player.transform.position.x && (int)GameManager.playerLocation.z != (int)GameManager.instance.player.transform.position.z 
-            || DataPersistenceManager.gameData.playerHp != GameManager.instance.playerScript.currentHP || DataPersistenceManager.gameData.playerStamina != GameManager.instance.playerScript.currentStamina)
+            || DataPersistenceManager.gameData.playerHp != GameManager.instance.playerScript.hp || DataPersistenceManager.gameData.playerStamina != GameManager.instance.playerScript.stamina)
         {
             GameManager.instance.Warning4SaveProgress();
         }

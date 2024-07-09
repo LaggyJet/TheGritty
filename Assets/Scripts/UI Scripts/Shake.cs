@@ -15,14 +15,10 @@ public class Shake : MonoBehaviour
     // Implementing my 1-10 system 
     [Range(0f, 10f)]public float intensity; 
 
-    //public static Shake instance;
 
     // Start is called before the first frame update
     void Start()
     {
-        // In case anyone else would like to use this for other objects
-        //instance = this;
-
         // Storing position, rotate, scale in target
         targetObject = GetComponent<Transform>(); 
 

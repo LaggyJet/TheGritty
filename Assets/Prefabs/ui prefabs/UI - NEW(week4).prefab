@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 4944130776074532051}
   - component: {fileID: 91235332423909726}
   - component: {fileID: 941757936250233}
+  - component: {fileID: 28285954977265318}
   m_Layer: 5
   m_Name: stamina hp back
   m_TagString: Untagged
@@ -209,6 +210,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &28285954977265318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202160208287628598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e226f7e7f23dc1e4e86350fba2568085, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeDuration: 0
+  isShaking: 0
+  intensity: 7
 --- !u!1 &1381728438926591966
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,6 +442,7 @@ GameObject:
   - component: {fileID: 1018029354726074643}
   - component: {fileID: 3115544827881889097}
   - component: {fileID: 1386581873285825819}
+  - component: {fileID: 8601890347010503462}
   m_Layer: 5
   m_Name: player hp back
   m_TagString: Untagged
@@ -490,6 +507,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8601890347010503462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2489441447705932718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e226f7e7f23dc1e4e86350fba2568085, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeDuration: 0
+  isShaking: 0
+  intensity: 7
 --- !u!1 &2585305102312724613
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,6 +612,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e226f7e7f23dc1e4e86350fba2568085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shakeDuration: 1
   isShaking: 0
   intensity: 7
 --- !u!1 &2606341111130237338
@@ -954,6 +987,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e226f7e7f23dc1e4e86350fba2568085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shakeDuration: 1
   isShaking: 0
   intensity: 7
 --- !u!1 &5625548882352666086
@@ -1438,6 +1472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d286e4efc2d00b47a45932840855c7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerClass: {fileID: 0}
 --- !u!82 &7204092341143623332
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2004,6 +2039,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3421629352055496107, guid: d9709c6547dd30f40a1b32b9df9aeb0d, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6065897129757226527}
     - target: {fileID: 3682175550150806880, guid: d9709c6547dd30f40a1b32b9df9aeb0d, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2070,6 +2109,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2500689957649061334, guid: d9709c6547dd30f40a1b32b9df9aeb0d, type: 3}
   m_PrefabInstance: {fileID: 4479534861745423433}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6065897129757226527 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7639482055573451350, guid: d9709c6547dd30f40a1b32b9df9aeb0d, type: 3}
+  m_PrefabInstance: {fileID: 4479534861745423433}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c52ca44f83c5fc34aae463161762232b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6521288905371615834
 PrefabInstance:
   m_ObjectHideFlags: 0
