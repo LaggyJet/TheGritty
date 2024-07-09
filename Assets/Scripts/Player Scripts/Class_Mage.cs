@@ -14,7 +14,7 @@ using Photon.Pun;
 /// </im not mad the code just was spaghetti when i got here>
 
 
-public class Class_Mage : MonoBehaviourPun, IPunObservable
+public class Class_Mage : MonoBehaviourPun
 {
     PlayerController player;
 
@@ -96,7 +96,7 @@ public class Class_Mage : MonoBehaviourPun, IPunObservable
             player.SetAnimationBool("Mage2", true);
             player.PlaySound('A');
             holdingSecondary = true;
-            photonView.RPC(nameof(StartParticles), RpcTarget.All);
+            photonView.RPC(nameof(StartParticles), RpcTarget.AllBuffered, photonView.ViewID);
         }
         //if input is pressed and the context is valid but we don't have enough stamina run this code
         else if (ctxt.performed && ValidAttack() && !StaminaCheck(secondaryStamCost))
@@ -119,7 +119,7 @@ public class Class_Mage : MonoBehaviourPun, IPunObservable
             //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
             GameManager.instance.isShooting = false;
             player.SetAnimationBool("Mage2", false);
-            photonView.RPC(nameof(StopParticles), RpcTarget.All);
+            photonView.RPC(nameof(StopParticles), RpcTarget.AllBuffered, photonView.ViewID);
             holdingSecondary = false;
         }
     }
@@ -185,18 +185,26 @@ public class Class_Mage : MonoBehaviourPun, IPunObservable
     {
         //spawns our projectile either locally or in all lobbies depending on whether your playing solo or multiplayer
         if (PhotonNetwork.InRoom)
-             PhotonNetwork.Instantiate("Player/" + player.combatObjects[0].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
+            PhotonNetwork.Instantiate("Player/" + player.combatObjects[0].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
         else if (!PhotonNetwork.InRoom)
-             Instantiate(player.combatObjects[0], player.shootPosition.transform.position, player.shootPosition.transform.rotation); GameManager.instance.isShooting = false;
+            Instantiate(player.combatObjects[0], player.shootPosition.transform.position, player.shootPosition.transform.rotation); GameManager.instance.isShooting = false;
     }
 
 
     //RPC calls to sync the particle system
     [PunRPC]
-    void StartParticles() { player.combatObjects[1].GetComponent<ParticleSystem>().Play(); }
+    void StartParticles(int viewID) {
+        photonView otherPlayer = PhotonView.Find(viewID);
+        if (otherPlayer != null && otherPlayer.IsMine) 
+            player.combatObjects[1].GetComponent<ParticleSystem>().Play(); 
+    }
 
     [PunRPC]
-    void StopParticles() { player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting); }
+    void StopParticles(int viewID) { 
+        photonView otherPlayer = PhotonView.Find(viewID);
+        if (otherPlayer != null && otherPlayer.IsMine) 
+            player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting); 
+    }
 
 
 
@@ -206,7 +214,7 @@ public class Class_Mage : MonoBehaviourPun, IPunObservable
         //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
         GameManager.instance.isShooting = false;
         player.SetAnimationBool("Mage2", false);
-        photonView.RPC(nameof(StopParticles), RpcTarget.All);
+        photonView.RPC(nameof(StopParticles), RpcTarget.AllBuffered, photonView.ViewID);
         holdingSecondary = false;
         // Checking for audio ( preventing looping on sounds )
         if (!player.staminaAudioSource.isPlaying)
@@ -266,17 +274,5 @@ public class Class_Mage : MonoBehaviourPun, IPunObservable
             return true;
         }
         return false;
-    }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
-        if (stream.IsWriting)
-            stream.SendNext(player.combatObjects[1].GetComponent<ParticleSystem>().isPlaying);
-        else {
-            bool isPlaying = (bool)stream.ReceiveNext();
-            if (isPlaying)
-                player.combatObjects[1].GetComponent<ParticleSystem>().Play();
-            else
-                player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
-        }
     }
 }
