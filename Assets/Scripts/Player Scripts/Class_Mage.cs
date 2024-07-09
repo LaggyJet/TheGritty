@@ -14,7 +14,7 @@ using Photon.Pun;
 /// </im not mad the code just was spaghetti when i got here>
 
 
-public class Class_Mage : MonoBehaviour
+public class Class_Mage : MonoBehaviourPun, IPunObservable
 {
     PlayerController player;
 
@@ -96,6 +96,7 @@ public class Class_Mage : MonoBehaviour
             player.SetAnimationBool("Mage2", true);
             player.PlaySound('A');
             holdingSecondary = true;
+            photonView.RPC(nameof(StartParticles), RpcTarget.All);
         }
         //if input is pressed and the context is valid but we don't have enough stamina run this code
         else if (ctxt.performed && ValidAttack() && !StaminaCheck(secondaryStamCost))
@@ -118,16 +119,17 @@ public class Class_Mage : MonoBehaviour
             //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
             GameManager.instance.isShooting = false;
             player.SetAnimationBool("Mage2", false);
-            player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
+            photonView.RPC(nameof(StopParticles), RpcTarget.All);
             holdingSecondary = false;
         }
     }
 
-    void StartParticles()
-    {
-        //turns on our particle system and starts the coroutine that summons the damaging projectiles of our attack
-        player.combatObjects[1].GetComponent<ParticleSystem>().Play();
-    }
+    //Commenting out for testing
+    // void StartParticles()
+    // {
+    //     //turns on our particle system and starts the coroutine that summons the damaging projectiles of our attack
+    //     player.combatObjects[1].GetComponent<ParticleSystem>().Play();
+    // }
 
     //function for using our class ability, which gives us max stamina and makes us not use stamina for the next three seconds
     public void OnAbility(InputAction.CallbackContext ctxt)
@@ -188,13 +190,23 @@ public class Class_Mage : MonoBehaviour
              Instantiate(player.combatObjects[0], player.shootPosition.transform.position, player.shootPosition.transform.rotation); GameManager.instance.isShooting = false;
     }
 
+
+    //RPC calls to sync the particle system
+    [PunRPC]
+    void StartParticles() { player.combatObjects[1].GetComponent<ParticleSystem>().Play(); }
+
+    [PunRPC]
+    void StopParticles() { player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting); }
+
+
+
     //this function is for stopping the fire spray attack if you run out of stamina
     void EndSecondary()
     {
         //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
         GameManager.instance.isShooting = false;
         player.SetAnimationBool("Mage2", false);
-        player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        photonView.RPC(nameof(StopParticles), RpcTarget.All);
         holdingSecondary = false;
         // Checking for audio ( preventing looping on sounds )
         if (!player.staminaAudioSource.isPlaying)
@@ -254,5 +266,17 @@ public class Class_Mage : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+        if (stream.IsWriting)
+            stream.SendNext(player.combatObjects[1].GetComponent<ParticleSystem>().isPlaying);
+        else {
+            bool isPlaying = (bool)stream.ReceiveNext();
+            if (isPlaying)
+                player.combatObjects[1].GetComponent<ParticleSystem>().Play();
+            else
+                player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        }
     }
 }
