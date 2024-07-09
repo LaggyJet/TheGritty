@@ -73,9 +73,7 @@ public class Class_Warrior : MonoBehaviour
                 player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
                 player.isPlayingStamina = true;
             }
-
             player.isPlayingStamina = player.staminaAudioSource.isPlaying;
-            Debug.Log("No Staminaaaaaa :(");
         }
     }
 
@@ -101,10 +99,7 @@ public class Class_Warrior : MonoBehaviour
                 player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
                 player.isPlayingStamina = true;
             }
-
             player.isPlayingStamina = player.staminaAudioSource.isPlaying;
-
-            Debug.Log("No Staminaaaaaa :(");
         }
         //if we stop holding the input this code runs
         else if (ctxt.canceled && GameManager.instance.isShooting)
@@ -112,7 +107,6 @@ public class Class_Warrior : MonoBehaviour
             //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
             GameManager.instance.isShooting = false;
             player.SetAnimationBool("Warrior2", false);
-            player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
             holdingSecondary = false;
             player.isBlocking = false;
         }
@@ -186,11 +180,9 @@ public class Class_Warrior : MonoBehaviour
             player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
             player.isPlayingStamina = true;
         }
-
         player.isPlayingStamina = player.staminaAudioSource.isPlaying;
-
-        Debug.Log("No Staminaaaaaa :(");
     }
+
 
     public void SwingStart()
     {

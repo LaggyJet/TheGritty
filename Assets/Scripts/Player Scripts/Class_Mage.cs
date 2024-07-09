@@ -1,4 +1,4 @@
-//Worked on By : Jacob Irvin, Joshua Furber, Kheera
+//Worked on By : Jacob Irvin, Joshua Furber
 
 using System.Collections;
 using System.Collections.Generic;
@@ -25,8 +25,8 @@ public class Class_Mage : MonoBehaviourPun
     int abilityActive;
 
     float primaryStamCost = 0.05f;  
-    float secondaryStamCost = 0.5f;
-    float secondaryFireSpeed = .5f;
+    float secondaryStamCost = 0.35f;
+    float secondaryFireSpeed = .2f;
 
 
     //this is our start function that does a few important things
@@ -81,9 +81,7 @@ public class Class_Mage : MonoBehaviourPun
                 player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
                 player.isPlayingStamina = true;
             }
-
             player.isPlayingStamina = player.staminaAudioSource.isPlaying;
-            Debug.Log("No Staminaaaaaa :(");
         }
     }
 
@@ -110,10 +108,7 @@ public class Class_Mage : MonoBehaviourPun
                 player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
                 player.isPlayingStamina = true;
             }
-
             player.isPlayingStamina = player.staminaAudioSource.isPlaying;
-
-            Debug.Log("No Staminaaaaaa :(");
         }
         //if we stop holding the input this code runs
         else if (ctxt.canceled && GameManager.instance.isShooting)
@@ -223,10 +218,7 @@ public class Class_Mage : MonoBehaviourPun
             player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
             player.isPlayingStamina = true;
         }
-
         player.isPlayingStamina = player.staminaAudioSource.isPlaying;
-
-        Debug.Log("No Staminaaaaaa :(");
     }
 
     //coroutine that takes in our adjustable timing and only summons a damage projectile every so often
