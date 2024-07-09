@@ -107,6 +107,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [Header("------ Classes ------")]
     //class variables
     [SerializeField] private ClassSelection playerClass;
+    public int classCase;
     public Class_Mage mage = null;
     public Class_Warrior warrior = null;
     public Class_Archer archer = null;
@@ -559,15 +560,33 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             case 1:
                 this.AddComponent<Class_Warrior>();
                 warrior = this.GetComponent<Class_Warrior>();
+                classCase = 1;
                 break;
             case 2:
                 this.AddComponent<Class_Mage>();
                 mage = this.GetComponent<Class_Mage>();
+                classCase = 2;
                 break;
             
             case 3:
                 this.AddComponent<Class_Archer>();
                 archer = this.GetComponent<Class_Archer>();
+                classCase = 3;
+                break;
+        }
+    }
+    void CallClassFunction(string function)
+    {
+        switch(classCase)
+        {
+            case 1:
+                warrior.Invoke(function, 0);
+                break;
+            case 2:
+                mage.Invoke(function, 0);
+                break;
+            case 3:
+                archer.Invoke(function, 0);
                 break;
         }
     }
