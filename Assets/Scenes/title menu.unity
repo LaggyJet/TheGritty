@@ -453,6 +453,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 8052391700180161907, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
+    - {fileID: 6989076295644572026, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8148830016632361636, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
       insertIndex: -1
@@ -562,6 +563,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1821011171}
     m_Modifications:
+    - target: {fileID: 29827325004277118, guid: cc49ce404f390c440b5085473052a07b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2555241615034149236, guid: cc49ce404f390c440b5085473052a07b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.119768
@@ -602,11 +607,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2664659726578537738, guid: cc49ce404f390c440b5085473052a07b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3292744602089334630, guid: cc49ce404f390c440b5085473052a07b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3724347164852896666, guid: cc49ce404f390c440b5085473052a07b, type: 3}
       propertyPath: m_Name
       value: BasePlayer
       objectReference: {fileID: 0}
     - target: {fileID: 3724347164852896666, guid: cc49ce404f390c440b5085473052a07b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4385117170589485991, guid: cc49ce404f390c440b5085473052a07b, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -812,7 +829,7 @@ PrefabInstance:
       objectReference: {fileID: 1638426326}
     - target: {fileID: 8777670139218801757, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8845188960016962055, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
