@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [SerializeField] Color fullHealth; 
     [SerializeField] Color midHealth; 
     [SerializeField] Color criticalHealth;
-    [SerializeField] Shake hpShake;
+    [SerializeField] public Shake hpShake;
 
 
     //shows up as a divider in the script
@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [SerializeField] Color fullStamina; 
     [SerializeField] Color midStamina; 
     [SerializeField] Color criticalStamina;
-    [SerializeField] Shake stamShake; 
+    [SerializeField] public Shake stamShake; 
     float staminaBase;
 
     //these are animation variables

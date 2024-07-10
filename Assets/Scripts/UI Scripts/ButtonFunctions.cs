@@ -16,10 +16,12 @@ public class ButtonFunctions : MonoBehaviour
     public void restart()
     {
         GameManager.enemyCount = 0;
+        Vector3 temp = GameManager.playerLocation;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameManager.instance.player.transform.position = temp;
         PlayerController.spawnHP = 10;
         GameManager.instance.playerScript.UpdatePlayerUI();
-        GameManager.instance.stateResume();
+        GameManager.instance.stateResumeGameLoads();
     }
     public void quitApp()
     {
@@ -93,13 +95,6 @@ public class ButtonFunctions : MonoBehaviour
     public void credits()
     {
         SceneManager.LoadScene("credits");
-        StartCoroutine(returnToTitleMenu());
-    }
-
-    IEnumerator returnToTitleMenu()
-    {
-        yield return new WaitForSeconds(8f);
-        SceneManager.LoadScene("title menu");
     }
 
     //CLASS SELECTION
