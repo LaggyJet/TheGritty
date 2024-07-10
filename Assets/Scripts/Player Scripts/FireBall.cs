@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Unity.VisualScripting;
 
 public class FireBall : MonoBehaviourPunCallbacks
 {
@@ -15,6 +16,11 @@ public class FireBall : MonoBehaviourPunCallbacks
     [SerializeField] int speed;
     [SerializeField] int destroyTime;
     [SerializeField] DamageStats type;
+    [SerializeField] float minimumLight, maximumLight;
+
+    //variable to be used in the lighting
+    [SerializeField] Light light;
+
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +32,13 @@ public class FireBall : MonoBehaviourPunCallbacks
             StartCoroutine(WaitThenDestroy(gameObject, destroyTime));
         else if (!PhotonNetwork.InRoom)
             Destroy(gameObject, destroyTime);
+        light.intensity = Random.Range(minimumLight, maximumLight);
     }
+
+    void Update() 
+    {
+        light.intensity = Random.Range(light.intensity + 0.2f, light.intensity - 0.2f);
+    }    
 
     IEnumerator WaitThenDestroy(GameObject obj, float destroyTime) {
         yield return new WaitForSeconds(destroyTime);

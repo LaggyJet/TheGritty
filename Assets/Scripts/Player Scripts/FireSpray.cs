@@ -14,7 +14,11 @@ public class FireSpray : MonoBehaviourPunCallbacks
     [SerializeField] float damage;
     [SerializeField] int speed;
     [SerializeField] int destroyTime;
-    [SerializeField] DamageStats type;
+    [SerializeField] DamageStats type; 
+    [SerializeField] float minimumLight, maximumLight;
+
+    //variable to be used in the lighting
+    [SerializeField] Light light;
 
 
     // Start is called before the first frame update
@@ -27,6 +31,11 @@ public class FireSpray : MonoBehaviourPunCallbacks
             StartCoroutine(WaitThenDestroy(gameObject, destroyTime));
         else if (!PhotonNetwork.InRoom)
             Destroy(gameObject, destroyTime);
+        light.intensity = Random.Range(minimumLight, maximumLight);
+    }
+    void Update()
+    {
+        light.intensity = Random.Range(light.intensity + 0.2f, light.intensity - 0.2f);
     }
 
     IEnumerator WaitThenDestroy(GameObject obj, float seconds) {
