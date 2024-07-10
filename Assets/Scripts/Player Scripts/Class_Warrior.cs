@@ -26,7 +26,7 @@ public class Class_Warrior : MonoBehaviour
     private void Start()
     {
         //first we find our player and save him as an easily accessible variable and adds a component to our weapon
-        player = GameManager.instance.player.GetComponent<PlayerController>();
+        player = GetComponent<PlayerController>();
         player.combatObjects[3].AddComponent<MeleeWeaponController>().SetWeapon(damage, canDOT, null);
         //next we set our fire particle system to active and turn it off so we can toggle it easier later
         player.combatObjects[3].SetActive(true);
