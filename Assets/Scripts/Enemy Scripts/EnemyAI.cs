@@ -147,7 +147,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
             StartCoroutine(FlashDamage());
 
         if (hp <= 0 && !wasKilled) {
-            PlayerController.instance.AddStamina(0.5f);
             GameManager.instance.updateEnemy(-1);
             EnemyManager.Instance.UpdateKillCounter(enemyLimiter);
             gameObject.GetComponent<Collider>().enabled = false;

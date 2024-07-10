@@ -22,7 +22,6 @@ public class MeleeWeaponController : MonoBehaviour
         IDamage damageCheck = other.GetComponent<IDamage>();
         if (damageCheck != null && !other.CompareTag("PlayerChild") && !other.CompareTag("Player"))
         {
-            Debug.Log("Hit something or another who cares yeah");
             damageCheck.TakeDamage(damage_);
             if (canDOT)
                 damageCheck.Afflict(stats_);

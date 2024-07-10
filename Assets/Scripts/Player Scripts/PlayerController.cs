@@ -105,6 +105,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [Header("------ Classes ------")]
     //class variables
     [SerializeField] private ClassSelection playerClass;
+    public int classCase;
     public Class_Mage mage = null;
     public Class_Warrior warrior = null;
     public Class_Archer archer = null;
@@ -131,19 +132,13 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         //assigns our player class
         AssignClass(playerClass.MyClass);
 
-        // Prevent movement of other players
-        //! What are the checks, why are we preventing movement, why are there destroys called? ~Jacob
+        // Prevent movement of other players (to prevent controller other players instead of just yourself)
+        // Checks if the player is the actual player and in multiplayer
         if (!GetComponent<PhotonView>().IsMine && PhotonNetwork.InRoom) {
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(GetComponentInChildren<AudioListener>());
-            Destroy(this);
             return;
         }
-
-        //Singleton code
-        //!whoever wrote this, if it is singleton just erase this line, if not pls comment
-        if (instance == null) instance = this;
-        else { Destroy(gameObject); return; }
 
         //tracks our base currentHP and the current currentHP that will update as our player takes damage or gets health
         hpBase = hp;
@@ -177,6 +172,11 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     // Update is called once per frame
     void Update()
     {
+        if (stamShake == null)
+            stamShake = GameManager.instance.staminaBar.GetComponent<Shake>();
+        if (hpShake == null)
+            hpShake = GameManager.instance.playerHPBar.GetComponent<Shake>();
+
         // Prevent movement of other players
         if (!PhotonNetwork.IsConnected || GetComponent<PhotonView>().IsMine)
         {
@@ -386,7 +386,13 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         {
             hp = 0;
             isDead = true;
-            GameManager.instance.gameLost();
+
+            //Call lose game for every player in room through RPC calls, otherwise call normally
+            if (PhotonNetwork.InRoom)
+                photonView.RPC(nameof(GameManager.instance.gameLost), RpcTarget.All);
+            else if (!PhotonNetwork.IsConnected)
+                GameManager.instance.gameLost();
+
             isDead = false;
         }
     }
@@ -548,14 +554,10 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
                 color.a = Mathf.Clamp(255, 0, 1);
                 GameManager.instance.staminaBar.color = color;
         }
-            else // If the stamina is less than 50%
+            else if (staminaRatio <= 0.5f) // If the stamina is less than 50%
             {
                 GameManager.instance.staminaBar.color = Color.Lerp(criticalStamina, midStamina, staminaRatio * 2);
-                if(staminaRatio <= 0.5f)
-                {
-                   stamShake.Shaking();  
-                }
-                
+                stamShake.Shaking();
             }
        
     }
@@ -596,15 +598,33 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             case 1:
                 this.AddComponent<Class_Warrior>();
                 warrior = this.GetComponent<Class_Warrior>();
+                classCase = 1;
                 break;
             case 2:
                 this.AddComponent<Class_Mage>();
                 mage = this.GetComponent<Class_Mage>();
+                classCase = 2;
                 break;
             
             case 3:
                 this.AddComponent<Class_Archer>();
                 archer = this.GetComponent<Class_Archer>();
+                classCase = 3;
+                break;
+        }
+    }
+    void CallClassFunction(string function)
+    {
+        switch(classCase)
+        {
+            case 1:
+                warrior.Invoke(function, 0);
+                break;
+            case 2:
+                mage.Invoke(function, 0);
+                break;
+            case 3:
+                archer.Invoke(function, 0);
                 break;
         }
     }

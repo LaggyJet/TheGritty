@@ -20,13 +20,13 @@ public class Class_Warrior : MonoBehaviour
     float secondaryTickSpeed = .5f;
 
     float damage = 10;
-    bool canDOT = true;
+    bool canDOT = false;
 
     //this is our start function that does a few important things
     private void Start()
     {
         //first we find our player and save him as an easily accessible variable and adds a component to our weapon
-        player = GameManager.instance.player.GetComponent<PlayerController>();
+        player = GetComponent<PlayerController>();
         player.combatObjects[3].AddComponent<MeleeWeaponController>().SetWeapon(damage, canDOT, null);
         //next we set our fire particle system to active and turn it off so we can toggle it easier later
         player.combatObjects[3].SetActive(true);
@@ -73,9 +73,7 @@ public class Class_Warrior : MonoBehaviour
                 player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
                 player.isPlayingStamina = true;
             }
-
             player.isPlayingStamina = player.staminaAudioSource.isPlaying;
-            Debug.Log("No Staminaaaaaa :(");
         }
     }
 
@@ -101,10 +99,7 @@ public class Class_Warrior : MonoBehaviour
                 player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
                 player.isPlayingStamina = true;
             }
-
             player.isPlayingStamina = player.staminaAudioSource.isPlaying;
-
-            Debug.Log("No Staminaaaaaa :(");
         }
         //if we stop holding the input this code runs
         else if (ctxt.canceled && GameManager.instance.isShooting)
@@ -112,7 +107,6 @@ public class Class_Warrior : MonoBehaviour
             //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
             GameManager.instance.isShooting = false;
             player.SetAnimationBool("Warrior2", false);
-            player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
             holdingSecondary = false;
             player.isBlocking = false;
         }
@@ -186,11 +180,9 @@ public class Class_Warrior : MonoBehaviour
             player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
             player.isPlayingStamina = true;
         }
-
         player.isPlayingStamina = player.staminaAudioSource.isPlaying;
-
-        Debug.Log("No Staminaaaaaa :(");
     }
+
 
     public void SwingStart()
     {

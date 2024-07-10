@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Photon.Pun;
 
 public class SavePoint : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class SavePoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" && !activated)
+        if (other.tag == "Player" && !activated && !PhotonNetwork.IsConnected)
         {
             GameManager.instance.ShowText("Saving...");
             DataPersistenceManager.Instance.SaveGame();

@@ -36,6 +36,13 @@ MonoBehaviour:
   RpcList:
   - ClickRpc
   - DestroyRpc
+  - StartParticles
+  - StopParticles
+  - RPC_StartSecondaryFireParticles
+  - RPC_StopSecondaryFireParticles
+  - gameLost
+  - gameWon
+  - Win
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

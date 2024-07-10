@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4584431484625042}
   - component: {fileID: 198637950067575458}
   - component: {fileID: 199982541912562440}
-  - component: {fileID: -8079622532459026118}
+  - component: {fileID: 6252246928780030307}
   m_Layer: 0
   m_Name: FlameThrower
   m_TagString: Untagged
@@ -4854,7 +4854,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &-8079622532459026118
+--- !u!114 &6252246928780030307
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

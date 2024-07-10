@@ -100,23 +100,30 @@ public class ButtonFunctions : MonoBehaviour
     public void warrior()
     {
         playerClass.MyClass = 1;
-        if (!PhotonNetwork.IsConnected)
+
+        if (GameManager.selectedMultiplayer)
+            SceneManager.LoadScene("Lobby");
+        else
             newGame();
     }
     public void mage()
     {
         playerClass.MyClass = 2;
-        if (!PhotonNetwork.IsConnected)
+        if (GameManager.selectedMultiplayer)
+            SceneManager.LoadScene("Lobby");
+        else
             newGame();
 
     }
     public void archer()
     {
         playerClass.MyClass = 3;
-        if (!PhotonNetwork.IsConnected)
+        if (GameManager.selectedMultiplayer)
+            SceneManager.LoadScene("Lobby");
+        else
             newGame();
     }
 
     // Co-op features
-    public void LoadMultiplayer() { GameManager.instance.charSelectionMenu(); SceneManager.LoadScene("Lobby"); }
+    public void LoadMultiplayer() { GameManager.selectedMultiplayer = true; GameManager.instance.charSelectionMenu(); }
 }

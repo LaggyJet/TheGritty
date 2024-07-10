@@ -1,4 +1,4 @@
-//Worked on By : Jacob Irvin, Joshua Furber, Kheera
+//Worked on By : Jacob Irvin, Joshua Furber
 
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using Photon.Pun;
 /// </im not mad the code just was spaghetti when i got here>
 
 
-public class Class_Mage : MonoBehaviour
+public class Class_Mage : MonoBehaviourPun
 {
     PlayerController player;
 
@@ -25,18 +25,20 @@ public class Class_Mage : MonoBehaviour
     int abilityActive;
 
     float primaryStamCost = 0.05f;  
-    float secondaryStamCost = 0.5f;
-    float secondaryFireSpeed = .5f;
+    float secondaryStamCost = 0.35f;
+    float secondaryFireSpeed = .2f;
 
 
     //this is our start function that does a few important things
     private void Start()
     {
         //first we find our player and save him as an easily accessible variable
-        player = GameManager.instance.player.GetComponent<PlayerController>();
-        //next we set our fire particle system to active and turn it off so we can toggle it easier later
-        player.combatObjects[1].SetActive(true);
-        player.combatObjects[1].GetComponent<ParticleSystem>().Stop();
+        player = GetComponent<PlayerController>();
+
+        // Set the particle system false for activation later
+        // Checks for if fire belongs to that player, or they are in singleplayer
+        if (photonView.IsMine || !PhotonNetwork.IsConnected)
+            player.combatObjects[1].SetActive(false);
     }
 
     private void Update()
@@ -79,9 +81,7 @@ public class Class_Mage : MonoBehaviour
                 player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
                 player.isPlayingStamina = true;
             }
-
             player.isPlayingStamina = player.staminaAudioSource.isPlaying;
-            Debug.Log("No Staminaaaaaa :(");
         }
     }
 
@@ -107,10 +107,7 @@ public class Class_Mage : MonoBehaviour
                 player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
                 player.isPlayingStamina = true;
             }
-
             player.isPlayingStamina = player.staminaAudioSource.isPlaying;
-
-            Debug.Log("No Staminaaaaaa :(");
         }
         //if we stop holding the input this code runs
         else if (ctxt.canceled && GameManager.instance.isShooting)
@@ -118,15 +115,15 @@ public class Class_Mage : MonoBehaviour
             //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
             GameManager.instance.isShooting = false;
             player.SetAnimationBool("Mage2", false);
-            player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
+
+            //If in multiplayer, call via RPC, otherwise, call normally
+            if (PhotonNetwork.InRoom)
+                photonView.RPC(nameof(StopParticles), RpcTarget.All, photonView.ViewID);
+            else if (!PhotonNetwork.IsConnected)
+                StopParticles(-1);
+
             holdingSecondary = false;
         }
-    }
-
-    void StartParticles()
-    {
-        //turns on our particle system and starts the coroutine that summons the damaging projectiles of our attack
-        player.combatObjects[1].GetComponent<ParticleSystem>().Play();
     }
 
     //function for using our class ability, which gives us max stamina and makes us not use stamina for the next three seconds
@@ -182,11 +179,59 @@ public class Class_Mage : MonoBehaviour
     void PrimaryFire()
     {
         //spawns our projectile either locally or in all lobbies depending on whether your playing solo or multiplayer
-        if (PhotonNetwork.InRoom)
-             PhotonNetwork.Instantiate(player.combatObjects[0].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
-        else if (!PhotonNetwork.InRoom)
-             Instantiate(player.combatObjects[0], player.shootPosition.transform.position, player.shootPosition.transform.rotation); GameManager.instance.isShooting = false;
+        if (PhotonNetwork.InRoom && photonView.IsMine)
+            PhotonNetwork.Instantiate("Player/" + player.combatObjects[0].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
+        else if (!PhotonNetwork.IsConnected)
+            Instantiate(player.combatObjects[0], player.shootPosition.transform.position, player.shootPosition.transform.rotation); GameManager.instance.isShooting = false;
     }
+
+    // Backup stop for singleplayer
+    void StopFireParticles() { player.combatObjects[1].SetActive(false); }
+
+    // Animation event call
+    void StartParticles()
+    {
+        //turns on our particle system
+        player.combatObjects[1].SetActive(true);
+        
+        // Have particles display for other parties if in multiplayer
+        if (PhotonNetwork.InRoom)
+            photonView.RPC(nameof(StartParticles), RpcTarget.All, photonView.ViewID);
+    }
+
+    // RPC calls to sync the particle system
+    [PunRPC]
+    void StartParticles(int viewID) {
+        // Get all current players and loop through them
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject plr in players)
+            // Checks if that player is shooting fire, if so, enable it for the user
+            if (plr.GetComponent<PhotonView>().ViewID == viewID)
+                plr.GetComponent<PlayerController>().combatObjects[1].SetActive(true);
+    }
+
+    [PunRPC]
+    void StopParticles(int viewID) {
+        // Disable normally for the own player
+        if (photonView.IsMine || viewID == -1) {
+            player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
+            player.combatObjects[1].SetActive(false);
+        }
+        // Otherwise, repeat similar steps as above RPC call, and disable instead
+        else
+        {
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject plr in players) {
+                if (plr.GetComponent<PhotonView>().ViewID == viewID) {
+                    plr.GetComponent<PlayerController>().combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
+                    plr.GetComponent<PlayerController>().combatObjects[1].SetActive(false);
+                }
+            }
+        }
+    }
+    // End RPC calls
+
+
 
     //this function is for stopping the fire spray attack if you run out of stamina
     void EndSecondary()
@@ -194,7 +239,13 @@ public class Class_Mage : MonoBehaviour
         //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
         GameManager.instance.isShooting = false;
         player.SetAnimationBool("Mage2", false);
-        player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
+
+        //If in multiplayer, call via RPC, otherwise, call normally
+        if (PhotonNetwork.InRoom)
+            photonView.RPC(nameof(StopParticles), RpcTarget.All, photonView.ViewID);
+        else if (!PhotonNetwork.IsConnected)
+            StopParticles(-1);
+
         holdingSecondary = false;
         // Checking for audio ( preventing looping on sounds )
         if (!player.staminaAudioSource.isPlaying)
@@ -203,10 +254,7 @@ public class Class_Mage : MonoBehaviour
             player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
             player.isPlayingStamina = true;
         }
-
         player.isPlayingStamina = player.staminaAudioSource.isPlaying;
-
-        Debug.Log("No Staminaaaaaa :(");
     }
 
     //coroutine that takes in our adjustable timing and only summons a damage projectile every so often
@@ -223,7 +271,7 @@ public class Class_Mage : MonoBehaviour
                 player.stamina -= secondaryStamCost;
             //summons either locally or for all connected game instances
             if (PhotonNetwork.InRoom)
-                PhotonNetwork.Instantiate(player.combatObjects[2].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
+                PhotonNetwork.Instantiate("Player/" + player.combatObjects[2].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
             else if (!PhotonNetwork.InRoom)
                 Instantiate(player.combatObjects[2], player.shootPosition.transform.position, player.shootPosition.transform.rotation);
             //waits
