@@ -554,7 +554,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8729f0fd455564438869974ebaded60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pvCache: {fileID: 0}
   hostInput: {fileID: 287426776}
   joinInput: {fileID: 1562206240}
   loadMenu: {fileID: 185836407}
@@ -589,6 +588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d286e4efc2d00b47a45932840855c7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerClass: {fileID: 0}
 --- !u!1 &133612101
 GameObject:
   m_ObjectHideFlags: 0

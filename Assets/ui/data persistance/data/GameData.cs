@@ -12,6 +12,7 @@ public class GameData
     public Quaternion playerRot;
     public float playerHp;
     public float playerStamina;
+    public Dictionary<string, bool> savePointsFound;
 
     public GameData()  //constructor - values are the initial values when starting a game
     {
@@ -19,5 +20,6 @@ public class GameData
             this.playerRot = Quaternion.identity;
             this.playerHp = 0;
             this.playerStamina = 0;
+            savePointsFound = new Dictionary<string, bool>();
     }
 }

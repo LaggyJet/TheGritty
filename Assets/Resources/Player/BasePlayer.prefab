@@ -1883,17 +1883,17 @@ MonoBehaviour:
   - {fileID: 1377214065161546418}
   useStamina: 1
   isBlocking: 0
-  currentHP: 10
+  hp: 10
   fullHealth: {r: 0.24978681, g: 0.42352942, b: 0.20718746, a: 1}
   midHealth: {r: 0.9892183, g: 0.43262324, b: 0.046661116, a: 1}
   criticalHealth: {r: 0.7058824, g: 0, b: 0, a: 1}
-  HPShakeDuration: 0
-  currentStamina: 10
+  hpShake: {fileID: 0}
+  stamina: 10
   staminaRegenerate: 50
   fullStamina: {r: 0, g: 0.0030903816, b: 1, a: 0}
   midStamina: {r: 0.46540874, g: 0, b: 0.42016062, a: 0}
-  criticalStamina: {r: 0.34591186, g: 0, b: 0.13190229, a: 0}
-  staminaShakeDuration: 0
+  criticalStamina: {r: 0, g: 0, b: 0, a: 0}
+  stamShake: {fileID: 0}
   animate: {fileID: 2654759320713316378}
   animationTransSpeed: 1
   sprite: {fileID: 21300000, guid: 8e4680958c649e642b0dae1c48a3e1ca, type: 3}
@@ -2324,10 +2324,10 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: Mage1
   - Type: 4
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: Mage2
   - Type: 9
     SynchronizeType: 1

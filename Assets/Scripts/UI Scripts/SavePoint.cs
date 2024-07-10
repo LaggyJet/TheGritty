@@ -6,10 +6,16 @@ using UnityEngine;
 
 public class SavePoint : MonoBehaviour
 {
+    private bool activated = false;
+
     private void OnTriggerEnter(Collider other)
     {
-        GameManager.instance.ShowText("Saving...");
-        DataPersistenceManager.Instance.SaveGame();
-        GameManager.playerLocation = other.transform.position;
+        if (other.tag == "Player" && !activated)
+        {
+            GameManager.instance.ShowText("Saving...");
+            DataPersistenceManager.Instance.SaveGame();
+            GameManager.playerLocation = other.transform.position;
+            activated = true;
+        }
     }
 }

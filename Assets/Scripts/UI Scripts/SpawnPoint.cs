@@ -14,7 +14,8 @@ public class SpawnPoint : MonoBehaviourPunCallbacks
             PhotonNetwork.Instantiate("Player/" + player.name, GetRandomSpawn(), Quaternion.identity);
         else if (!PhotonNetwork.InRoom && player != null)
             Instantiate(player, GetRandomSpawn(), Quaternion.identity);
+            GameManager.playerLocation = GetRandomSpawn();
     }
 
-    Vector3 GetRandomSpawn() { return gameObject.transform.position + new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2)); }
+    Vector3 GetRandomSpawn() { return gameObject.transform.position; }
 }

@@ -43,6 +43,7 @@ public class DataPersistenceManager : MonoBehaviour
     }
     public void LoadGame() //load method
     {
+        this.dataPersistenceObjects = FindAllDataPersistenceObjects();
         //load any saved data from file using the data handler
         gameData = dataHandler.Load();
         //load saved data using data handler + and send data to needed scripts
@@ -61,6 +62,7 @@ public class DataPersistenceManager : MonoBehaviour
     public void SaveGame() //save method
     {
         if (!GameManager.selectedMultiplayer) {
+            this.dataPersistenceObjects = FindAllDataPersistenceObjects();
             //pass the data to scripts so they can update and save using data handler
             foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
             {
@@ -68,7 +70,7 @@ public class DataPersistenceManager : MonoBehaviour
             }
             dataHandler.Save(gameData);
             Debug.Log("Saving game file");
-        }
+            }
     }
 
     //private void OnApplicationQuit() //saves the game when the application is stopped

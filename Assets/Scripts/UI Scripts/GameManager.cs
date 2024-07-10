@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         if (player != null) {
             playerScript = player.GetComponent<PlayerController>();
-            playerLocation = player.transform.position;
+            //playerLocation = player.transform.position;
             SoundTrackswitch(GameMusic.Gameplay); // TODO: this will need to change once we solidify awake screen
         }
     }
@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<PlayerController>();
-        playerLocation = player.transform.position;
+        //playerLocation = player.transform.position;
     }
     //TEXT POP UPS
     public void ShowText (string message)

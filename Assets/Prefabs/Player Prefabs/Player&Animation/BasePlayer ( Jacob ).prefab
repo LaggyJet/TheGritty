@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1695524547826117909
 Transform:
   m_ObjectHideFlags: 0
@@ -1322,7 +1322,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4007398756469464205
 Transform:
   m_ObjectHideFlags: 0
@@ -1575,7 +1575,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3916985463548956825
 Transform:
   m_ObjectHideFlags: 0
@@ -1810,7 +1810,7 @@ GameObject:
   - component: {fileID: 1530042551993933754}
   - component: {fileID: 5542085971826788276}
   m_Layer: 3
-  m_Name: BasePlayer
+  m_Name: BasePlayer ( Jacob )
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1883,17 +1883,17 @@ MonoBehaviour:
   - {fileID: 1377214065161546418}
   useStamina: 1
   isBlocking: 0
-  currentHP: 10
+  hp: 10
   fullHealth: {r: 0.24978681, g: 0.42352942, b: 0.20718746, a: 1}
   midHealth: {r: 0.9892183, g: 0.43262324, b: 0.046661116, a: 1}
   criticalHealth: {r: 0.7058824, g: 0, b: 0, a: 1}
-  HPShakeDuration: 0
-  currentStamina: 10
+  hpShake: {fileID: 0}
+  stamina: 10
   staminaRegenerate: 50
   fullStamina: {r: 0, g: 0.0030903816, b: 1, a: 0}
   midStamina: {r: 0.46540874, g: 0, b: 0.42016062, a: 0}
   criticalStamina: {r: 0.34591186, g: 0, b: 0.13190229, a: 0}
-  staminaShakeDuration: 0
+  stamShake: {fileID: 0}
   animate: {fileID: 2654759320713316378}
   animationTransSpeed: 1
   sprite: {fileID: 21300000, guid: 8e4680958c649e642b0dae1c48a3e1ca, type: 3}
@@ -3101,7 +3101,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6007052764040083030
 Transform:
   m_ObjectHideFlags: 0
