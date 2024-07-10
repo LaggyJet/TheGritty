@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5928387473738669833}
   - component: {fileID: 5723907829740809777}
   - component: {fileID: 5339490365431585199}
+  - component: {fileID: 2938059894610335156}
   m_Layer: 0
   m_Name: HealthPotion (4)
   m_TagString: Untagged
@@ -124,6 +125,28 @@ MonoBehaviour:
   Audio: {fileID: 3724500405577097432}
   pickUp: {fileID: 8300000, guid: 8fda0a40e6024ce49add8f8620c53692, type: 3}
   pickUpVol: 20
+--- !u!114 &2938059894610335156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216726737392467468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2724253316538657243
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,6 +160,7 @@ GameObject:
   - component: {fileID: 5425980370841834851}
   - component: {fileID: 2455329560285009093}
   - component: {fileID: 5408510402918746497}
+  - component: {fileID: 4778223117245162522}
   m_Layer: 0
   m_Name: HealthPotion (1)
   m_TagString: Untagged
@@ -248,6 +272,28 @@ MonoBehaviour:
   Audio: {fileID: 3724500405577097432}
   pickUp: {fileID: 8300000, guid: 8fda0a40e6024ce49add8f8620c53692, type: 3}
   pickUpVol: 20
+--- !u!114 &4778223117245162522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2724253316538657243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &3720974772391136777
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,6 +555,7 @@ GameObject:
   - component: {fileID: 5369298489267374828}
   - component: {fileID: 979577695288996594}
   - component: {fileID: 1975163144280149057}
+  - component: {fileID: 343519581510323275}
   m_Layer: 0
   m_Name: HealthPotion (3)
   m_TagString: Untagged
@@ -620,6 +667,28 @@ MonoBehaviour:
   Audio: {fileID: 3724500405577097432}
   pickUp: {fileID: 8300000, guid: 8fda0a40e6024ce49add8f8620c53692, type: 3}
   pickUpVol: 20
+--- !u!114 &343519581510323275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4889008504249846871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &7780641645599944220
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,6 +702,7 @@ GameObject:
   - component: {fileID: 3417534479105889814}
   - component: {fileID: 1445163640338619195}
   - component: {fileID: 5995220363778461822}
+  - component: {fileID: 8107611522306412968}
   m_Layer: 0
   m_Name: HealthPotion (2)
   m_TagString: Untagged
@@ -744,3 +814,25 @@ MonoBehaviour:
   Audio: {fileID: 3724500405577097432}
   pickUp: {fileID: 8300000, guid: 8fda0a40e6024ce49add8f8620c53692, type: 3}
   pickUpVol: 20
+--- !u!114 &8107611522306412968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7780641645599944220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
