@@ -213,15 +213,20 @@ public class Class_Mage : MonoBehaviourPun
     [PunRPC]
     void StopParticles(int viewID) {
         // Disable normally for the own player
-        if (photonView.IsMine || viewID == -1)
+        if (photonView.IsMine || viewID == -1) {
+            player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
             player.combatObjects[1].SetActive(false);
+        }
         // Otherwise, repeat similar steps as above RPC call, and disable instead
         else
         {
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            foreach (GameObject plr in players)
-                if (plr.GetComponent<PhotonView>().ViewID == viewID)
+            foreach (GameObject plr in players) {
+                if (plr.GetComponent<PhotonView>().ViewID == viewID) {
+                    plr.GetComponent<PlayerController>().combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
                     plr.GetComponent<PlayerController>().combatObjects[1].SetActive(false);
+                }
+            }
         }
     }
     // End RPC calls
