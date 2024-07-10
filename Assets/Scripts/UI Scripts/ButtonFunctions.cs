@@ -20,6 +20,7 @@ public class ButtonFunctions : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         DataPersistenceManager.Instance.LoadGame();
         GameManager.instance.playerScript.hp = 10;
+        GameManager.instance.playerScript.stamina = 10;
         GameManager.instance.stateResumeGameLoads();
     }
     public void quitApp()

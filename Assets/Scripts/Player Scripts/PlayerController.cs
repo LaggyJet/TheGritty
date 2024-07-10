@@ -126,7 +126,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     public bool isPlayingNoHP = false;
     private bool isRegenerating = false;
 
-
     private void Start()
     {
         //assigns our player class
