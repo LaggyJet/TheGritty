@@ -134,19 +134,13 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         //assigns our player class
         AssignClass(playerClass.MyClass);
 
-        // Prevent movement of other players
-        //! What are the checks, why are we preventing movement, why are there destroys called? ~Jacob
+        // Prevent movement of other players (to prevent controller other players instead of just yourself)
+        // Checks if the player is the actual player and in multiplayer
         if (!GetComponent<PhotonView>().IsMine && PhotonNetwork.InRoom) {
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(GetComponentInChildren<AudioListener>());
-            Destroy(this);
             return;
         }
-
-        //Singleton code
-        //!whoever wrote this, if it is singleton just erase this line, if not pls comment
-        if (instance == null) instance = this;
-        else { Destroy(gameObject); return; }
 
         //tracks our base currentHP and the current currentHP that will update as our player takes damage or gets health
         maxHP = currentHP;

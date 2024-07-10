@@ -35,11 +35,10 @@ public class Class_Mage : MonoBehaviourPun
         //first we find our player and save him as an easily accessible variable
         player = GetComponent<PlayerController>();
 
-        if (photonView.IsMine) {
-            //next we set our fire particle system to active and turn it off so we can toggle it easier later
-            player.combatObjects[1].SetActive(true);
-            player.combatObjects[1].GetComponent<ParticleSystem>().Stop();
-        }
+        // Set the particle system false for activation later
+        // Checks for if fire belongs to that player, or they are in singleplayer
+        if (photonView.IsMine || !PhotonNetwork.IsConnected)
+            player.combatObjects[1].SetActive(false);
     }
 
     private void Update()
@@ -97,8 +96,6 @@ public class Class_Mage : MonoBehaviourPun
             player.SetAnimationBool("Mage2", true);
             player.PlaySound('A');
             holdingSecondary = true;
-            if (photonView.IsMine)
-                photonView.RPC(nameof(StartParticles), RpcTarget.All);
         }
         //if input is pressed and the context is valid but we don't have enough stamina run this code
         else if (ctxt.performed && ValidAttack() && !StaminaCheck(secondaryStamCost))
@@ -118,18 +115,16 @@ public class Class_Mage : MonoBehaviourPun
             //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
             GameManager.instance.isShooting = false;
             player.SetAnimationBool("Mage2", false);
-            if (photonView.IsMine)
-                photonView.RPC(nameof(StopParticles), RpcTarget.All);
+
+            //If in multiplayer, call via RPC, otherwise, call normally
+            if (PhotonNetwork.InRoom)
+                photonView.RPC(nameof(StopParticles), RpcTarget.All, photonView.ViewID);
+            else if (!PhotonNetwork.IsConnected)
+                StopParticles(-1);
+
             holdingSecondary = false;
         }
     }
-
-    //Commenting out for testing
-    // void StartParticles()
-    // {
-    //     //turns on our particle system and starts the coroutine that summons the damaging projectiles of our attack
-    //     player.combatObjects[1].GetComponent<ParticleSystem>().Play();
-    // }
 
     //function for using our class ability, which gives us max stamina and makes us not use stamina for the next three seconds
     public void OnAbility(InputAction.CallbackContext ctxt)
@@ -184,25 +179,52 @@ public class Class_Mage : MonoBehaviourPun
     void PrimaryFire()
     {
         //spawns our projectile either locally or in all lobbies depending on whether your playing solo or multiplayer
-        if (PhotonNetwork.InRoom)
+        if (PhotonNetwork.InRoom && photonView.IsMine)
             PhotonNetwork.Instantiate("Player/" + player.combatObjects[0].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
-        else if (!PhotonNetwork.InRoom)
+        else if (!PhotonNetwork.IsConnected)
             Instantiate(player.combatObjects[0], player.shootPosition.transform.position, player.shootPosition.transform.rotation); GameManager.instance.isShooting = false;
     }
 
+    // Backup stop for singleplayer
+    void StopFireParticles() { player.combatObjects[1].SetActive(false); }
 
-    //RPC calls to sync the particle system
+    // Animation event call
+    void StartParticles()
+    {
+        //turns on our particle system
+        player.combatObjects[1].SetActive(true);
+        
+        // Have particles display for other parties if in multiplayer
+        if (PhotonNetwork.InRoom)
+            photonView.RPC(nameof(StartParticles), RpcTarget.All, photonView.ViewID);
+    }
+
+    // RPC calls to sync the particle system
     [PunRPC]
-    void StartParticles() {
-        if (photonView.IsMine)
-            player.combatObjects[1].GetComponent<ParticleSystem>().Play(); 
+    void StartParticles(int viewID) {
+        // Get all current players and loop through them
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject plr in players)
+            // Checks if that player is shooting fire, if so, enable it for the user
+            if (plr.GetComponent<PhotonView>().ViewID == viewID)
+                plr.GetComponent<PlayerController>().combatObjects[1].SetActive(true);
     }
 
     [PunRPC]
-    void StopParticles() {
-        if (photonView.IsMine)
-            player.combatObjects[1].GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting); 
+    void StopParticles(int viewID) {
+        // Disable normally for the own player
+        if (photonView.IsMine || viewID == -1)
+            player.combatObjects[1].SetActive(false);
+        // Otherwise, repeat similar steps as above RPC call, and disable instead
+        else
+        {
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject plr in players)
+                if (plr.GetComponent<PhotonView>().ViewID == viewID)
+                    plr.GetComponent<PlayerController>().combatObjects[1].SetActive(false);
+        }
     }
+    // End RPC calls
 
 
 
@@ -212,7 +234,13 @@ public class Class_Mage : MonoBehaviourPun
         //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
         GameManager.instance.isShooting = false;
         player.SetAnimationBool("Mage2", false);
-        photonView.RPC(nameof(StopParticles), RpcTarget.Others);
+
+        //If in multiplayer, call via RPC, otherwise, call normally
+        if (PhotonNetwork.InRoom)
+            photonView.RPC(nameof(StopParticles), RpcTarget.All, photonView.ViewID);
+        else if (!PhotonNetwork.IsConnected)
+            StopParticles(-1);
+
         holdingSecondary = false;
         // Checking for audio ( preventing looping on sounds )
         if (!player.staminaAudioSource.isPlaying)

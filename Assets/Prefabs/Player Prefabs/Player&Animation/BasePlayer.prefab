@@ -1929,6 +1929,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4a5823ac4669ca2489afe114f796893f, type: 3}
   noAttackVol: 0.5
   playerClass: {fileID: 11400000, guid: aecd08a9e5e48a145914c754caeea9e3, type: 2}
+  classCase: 0
   mage: {fileID: 0}
   warrior: {fileID: 0}
   archer: {fileID: 0}
@@ -2323,19 +2324,19 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Mage1
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Mage2
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Warrior1
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Mage3
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Warrior2
   m_SynchronizeLayers:
   - SynchronizeType: 1
