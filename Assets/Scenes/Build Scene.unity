@@ -61946,6 +61946,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3988561013445031763, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: sceneViewId
+      value: 29
+      objectReference: {fileID: 0}
     - target: {fileID: 6269550114203726665, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -62029,6 +62033,10 @@ PrefabInstance:
     - target: {fileID: 7765248277729462968, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_Name
       value: UI - NEW(week4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722297960870335626, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: sceneViewId
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

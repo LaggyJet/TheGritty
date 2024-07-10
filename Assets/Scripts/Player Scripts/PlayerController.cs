@@ -389,7 +389,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
 
             //Call lose game for every player in room through RPC calls, otherwise call normally
             if (PhotonNetwork.InRoom)
-                photonView.RPC(nameof(GameManager.instance.gameLost), RpcTarget.All);
+                GameManager.instance.CallGameLost();
             else if (!PhotonNetwork.IsConnected)
                 GameManager.instance.gameLost();
 

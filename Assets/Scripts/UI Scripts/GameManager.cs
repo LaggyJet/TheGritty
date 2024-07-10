@@ -201,9 +201,18 @@ public class GameManager : MonoBehaviour
     {
         statePause();
         menuActive = menuLose;
+
+        if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient) {
+            menuLose.transform.Find("Title Menu").GetComponent<TMP_Text>().text = "Waiting....";
+            menuLose.transform.Find("Respawn").gameObject.SetActive(false);
+            menuLose.transform.Find("Restart").gameObject.SetActive(false);
+        }
+
         menuActive.SetActive(isPaused);
         SoundTrackswitch(GameMusic.Menu);
     }
+
+    public void CallGameLost() { PhotonView.Get(this).RPC(nameof(gameLost), RpcTarget.All); }
 
     //RESPAWN METHODS
     public void respawnAfterLost()

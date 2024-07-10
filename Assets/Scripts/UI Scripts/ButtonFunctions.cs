@@ -31,14 +31,20 @@ public class ButtonFunctions : MonoBehaviour
         #endif
     }
 
+    [PunRPC]
     public void quitGame()
     {
+        if (PhotonNetwork.IsMasterClient)
+            CallQuitGame();
+
         SceneManager.LoadScene("title menu");
 
         //Disconnect player from the server (if possible)
         if (PhotonNetwork.IsConnected)
             PhotonNetwork.Disconnect();
     }
+
+    public void CallQuitGame() { PhotonView.Get(this).RPC(nameof(quitGame), RpcTarget.Others); }
 
     public void respawn()
     {
