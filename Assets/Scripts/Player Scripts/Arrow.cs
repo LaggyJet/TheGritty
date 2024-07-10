@@ -1,12 +1,10 @@
-//Worked on by : Jacob Irvin
-
+//Worked on By : Joshua Furber
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using Unity.VisualScripting;
 
-public class FireBall : MonoBehaviour
+public class Arrow : MonoBehaviour
 {
     //the body of our projectile that will handle our physics
     [SerializeField] Rigidbody rb;
@@ -15,12 +13,6 @@ public class FireBall : MonoBehaviour
     [SerializeField] float damage;
     [SerializeField] int speed;
     [SerializeField] int destroyTime;
-    [SerializeField] DamageStats type;
-    [SerializeField] float minimumLight, maximumLight;
-
-    //variable to be used in the lighting
-    [SerializeField] Light light;
-
 
     // Start is called before the first frame update
     void Start()
@@ -32,15 +24,10 @@ public class FireBall : MonoBehaviour
             StartCoroutine(WaitThenDestroy(gameObject, destroyTime));
         else if (!PhotonNetwork.InRoom)
             Destroy(gameObject, destroyTime);
-        light.intensity = Random.Range(minimumLight, maximumLight);
     }
 
-    void Update() 
+    IEnumerator WaitThenDestroy(GameObject obj, float destroyTime)
     {
-        light.intensity = Random.Range(light.intensity + 0.2f, light.intensity - 0.2f);
-    }    
-
-    IEnumerator WaitThenDestroy(GameObject obj, float destroyTime) {
         yield return new WaitForSeconds(destroyTime);
         PhotonNetwork.Destroy(obj);
     }
@@ -50,12 +37,19 @@ public class FireBall : MonoBehaviour
         //when encountering a collision trigger it checks for component IDamage
         IDamage dmg = other.GetComponent<IDamage>();
 
+        // Check if arrow hits the head
+        if (dmg != null && other.gameObject.CompareTag("HeadShotArea"))
+        {
+            //deal double damage to the object hit
+            dmg.TakeDamage(damage * 2);
+            //destroy our projectile
+            DestroyObject(gameObject);
+        }
         //if there is an IDamage component we run the inside code
-        if (dmg != null && !other.gameObject.CompareTag("Player"))
+        else if (dmg != null && !other.gameObject.CompareTag("Player"))
         {
             //deal damage to the object hit
             dmg.TakeDamage(damage);
-            dmg.Afflict(type);
             //destroy our projectile
             DestroyObject(gameObject);
         }
@@ -64,7 +58,8 @@ public class FireBall : MonoBehaviour
 
     }
 
-    void DestroyObject(GameObject obj) {
+    void DestroyObject(GameObject obj)
+    {
         if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
             PhotonNetwork.Destroy(gameObject);
         else if (!PhotonNetwork.InRoom)

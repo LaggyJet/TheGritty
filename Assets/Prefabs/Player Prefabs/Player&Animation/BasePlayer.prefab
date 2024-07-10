@@ -1881,6 +1881,7 @@ MonoBehaviour:
   - {fileID: 2534988432703087702, guid: 79f14246f9fb55b4382c274a1eb6290a, type: 3}
   - {fileID: 2388995724689237375}
   - {fileID: 1377214065161546418}
+  - {fileID: 4865309214770636011, guid: fa791d212d613d94682ea14779e305ac, type: 3}
   useStamina: 1
   isBlocking: 0
   hp: 10
