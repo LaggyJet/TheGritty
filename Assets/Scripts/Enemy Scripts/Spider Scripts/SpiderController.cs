@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 
-public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
+public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator anim;
@@ -14,28 +14,43 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
     [SerializeField] GameObject spitEffectPS, acidStream, acidPuddle, spider;
     [SerializeField] int spawnRate, spawnAmount;
 
-    bool isAttacking, wasKilled, isSpawningSpiders, onCooldown, isDOT;
     DamageStats status;
-    Vector3 playerDirection;
+    bool isAttacking, wasKilled, isSpawningSpiders, onCooldown, isDOT;
+    Vector3 playerDirection, target, networkPosition;
+    Quaternion networkRotation;
     float currentAngle;
 
     void Start() {
+        spitEffectPS.SetActive(false);
         isAttacking = wasKilled = isSpawningSpiders = onCooldown = isDOT = false;
         GameManager.instance.updateEnemy(1);
         agent.speed = distanceFromPlayer * 0.1875f;
         StartCoroutine(CirclePlayer());
+        networkPosition = transform.position;
+        networkRotation = transform.rotation;
     }
 
     void Update() {
-        playerDirection = GameManager.instance.player.transform.position - transform.position;
+        playerDirection = FindClosetPlayer().transform.position - transform.position;
 
+        if (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected)
+            HandleHostLogic();
+        else if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
+            SmoothMovement();
+    }
+
+    void HandleHostLogic() {
         if (!wasKilled) {
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(playerDirection), Time.deltaTime * faceTargetSpeed);
 
             if (!isSpawningSpiders && !isAttacking)
                 StartCoroutine(SpawnSpiders());
         }
-        
+    }
+
+    void SmoothMovement() {
+        agent.transform.position = Vector3.Lerp(agent.transform.position, networkPosition, Time.deltaTime * 10);
+        agent.transform.rotation = Quaternion.Lerp(agent.transform.rotation, networkRotation, Time.deltaTime * 10);
     }
 
     IEnumerator SpawnSpiders() {
@@ -59,11 +74,11 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
                 agent.SetDestination(transform.position);
                 yield return null;
             }
-            else
-            {
+            else {
                 float xOffset = Mathf.Sin(currentAngle) * distanceFromPlayer;
                 float zOffset = Mathf.Cos(currentAngle) * distanceFromPlayer;
-                var target = new Vector3(GameManager.instance.player.transform.position.x + xOffset, GameManager.instance.player.transform.position.y, GameManager.instance.player.transform.position.z + zOffset);
+                GameObject closestPlayer = FindClosetPlayer();
+                target = new Vector3(closestPlayer.transform.position.x + xOffset, closestPlayer.transform.position.y, closestPlayer.transform.position.z + zOffset);
                 agent.SetDestination(target);
                 while (Vector3.Distance(agent.transform.position, target) > thresh)
                     yield return null;
@@ -74,13 +89,30 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
         }
     }
 
+    GameObject FindClosetPlayer() {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        GameObject closestPlayer = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (GameObject player in players) {
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestPlayer = player;
+            }
+        }
+
+        return closestPlayer;
+    }
+
     IEnumerator Spit() {
         isAttacking = onCooldown = true;
         yield return new WaitForSeconds(0.1f);
         anim.enabled = false;
-        spitEffectPS.GetComponent<ParticleSystem>().Play();
+        spitEffectPS.SetActive(true);
         StartCoroutine(SpawnTracers());
         yield return new WaitForSeconds(4);
+        spitEffectPS.SetActive(false);
         anim.enabled = true;
         anim.SetTrigger("Circle");
         isAttacking = false;
@@ -95,8 +127,8 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
         List<GameObject> curTracers = new();
 
         while (curTracers.Count != 5) {
+            curTracers.Add((PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine) ? PhotonNetwork.Instantiate("Enemy/" + acidStream.name, Vector3.zero, Quaternion.identity) : Instantiate(acidStream));
             yield return null;
-            curTracers.Add(Instantiate(acidStream));
         }
 
         int particlesLeft = 0;
@@ -110,10 +142,9 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
             for (int i = 0, j = i * 3; i < curTracers.Count && j < particlesLeft; i++, j *= 3) {
                 if (i < particlesLeft && p[j].remainingLifetime > 0f)
                     curTracers[i].transform.position = p[j].position;
-                else
-                {
+                else {
                     if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine) {
-                        PhotonNetwork.Instantiate("Enemy" + acidPuddle.name, curTracers[i].transform.position, Quaternion.identity);
+                        PhotonNetwork.Instantiate("Enemy/" + acidPuddle.name, curTracers[i].transform.position, Quaternion.identity);
                         PhotonNetwork.Destroy(curTracers[i]);
                     }
                     else if (!PhotonNetwork.InRoom) {
@@ -139,7 +170,6 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
             gameObject.GetComponent<Collider>().enabled = false;
             StartCoroutine(DeathAnimation());
             wasKilled = true;
-            Invoke(nameof(Win), 2f); //done to prevent glitchy menu
         }
 
         if (!isAttacking && !onCooldown)
@@ -194,6 +224,12 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
             PhotonNetwork.Destroy(gameObject);
         else if (!PhotonNetwork.InRoom)
             Destroy(gameObject);
+
+        // Call win game for every player in room through RPC calls, otherwise call normally
+        if (PhotonNetwork.InRoom)
+            photonView.RPC(nameof(Win), RpcTarget.All);
+        else if (!PhotonNetwork.IsConnected)
+            Win();
     }
 
     IEnumerator FlashDamage() {
@@ -202,9 +238,29 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
         model.material.color = new Color(0.5f, 0.5f, 0.5f, 1);
     }
 
-    private void Win() 
-    { GameManager.instance.gameWon();
-      DataPersistenceManager.Instance.SaveGame();
-      GameManager.playerLocation = GameManager.instance.player.transform.position;
+    [PunRPC]
+    private void Win() { 
+        GameManager.instance.gameWon();
+        DataPersistenceManager.Instance.SaveGame();
+        GameManager.playerLocation = GameManager.instance.player.transform.position;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+        if (stream.IsWriting) { 
+            stream.SendNext(agent.transform.position);
+            stream.SendNext(agent.transform.rotation);
+            stream.SendNext(target);
+            stream.SendNext(isAttacking);
+            stream.SendNext(isSpawningSpiders);
+            stream.SendNext(onCooldown);
+        }
+        else {
+            networkPosition = (Vector3)stream.ReceiveNext();
+            networkRotation = (Quaternion)stream.ReceiveNext();
+            target = (Vector3)stream.ReceiveNext();
+            isAttacking = (bool)stream.ReceiveNext();
+            isSpawningSpiders = (bool)stream.ReceiveNext();
+            onCooldown = (bool)stream.ReceiveNext();
+        }
     }
 }

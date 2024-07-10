@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using System.Diagnostics.Contracts;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using Photon.Pun;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     //public variables
     public Image playerHPBar;
-    public Image staminaBar; 
+    public Image staminaBar;
     public bool isPaused;
     public GameObject player;
     public PlayerController playerScript;
@@ -78,11 +79,11 @@ public class GameManager : MonoBehaviour
 
             else if (SceneManager.GetActiveScene().name == "title menu")
             {
-                #if UNITY_EDITOR
-                    UnityEditor.EditorApplication.isPlaying = false;
-                #else
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#else
                     Application.Quit();
-                #endif
+#endif
             }
             else if (menuActive == null)
             {
@@ -186,6 +187,7 @@ public class GameManager : MonoBehaviour
         enemyCountText.text = enemyCount.ToString("F0");
     }
 
+    [PunRPC]
     public void gameWon()
     {
         statePause();
@@ -194,6 +196,7 @@ public class GameManager : MonoBehaviour
         SoundTrackswitch(GameMusic.Menu);
     }
 
+    [PunRPC]
     public void gameLost()
     {
         statePause();

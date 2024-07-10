@@ -380,7 +380,13 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         {
             currentHP = 0;
             isDead = true;
-            GameManager.instance.gameLost();
+
+            //Call lose game for every player in room through RPC calls, otherwise call normally
+            if (PhotonNetwork.InRoom)
+                photonView.RPC(nameof(GameManager.instance.gameLost), RpcTarget.All);
+            else if (!PhotonNetwork.IsConnected)
+                GameManager.instance.gameLost();
+
             isDead = false;
         }
     }
