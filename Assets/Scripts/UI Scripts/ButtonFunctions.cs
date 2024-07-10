@@ -15,6 +15,7 @@ public class ButtonFunctions : MonoBehaviour
     }
     public void restart()
     {
+        //using previous player - scene needs to know where to put the player
         GameManager.enemyCount = 0;
         Vector3 temp = GameManager.playerLocation;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
