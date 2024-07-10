@@ -203,7 +203,7 @@ public class GameManager : MonoBehaviour
         menuActive = menuLose;
 
         if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient) {
-            menuLose.transform.Find("Title Menu").GetComponent<TMP_Text>().text = "Waiting....";
+            menuLose.transform.Find("Menu Title").GetComponent<TMP_Text>().text = "Waiting....";
             menuLose.transform.Find("Respawn").gameObject.SetActive(false);
             menuLose.transform.Find("Restart").gameObject.SetActive(false);
         }
