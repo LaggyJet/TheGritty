@@ -35,9 +35,11 @@ public class DataPersistenceManager : MonoBehaviour
     //game management methods
     public void NewGame()
     {
-        gameData = new GameData();
-        Debug.Log("Creating a new game file");
-        dataHandler.Save(gameData);
+        if (!GameManager.selectedMultiplayer) {
+            gameData = new GameData();
+            Debug.Log("Creating a new game file");
+            dataHandler.Save(gameData);
+        }
     }
     public void LoadGame() //load method
     {
@@ -58,13 +60,15 @@ public class DataPersistenceManager : MonoBehaviour
     }
     public void SaveGame() //save method
     {
-        //pass the data to scripts so they can update and save using data handler
-        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
-        {
-            dataPersistenceObj.SaveData(ref gameData);
+        if (!GameManager.selectedMultiplayer) {
+            //pass the data to scripts so they can update and save using data handler
+            foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+            {
+                dataPersistenceObj.SaveData(ref gameData);
+            }
+            dataHandler.Save(gameData);
+            Debug.Log("Saving game file");
         }
-        dataHandler.Save(gameData);
-        Debug.Log("Saving game file");
     }
 
     //private void OnApplicationQuit() //saves the game when the application is stopped
