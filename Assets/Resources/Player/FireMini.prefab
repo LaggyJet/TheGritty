@@ -55,6 +55,9 @@ MonoBehaviour:
   speed: 3
   destroyTime: 1
   type: {fileID: 0}
+  minimumLight: 0
+  maximumLight: 0
+  light: {fileID: 0}
 --- !u!33 &1130463157407497396
 MeshFilter:
   m_ObjectHideFlags: 0

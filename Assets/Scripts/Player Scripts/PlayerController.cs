@@ -172,6 +172,11 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     // Update is called once per frame
     void Update()
     {
+        if (stamShake == null)
+            stamShake = GameManager.instance.staminaBar.GetComponent<Shake>();
+        if (hpShake == null)
+            hpShake = GameManager.instance.playerHPBar.GetComponent<Shake>();
+
         // Prevent movement of other players
         if (!PhotonNetwork.IsConnected || GetComponent<PhotonView>().IsMine)
         {
@@ -549,14 +554,10 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
                 color.a = Mathf.Clamp(255, 0, 1);
                 GameManager.instance.staminaBar.color = color;
         }
-            else // If the stamina is less than 50%
+            else if (staminaRatio <= 0.5f) // If the stamina is less than 50%
             {
                 GameManager.instance.staminaBar.color = Color.Lerp(criticalStamina, midStamina, staminaRatio * 2);
-                if(staminaRatio <= 0.5f)
-                {
-                   stamShake.Shaking();  
-                }
-                
+                stamShake.Shaking();
             }
        
     }

@@ -604,6 +604,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BasePlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 3724347164852896666, guid: cc49ce404f390c440b5085473052a07b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6665335543444816129, guid: cc49ce404f390c440b5085473052a07b, type: 3}
       propertyPath: sceneViewId
       value: 1
