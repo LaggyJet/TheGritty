@@ -20,7 +20,7 @@ public class Class_Warrior : MonoBehaviour
     float secondaryTickSpeed = .5f;
 
     float damage = 10;
-    bool canDOT = true;
+    bool canDOT = false;
 
     //this is our start function that does a few important things
     private void Start()
