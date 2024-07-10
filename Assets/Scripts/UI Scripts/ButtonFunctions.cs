@@ -17,20 +17,18 @@ public class ButtonFunctions : MonoBehaviour
     {
         //using previous player - scene needs to know where to put the player
         GameManager.enemyCount = 0;
-        Vector3 temp = GameManager.playerLocation;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        GameManager.instance.player.transform.position = temp;
-        PlayerController.spawnHP = 10;
-        GameManager.instance.playerScript.UpdatePlayerUI();
+        DataPersistenceManager.Instance.LoadGame();
+        GameManager.instance.playerScript.hp = 10;
         GameManager.instance.stateResumeGameLoads();
     }
     public void quitApp()
     {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 
     public void quitGame()
