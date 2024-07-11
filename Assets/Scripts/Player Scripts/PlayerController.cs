@@ -374,7 +374,10 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             hp -= 0.5f;
         }
         else
-            hp -= amount; 
+            hp -= amount;
+
+        if (!PhotonNetwork.IsConnected && BluetoothManager.instance != null)
+            BluetoothManager.instance.UpdateBarGraphHealth(hp);
 
         if (!isPlayingSteps) //plays hurt sounds
         {
