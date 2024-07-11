@@ -15,12 +15,13 @@ public class ButtonFunctions : MonoBehaviour
     }
     public void restart()
     {
-        //using previous player - scene needs to know where to put the player
         GameManager.enemyCount = 0;
+        GameManager.instance.playerScript.hp = GameManager.instance.playerScript.hpBase;
+        GameManager.instance.playerScript.stamina = GameManager.instance.playerScript.staminaBase;
+        GameManager.instance.player.transform.position = GameManager.playerLocation;
+        DataPersistenceManager.Instance.SaveGame();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         DataPersistenceManager.Instance.LoadGame();
-        GameManager.instance.playerScript.hp = 10;
-        GameManager.instance.playerScript.stamina = 10;
         GameManager.instance.stateResumeGameLoads();
     }
     public void quitApp()
