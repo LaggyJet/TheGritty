@@ -25,7 +25,8 @@ public class BluetoothManager : MonoBehaviour {
     }
 
     void OnConnected(BluetoothHelper helper) { 
-        helper.StartListening(); 
+        helper.StartListening();
+        helper.SendData("Init");
         if (instance == null) {
             instance = this;
             DontDestroyOnLoad(gameObject);
