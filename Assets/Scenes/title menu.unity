@@ -374,6 +374,14 @@ PrefabInstance:
       propertyPath: graphicsDropdown
       value: 
       objectReference: {fileID: 356322056}
+    - target: {fileID: 2187883881102244765, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4739854429349026429, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6281002284272563087, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
       propertyPath: charSelect
       value: 

@@ -8,12 +8,14 @@ public class Credits : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1f;
         StartCoroutine(returnToTitleMenu());
     }
 
     IEnumerator returnToTitleMenu()
     {
-        yield return new WaitForSeconds(7.6f);
+        yield return new WaitForSeconds(10f);
         SceneManager.LoadScene("title menu");
+        Time.timeScale = 1f;
     }
 }
