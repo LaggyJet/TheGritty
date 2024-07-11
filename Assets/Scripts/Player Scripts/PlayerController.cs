@@ -64,9 +64,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [SerializeField] Animator animate;
     [SerializeField] float animationTransSpeed;
 
-    //!guys what is this
-    [SerializeField] Sprite sprite;
-
     //variables used for save/load
     public static Vector3 spawnLocation;
     public static Quaternion spawnRotation;
@@ -143,8 +140,8 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         //tracks our base currentHP and the current currentHP that will update as our player takes damage or gets health
         hpBase = hp;
         staminaBase = stamina;
-        this.transform.position = Vector3.zero;
-        this.transform.rotation = Quaternion.identity;
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.identity;
 
         //calls a function to set the player variable in the game manager
        GameManager.instance.SetPlayer();
@@ -172,6 +169,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     // Update is called once per frame
     void Update()
     {
+        
         if (stamShake == null)
             stamShake = GameManager.instance.staminaBar.GetComponent<Shake>();
         if (hpShake == null)
@@ -184,6 +182,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             Movement();
             // Regenerating over time ( can be adjusted in unity )
             RegenerateStamina();
+            //updates our ui every frame
             UpdatePlayerUI();
         }
     }
@@ -206,9 +205,9 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
                 playerV.y = jumpSpeed;
             }
         }
-        controller.Move(moveDir * speed * Time.deltaTime);
-        playerV.y -= gravity * Time.deltaTime;
-        controller.Move(playerV * Time.deltaTime);
+        //controller.Move(moveDir * speed * Time.deltaTime);
+        //playerV.y -= gravity * Time.deltaTime;
+        //controller.Move(playerV * Time.deltaTime);
     }
 
     public void OnSprint(InputAction.CallbackContext ctxt) //sprinting
@@ -369,9 +368,10 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     //this function happens when the player is called to take damage
     public void TakeDamage(float amount)
     {
+        //IF BLOCKING TAKE NO DAMAGE TO HEALTH, JUST LOSE STAMINA <3
         if(isBlocking)
         {
-            hp -= 0.5f;
+            stamina -= 1.5f;
         }
         else
             hp -= amount; 
@@ -380,7 +380,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         {
             audioSource.PlayOneShot(hurt[Random.Range(0, hurt.Length)], hurtVol);
         }
-        UpdatePlayerUI();
         //if health drops below zero run our lose condition
         if(hp <= 0 && !isDead)
         {
@@ -409,8 +408,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         {
             hp += amount; //add amount to currentHP
         }
-
-        UpdatePlayerUI();
     }
 
     // Subtract & add function for currentStamina
@@ -428,8 +425,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         {
             stamina += amount; 
         }
-
-        UpdatePlayerUI();
     }
 
     public void SubtractStamina(float amount) 
@@ -446,8 +441,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         {
             stamina -= amount; 
         }
-
-        UpdatePlayerUI();
     }
 
 
@@ -476,7 +469,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             stamina = staminaBase;
           }
           
-          UpdatePlayerUI();
           yield return null;
        }
 

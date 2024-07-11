@@ -12,9 +12,6 @@ public class Class_Archer : MonoBehaviourPun
 
     bool primaryCooldown;
     bool secondaryCooldown;
-    bool isCounting;
-    int abilityCoolDown;
-    int abilityActive;
 
     float primaryStamCost = 0.3f;
     float secondaryStamCost = 0.3f;
@@ -26,31 +23,17 @@ public class Class_Archer : MonoBehaviourPun
         player = GetComponent<PlayerController>();
     }
 
-    void Update()
-    {
-        if (abilityActive > 0)
-        {
-            StartCoroutine(AbilityActive());
-        }
-        else if (abilityCoolDown > 0)
-        {
-            StartCoroutine(AbilityCountDown());
-        }
-    }
-
     public void OnPrimaryFire(InputAction.CallbackContext ctxt)
     {
-
         //checks for if our input was performed and if its valid to attack
         //check the ValidAttack Function to see what quantifies as valid
         //also checks if we have the stamina to attack
         if (ctxt.performed && ValidAttack() && StaminaCheck(primaryStamCost))
         {
             GameManager.instance.isShooting = true;
-            if (player.useStamina)
-                player.stamina -= primaryStamCost;
+            player.stamina -= primaryStamCost;  
             //starts our mage primary attack animation and plays our associated sound
-            player.SetAnimationTrigger("Archer1");
+            player.SetAnimationBool("Archer1", true);
             player.PlaySound('A');
 
 
@@ -69,29 +52,38 @@ public class Class_Archer : MonoBehaviourPun
             }
             player.isPlayingStamina = player.staminaAudioSource.isPlaying;
         }
+        //if we stop holding the input this code runs
+        else if (ctxt.canceled && GameManager.instance.isShooting)
+        {
+            //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
+            player.SetAnimationBool("Archer1", false);
+            GameManager.instance.isShooting = false;
+        }
     }
     public void OnSecondaryFire(InputAction.CallbackContext ctxt)
     {
-        //Checks the same things as primary attack
-        if (ctxt.performed && !GameManager.instance.isPaused && SceneManager.GetActiveScene().name != "title menu")
+        //checks for if our input was performed and if its valid to attack
+        //check the ValidAttack Function to see what quantifies as valid
+        //also checks if we have the stamina to attack
+        if (ctxt.performed && ValidAttack() && StaminaCheck(primaryStamCost))
         {
             GameManager.instance.isShooting = true;
-            if (player.useStamina)
-                player.stamina -= secondaryStamCost;
+            player.stamina -= primaryStamCost;
             //starts our mage primary attack animation and plays our associated sound
-            player.SetAnimationTrigger("Archer2");
+            player.SetAnimationBool("Archer2", true);
             player.PlaySound('A');
 
+
             //!Remove once arrows spawn through animation stuff
-            ShootArrow(3);
+            ShootArrow(1);
         }
-        //if input is pressed and the context is valid but we don't have enough stamina run this code
-        else if (ctxt.performed && ValidAttack() && !StaminaCheck(secondaryStamCost))
+        //checks for if the input was performed in a valid context but there isn't enough stamina to perform our action
+        else if (ctxt.performed && ValidAttack() && !StaminaCheck(primaryStamCost))
         {
             // Checking for audio ( preventing looping on sounds )
             if (!player.staminaAudioSource.isPlaying)
             {
-                // Play out of stamina sound
+                // Play out of stamina sound 
                 player.staminaAudioSource.PlayOneShot(player.noAttack[Random.Range(0, player.noAttack.Length)], player.noAttackVol);
                 player.isPlayingStamina = true;
             }
@@ -101,55 +93,17 @@ public class Class_Archer : MonoBehaviourPun
         else if (ctxt.canceled && GameManager.instance.isShooting)
         {
             //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
-            GameManager.instance.isShooting = false;
             player.SetAnimationBool("Archer2", false);
+            GameManager.instance.isShooting = false;
         }
     }
 
     public void OnAbility(InputAction.CallbackContext ctxt)
     {
         //checks that we are not on cooldown and not using the ability
-        if (ctxt.performed && ValidAttack() && abilityCoolDown == 0 && abilityActive == 0)
+        if (ctxt.performed && ValidAttack())
         {
-            //plays our animation and sound for the ability
-            player.SetAnimationTrigger("Archer3");
-            player.PlaySound('A');
-            //sets our active time to 3 and our cooldown time to 10
-            abilityActive = 3;
-            abilityCoolDown = 10;
-            //makes stamina maximum so we pass all stamina checks during our ability time
-            player.stamina = 10;
-        }
-    }
 
-    //function for counting down our active time
-    IEnumerator AbilityActive()
-    {
-        if (!isCounting)
-        {
-            if (player.useStamina)
-            {
-                player.useStamina = false;
-            }
-            isCounting = true;
-            yield return new WaitForSeconds(1);
-            abilityActive--;
-            isCounting = false;
-        }
-    }
-    //function for counting down our cooldown
-    IEnumerator AbilityCountDown()
-    {
-        if (!isCounting)
-        {
-            if (!player.useStamina)
-            {
-                player.useStamina = true;
-            }
-            isCounting = true;
-            yield return new WaitForSeconds(1);
-            abilityCoolDown--;
-            isCounting = false;
         }
     }
 
