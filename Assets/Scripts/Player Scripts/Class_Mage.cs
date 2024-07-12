@@ -7,13 +7,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 
-
-/// <hello everyone>
-/// PLEASE FOR THE LOVE OF EVERYTHING IF U HAVE TO TOUCH MY SCRIPTS AT LEAST COMMENT OUT WHAT YOU'RE DOING PLEASE <3
-/// SO THAT WAY WHEN I GET HUNDREDS OF MERGE CONFLICTS I KNOW WHATS NEEDED AND WHATS NOT <3
-/// </im not mad the code just was spaghetti when i got here>
-
-
 public class Class_Mage : MonoBehaviourPun
 {
     PlayerController player;
@@ -59,6 +52,7 @@ public class Class_Mage : MonoBehaviourPun
 
     public void OnPrimaryFire(InputAction.CallbackContext ctxt)
     {
+        Debug.Log("The issue isn't here");
         //checks for if our input was performed and if its valid to attack
         //check the ValidAttack Function to see what quantifies as valid
         //also checks if we have the stamina to attack
@@ -66,7 +60,7 @@ public class Class_Mage : MonoBehaviourPun
         {
             GameManager.instance.isShooting = true;
             if(player.useStamina)
-                player.currentStamina -= primaryStamCost;
+                player.stamina -= primaryStamCost;
             //starts our mage primary attack animation and plays our associated sound
             player.SetAnimationTrigger("Mage1");
             player.PlaySound('A');
@@ -139,7 +133,7 @@ public class Class_Mage : MonoBehaviourPun
             abilityActive = 3;
             abilityCoolDown = 10;
             //makes stamina maximum so we pass all stamina checks during our ability time
-            player.currentStamina = 10;
+            player.stamina = 10;
         }
     }
 
@@ -266,7 +260,7 @@ public class Class_Mage : MonoBehaviourPun
         {
             fireSpraying = true;
             if (player.useStamina)
-                player.currentStamina -= secondaryStamCost;
+                player.stamina -= secondaryStamCost;
             //summons either locally or for all connected game instances
             if (PhotonNetwork.InRoom)
                 PhotonNetwork.Instantiate("Player/" + player.combatObjects[2].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
@@ -295,7 +289,7 @@ public class Class_Mage : MonoBehaviourPun
     //checks if we have the required stamina to perform the action
     bool StaminaCheck(float staminaRequired)
     {
-        if (player.currentStamina >= staminaRequired)
+        if (player.stamina >= staminaRequired)
         {
             return true;
         }

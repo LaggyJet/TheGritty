@@ -17,9 +17,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     public static PlayerController instance; 
     public CharacterController controller;
 
-    //these are animation variables
     [SerializeField] Animator animate;
-    [SerializeField] float animationTransSpeed;
 
     [Header("------- Movement and Position -------")]
     [SerializeField] float speed;
@@ -37,13 +35,13 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
 
 
     [Header("------- HP -------")]
-    [Range(0f, 10f)] public float currentHP; 
-    float maxHP;
     DamageStats status;
     bool isDead;
     bool isDOT;
     public static float spawnHP;
     // Health bar colors and script for shaking the ui
+    [Range(0f, 10f)] public float hp; 
+    float hpBase; 
     [SerializeField] Color fullHealth; 
     [SerializeField] Color midHealth; 
     [SerializeField] Color criticalHealth;
@@ -51,17 +49,16 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
 
 
     [Header("------- Stamina -------")]
-    [Range(0f, 10f)] public float currentStamina;
-    float maxStamina;
+    [Range(0f, 10f)] public float stamina;
+    [Range(0f, 50f)] public float staminaRegenerate;
     public static float spawnStamina;
-    [Range(0f, 50f)] public float staminaRegenRate;
-    private bool isRegenerating = false;
-    // stamina bar colors and script for shaking the ui
+    bool isRegenerating;
+
     [SerializeField] Color fullStamina; 
     [SerializeField] Color midStamina; 
     [SerializeField] Color criticalStamina;
     [SerializeField] public Shake stamShake; 
-    
+    float staminaBase;
 
     [Header("------- Combat -------")]
     [SerializeField] public GameObject shootPosition;
@@ -120,8 +117,8 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         }
 
         //tracks our base currentHP and the current currentHP that will update as our player takes damage or gets health
-        maxHP = currentHP;
-        maxStamina = currentStamina;
+        hpBase = hp;
+        staminaBase = stamina;
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.identity;
 
@@ -140,8 +137,8 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             GameManager.playerLocation = spawnLocation;
             transform.position = spawnLocation;
             transform.rotation = spawnRotation;
-            currentHP = spawnHP;
-            currentStamina = spawnStamina;
+            hp = spawnHP;
+            stamina = spawnStamina;
             Physics.SyncTransforms();
             // Todo: Might need update player UI 
             spawnLocation = Vector3.zero;
@@ -180,10 +177,10 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     public void OnJump(InputAction.CallbackContext ctxt) //jumping
     {
         //checks if our input is called, if we have available jumps left, and if we have the stamina to jump
-        if (ctxt.performed && jumpsAvailable > 0 && currentStamina >= .5f)
+        if (ctxt.performed && jumpsAvailable > 0 && stamina >= .5f)
         {
             //subtracts our stamina and jumps then adds our y velocity to player
-            currentStamina -= .5f;
+            stamina -= .5f;
             jumpsAvailable--;
             playerV.y = jumpSpeed;
         }
@@ -191,31 +188,29 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
 
     public void OnSprint(InputAction.CallbackContext ctxt) //sprinting
     {
-        //checks that are stamina is above 0
-        if(currentStamina > 0)
+        if(stamina > 0)
         {
-            
-            if(ctxt.performed)
+        if(ctxt.performed)
+        {
+            if (!isSprinting)
             {
-                if (!isSprinting)
-                {
-                    isSprinting = true;
-                    speed *= sprintMod; 
-                    SubtractStamina(0.5f);
-                    sprintAudioSource.clip = sprintSound;
-                    sprintAudioSource.volume = sprintVol;
-                    sprintAudioSource.Play();
-                }
+                isSprinting = true;
+                speed *= sprintMod; 
+                SubtractStamina(0.5f);
+                sprintAudioSource.clip = sprintSound;
+                sprintAudioSource.volume = sprintVol;
+                sprintAudioSource.Play();
             }
-            else if(ctxt.canceled)
+        }
+        else if(ctxt.canceled)
+        {
+            if (isSprinting)
             {
-                if (isSprinting)
-                {
-                    isSprinting = false;
-                    speed /= sprintMod;
-                    
-                }
+                isSprinting = false;
+                speed /= sprintMod;
+                
             }
+        }
         }
         else 
         { 
@@ -244,6 +239,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     {
         if (mage != null)
         {
+            Debug.Log("Go on through");
             mage.OnPrimaryFire(ctxt);
         }
         else if (warrior != null)
@@ -329,14 +325,14 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         isDOT = true;
         for (int i = 0; i < status.length; i++)
         {
-            if(currentHP > status.damage)
+            if(hp > status.damage)
             {
-                currentHP -= status.damage;
+                hp -= status.damage;
                 yield return new WaitForSeconds(1);
             }
-            else if(currentHP <= status.damage && !isDead)
+            else if(hp <= status.damage && !isDead)
             {
-                currentHP = 0;
+                hp = 0;
                 isDead = true;
                 GameManager.instance.gameLost();
                 isDead = false;
@@ -351,19 +347,19 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         //IF BLOCKING TAKE NO DAMAGE TO HEALTH, JUST LOSE STAMINA <3
         if(isBlocking)
         {
-            currentStamina -= 1.5f;
+            stamina -= 1.5f;
         }
         else
-            currentHP -= amount; 
+            hp -= amount; 
 
         if (!isPlayingSteps) //plays hurt sounds
         {
             audioSource.PlayOneShot(hurt[Random.Range(0, hurt.Length)], hurtVol);
         }
         //if health drops below zero run our lose condition
-        if(currentHP <= 0 && !isDead)
+        if(hp <= 0 && !isDead)
         {
-            currentHP = 0;
+            hp = 0;
             isDead = true;
 
             //Call lose game for every player in room through RPC calls, otherwise call normally
@@ -380,46 +376,46 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     //called when player picks up a health potion
     public void AddHP(float amount)
     {
-        if (currentHP + amount > maxHP) //added amount would exceed max HP
+        if (hp + amount > hpBase) //added amount would exceed max HP
         { 
-            currentHP = maxHP; //set to max currentHP
+            hp = hpBase; //set to max currentHP
         } 
         else
         {
-            currentHP += amount; //add amount to currentHP
+            hp += amount; //add amount to currentHP
         }
     }
 
     // Subtract & add function for currentStamina
     public void AddStamina(float amount)
     {
-        if (currentStamina + amount > maxStamina) 
+        if (stamina + amount > staminaBase) 
         { 
-            currentStamina = maxStamina; 
+            stamina = staminaBase; 
         }
-        else if(currentStamina + amount > 10) // Not going above ten 
+        else if(stamina + amount > 10) // Not going above ten 
         {
-            currentStamina = 10;
+            stamina = 10;
         }
         else
         {
-            currentStamina += amount; 
+            stamina += amount; 
         }
     }
 
     public void SubtractStamina(float amount) 
     {
-        if (currentStamina - amount > maxStamina) 
+        if (stamina - amount > staminaBase) 
         { 
-            currentStamina = maxStamina; 
+            stamina = staminaBase; 
         } 
-        else if(currentStamina - amount < 0) // Not going below zero
+        else if(stamina - amount < 0) // Not going below zero
         {
-            currentStamina = 0;
+            stamina = 0;
         }
         else
         {
-            currentStamina -= amount; 
+            stamina -= amount; 
         }
     }
 
@@ -427,7 +423,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     // Regenerate Stamina 
     private void RegenerateStamina()
     {
-       if(currentStamina < maxStamina && !isRegenerating)
+       if(stamina < staminaBase && !isRegenerating)
        {
            StartCoroutine(RegenStaminaDelay());
        }
@@ -440,13 +436,13 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
 
        yield return new WaitForSeconds(5);
 
-       if(currentStamina < maxStamina)
+       if(stamina < staminaBase)
        {
-          currentStamina += staminaRegenRate * Time.deltaTime;
+          stamina += staminaRegenerate * Time.deltaTime;
 
-          if(currentStamina > maxStamina)
+          if(stamina > staminaBase)
           {
-            currentStamina = maxStamina;
+            stamina = staminaBase;
           }
           
           yield return null;
@@ -472,8 +468,8 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     public void UpdatePlayerUI()
     {
         // Variable for filling health bar 
-        float healthRatio = (float)currentHP / maxHP;
-        float staminaRatio = (float)currentStamina / maxStamina; 
+        float healthRatio = (float)hp / hpBase;
+        float staminaRatio = (float)stamina / staminaBase; 
 
         // Storing 
         GameManager.instance.playerHPBar.fillAmount = healthRatio; 
@@ -504,15 +500,17 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
                         staminaAudioSource.PlayOneShot(noHP[Random.Range(0, noHP.Length)], noHPvol);
                         isPlayingNoHP = true;
                         isPlayingNoHP = staminaAudioSource.isPlaying;
+                        Debug.Log("No HP :(");
                     }
                 }
 
                 isPlayingNoHP = staminaAudioSource.isPlaying;
+                Debug.Log("No HP :(");
                
-                if(healthRatio <= 0.5f )
-                {
+                 if(healthRatio <= 0.5f )
+                 {
                     hpShake.Shaking();   
-                }
+                 }
                 
             }
        
@@ -536,8 +534,8 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     public void Respawn()
     {
         this.transform.position = GameManager.playerLocation;
-        currentHP = maxHP;
-        currentStamina = maxStamina;
+        hp = hpBase;
+        stamina = staminaBase;
         UpdatePlayerUI(); 
     }
     
@@ -555,8 +553,8 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     {
         data.playerPos = transform.position;
         data.playerRot = transform.rotation;
-        data.playerHp = currentHP;
-        data.playerStamina = currentStamina;
+        data.playerHp = hp;
+        data.playerStamina = stamina;
     }
 
     //this is the new function for assign a class script to our player
@@ -602,6 +600,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     //public functions for our class scripts to call in order to attack properly
     public void SetAnimationTrigger(string triggerName)
     {
+        Debug.Log("pls dont make me work with more animations");
         animate.SetTrigger(triggerName);
     }
     public void SetAnimationBool(string boolName, bool state)

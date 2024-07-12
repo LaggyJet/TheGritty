@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     public PlayerController playerScript;
     public static Vector3 playerLocation;
     public static Vector3 playerSpawnLocation;
+    public bool canJump;
     public static int enemyCount = 0;
     public GameObject oldActiveMenu;
     public GameObject settingsPublicVers;
