@@ -231,8 +231,6 @@ public class Class_Mage : MonoBehaviourPun
     }
     // End RPC calls
 
-
-
     //this function is for stopping the fire spray attack if you run out of stamina
     void EndSecondary()
     {

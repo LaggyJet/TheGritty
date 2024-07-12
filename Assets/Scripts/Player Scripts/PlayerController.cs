@@ -230,7 +230,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             }
             
             isPlayingNoSprinting = sprintAudioSource.isPlaying;
-            Debug.Log("No Stamina poo :(");    
         }
         
     }
