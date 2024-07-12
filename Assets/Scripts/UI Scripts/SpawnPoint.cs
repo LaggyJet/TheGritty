@@ -1,5 +1,6 @@
 //Worked on By : Joshua Furber
 using Photon.Pun;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpawnPoint : MonoBehaviourPunCallbacks
@@ -12,7 +13,7 @@ public class SpawnPoint : MonoBehaviourPunCallbacks
             PhotonNetwork.Instantiate("Player/" + player.name, GetRandomSpawn(), Quaternion.identity);
         else if (!PhotonNetwork.InRoom && player != null)
             Instantiate(player, GetRandomSpawn(), Quaternion.identity);
-        GameManager.playerLocation = GetRandomSpawn();
+            GameManager.playerLocation = GetRandomSpawn();
     }
 
     Vector3 GetRandomSpawn() { return gameObject.transform.position; }

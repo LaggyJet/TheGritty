@@ -205,7 +205,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
                 playerV.y = jumpSpeed;
             }
         }
-        controller.Move(moveDir * speed * Time.deltaTime);
         playerV.y -= gravity * Time.deltaTime;
         controller.Move(playerV * Time.deltaTime);
     }
