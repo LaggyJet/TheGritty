@@ -57,7 +57,7 @@ public class Class_Warrior : MonoBehaviour
         if (ctxt.performed && ValidAttack() && StaminaCheck(primaryStamCost))
         {
             GameManager.instance.isShooting = true;
-            player.stamina -= primaryStamCost;
+            player.currentStamina -= primaryStamCost;
             //starts our mage primary attack animation and plays our associated sound
             player.SetAnimationTrigger("Warrior1");
             player.PlaySound('A');
@@ -121,7 +121,7 @@ public class Class_Warrior : MonoBehaviour
         {
             waiting = true;
             yield return new WaitForSeconds(secondaryTickSpeed);
-            player.stamina -= secondaryStamCost;
+            player.currentStamina -= secondaryStamCost;
             waiting = false;
         }
     }
@@ -211,7 +211,7 @@ public class Class_Warrior : MonoBehaviour
     //checks if we have the required stamina to perform the action
     bool StaminaCheck(float staminaRequired)
     {
-        if (player.stamina >= staminaRequired)
+        if (player.currentStamina >= staminaRequired)
         {
             return true;
         }

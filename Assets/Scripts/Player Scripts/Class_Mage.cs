@@ -66,7 +66,7 @@ public class Class_Mage : MonoBehaviourPun
         {
             GameManager.instance.isShooting = true;
             if(player.useStamina)
-                player.stamina -= primaryStamCost;
+                player.currentStamina -= primaryStamCost;
             //starts our mage primary attack animation and plays our associated sound
             player.SetAnimationTrigger("Mage1");
             player.PlaySound('A');
@@ -139,7 +139,7 @@ public class Class_Mage : MonoBehaviourPun
             abilityActive = 3;
             abilityCoolDown = 10;
             //makes stamina maximum so we pass all stamina checks during our ability time
-            player.stamina = 10;
+            player.currentStamina = 10;
         }
     }
 
@@ -268,7 +268,7 @@ public class Class_Mage : MonoBehaviourPun
         {
             fireSpraying = true;
             if (player.useStamina)
-                player.stamina -= secondaryStamCost;
+                player.currentStamina -= secondaryStamCost;
             //summons either locally or for all connected game instances
             if (PhotonNetwork.InRoom)
                 PhotonNetwork.Instantiate("Player/" + player.combatObjects[2].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
@@ -297,7 +297,7 @@ public class Class_Mage : MonoBehaviourPun
     //checks if we have the required stamina to perform the action
     bool StaminaCheck(float staminaRequired)
     {
-        if (player.stamina >= staminaRequired)
+        if (player.currentStamina >= staminaRequired)
         {
             return true;
         }

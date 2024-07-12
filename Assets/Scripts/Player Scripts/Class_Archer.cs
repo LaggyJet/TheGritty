@@ -31,7 +31,7 @@ public class Class_Archer : MonoBehaviourPun
         if (ctxt.performed && ValidAttack() && StaminaCheck(primaryStamCost))
         {
             GameManager.instance.isShooting = true;
-            player.stamina -= primaryStamCost;  
+            player.currentStamina -= primaryStamCost;  
             //starts our mage primary attack animation and plays our associated sound
             player.SetAnimationBool("Archer1", true);
             player.PlaySound('A');
@@ -68,7 +68,7 @@ public class Class_Archer : MonoBehaviourPun
         if (ctxt.performed && ValidAttack() && StaminaCheck(primaryStamCost))
         {
             GameManager.instance.isShooting = true;
-            player.stamina -= primaryStamCost;
+            player.currentStamina -= primaryStamCost;
             //starts our mage primary attack animation and plays our associated sound
             player.SetAnimationBool("Archer2", true);
             player.PlaySound('A');
@@ -142,7 +142,7 @@ public class Class_Archer : MonoBehaviourPun
     //checks if we have the required stamina to perform the action
     bool StaminaCheck(float staminaRequired)
     {
-        if (player.stamina >= staminaRequired)
+        if (player.currentStamina >= staminaRequired)
         {
             return true;
         }
