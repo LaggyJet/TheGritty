@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Timeline;
 using UnityEngine;
 
 public class followTarget : MonoBehaviour
@@ -8,16 +7,17 @@ public class followTarget : MonoBehaviour
     public Transform target;
     public Vector3 offset;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
     // Update is called once per frame
     void Update()
     {
-        if (target == null)
+        //sets the value of the target as long as the game manager and player aren't null!
+        if (GameManager.instance != null && GameManager.instance.player != null)
+        {
             target = GameManager.instance.player.GetComponent<Transform>();
-        transform.position = target.transform.position + offset;   
+        }
+        if (target != null) //updates the position each frame
+        {
+            transform.position = target.transform.position + offset;
+        }
     }
 }

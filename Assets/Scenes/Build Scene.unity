@@ -24249,7 +24249,7 @@ PrefabInstance:
     - target: {fileID: 8055399870138001511, guid: 7590d778c04698a41bd24210f4351062, type: 3}
       propertyPath: followTarget
       value: 
-      objectReference: {fileID: 2059592138}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -30739,8 +30739,8 @@ Transform:
   m_GameObject: {fileID: 992733582}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5353, y: -0.9427, z: 4.2}
-  m_LocalScale: {x: 7.8787575, y: 6.439749, z: 2.415625}
+  m_LocalPosition: {x: 1.2534, y: -0.0779, z: 4.2}
+  m_LocalScale: {x: 8.211179, y: 7.470265, z: 1.971457}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1030480191}
@@ -30786,8 +30786,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4b2e87d99d9534745bba32a1fcf2cd00, type: 3}
-  m_Color: {r: 0.07058824, g: 0.05490196, b: 0.02745098, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 5519beffff4cdd64f9971680f96096bc, type: 3}
+  m_Color: {r: 0.4528302, g: 0.36398998, b: 0.31470272, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -31413,15 +31413,15 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.78
-    y: 0.67
-    width: 0.2
-    height: 0.29
+    x: 0.71
+    y: 0.53
+    width: 1.59
+    height: 0.45
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 15.3
+  orthographic size: 17.95
   m_Depth: 5
   m_CullingMask:
     serializedVersion: 2
@@ -38025,7 +38025,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 20.100008}
-  m_LocalScale: {x: 0.7871323, y: 0.7603675, z: 0.7229963}
+  m_LocalScale: {x: 0.5876966, y: 0.5677132, z: 0.5398107}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 160728314}
@@ -46325,7 +46325,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0
 --- !u!1001 &1489248305
 PrefabInstance:
@@ -47499,7 +47499,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.98}
-  m_LocalScale: {x: 273.8588, y: 273.8588, z: 273.8588}
+  m_LocalScale: {x: 162.51602, y: 162.51602, z: 162.51602}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1030480191}
@@ -60333,7 +60333,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2059592137}
-  - component: {fileID: 2059592138}
+  - component: {fileID: 2059592140}
   - component: {fileID: 2059592139}
   m_Layer: 0
   m_Name: camera parent
@@ -60358,20 +60358,6 @@ Transform:
   - {fileID: 1030480191}
   m_Father: {fileID: 413569953}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2059592138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2059592136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d41b4883fa706b545be38e88abf57e7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  offset: {x: 0, y: 0, z: 0}
 --- !u!114 &2059592139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60384,7 +60370,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0f08ff6e680ba04fb00064e9ce8c8da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 1127769709}
+--- !u!114 &2059592140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059592136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d41b4883fa706b545be38e88abf57e7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1127769709}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1001 &2062618089
 PrefabInstance:
   m_ObjectHideFlags: 0

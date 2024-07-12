@@ -19,7 +19,7 @@ public class FireBall : MonoBehaviourPunCallbacks
     [SerializeField] float minimumLight, maximumLight;
 
     //variable to be used in the lighting
-    [SerializeField] Light light;
+    [SerializeField] new Light light;
 
 
     // Start is called before the first frame update
