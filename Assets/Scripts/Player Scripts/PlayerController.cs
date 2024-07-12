@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     
     //our player currentHP and the version saved for our max currentHP
     [Range(0f, 10f)] public float hp; 
-    float hpBase; 
+    public float hpBase; 
 
     // Health bar gradual fill 
     [SerializeField] Color fullHealth; 
@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [SerializeField] Color midStamina; 
     [SerializeField] Color criticalStamina;
     [SerializeField] public Shake stamShake; 
-    float staminaBase;
+    public float staminaBase;
 
     //these are animation variables
     [SerializeField] Animator animate;
