@@ -43,7 +43,9 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [SerializeField] Color fullHealth; 
     [SerializeField] Color midHealth; 
     [SerializeField] Color criticalHealth;
+    [Range(0f, 10f)] public float healthThreshold; 
     [SerializeField] Shake hpShake;
+    
 
 
     //shows up as a divider in the script
@@ -57,6 +59,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [SerializeField] Color fullStamina; 
     [SerializeField] Color midStamina; 
     [SerializeField] Color criticalStamina;
+    [Range(0f, 10f)] public float staminaThreshold; 
     [SerializeField] Shake stamShake; 
     float staminaBase;
 
@@ -504,20 +507,24 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         GameManager.instance.playerHPBar.fillAmount = healthRatio; 
         GameManager.instance.staminaBar.fillAmount = staminaRatio;
 
-      
-       
+        // Health - stamina ratios ( 1-10)
+        float healthValue = healthRatio * 10;
+        float staminaValue = staminaRatio * 10;
+
+
             // If health is more than 50% full
-            if (healthRatio > 0.5f || GameManager.instance.playerHPBar.color != midHealth) 
+            if (healthValue > healthThreshold || GameManager.instance.playerHPBar.color != midHealth) 
             {
-                GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthRatio - 0.5f) * 2);
+                GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthValue - 0.5f) * 2);
                 isPlayingNoHP = false;
             }
             else // If the health is less than 50%
             {
-                GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
+                GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthValue * 2);
 
-                if(healthRatio <= 0.5f )
+                if(healthValue <= healthThreshold )
                 {
+                    Debug.Log("Calling hpShake.Shaking() because healthValue <= healthThreshold");
                     hpShake.Shaking(); 
                 }
 
@@ -532,26 +539,18 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
                         Debug.Log("No HP :(");
                     }
                 }
-
-                isPlayingNoHP = staminaAudioSource.isPlaying;
-                Debug.Log("No HP :(");
-               
-                 if(healthRatio <= 0.5f )
-                 {
-                    hpShake.Shaking();   
-                 }
                 
             }
        
             // If stamina is more than 50% full 
-            if (staminaRatio > 0.5f || GameManager.instance.staminaBar.color != midStamina) 
+            if (staminaValue > staminaThreshold || GameManager.instance.staminaBar.color != midStamina) 
             {
-                GameManager.instance.staminaBar.color = Color.Lerp(midStamina, fullStamina, (staminaRatio - 0.5f) * 2); 
+                GameManager.instance.staminaBar.color = Color.Lerp(midStamina, fullStamina, (staminaValue - 0.5f) * 2); 
             }
             else // If the stamina is less than 50%
             {
-                GameManager.instance.staminaBar.color = Color.Lerp(criticalStamina, midStamina, staminaRatio * 2);
-                if(staminaRatio <= 0.5f)
+                GameManager.instance.staminaBar.color = Color.Lerp(criticalStamina, midStamina, staminaValue * 2);
+                if(staminaValue <= staminaThreshold)
                 {
                    stamShake.Shaking();  
                 }
