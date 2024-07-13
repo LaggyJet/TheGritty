@@ -2,7 +2,7 @@
 using Photon.Pun;
 using UnityEngine;
 
-public class EnemySpawning : MonoBehaviourPunCallbacks, IPunObservable {
+public class EnemySpawning : MonoBehaviour {
     [SerializeField] GameObject Enemy;
     [SerializeField] Transform[] SpawnPoints;
     [SerializeField] int numEnemies;
@@ -14,8 +14,15 @@ public class EnemySpawning : MonoBehaviourPunCallbacks, IPunObservable {
             Spawn();
     }
 
+    [PunRPC]
+    void UpdateDoorState() { isSpawning = true; }
+
     public void Spawn() {
         isSpawning = true;
+
+        if (PhotonNetwork.InRoom)
+            GetComponent<PhotonView>().RPC(nameof(UpdateDoorState), RpcTarget.Others);
+
         for (int i = 0; i < numEnemies; i++) {
             int arrayPosition = Random.Range(0, SpawnPoints.Length);
             if (PhotonNetwork.InRoom && Enemy != null)
@@ -23,12 +30,5 @@ public class EnemySpawning : MonoBehaviourPunCallbacks, IPunObservable {
             else if (!PhotonNetwork.InRoom && Enemy != null)
                 Instantiate(Enemy, SpawnPoints[arrayPosition].position, SpawnPoints[arrayPosition].rotation);
         }
-    }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
-        if (stream.IsWriting)
-            stream.SendNext(isSpawning);
-        else
-            isSpawning = (bool)stream.ReceiveNext();
     }
 }
