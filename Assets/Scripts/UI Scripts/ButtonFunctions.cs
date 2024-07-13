@@ -73,18 +73,6 @@ public class ButtonFunctions : MonoBehaviour
     }
 
     //FOR TITLE SCREEN
-    public void newGame()
-    {
-        SceneManager.LoadScene("Build Scene");
-        DataPersistenceManager.Instance.NewGame();
-        GameManager.instance.stateResumeGameLoads();
-    }
-    public void loadGame()
-    {
-        SceneManager.LoadScene("Build Scene");
-        DataPersistenceManager.Instance.LoadGame();
-        GameManager.instance.stateResumeGameLoads();
-    }
     public void startNewGamePart1()
     {
         GameManager.instance.Warning4NewGame();
@@ -105,16 +93,12 @@ public class ButtonFunctions : MonoBehaviour
 
         if (GameManager.selectedMultiplayer)
             SceneManager.LoadScene("Lobby");
-        else
-            newGame();
     }
     public void mage()
     {
         playerClass.MyClass = 2;
         if (GameManager.selectedMultiplayer)
             SceneManager.LoadScene("Lobby");
-        else
-            newGame();
 
     }
     public void archer()
@@ -122,8 +106,6 @@ public class ButtonFunctions : MonoBehaviour
         playerClass.MyClass = 3;
         if (GameManager.selectedMultiplayer)
             SceneManager.LoadScene("Lobby");
-        else
-            newGame();
     }
 
     // Co-op features
