@@ -137,6 +137,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         if (!GetComponent<PhotonView>().IsMine && PhotonNetwork.InRoom) {
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(GetComponentInChildren<AudioListener>());
+            UpdateOtherPlayer(gameObject);
             return;
         }
 
@@ -185,6 +186,16 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             // Regenerating over time ( can be adjusted in unity )
             RegenerateStamina();
             UpdatePlayerUI();
+        }
+    }
+
+    void UpdateOtherPlayer(GameObject obj) {
+        if (!obj) return;
+
+        obj.layer = 0;
+        foreach (Transform child in obj.transform) {
+            if (!child) return;
+            UpdateOtherPlayer(child.gameObject);
         }
     }
 
