@@ -512,8 +512,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         GameManager.instance.playerHPBar.fillAmount = HpDisplay; 
         GameManager.instance.staminaBar.fillAmount = StaminaDisplay;
 
-        
-
             // If health is more than 50% full
             if (HpDisplay > 0.5f || GameManager.instance.playerHPBar.color != midHealth) 
             {
