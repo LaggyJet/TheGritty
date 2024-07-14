@@ -1,6 +1,8 @@
 //Worked on by : Jacob Irvin, Natalie Lubahn, Kheera, Emily Underwood, Joshua Furber
 
 using Photon.Pun;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -11,31 +13,35 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-
-//OKAY GANG IM GONNA COMMENT ALL THIS TO THE BEST OF MY ABILITY BECAUSE THIS CODE IS STARTING TO LOOK LIKE A SHITTY FANFIC
-//BUT UNLIKE SHITTY FANFIC I DONT HAVE A 2 HOUR YOUTUBE DOC TO EXPLAIN IT TO ME ~ Jacob <3
-public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
+public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersistence
 {
-    //gets our player controller for movement and character controller for collision
+    //lets us access player and controller and character controller from outside the object
     public static PlayerController instance; 
     public CharacterController controller;
 
+    [SerializeField] Animator animate;
 
-    //these variables are game function variables that may likely be changed
+    [Header("------- Movement and Position -------")]
     [SerializeField] float speed;
     [SerializeField] int sprintMod;
     [SerializeField] int gravity;
     [SerializeField] int jumpMax;
     [SerializeField] int jumpSpeed;
-    [SerializeField] public GameObject shootPosition;
-    [SerializeField] public GameObject[] combatObjects;
-    public bool useStamina = true;
-    public bool isBlocking = false;
+    int jumpsAvailable;
+    Vector3 moveDir;
+    public Vector3 playerV;
+    Vector3 networkPos;
+    Quaternion networkRot;
+    public static Vector3 spawnLocation;
+    public static Quaternion spawnRotation;
 
-    //shows up as a divider in the script
+
     [Header("------- HP -------")]
-    
-    //our player currentHP and the version saved for our max currentHP
+    DamageStats status;
+    bool isDead;
+    bool isDOT;
+    public static float spawnHP;
+    // Health bar colors and script for shaking the ui
     [Range(0f, 10f)] public float hp; 
     public float hpBase; 
 
@@ -46,37 +52,32 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [SerializeField] public Shake hpShake;
 
 
-    //shows up as a divider in the script
     [Header("------- Stamina -------")]
-
     [Range(0f, 10f)] public float stamina;
-    [Range(0f, 50f)] public float staminaRegenerate;  
-    
-    
-     // stamina bar gradual fill 
+    [Range(0f, 50f)] public float staminaRegenerate;
+    public static float spawnStamina;
+    bool isRegenerating;
+
     [SerializeField] Color fullStamina; 
     [SerializeField] Color midStamina; 
     [SerializeField] Color criticalStamina;
     [SerializeField] public Shake stamShake; 
     public float staminaBase;
 
-    //these are animation variables
-    [SerializeField] Animator animate;
-    [SerializeField] float animationTransSpeed;
+    [Header("------- Combat -------")]
+    [SerializeField] public GameObject shootPosition;
+    [SerializeField] public GameObject arrowPosition;
+    [SerializeField] public GameObject[] combatObjects;
+    ClassSelection classSelector;
+    public bool useStamina = true;
+    public bool isBlocking = false;
+    public int classCase;
+    public Class_Mage mage = null;
+    public Class_Warrior warrior = null;
+    public Class_Archer archer = null;
 
-    //!guys what is this
-    [SerializeField] Sprite sprite;
 
-    //variables used for save/load
-    public static Vector3 spawnLocation;
-    public static Quaternion spawnRotation;
-    public static float spawnHP;
-    public static float spawnStamina;
-
-    //shows up as a divider in the script
     [Header("------ Audio ------")]
-
-    //Audio variables
     [SerializeField] public AudioSource audioSource;
     [SerializeField] AudioClip[] footsteps;
     [SerializeField] float footstepsVol;
@@ -84,70 +85,73 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [SerializeField] float hurtVol;
     [SerializeField] public AudioClip[] attack;
     [SerializeField] float attackVol;
+    bool isPlayingSteps;
+
 
     [Header("------ Sprint Audio ------")]
     [SerializeField] public AudioSource sprintAudioSource;
     [SerializeField] public AudioClip sprintSound;
     [SerializeField] float sprintVol;
     [SerializeField] public AudioClip[] noSprint;
-    [SerializeField] float noSprintVol; 
+    [SerializeField] float noSprintVol;
+    bool isSprinting;
+    public bool isPlayingStamina;
+    public bool isPlayingNoSprinting;
+
 
     [Header("------ Stamina/HP Audio ------")]
     [SerializeField] public AudioSource staminaAudioSource;
     [SerializeField] public AudioClip[] noHP;
     [SerializeField] public float noHPvol;
     [SerializeField] public AudioClip[] noAttack;
-    [SerializeField] public float noAttackVol;
-
-
-
-    //shows up as a divider in the script
-    [Header("------ Classes ------")]
-    //class variables
-    [SerializeField] private ClassSelection playerClass;
-    public int classCase;
-    public Class_Mage mage = null;
-    public Class_Warrior warrior = null;
-    public Class_Archer archer = null;
-
-    //these are variables used explicitly in functions
-    DamageStats status;
-    int jumpCount;
-    bool isDead;
-    bool isDOT;
-    Vector3 moveDir;
-    Vector3 playerV;
-    Vector3 networkPos;
-    Quaternion networkRot;
-    bool isPlayingSteps;
-    bool isSprinting;
-    public bool isPlayingStamina;
-    public bool isPlayingNoSprinting;
+    [SerializeField] public float noAttackVol; 
     public bool isPlayingNoHP = false;
-    private bool isRegenerating = false;
 
-    private void Start()
-    {
-        //assigns our player class
-        AssignClass(playerClass.MyClass);
+    private const string CLASS_SELECTED = "ClassSelected";
+    ClassSelection currentClassSelection;
 
-        // Prevent movement of other players (to prevent controller other players instead of just yourself)
+    private void Start() {
+        // Get base selection (if possible)
+        currentClassSelection = GameObject.FindWithTag("ClassSelector")?.GetComponent<ClassSelection>();
+
+        // Setting up class for yourself or multiplayer
+        if (PhotonNetwork.InRoom || !PhotonNetwork.IsConnected) {
+            int selectedClass = currentClassSelection.MyClass;
+            AssignClass(selectedClass);
+
+            // If multiplayer, update the localplayer's hash table for other clients
+            if (PhotonNetwork.InRoom && photonView.IsMine) {
+                ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
+                properties[CLASS_SELECTED] = selectedClass;
+                PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
+            }
+        }
+
+        // Prevents your inputs from moving other players in multiplayer
         // Checks if the player is the actual player and in multiplayer
-        if (!GetComponent<PhotonView>().IsMine && PhotonNetwork.InRoom) {
+        // Also assigns the proper class to other player on your end
+        if (!photonView.IsMine && PhotonNetwork.InRoom) {
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(GetComponentInChildren<AudioListener>());
             UpdateOtherPlayer(gameObject);
-            return;
+            if (photonView.Owner.CustomProperties.TryGetValue(CLASS_SELECTED, out object classSelection)) {
+                int newClassSelection = (int)classSelection;
+                if (newClassSelection != currentClassSelection.MyClass) {
+                    AssignClass(newClassSelection);
+                    currentClassSelection.MyClass = newClassSelection;
+                }
+            }
         }
+
 
         //tracks our base currentHP and the current currentHP that will update as our player takes damage or gets health
         hpBase = hp;
         staminaBase = stamina;
-        this.transform.position = Vector3.zero;
-        this.transform.rotation = Quaternion.identity;
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.identity;
 
         //calls a function to set the player variable in the game manager
-       GameManager.instance.SetPlayer();
+        GameManager.instance.SetPlayer();
 
         //this is our spawn function
         if (spawnLocation == Vector3.zero) //checks if the spawnLocation is a vector 3 zero, meaning it is a new game
@@ -169,13 +173,14 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (stamShake == null)
+        //if these are currently null we search for them every frame until we find them
+        if (stamShake == null || hpShake == null)
+        {
             stamShake = GameManager.instance.staminaBar.GetComponent<Shake>();
-        if (hpShake == null)
             hpShake = GameManager.instance.playerHPBar.GetComponent<Shake>();
+        }
 
         // Prevent movement of other players
         if (!PhotonNetwork.IsConnected || GetComponent<PhotonView>().IsMine)
@@ -184,6 +189,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             Movement();
             // Regenerating over time ( can be adjusted in unity )
             RegenerateStamina();
+            //updates our ui every frame
             UpdatePlayerUI();
         }
     }
@@ -198,6 +204,16 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         }
     }
 
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps) {
+        if (changedProps.ContainsKey(CLASS_SELECTED) && targetPlayer == photonView.Owner) {
+            int newClassSelection = (int)changedProps[CLASS_SELECTED];
+            if (currentClassSelection != null && newClassSelection != currentClassSelection.MyClass) {
+                AssignClass(newClassSelection);
+                currentClassSelection.MyClass = newClassSelection;
+            }
+        }
+    }
+
     //methods for the controls that are utilized in the Player input map to control the player
     public void OnMove(InputAction.CallbackContext ctxt) //moving
     {
@@ -208,16 +224,14 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
 
     public void OnJump(InputAction.CallbackContext ctxt) //jumping
     {
-        if (ctxt.performed && GameManager.instance.canJump)
+        //checks if our input is called, if we have available jumps left, and if we have the stamina to jump
+        if (ctxt.performed && jumpsAvailable > 0 && stamina >= .5f)
         {
-            if (jumpCount < jumpMax)
-            {
-                jumpCount++;
-                playerV.y = jumpSpeed;
-            }
+            //subtracts our stamina and jumps then adds our y velocity to player
+            stamina -= .5f;
+            jumpsAvailable--;
+            playerV.y = jumpSpeed;
         }
-        playerV.y -= gravity * Time.deltaTime;
-        controller.Move(playerV * Time.deltaTime);
     }
 
     public void OnSprint(InputAction.CallbackContext ctxt) //sprinting
@@ -259,7 +273,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             }
             
             isPlayingNoSprinting = sprintAudioSource.isPlaying;
-            Debug.Log("No Stamina poo :(");    
         }
         
     }
@@ -268,6 +281,14 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         if (mage != null)
         {
             mage.OnAbility(ctxt);
+        }
+        else if (warrior != null)
+        {
+            warrior.OnAbility(ctxt);
+        }
+        else if (archer != null)
+        {
+            archer.OnAbility(ctxt);
         }
     }
     public void OnPrimaryFire(InputAction.CallbackContext ctxt) //primary attack
@@ -304,21 +325,26 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     //calculates the player movement
     void Movement()
     {
+        //gets our input and adjusts the players position using a velocity formula
+        Vector3 movement = moveDir.x * transform.right + moveDir.z * transform.forward;
+        controller.Move(speed * Time.deltaTime * movement);
+        playerV.y -= gravity * Time.deltaTime;
+        controller.Move(playerV * Time.deltaTime);
+        //if we are on the ground play footstep sounds
+        if (controller.isGrounded && movement.magnitude > 0.3 && !isPlayingSteps)
+        {
+            animate.SetBool("Walk", true);
+            StartCoroutine(playSteps());
+        }
+        else if (!controller.isGrounded || movement.magnitude < 0.3)
+        {
+            animate.SetBool("Walk", false);
+        }
         //makes sure gravity doesn't build up on a grounded player
         if (controller.isGrounded)
         {
             playerV = Vector3.zero;
-            jumpCount = 0;
-        }
-        //gets our input and adjusts the players position using a velocity formula
-        Vector3 movement = moveDir.x * transform.right + moveDir.z * transform.forward;
-        controller.Move(movement * speed * Time.deltaTime);
-        playerV.y -= gravity * Time.deltaTime;
-        controller.Move(playerV * Time.deltaTime);
-
-        if (controller.isGrounded && movement.magnitude > 0.3 && !isPlayingSteps)
-        {
-            StartCoroutine(playSteps());
+            jumpsAvailable = jumpMax;
         }
     }
 
@@ -328,8 +354,8 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     {
         if (isSprinting)
         {
-           isSprinting = false;
-           speed /= sprintMod;
+            isSprinting = false;
+            speed /= sprintMod;
         }
     }
     
@@ -378,9 +404,10 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     //this function happens when the player is called to take damage
     public void TakeDamage(float amount)
     {
+        //IF BLOCKING TAKE NO DAMAGE TO HEALTH, JUST LOSE STAMINA <3
         if(isBlocking)
         {
-            hp -= 0.5f;
+            stamina -= 1.5f;
         }
         else
             hp -= amount;
@@ -392,7 +419,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         {
             audioSource.PlayOneShot(hurt[Random.Range(0, hurt.Length)], hurtVol);
         }
-        UpdatePlayerUI();
         //if health drops below zero run our lose condition
         if(hp <= 0 && !isDead)
         {
@@ -421,8 +447,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         {
             hp += amount; //add amount to currentHP
         }
-
-        UpdatePlayerUI();
     }
 
     // Subtract & add function for currentStamina
@@ -440,8 +464,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         {
             stamina += amount; 
         }
-
-        UpdatePlayerUI();
     }
 
     public void SubtractStamina(float amount) 
@@ -458,41 +480,38 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         {
             stamina -= amount; 
         }
-
-        UpdatePlayerUI();
     }
 
 
     // Regenerate Stamina 
     private void RegenerateStamina()
     {
-       if(stamina < staminaBase && !isRegenerating)
-       {
-           StartCoroutine(RegenStaminaDelay());
-       }
+        if(stamina < staminaBase && !isRegenerating)
+        {
+            StartCoroutine(RegenStaminaDelay());
+        }
     }
 
     // Preventing Stamina from regenerating too fast
     private IEnumerator RegenStaminaDelay()
     {
-       isRegenerating = true; 
+        isRegenerating = true; 
 
-       yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(5);
 
-       if(stamina < staminaBase)
-       {
-          stamina += staminaRegenerate * Time.deltaTime;
+        if(stamina < staminaBase)
+        {
+            stamina += staminaRegenerate * Time.deltaTime;
 
-          if(stamina > staminaBase)
-          {
-            stamina = staminaBase;
-          }
-          
-          UpdatePlayerUI();
-          yield return null;
-       }
+            if(stamina > staminaBase)
+            {
+                stamina = staminaBase;
+            }
 
-       isRegenerating = false;
+            yield return null;
+        }
+
+        isRegenerating = false;
     }
 
     
@@ -519,8 +538,8 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         GameManager.instance.playerHPBar.fillAmount = healthRatio; 
         GameManager.instance.staminaBar.fillAmount = staminaRatio;
 
-      
-       
+    
+    
             // If health is more than 50% full
             if (healthRatio > 0.5f || GameManager.instance.playerHPBar.color != midHealth) 
             {
@@ -544,20 +563,18 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
                         staminaAudioSource.PlayOneShot(noHP[Random.Range(0, noHP.Length)], noHPvol);
                         isPlayingNoHP = true;
                         isPlayingNoHP = staminaAudioSource.isPlaying;
-                        Debug.Log("No HP :(");
                     }
                 }
 
                 isPlayingNoHP = staminaAudioSource.isPlaying;
-                Debug.Log("No HP :(");
-               
-                 if(healthRatio <= 0.5f )
-                 {
+            
+                if(healthRatio <= 0.5f )
+                {
                     hpShake.Shaking();   
-                 }
+                }
                 
             }
-       
+
             // If stamina is more than 50% full 
             if (staminaRatio > 0.5f || GameManager.instance.staminaBar.color != midStamina) 
             {
@@ -571,7 +588,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
                 GameManager.instance.staminaBar.color = Color.Lerp(criticalStamina, midStamina, staminaRatio * 2);
                 stamShake.Shaking();
             }
-       
+
     }
     
     //a simple function for respawning the player
@@ -604,6 +621,8 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     //this is the new function for assign a class script to our player
     public void AssignClass(int choice)
     {
+        RemoveAllClasses();
+
         switch (choice)
         {
             //first we add the script, then set out script variable to the added script
@@ -625,19 +644,19 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
                 break;
         }
     }
-    void CallClassFunction(string function)
-    {
-        switch(classCase)
-        {
-            case 1:
-                warrior.Invoke(function, 0);
-                break;
-            case 2:
-                mage.Invoke(function, 0);
-                break;
-            case 3:
-                archer.Invoke(function, 0);
-                break;
+
+    void RemoveAllClasses() {
+        if (warrior != null && classCase != 1) {
+            Destroy(warrior);
+            warrior = null;
+        }
+        if (mage != null && classCase != 2) {
+            Destroy(mage);
+            mage = null;
+        }
+        if (archer != null && classCase != 3) {
+            Destroy(archer);
+            archer = null;
         }
     }
 

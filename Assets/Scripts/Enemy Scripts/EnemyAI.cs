@@ -156,7 +156,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
         }
     }
 
-    public void TakeDamage(float damage) { photonView.RPC("RpcTakeDamage", RpcTarget.AllBuffered, damage); }
+    public void TakeDamage(float damage) { 
+        if (PhotonNetwork.InRoom)
+            photonView.RPC(nameof(RpcTakeDamage), RpcTarget.AllBuffered, damage);
+        else if (!PhotonNetwork.IsConnected)
+            RpcTakeDamage(damage); 
+    }
 
     public void Afflict(DamageStats type) {
         status = type;

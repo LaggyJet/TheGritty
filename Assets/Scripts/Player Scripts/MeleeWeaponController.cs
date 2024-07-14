@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MeleeWeaponController : MonoBehaviour
 {
-    float damage_;
+    public float damage_;
     bool canDOT;
     DamageStats stats_;
 
@@ -14,6 +14,7 @@ public class MeleeWeaponController : MonoBehaviour
         canDOT = dot;
         stats_ = type;
     }
+
 
     private void OnTriggerEnter(Collider other)
     {

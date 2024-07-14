@@ -108,28 +108,6 @@ public class ButtonFunctions : MonoBehaviour
         SceneManager.LoadScene("credits");
     }
 
-    //CLASS SELECTION
-    public void warrior()
-    {
-        playerClass.MyClass = 1;
-
-        if (GameManager.selectedMultiplayer)
-            SceneManager.LoadScene("Lobby");
-    }
-    public void mage()
-    {
-        playerClass.MyClass = 2;
-        if (GameManager.selectedMultiplayer)
-            SceneManager.LoadScene("Lobby");
-
-    }
-    public void archer()
-    {
-        playerClass.MyClass = 3;
-        if (GameManager.selectedMultiplayer)
-            SceneManager.LoadScene("Lobby");
-    }
-
     // Co-op features
     public void LoadMultiplayer() { GameManager.selectedMultiplayer = true; GameManager.instance.charSelectionMenu(); }
 }

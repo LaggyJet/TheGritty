@@ -7,13 +7,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 
-
-/// <hello everyone>
-/// PLEASE FOR THE LOVE OF EVERYTHING IF U HAVE TO TOUCH MY SCRIPTS AT LEAST COMMENT OUT WHAT YOU'RE DOING PLEASE <3
-/// SO THAT WAY WHEN I GET HUNDREDS OF MERGE CONFLICTS I KNOW WHATS NEEDED AND WHATS NOT <3
-/// </im not mad the code just was spaghetti when i got here>
-
-
 public class Class_Mage : MonoBehaviourPun
 {
     PlayerController player;
@@ -230,8 +223,6 @@ public class Class_Mage : MonoBehaviourPun
         }
     }
     // End RPC calls
-
-
 
     //this function is for stopping the fire spray attack if you run out of stamina
     void EndSecondary()
