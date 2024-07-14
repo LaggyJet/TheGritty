@@ -65,7 +65,11 @@ public class GameManager : MonoBehaviour
         {
             playerScript = player.GetComponent<PlayerController>();
             //playerLocation = player.transform.position;
-            SoundTrackswitch(GameMusic.Gameplay); // TODO: this will need to change once we solidify awake screen
+            if(SceneManager.GetActiveScene().name == "title menu")
+            {
+                SoundTrackswitch(GameMusic.Menu); // TODO: this will need to change once we solidify awake screen
+            }
+            
         }
     }
     // Update is called once per frame
@@ -80,11 +84,11 @@ public class GameManager : MonoBehaviour
 
             else if (SceneManager.GetActiveScene().name == "title menu")
             {
-#if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-#else
+                #if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false;
+                #else
                     Application.Quit();
-#endif
+                #endif
             }
             else if (menuActive == null)
             {
@@ -145,7 +149,7 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         menuActive = null;
-        SoundTrackswitch(GameMusic.Gameplay);
+        //SoundTrackswitch(GameMusic.Gameplay);
     }
 
     //SETTINGS METHODS
@@ -255,7 +259,7 @@ public class GameManager : MonoBehaviour
     // Switch between which sounds you'd like for any created scenes
     public enum GameMusic {Menu, Gameplay}
 
-    private void SoundTrackswitch(GameMusic music)
+    public void SoundTrackswitch(GameMusic music)
     {
 
         // Check persistence with music 

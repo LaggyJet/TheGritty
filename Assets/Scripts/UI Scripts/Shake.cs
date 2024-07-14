@@ -40,11 +40,8 @@ public class Shake : MonoBehaviour
         initialPosition = targetObject.localPosition;
 
         // Need this check to control shaking more than once
-        if (PlayerController.instance != null)
-        {
             hasShakenHP = PlayerController.instance.HpDisplay > 0.5f;
             hasShakenSTAM = PlayerController.instance.StaminaDisplay > 0.5f;
-        }
     }
 
     
