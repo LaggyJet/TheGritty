@@ -38,12 +38,13 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     //our player currentHP and the version saved for our max currentHP
     [Range(0f, 10f)] public float hp; 
     public float hpBase; 
+    private float HpDisplay;
+
 
     // Health bar gradual fill 
     [SerializeField] Color fullHealth; 
     [SerializeField] Color midHealth; 
     [SerializeField] Color criticalHealth;
-    [Range(0f, 10f)] public float healthThreshold; 
     [SerializeField] Shake hpShake;
     
 
@@ -52,6 +53,9 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [Header("------- Stamina -------")]
 
     [Range(0f, 10f)] public float stamina;
+    float staminaBase;
+    private float StaminaDisplay;
+
     [Range(0f, 50f)] public float staminaRegenerate;  
     
     
@@ -59,13 +63,14 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [SerializeField] Color fullStamina; 
     [SerializeField] Color midStamina; 
     [SerializeField] Color criticalStamina;
-    [Range(0f, 10f)] public float staminaThreshold; 
     [SerializeField] Shake stamShake; 
     public float staminaBase;
 
     //these are animation variables
     [SerializeField] Animator animate;
     [SerializeField] float animationTransSpeed;
+    [Range(0f, 10f)] public float lerpSpeed;
+    
 
     //!guys what is this
     [SerializeField] Sprite sprite;
@@ -147,6 +152,10 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         staminaBase = stamina;
         this.transform.position = Vector3.zero;
         this.transform.rotation = Quaternion.identity;
+
+        // For smooth Transition UI - not the same as above 
+        HpDisplay = hp / hpBase;
+        StaminaDisplay = stamina / staminaBase;
 
         //calls a function to set the player variable in the game manager
        GameManager.instance.SetPlayer();
@@ -372,7 +381,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     {
         if(isBlocking)
         {
-            hp -= 0.5f;
+            hp -= 0.2f;
         }
         else
             hp -= amount; 
@@ -381,7 +390,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         {
             audioSource.PlayOneShot(hurt[Random.Range(0, hurt.Length)], hurtVol);
         }
-        UpdatePlayerUI();
+       
         //if health drops below zero run our lose condition
         if(hp <= 0 && !isDead)
         {
@@ -411,7 +420,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
             hp += amount; //add amount to currentHP
         }
 
-        UpdatePlayerUI();
     }
 
     // Subtract & add function for currentStamina
@@ -429,8 +437,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         {
             stamina += amount; 
         }
-
-        UpdatePlayerUI();
     }
 
     public void SubtractStamina(float amount) 
@@ -447,8 +453,6 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         {
             stamina -= amount; 
         }
-
-        UpdatePlayerUI();
     }
 
 
@@ -476,8 +480,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
           {
             stamina = staminaBase;
           }
-          
-          UpdatePlayerUI();
+  
           yield return null;
        }
 
@@ -504,28 +507,26 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         float healthRatio = (float)hp / hpBase;
         float staminaRatio = (float)stamina / staminaBase; 
 
+        // Smoothly lerping through values 
+        HpDisplay = Mathf.Lerp(HpDisplay, healthRatio, Time.deltaTime * lerpSpeed);
+        StaminaDisplay = Mathf.Lerp(StaminaDisplay, staminaRatio, Time.deltaTime * lerpSpeed);
+
         // Storing 
-        GameManager.instance.playerHPBar.fillAmount = healthRatio; 
-        GameManager.instance.staminaBar.fillAmount = staminaRatio;
-
-        // Health - stamina ratios ( 1-10)
-        float healthValue = healthRatio * 10;
-        float staminaValue = staminaRatio * 10;
-
+        GameManager.instance.playerHPBar.fillAmount = HpDisplay; 
+        GameManager.instance.staminaBar.fillAmount = StaminaDisplay;
 
             // If health is more than 50% full
-            if (healthValue > healthThreshold || GameManager.instance.playerHPBar.color != midHealth) 
+            if (HpDisplay > 0.5f || GameManager.instance.playerHPBar.color != midHealth) 
             {
-                GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthValue - 0.5f) * 2);
+                GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (HpDisplay - 0.5f) * 2);
                 isPlayingNoHP = false;
             }
             else // If the health is less than 50%
             {
-                GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthValue * 2);
+                GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, HpDisplay * 2);
 
-                if(healthValue <= healthThreshold )
+                if(HpDisplay <= 0.5f )
                 {
-                    Debug.Log("Calling hpShake.Shaking() because healthValue <= healthThreshold");
                     hpShake.Shaking(); 
                 }
 
@@ -540,25 +541,25 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
                         Debug.Log("No HP :(");
                     }
                 }
-                
             }
        
             // If stamina is more than 50% full 
-            if (staminaValue > staminaThreshold || GameManager.instance.staminaBar.color != midStamina) 
+            if (StaminaDisplay > 0.5f || GameManager.instance.staminaBar.color != midStamina) 
             {
-                GameManager.instance.staminaBar.color = Color.Lerp(midStamina, fullStamina, (staminaValue - 0.5f) * 2); 
+                GameManager.instance.staminaBar.color = Color.Lerp(midStamina, fullStamina, (StaminaDisplay - 0.5f) * 2); 
             }
             else // If the stamina is less than 50%
             {
-                GameManager.instance.staminaBar.color = Color.Lerp(criticalStamina, midStamina, staminaValue * 2);
-                if(staminaValue <= staminaThreshold)
+                GameManager.instance.staminaBar.color = Color.Lerp(criticalStamina, midStamina, StaminaDisplay * 2);
+                if(StaminaDisplay <= 0.5f)
                 {
-                   stamShake.Shaking();  
+                   stamShake.Shaking(); 
                 }
                 
             }
        
     }
+
     
     //a simple function for respawning the player
     public void Respawn()

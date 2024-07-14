@@ -9,11 +9,23 @@ public class Shake : MonoBehaviour
     // Determines the Position, Rotation, and Scale of said GameObject in the scene
     Transform targetObject;
     Vector3 initialPosition;
+
+    // Public access
+    public static Shake instance;
+
+    // Controlling shaking & duration 
     [Range(0f, 10f)] public float shakeDuration;
     public bool isShaking = false; 
 
+    // To control the amount of times a shake can happen per frame 
+    [Range(0f, 10f)] public float shakeCoolDown;
+    private float lastShakeTime = -Mathf.Infinity;
+
+  
+
     // Implementing my 1-10 system 
     [Range(0f, 10f)]public float intensity; 
+
 
 
     // Start is called before the first frame update
@@ -42,6 +54,8 @@ public class Shake : MonoBehaviour
             targetObject.localPosition = initialPosition;
           }
 
+           // Updating last shake frame 
+           lastShakeTime = Time.time;
            // Begin shaking frames 
            StartCoroutine(DoShake());
         }
