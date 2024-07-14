@@ -223,8 +223,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shakeDuration: 0
+  hasShakenHP: 0
+  hasShakenSTAM: 0
   isShaking: 0
-  shakeCoolDown: 0
   intensity: 7
 --- !u!1 &1381728438926591966
 GameObject:
@@ -521,8 +522,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shakeDuration: 0
+  hasShakenHP: 0
+  hasShakenSTAM: 0
   isShaking: 0
-  shakeCoolDown: 0
   intensity: 7
 --- !u!1 &2585305102312724613
 GameObject:
@@ -536,6 +538,7 @@ GameObject:
   - component: {fileID: 1892757608676134969}
   - component: {fileID: 2298565859272367434}
   - component: {fileID: 5138734563306585552}
+  - component: {fileID: 5993584103159115362}
   m_Layer: 5
   m_Name: Stamina
   m_TagString: Untagged
@@ -615,10 +618,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e226f7e7f23dc1e4e86350fba2568085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeDuration: 0
+  shakeDuration: 1
+  hasShakenHP: 0
+  hasShakenSTAM: 0
   isShaking: 0
-  shakeCoolDown: 0
-  intensity: 0
+  intensity: 5
+--- !u!114 &5993584103159115362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2585305102312724613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bafa0252923ddc4990cf4db19f370ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2606341111130237338
 GameObject:
   m_ObjectHideFlags: 0
@@ -988,6 +1004,7 @@ GameObject:
   - component: {fileID: 6784701718395093851}
   - component: {fileID: 5962145199149016094}
   - component: {fileID: 6374612941386680892}
+  - component: {fileID: 3183666001910764252}
   m_Layer: 5
   m_Name: Player HP
   m_TagString: Untagged
@@ -1067,10 +1084,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e226f7e7f23dc1e4e86350fba2568085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeDuration: 0
+  shakeDuration: 1
+  hasShakenHP: 0
+  hasShakenSTAM: 0
   isShaking: 0
-  shakeCoolDown: 0
-  intensity: 0
+  intensity: 5
+--- !u!114 &3183666001910764252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4172883009327314757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bafa0252923ddc4990cf4db19f370ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5625548882352666086
 GameObject:
   m_ObjectHideFlags: 0
