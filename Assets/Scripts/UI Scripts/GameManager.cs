@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     //serialized fields
     [SerializeField] GameObject menuActive;
-    [SerializeField] GameObject menuPause;
+    [SerializeField] public GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject menuSettings;
@@ -87,15 +87,31 @@ public class GameManager : MonoBehaviour
             }
             else if (menuActive == null)
             {
-                statePause();
-                menuActive = menuPause;
-                menuActive.SetActive(isPaused);
+                if (PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom)
+                    PhotonView.Get(this).RPC(nameof(SetEveryPlayerPauseState), RpcTarget.All);
+                else if (!PhotonNetwork.IsConnected)
+                    SetEveryPlayerPauseState();
             }
             else if (menuActive == menuPause)
             {
-                stateResume();
+                if (PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom)
+                    PhotonView.Get(this).RPC(nameof(SetEveryPlayerUnpauseState), RpcTarget.All);
+                else if (!PhotonNetwork.IsConnected)
+                    stateResume();
             }
         }
+    }
+
+    [PunRPC]
+    void SetEveryPlayerPauseState() {
+        statePause();
+        menuActive = menuPause;
+        menuActive.SetActive(isPaused);
+    }
+
+    [PunRPC]
+    void SetEveryPlayerUnpauseState() {
+        stateResume();
     }
 
     //Setter

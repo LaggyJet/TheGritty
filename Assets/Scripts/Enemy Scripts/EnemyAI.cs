@@ -136,7 +136,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
         EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
     }
 
-    public void TakeDamage(float damage) {
+    [PunRPC]
+    public void RpcTakeDamage(float damage) {
         hp -= damage;
         if (!isDOT) {
             enemyTargetPosition = GameManager.instance.player.transform.position;
@@ -154,6 +155,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
             StartCoroutine(DeathAnimation());
         }
     }
+
+    public void TakeDamage(float damage) { photonView.RPC("RpcTakeDamage", RpcTarget.AllBuffered, damage); }
 
     public void Afflict(DamageStats type) {
         status = type;

@@ -49,6 +49,9 @@ MonoBehaviour:
   - restart
   - UpdateSpawnerState
   - MasterDestroy
+  - RpcTakeDamage
+  - SetEveryPlayerPauseState
+  - SetEveryPlayerUnpauseState
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
