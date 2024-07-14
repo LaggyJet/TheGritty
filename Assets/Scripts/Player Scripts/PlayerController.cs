@@ -131,9 +131,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         // Checks if the player is the actual player and in multiplayer
         // Also assigns the proper class to other player on your end
         if (!photonView.IsMine && PhotonNetwork.InRoom) {
+            // Prevent 2 instances of camera/audio listener
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(GetComponentInChildren<AudioListener>());
+
+            //Make other player visible
             UpdateOtherPlayer(gameObject);
+
+            // Update local player class on server to update on other clients
             if (photonView.Owner.CustomProperties.TryGetValue(CLASS_SELECTED, out object classSelection)) {
                 int newClassSelection = (int)classSelection;
                 if (newClassSelection != currentClassSelection.MyClass) {
@@ -175,6 +180,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
     void Update()
     {
+        // Make sure the player keeps their class in multiplayer
+        if (photonView.IsMine)
+            VerifyClassState();
+
         //if these are currently null we search for them every frame until we find them
         if (stamShake == null || hpShake == null)
         {
@@ -194,6 +203,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         }
     }
 
+    // Reset the children of the other player to be on default layer to be seen by camera of current player
     void UpdateOtherPlayer(GameObject obj) {
         if (!obj) return;
 
@@ -204,6 +214,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         }
     }
 
+    // Deals with character selection in multiplayer
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps) {
         if (changedProps.ContainsKey(CLASS_SELECTED) && targetPlayer == photonView.Owner) {
             int newClassSelection = (int)changedProps[CLASS_SELECTED];
@@ -621,7 +632,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     //this is the new function for assign a class script to our player
     public void AssignClass(int choice)
     {
-        RemoveAllClasses();
+        // Prevent more than 1 class in multiplayer
+        if (PhotonNetwork.InRoom)
+            RemoveAllClasses();
 
         switch (choice)
         {
@@ -645,18 +658,42 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         }
     }
 
+    // Just clears up all the classes to be reassigned after
     void RemoveAllClasses() {
-        if (warrior != null && classCase != 1) {
+        if (warrior != null) {
             Destroy(warrior);
             warrior = null;
         }
-        if (mage != null && classCase != 2) {
+        if (mage != null) {
             Destroy(mage);
             mage = null;
         }
-        if (archer != null && classCase != 3) {
+        if (archer != null) {
             Destroy(archer);
             archer = null;
+        }
+    }
+
+    // Makes sure your own player never loses its own class during prior steps or during disconnect
+    void VerifyClassState() {
+        switch (classCase)
+        {
+            case 1:
+                warrior = this.GetComponent<Class_Warrior>();
+                if (warrior == null)
+                    warrior = this.AddComponent<Class_Warrior>();
+                break;
+            case 2:
+                mage = this.GetComponent<Class_Mage>();
+                if (mage == null)
+                    mage = this.AddComponent<Class_Mage>();
+                break;
+
+            case 3:
+                archer = this.GetComponent<Class_Archer>();
+                if (archer == null)
+                    archer = this.AddComponent<Class_Archer>();
+                break;
         }
     }
 
