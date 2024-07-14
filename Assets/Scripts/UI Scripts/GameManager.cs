@@ -197,7 +197,7 @@ public class GameManager : MonoBehaviour
             menuActivePublicVers = oldActiveMenu;
             menuActive.SetActive(isPaused);
         }
-        SoundTrackswitch(GameMusic.Gameplay);
+        SoundTrackswitch(GameMusic.Menu);
     }
 
     //WIN/LOSE METHODS
