@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     //our player currentHP and the version saved for our max currentHP
     [Range(0f, 10f)] public float hp; 
     public float hpBase; 
-    private float HpDisplay;
+    public float HpDisplay;
     public bool aboveThresholdHP;
 
 
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
 
     [Range(0f, 10f)] public float stamina;
     public float staminaBase;
-    private float StaminaDisplay;
+    public float StaminaDisplay;
     public bool abovethresholdSTAM;
 
     [Range(0f, 50f)] public float staminaRegenerate;  

@@ -37,11 +37,14 @@ public class Shake : MonoBehaviour
         targetObject = GetComponent<Transform>(); 
 
         // Get Local position of object 
-        initialPosition = targetObject.localPosition; 
+        initialPosition = targetObject.localPosition;
 
         // Need this check to control shaking more than once
-        hasShakenHP = PlayerController.instance.HpDisplay > 0.5f;
-        hasShakenSTAM = PlayerController.instance.StaminaDisplay > 0.5f;
+        if (PlayerController.instance != null)
+        {
+            hasShakenHP = PlayerController.instance.HpDisplay > 0.5f;
+            hasShakenSTAM = PlayerController.instance.StaminaDisplay > 0.5f;
+        }
     }
 
     
