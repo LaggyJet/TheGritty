@@ -9,7 +9,6 @@ using System.Diagnostics.Contracts;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using Photon.Pun;
-using Palmmedia.ReportGenerator.Core.Reporting.Builders;
 
 public class GameManager : MonoBehaviour
 {
