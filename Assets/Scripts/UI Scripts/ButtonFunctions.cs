@@ -13,8 +13,13 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.instance.stateResume();
     }
+    
+    [PunRPC]
     public void restart()
     {
+        if (PhotonNetwork.InRoom && PhotonNetwork.IsMasterClient)
+            PhotonView.Get(this).RPC(nameof(restart), RpcTarget.Others);
+
         //using previous player - scene needs to know where to put the player
         GameManager.enemyCount = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -34,14 +39,24 @@ public class ButtonFunctions : MonoBehaviour
     [PunRPC]
     public void quitGame()
     {
-        if (PhotonNetwork.IsMasterClient)
-            CallQuitGame();
-
-        SceneManager.LoadScene("title menu");
-
         //Disconnect player from the server (if possible)
         if (PhotonNetwork.IsConnected)
-            PhotonNetwork.Disconnect();
+            StartCoroutine(DisconnectPhoton());
+
+        if (PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom)
+            CallQuitGame();
+        else if (!PhotonNetwork.IsConnected)
+            SceneManager.LoadScene("title menu");
+    }
+
+    IEnumerator DisconnectPhoton() {
+        PhotonNetwork.Disconnect();
+
+        while (PhotonNetwork.IsConnected)
+            yield return null;
+
+        GameManager.selectedMultiplayer = false;
+        SceneManager.LoadScene("title menu");
     }
 
     public void CallQuitGame() { PhotonView.Get(this).RPC(nameof(quitGame), RpcTarget.Others); }

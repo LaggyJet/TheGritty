@@ -2,6 +2,7 @@ using UnityEngine;
 using ArduinoBluetoothAPI;
 using System;
 using System.Collections;
+using Photon.Pun;
 
 public class BluetoothManager : MonoBehaviour {
     public static BluetoothManager instance;
@@ -9,41 +10,30 @@ public class BluetoothManager : MonoBehaviour {
     readonly private string deviceName = "HC-06";
     enum DebugState { Health, Stamina };
     DebugState curState = DebugState.Health;
+    readonly private char key = '=';
 
-    void Awake() {
-        try {
-            helper = BluetoothHelper.GetInstance(deviceName);
-            helper.OnConnected += OnConnected;
-            helper.OnConnectionFailed += OnConnectionFailed;
-
-            helper.setTerminatorBasedStream("\n");
-
-            helper.Connect();
-        } catch (Exception ex) { Debug.LogError("Bluetooth connection error: " + ex.Message); }
-    }
+    void Awake() { StartCoroutine(WaitForKey(4)); }
 
     void Update() {
-        if (GameManager.instance.player != null) {
-            if (helper != null && helper.Available) {
-                string text = helper.Read();
-                if (text[0] == 'A') 
-                    curState = DebugState.Health;
-                else if (text[0] == 'B')
-                    curState = DebugState.Stamina;
-                else {
-                    float newAmount;
-                    switch (curState) {
-                        case DebugState.Health:
-                            newAmount = (text[0] == '*') ? GameManager.instance.playerScript.hpBase : float.Parse(text);
-                            GameManager.instance.playerScript.hp = newAmount;
-                            break;
-                        case DebugState.Stamina:
-                            newAmount = (text[0] == '*') ? GameManager.instance.playerScript.staminaBase : float.Parse(text);
-                            GameManager.instance.playerScript.stamina = newAmount;
-                            break;
-                    }
-                    GameManager.instance.playerScript.UpdatePlayerUI();
+        if (!PhotonNetwork.IsConnected && GameManager.instance.player != null && helper != null && helper.Available) {
+            string text = helper.Read();
+            if (text[0] == 'A') 
+                curState = DebugState.Health;
+            else if (text[0] == 'B')
+                curState = DebugState.Stamina;
+            else {
+                float newAmount;
+                switch (curState) {
+                    case DebugState.Health:
+                        newAmount = (text[0] == '*') ? GameManager.instance.playerScript.hpBase : float.Parse(text);
+                        GameManager.instance.playerScript.hp = newAmount;
+                        break;
+                    case DebugState.Stamina:
+                        newAmount = (text[0] == '*') ? GameManager.instance.playerScript.staminaBase : float.Parse(text);
+                        GameManager.instance.playerScript.stamina = newAmount;
+                        break;
                 }
+                GameManager.instance.playerScript.UpdatePlayerUI();
             }
         }
     }
@@ -67,6 +57,31 @@ public class BluetoothManager : MonoBehaviour {
             if (GameManager.instance.player != null)
                 UpdateBarGraphHealth(GameManager.instance.playerScript.hp);
         } 
+    }
+
+    IEnumerator WaitForKey(int seconds) {
+        float curTime = 0f;
+        while (curTime < seconds) {
+            if (Input.GetKey(key.ToString())) {
+                AttemptConnection();
+                yield break;
+            }
+            curTime += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    void AttemptConnection() {
+        try {
+            helper = BluetoothHelper.GetInstance(deviceName);
+            helper.OnConnected += OnConnected;
+            helper.OnConnectionFailed += OnConnectionFailed;
+
+            helper.setTerminatorBasedStream("\n");
+
+            helper.Connect();
+        }
+        catch (Exception ex) { Debug.LogError("Bluetooth connection error: " + ex.Message); }
     }
 
     void OnConnectionFailed(BluetoothHelper helper) { Debug.LogError("Connection to " + deviceName + " failed."); }
