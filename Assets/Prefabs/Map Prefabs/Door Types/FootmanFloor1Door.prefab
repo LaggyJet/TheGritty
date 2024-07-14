@@ -130,9 +130,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2723752951888101675}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -44.606644, y: 0, z: -22.114075}
-  m_LocalScale: {x: 2.6999993, y: 2.5, z: 0.50000006}
+  m_LocalScale: {x: 2.699999, y: 2.5, z: 0.50000006}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3779764234510465764}
@@ -154,7 +154,7 @@ MonoBehaviour:
   leftDoor: {fileID: 3033598894584211237}
   rightDoor: {fileID: 929460846843993918}
   enemies:
-  - {fileID: 3116929254137260313, guid: 888a3272b226875409628c3b20ea5099, type: 3}
+  - {fileID: 3116929254137260313, guid: 3365100de936baf408d3a47a17f92297, type: 3}
   killThreshold: 4
   openingSpeed: 0.5
 --- !u!1 &3033598894584211237

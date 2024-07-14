@@ -154,7 +154,7 @@ MonoBehaviour:
   leftDoor: {fileID: 3033598894584211237}
   rightDoor: {fileID: 929460846843993918}
   enemies:
-  - {fileID: 3116929254137260313, guid: 888a3272b226875409628c3b20ea5099, type: 3}
+  - {fileID: 3116929254137260313, guid: 3365100de936baf408d3a47a17f92297, type: 3}
   killThreshold: 6
   openingSpeed: 0.5
 --- !u!1 &3033598894584211237

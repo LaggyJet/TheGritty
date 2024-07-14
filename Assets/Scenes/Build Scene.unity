@@ -19133,7 +19133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d92fbbabefb4049874ae3152d68b91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemy: {fileID: 1594817991664589131, guid: 12cd7883bf023b04c8a42c79aa955216, type: 3}
+  Enemy: {fileID: 1594817991664589131, guid: 7a694fa1aa24bd54a83b6eb68419ffa9, type: 3}
   SpawnPoints:
   - {fileID: 767484593}
   - {fileID: 1286882192}
@@ -24731,7 +24731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d92fbbabefb4049874ae3152d68b91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemy: {fileID: 3116929254137260313, guid: 888a3272b226875409628c3b20ea5099, type: 3}
+  Enemy: {fileID: 3116929254137260313, guid: 3365100de936baf408d3a47a17f92297, type: 3}
   SpawnPoints:
   - {fileID: 742374876}
   - {fileID: 68277849}
@@ -39873,7 +39873,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d92fbbabefb4049874ae3152d68b91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemy: {fileID: 1594817991664589131, guid: 12cd7883bf023b04c8a42c79aa955216, type: 3}
+  Enemy: {fileID: 1594817991664589131, guid: 7a694fa1aa24bd54a83b6eb68419ffa9, type: 3}
   SpawnPoints:
   - {fileID: 1727774346}
   - {fileID: 1961575226}
@@ -44957,7 +44957,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d92fbbabefb4049874ae3152d68b91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemy: {fileID: 1594817991664589131, guid: 12cd7883bf023b04c8a42c79aa955216, type: 3}
+  Enemy: {fileID: 1594817991664589131, guid: 7a694fa1aa24bd54a83b6eb68419ffa9, type: 3}
   SpawnPoints:
   - {fileID: 1106648658}
   - {fileID: 6278311}
@@ -45446,7 +45446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d92fbbabefb4049874ae3152d68b91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemy: {fileID: 1594817991664589131, guid: 12cd7883bf023b04c8a42c79aa955216, type: 3}
+  Enemy: {fileID: 1594817991664589131, guid: 7a694fa1aa24bd54a83b6eb68419ffa9, type: 3}
   SpawnPoints:
   - {fileID: 516552164}
   - {fileID: 295369259}
@@ -45747,10 +45747,6 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 31
       objectReference: {fileID: 0}
-    - target: {fileID: 7338726154458852987, guid: 2786155ff0a94964ea56684df6286435, type: 3}
-      propertyPath: Enemy
-      value: 
-      objectReference: {fileID: 3184751834227660253, guid: b282d3d623d76e24895406864c9db779, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -49638,10 +49634,6 @@ PrefabInstance:
       value: FootmanFloor1Door
       objectReference: {fileID: 0}
     - target: {fileID: 8421713421664770281, guid: cd5e7660218950a41b875c3b973d7957, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2.699999
-      objectReference: {fileID: 0}
-    - target: {fileID: 8421713421664770281, guid: cd5e7660218950a41b875c3b973d7957, type: 3}
       propertyPath: m_LocalPosition.x
       value: -44.88729
       objectReference: {fileID: 0}
@@ -50127,7 +50119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d92fbbabefb4049874ae3152d68b91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemy: {fileID: 1594817991664589131, guid: 12cd7883bf023b04c8a42c79aa955216, type: 3}
+  Enemy: {fileID: 1594817991664589131, guid: 7a694fa1aa24bd54a83b6eb68419ffa9, type: 3}
   SpawnPoints:
   - {fileID: 672330609}
   - {fileID: 726032922}
