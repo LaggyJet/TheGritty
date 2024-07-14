@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [SerializeField] Color criticalStamina;
     [Range(0f, 10f)] public float staminaThreshold; 
     [SerializeField] Shake stamShake; 
-    float staminaBase;
+    public float staminaBase;
 
     //these are animation variables
     [SerializeField] Animator animate;

@@ -41,8 +41,9 @@ public class LoadingScreen : MonoBehaviour
     public void loadSceneResume(int sceneId)
     {
         GameManager.enemyCount = 0;
-        StartCoroutine(loadSceneAsync(sceneId));
         DataPersistenceManager.Instance.LoadGame();
+        StartCoroutine(loadSceneAsync(sceneId));
+        //DataPersistenceManager.Instance.LoadGame();
         GameManager.instance.stateResumeGameLoads();
     }
 
