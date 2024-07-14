@@ -90,4 +90,8 @@ public class SoundsManager : MonoBehaviour
        Shake.instance.isShaking = false;
     }
 
+    public void PlayOrcSound()
+    {
+       
+    }
 }

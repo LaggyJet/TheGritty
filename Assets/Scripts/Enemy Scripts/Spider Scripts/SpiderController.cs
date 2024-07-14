@@ -1,4 +1,4 @@
-// Worked on by - Joshua Furber
+// Worked on by - Joshua Furber, Kheera 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +9,18 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator anim;
+
+
+    [Header("------ Audio ------")]
+    [SerializeField] public AudioSource spiderAud;
+    [SerializeField] AudioClip spiderWalking;
+    [SerializeField] public float spiderWalkingVol;
+    public bool isPlayingSpiderWalking;
+
+    // For access
+    public static SpiderController instance;
+
+
     [SerializeField] float hp;
     [SerializeField] int faceTargetSpeed, distanceFromPlayer, spitCooldown;
     [SerializeField] GameObject spitEffectPS, acidStream, acidPuddle, spider;
@@ -18,6 +30,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
     DamageStats status;
     Vector3 playerDirection;
     float currentAngle;
+    
 
     void Start() {
         isAttacking = wasKilled = isSpawningSpiders = onCooldown = isDOT = false;
@@ -35,7 +48,38 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage {
             if (!isSpawningSpiders && !isAttacking)
                 StartCoroutine(SpawnSpiders());
         }
-        
+
+        // Play spider sounds when spider is walking 
+        if(agent.velocity.magnitude > 0.1f && !spiderAud.isPlaying)
+        {
+            spiderAud.PlayOneShot(spiderWalking, spiderWalkingVol);
+            isPlayingSpiderWalking = true;
+            Debug.Log("Spider Walking sounds playing");
+        }
+        else if(agent.velocity.magnitude <= 0.1f && spiderAud.isPlaying)
+        {
+            spiderAud.Stop();
+            isPlayingSpiderWalking = false;
+        }
+    }
+
+    public void PauseSpiderSounds()
+    {
+      if(spiderAud.isPlaying)
+      {
+        spiderAud.Pause();
+        isPlayingSpiderWalking = false;
+      }
+    }
+
+    public void ResumeSpiderSounds()
+    {
+       if (!spiderAud.isPlaying && agent.velocity.magnitude > 0.1f)
+        {
+            spiderAud.PlayOneShot(spiderWalking, spiderWalkingVol);
+            isPlayingSpiderWalking = true;
+            Debug.Log("Spider Walking sounds playing");
+        }
     }
 
     IEnumerator SpawnSpiders() {
