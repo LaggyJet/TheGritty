@@ -775,6 +775,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 78976552115375845, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 78976552115375845, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 78976552115375845, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
     - target: {fileID: 1355776693606649730, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -910,6 +922,14 @@ PrefabInstance:
     - target: {fileID: 4378704108274614922, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6068332374591816207, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
+      propertyPath: m_fontSize
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6068332374591816207, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 6775990630974985534, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
       propertyPath: m_AnchorMax.x

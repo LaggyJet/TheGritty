@@ -62788,42 +62788,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1990991001057222234, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_text
-      value: Primary Attack
-      objectReference: {fileID: 0}
-    - target: {fileID: 4943498284895027363, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 4943498284895027363, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7904596918992867052}
-    - target: {fileID: 4943498284895027363, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: loadSceneTitle
-      objectReference: {fileID: 0}
-    - target: {fileID: 4943498284895027363, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: LoadingScreen, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 5720682824283699236, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 5720682824283699236, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7904596918992867052}
-    - target: {fileID: 5720682824283699236, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: loadSceneTitle
-      objectReference: {fileID: 0}
-    - target: {fileID: 5720682824283699236, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: LoadingScreen, Assembly-CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 6269550114203726665, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -62904,70 +62876,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6301534703790248980, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_text
-      value: Secondary Attack
-      objectReference: {fileID: 0}
-    - target: {fileID: 6514769812096217013, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_Name
-      value: Secondary Attack
-      objectReference: {fileID: 0}
-    - target: {fileID: 6811055006701957586, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6811055006701957586, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7904596918992867052}
-    - target: {fileID: 6811055006701957586, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: loadSceneTitle
-      objectReference: {fileID: 0}
-    - target: {fileID: 6811055006701957586, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: LoadingScreen, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 7723950268136114142, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_Name
-      value: Primary Attack
-      objectReference: {fileID: 0}
     - target: {fileID: 7765248277729462968, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_Name
       value: UI - NEW(week4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7765248277729462968, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9144495807761505683, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 3695449213913047166}
-    - target: {fileID: 9144495807761505683, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: quitSaveWarning
-      objectReference: {fileID: 0}
-    - target: {fileID: 9144495807761505683, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ButtonFunctions, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
---- !u!114 &3695449213913047166 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1018335641024888473, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-  m_PrefabInstance: {fileID: 3695449213913047165}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d286e4efc2d00b47a45932840855c7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5238195275279569733
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -63103,6 +63024,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6180416329571814282, guid: 18241772e15c55049ab7088152284b66, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6877983591316871711, guid: 18241772e15c55049ab7088152284b66, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6877983591316871711, guid: 18241772e15c55049ab7088152284b66, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 6877983591316871711, guid: 18241772e15c55049ab7088152284b66, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
+    - target: {fileID: 7950131455846740869, guid: 18241772e15c55049ab7088152284b66, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7950131455846740869, guid: 18241772e15c55049ab7088152284b66, type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7977741084051331331, guid: 18241772e15c55049ab7088152284b66, type: 3}
