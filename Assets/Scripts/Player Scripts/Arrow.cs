@@ -38,7 +38,7 @@ public class Arrow : MonoBehaviour
         IDamage dmg = other.GetComponent<IDamage>();
 
         // Check if arrow hits the head
-        if (dmg != null && other.gameObject.CompareTag("HeadShotArea"))
+        if (dmg != null && other.GetComponent<SphereCollider>() != null)
         {
             //deal double damage to the object hit
             dmg.TakeDamage(damage * 2);
