@@ -11,24 +11,29 @@ public class EnemySpawning : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player") && !isSpawning && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected))
-            Spawn();
+            Spawn(other);
     }
 
     [PunRPC]
-    void UpdateDoorState() { isSpawning = true; }
+    void UpdateSpawnerState() { isSpawning = true; }
 
-    public void Spawn() {
+    public void Spawn(Collider other) {
         isSpawning = true;
 
         if (PhotonNetwork.InRoom)
-            GetComponent<PhotonView>().RPC(nameof(UpdateDoorState), RpcTarget.Others);
+            GetComponent<PhotonView>().RPC(nameof(UpdateSpawnerState), RpcTarget.Others);
 
         for (int i = 0; i < numEnemies; i++) {
             int arrayPosition = Random.Range(0, SpawnPoints.Length);
+            Vector3 spawnPos = GetRandomSpawn(SpawnPoints[arrayPosition].position);
+            Quaternion spawnRot = Quaternion.LookRotation(other.transform.position - spawnPos);
+            
             if (PhotonNetwork.InRoom && Enemy != null)
-                PhotonNetwork.Instantiate("Enemy/" + Enemy.name, SpawnPoints[arrayPosition].position, SpawnPoints[arrayPosition].rotation);
+                PhotonNetwork.Instantiate("Enemy/" + Enemy.name, spawnPos, spawnRot);
             else if (!PhotonNetwork.InRoom && Enemy != null)
-                Instantiate(Enemy, SpawnPoints[arrayPosition].position, SpawnPoints[arrayPosition].rotation);
+                Instantiate(Enemy, spawnPos, spawnRot);
         }
     }
+
+    Vector3 GetRandomSpawn(Vector3 curPos) { return curPos + new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2)); }
 }

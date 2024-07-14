@@ -220,16 +220,17 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
                 yield return null;
             }
         }
+
+        // Call win game for every player in room through RPC calls, otherwise call normally
+        if (PhotonNetwork.InRoom && photonView && photonView.IsMine)
+            photonView.RPC(nameof(Win), RpcTarget.All);
+        else if (!PhotonNetwork.IsConnected)
+            Win();
+
         if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
             PhotonNetwork.Destroy(gameObject);
         else if (!PhotonNetwork.InRoom)
             Destroy(gameObject);
-
-        // Call win game for every player in room through RPC calls, otherwise call normally
-        if (PhotonNetwork.InRoom)
-            photonView.RPC(nameof(Win), RpcTarget.All);
-        else if (!PhotonNetwork.IsConnected)
-            Win();
     }
 
     IEnumerator FlashDamage() {

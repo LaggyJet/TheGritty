@@ -38,14 +38,28 @@ public class HPotPickUp : MonoBehaviourPunCallbacks
                 Debug.Log("Wine? :)");
                 break;
             }
-            
+
             // Clean up 
-            if (PhotonNetwork.InRoom && other.GetComponent<PhotonView>().IsMine)
-                PhotonNetwork.Destroy(gameObject);
+            if (PhotonNetwork.InRoom) {
+                PhotonView view = PhotonView.Get(this);
+                if (view) {
+                    if (view.IsMine || PhotonNetwork.IsMasterClient)
+                        PhotonNetwork.Destroy(gameObject);
+                    else
+                        photonView.RPC(nameof(MasterDestroy), RpcTarget.MasterClient, view.ViewID);
+                }
+                else
+                    Destroy(gameObject);
+            }
             else if (!PhotonNetwork.InRoom)
                 Destroy(gameObject);
         }
     }
 
-
+    [PunRPC]
+    void MasterDestroy(int viewID) {
+        PhotonView view = PhotonView.Find(viewID);
+        if (view && PhotonNetwork.IsMasterClient)
+            PhotonNetwork.Destroy(view.gameObject);
+    }
 }
