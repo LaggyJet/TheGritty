@@ -4,6 +4,7 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour {
     float damage_;
     bool canDOT;
+    public bool didDamage;
     DamageStats stats_;
     
     public void SetWeapon(float damage, bool dot, DamageStats type) { 
@@ -16,7 +17,8 @@ public class WeaponController : MonoBehaviour {
         if (other.isTrigger) return;
 
         IDamage damageCheck = other.GetComponent<IDamage>();
-        if (damageCheck != null && other.CompareTag("Player")) {
+        if (damageCheck != null && other.CompareTag("Player") && !didDamage) {
+            didDamage = true;
             damageCheck.TakeDamage(damage_);
             if (canDOT)
                 damageCheck.Afflict(stats_);

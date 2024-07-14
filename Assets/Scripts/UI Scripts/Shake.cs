@@ -15,13 +15,9 @@ public class Shake : MonoBehaviour
 
     // Controlling shaking & duration 
     [Range(0f, 10f)] public float shakeDuration;
+    public bool hasShakenHP;
+    public bool hasShakenSTAM;
     public bool isShaking = false; 
-
-    // To control the amount of times a shake can happen per frame 
-    [Range(0f, 10f)] public float shakeCoolDown;
-    private float lastShakeTime = -Mathf.Infinity;
-
-  
 
     // Implementing my 1-10 system 
     [Range(0f, 10f)]public float intensity; 
@@ -31,11 +27,24 @@ public class Shake : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        if(instance == null)
+        {
+           instance = this;
+        }
+
         // Storing position, rotate, scale in target
         targetObject = GetComponent<Transform>(); 
 
         // Get Local position of object 
-        initialPosition = targetObject.localPosition; 
+        initialPosition = targetObject.localPosition;
+
+        // Need this check to control shaking more than once
+        if (PlayerController.instance != null)
+        {
+            hasShakenHP = PlayerController.instance.HpDisplay > 0.5f;
+            hasShakenSTAM = PlayerController.instance.StaminaDisplay > 0.5f;
+        }
     }
 
     
@@ -54,8 +63,6 @@ public class Shake : MonoBehaviour
             targetObject.localPosition = initialPosition;
           }
 
-           // Updating last shake frame 
-           lastShakeTime = Time.time;
            // Begin shaking frames 
            StartCoroutine(DoShake());
         }

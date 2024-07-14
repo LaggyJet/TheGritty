@@ -44,22 +44,24 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     // Health bar colors and script for shaking the ui
     [Range(0f, 10f)] public float hp; 
     public float hpBase; 
-    private float HpDisplay;
+    public float HpDisplay;
+    public bool aboveThresholdHP;
 
 
     // Health bar gradual fill 
     [SerializeField] Color fullHealth; 
     [SerializeField] Color midHealth; 
     [SerializeField] Color criticalHealth;
-    [SerializeField] Shake hpShake;
+    [SerializeField] public Shake hpShake;
     
 
 
     [Header("------- Stamina -------")]
     [Range(0f, 10f)] public float stamina;
     public float staminaBase;
-    private float StaminaDisplay;
     public static float spawnStamina;
+    public float StaminaDisplay;
+    public bool abovethresholdSTAM;
 
     [Range(0f, 50f)] public float staminaRegenerate;  
     
@@ -68,7 +70,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     [SerializeField] Color fullStamina; 
     [SerializeField] Color midStamina; 
     [SerializeField] Color criticalStamina;
-    [SerializeField] Shake stamShake; 
+    [SerializeField] public Shake stamShake; 
 
     [Header("------- Combat -------")]
     [SerializeField] public GameObject shootPosition;
@@ -169,6 +171,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         // For smooth Transition UI - not the same as above 
         HpDisplay = hp / hpBase;
         StaminaDisplay = stamina / staminaBase;
+
+        // Keeps track for sounds manager
+        aboveThresholdHP = HpDisplay > 0.5f;
+        abovethresholdSTAM = StaminaDisplay > 0.5f;
 
         //calls a function to set the player variable in the game manager
         GameManager.instance.SetPlayer();
@@ -580,30 +586,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             else // If the health is less than 50%
             {
                 GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, HpDisplay * 2);
-
-                if(HpDisplay <= 0.5f )
-                {
-                    hpShake.Shaking(); 
-                }
-
-                if(!isPlayingNoHP)
-                {
-                    if(!staminaAudioSource.isPlaying)
-                    {
-                        // Playing heart beat for low HP 
-                        staminaAudioSource.PlayOneShot(noHP[Random.Range(0, noHP.Length)], noHPvol);
-                        isPlayingNoHP = true;
-                        isPlayingNoHP = staminaAudioSource.isPlaying;
-                    }
-                }
-
-                isPlayingNoHP = staminaAudioSource.isPlaying;
-            
-                if(healthRatio <= 0.5f )
-                {
-                    hpShake.Shaking();   
-                }
-                
             }
 
             // If stamina is more than 50% full 
@@ -613,12 +595,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             }
             else // If the stamina is less than 50%
             {
-                GameManager.instance.staminaBar.color = Color.Lerp(criticalStamina, midStamina, StaminaDisplay * 2);
-                if(StaminaDisplay <= 0.5f)
-                {
-                    stamShake.Shaking(); 
-                }
-                
+                GameManager.instance.staminaBar.color = Color.Lerp(criticalStamina, midStamina, StaminaDisplay * 2);  
             }
 
     }

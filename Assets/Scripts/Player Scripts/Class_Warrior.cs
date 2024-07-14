@@ -199,6 +199,7 @@ public class Class_Warrior : MonoBehaviour
     {
         player.combatObjects[3].GetComponent<Collider>().enabled = false;
         GameManager.instance.isShooting = false;
+        player.combatObjects[3].AddComponent<MeleeWeaponController>().didDamage = false;
     }
 
 
