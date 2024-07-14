@@ -30,7 +30,7 @@ public class SoundsManager : MonoBehaviour
     public void PlayNoHP()
     {
         // If display is < 50% & no hp sound is playing & already passed threshold of 50% for hp value
-        if (PlayerController.instance!= null && PlayerController.instance.HpDisplay <= 0.5f && !PlayerController.instance.isPlayingNoHP && PlayerController.instance.aboveThresholdHP)
+        if (PlayerController.instance.HpDisplay <= 0.5f && !PlayerController.instance.isPlayingNoHP && PlayerController.instance.aboveThresholdHP)
         {
             // Check if stamina audio source is not playing already
             if (!PlayerController.instance.staminaAudioSource.isPlaying)
@@ -56,7 +56,7 @@ public class SoundsManager : MonoBehaviour
             }
         }
         // If hp display is 50% over
-        else if(PlayerController.instance != null && PlayerController.instance.HpDisplay > 0.5f)
+        else if(PlayerController.instance.HpDisplay > 0.5f)
         {
             // Setting the abovethreshold check back on 
            PlayerController.instance.aboveThresholdHP = true;
@@ -67,7 +67,7 @@ public class SoundsManager : MonoBehaviour
     public void ShakeSTAM()
     {
             // Shake once for critical condition 
-                if(PlayerController.instance != null && PlayerController.instance.abovethresholdSTAM && Shake.instance.hasShakenSTAM && PlayerController.instance.StaminaDisplay <= 0.5f)
+                if(PlayerController.instance.abovethresholdSTAM && Shake.instance.hasShakenSTAM && PlayerController.instance.StaminaDisplay <= 0.5f)
                 {
                    PlayerController.instance.stamShake.Shaking(); 
                    Shake.instance.isShaking = true;
@@ -75,7 +75,7 @@ public class SoundsManager : MonoBehaviour
                    Shake.instance.isShaking = false; // Turn shake back off
                 }
                 // If stamina is above 50%
-                else if(PlayerController.instance != null && PlayerController.instance.StaminaDisplay > 0.5f)
+                else if(PlayerController.instance.StaminaDisplay > 0.5f)
                 { 
                   // Set values on so shake can work if off
                   PlayerController.instance.abovethresholdSTAM = true;

@@ -404,10 +404,10 @@ MonoBehaviour:
   displayTime: 0
   hasRespawned: 0
   soundTrackAud: {fileID: 4812126170991636316}
-  menuMusic: {fileID: 0}
-  menuVol: 0
-  gamePlayMusic: {fileID: 0}
-  gamePlayVol: 0
+  menuMusic: {fileID: 8300000, guid: f39b92c74b1b2ca4dabdc1ae1b4a40f6, type: 3}
+  menuVol: 1
+  gamePlayMusic: {fileID: 8300000, guid: 86eaf3782e873b5429e27a17f9e4626a, type: 3}
+  gamePlayVol: 1
   isPlayingSTA: 0
 --- !u!114 &8578202707388727761
 MonoBehaviour:
@@ -701,6 +701,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shakeDuration: 1
+  hasShakenHP: 0
+  hasShakenSTAM: 0
   isShaking: 0
   intensity: 7
 --- !u!1 &3509837728986843885
@@ -1294,6 +1296,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shakeDuration: 1
+  hasShakenHP: 0
+  hasShakenSTAM: 0
   isShaking: 0
   intensity: 7
 --- !u!1 &6932533149433019681

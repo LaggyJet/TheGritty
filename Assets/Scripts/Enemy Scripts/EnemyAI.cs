@@ -134,7 +134,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
     public void WeaponColliderOff() {
         weapon.GetComponent<Collider>().enabled = false;
         EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
-        weapon.AddComponent<WeaponController>().didDamage = false;
+        weapon.GetComponent<WeaponController>().didDamage = false;
     }
 
     [PunRPC]

@@ -17,6 +17,7 @@ public class SavePoint : MonoBehaviour
             DataPersistenceManager.Instance.SaveGame();
             GameManager.playerLocation = other.transform.position;
             activated = true;
+            GameManager.instance.SoundTrackswitch(GameManager.GameMusic.Gameplay);
         }
     }
 }

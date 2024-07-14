@@ -123,6 +123,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     private const string CLASS_SELECTED = "ClassSelected";
     ClassSelection currentClassSelection;
 
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void Start() {
         // Get base selection (if possible)
         currentClassSelection = GameObject.FindWithTag("ClassSelector")?.GetComponent<ClassSelection>();
