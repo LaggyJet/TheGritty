@@ -1,4 +1,4 @@
-//worked on by - natalie lubahn, Jacob Irvin
+//worked on by - natalie lubahn, Jacob Irvin, Joshua Furber
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,9 +22,12 @@ public class ButtonFunctions : MonoBehaviour
 
         //using previous player - scene needs to know where to put the player
         GameManager.enemyCount = 0;
+        GameManager.instance.playerScript.hp = GameManager.instance.playerScript.hpBase;
+        GameManager.instance.playerScript.stamina = GameManager.instance.playerScript.staminaBase;
+        GameManager.instance.player.transform.position = GameManager.playerLocation;
+        DataPersistenceManager.Instance.SaveGame();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         DataPersistenceManager.Instance.LoadGame();
-        GameManager.instance.playerScript.hp = 10;
         GameManager.instance.stateResumeGameLoads();
     }
     public void quitApp()
@@ -92,18 +95,6 @@ public class ButtonFunctions : MonoBehaviour
     }
 
     //FOR TITLE SCREEN
-    public void newGame()
-    {
-        SceneManager.LoadScene("Build Scene");
-        DataPersistenceManager.Instance.NewGame();
-        GameManager.instance.stateResumeGameLoads();
-    }
-    public void loadGame()
-    {
-        SceneManager.LoadScene("Build Scene");
-        DataPersistenceManager.Instance.LoadGame();
-        GameManager.instance.stateResumeGameLoads();
-    }
     public void startNewGamePart1()
     {
         GameManager.instance.Warning4NewGame();
@@ -124,16 +115,12 @@ public class ButtonFunctions : MonoBehaviour
 
         if (GameManager.selectedMultiplayer)
             SceneManager.LoadScene("Lobby");
-        else
-            newGame();
     }
     public void mage()
     {
         playerClass.MyClass = 2;
         if (GameManager.selectedMultiplayer)
             SceneManager.LoadScene("Lobby");
-        else
-            newGame();
 
     }
     public void archer()
@@ -141,8 +128,6 @@ public class ButtonFunctions : MonoBehaviour
         playerClass.MyClass = 3;
         if (GameManager.selectedMultiplayer)
             SceneManager.LoadScene("Lobby");
-        else
-            newGame();
     }
 
     // Co-op features

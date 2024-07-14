@@ -3,16 +3,21 @@ using ArduinoBluetoothAPI;
 using System;
 using System.Collections;
 using Photon.Pun;
+using TMPro;
 
 public class BluetoothManager : MonoBehaviour {
     public static BluetoothManager instance;
+    private TMP_Text bluetoothMessage;
     private BluetoothHelper helper;
     readonly private string deviceName = "HC-06";
     enum DebugState { Health, Stamina };
     DebugState curState = DebugState.Health;
     readonly private char key = '=';
 
-    void Awake() { StartCoroutine(WaitForKey(4)); }
+    void Awake() {
+        bluetoothMessage = GameObject.Find("title ui").transform.Find("bluetooth message").GetComponent<TMP_Text>();
+        StartCoroutine(WaitForKey(4)); 
+    }
 
     void Update() {
         if (!PhotonNetwork.IsConnected && GameManager.instance.player != null && helper != null && helper.Available) {
@@ -40,6 +45,7 @@ public class BluetoothManager : MonoBehaviour {
 
     void OnConnected(BluetoothHelper helper) { 
         helper.StartListening();
+        bluetoothMessage.text = "Connected to " + deviceName;
         helper.SendData("Init");
         if (instance == null) {
             instance = this;
@@ -81,10 +87,10 @@ public class BluetoothManager : MonoBehaviour {
 
             helper.Connect();
         }
-        catch (Exception ex) { Debug.LogError("Bluetooth connection error: " + ex.Message); }
+        catch (Exception ex) { bluetoothMessage.color = Color.red; bluetoothMessage.text = "Failed: " + ex.Message; }
     }
 
-    void OnConnectionFailed(BluetoothHelper helper) { Debug.LogError("Connection to " + deviceName + " failed."); }
+    void OnConnectionFailed(BluetoothHelper helper) { bluetoothMessage.color = Color.red; bluetoothMessage.text = "Connection to " + deviceName + " failed."; }
 
     void OnDestroy() { helper?.Disconnect(); }
 

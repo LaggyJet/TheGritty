@@ -1892,9 +1892,9 @@ MonoBehaviour:
   hpShake: {fileID: 0}
   stamina: 10
   staminaRegenerate: 50
-  fullStamina: {r: 0, g: 0.0030903816, b: 1, a: 0}
-  midStamina: {r: 0.46540874, g: 0, b: 0.42016062, a: 0}
-  criticalStamina: {r: 0.34591186, g: 0, b: 0.13190229, a: 0}
+  fullStamina: {r: 0, g: 0.6058736, b: 1, a: 1}
+  midStamina: {r: 0.46540874, g: 0, b: 0.42016062, a: 1}
+  criticalStamina: {r: 0, g: 0, b: 0, a: 1}
   stamShake: {fileID: 0}
   staminaBase: 0
   animate: {fileID: 2654759320713316378}
