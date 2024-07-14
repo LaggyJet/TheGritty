@@ -614,7 +614,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shakeDuration: 1
   isShaking: 0
-  intensity: 7
+  intensity: 5
 --- !u!1 &2606341111130237338
 GameObject:
   m_ObjectHideFlags: 0
@@ -989,7 +989,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shakeDuration: 1
   isShaking: 0
-  intensity: 7
+  intensity: 5
 --- !u!1 &5625548882352666086
 GameObject:
   m_ObjectHideFlags: 0
