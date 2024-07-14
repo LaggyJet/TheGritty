@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class Class_Warrior : MonoBehaviour
 {
     PlayerController player;
+    MeleeWeaponController weapon;
 
     bool holdingSecondary;
     bool waiting;
@@ -18,6 +19,7 @@ public class Class_Warrior : MonoBehaviour
     float primaryStamCost = 0.3f;
     float secondaryStamCost = 0.025f;
     float secondaryTickSpeed = .5f;
+    float abilityStamCost = 1.0f;
 
     float damage = 10;
     bool canDOT = false;
@@ -28,6 +30,7 @@ public class Class_Warrior : MonoBehaviour
         //first we find our player and save him as an easily accessible variable and adds a component to our weapon
         player = GetComponent<PlayerController>();
         player.combatObjects[3].AddComponent<MeleeWeaponController>().SetWeapon(damage, canDOT, null);
+        weapon = player.combatObjects[3].GetComponent<MeleeWeaponController>();
         //next we set our fire particle system to active and turn it off so we can toggle it easier later
         player.combatObjects[3].SetActive(true);
         player.combatObjects[4].SetActive(true);
@@ -130,10 +133,11 @@ public class Class_Warrior : MonoBehaviour
     public void OnAbility(InputAction.CallbackContext ctxt)
     {
         //checks that we are not on cooldown and not using the ability
-        if (ctxt.performed && ValidAttack() && abilityCoolDown == 0 && abilityActive == 0)
+        if (ctxt.performed && ValidAttack() && StaminaCheck(abilityStamCost) && abilityCoolDown == 0 && abilityActive == 0)
         {
             //plays our animation and sound for the ability
             player.SetAnimationTrigger("Warrior3");
+            weapon.damage_ *= 2;
             player.PlaySound('A');
 
             abilityActive = 5;
@@ -150,6 +154,10 @@ public class Class_Warrior : MonoBehaviour
             yield return new WaitForSeconds(1);
             abilityActive--;
             isCounting = false;
+        }
+        if(abilityActive == 0)
+        {
+            weapon.damage_ /= 2;
         }
     }
     //function for counting down our cooldown

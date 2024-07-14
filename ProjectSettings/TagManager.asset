@@ -12,6 +12,7 @@ TagManager:
   - Room 3 Trigger
   - Ground
   - PlayerChild
+  - ClassSelector
   layers:
   - Default
   - TransparentFX

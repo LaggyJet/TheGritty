@@ -1800,8 +1800,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2555241615034149236}
-  - component: {fileID: 2654759320713316378}
   - component: {fileID: 8103881619842969174}
+  - component: {fileID: 2654759320713316378}
   - component: {fileID: 4363267446184540556}
   - component: {fileID: 3116865600634008479}
   - component: {fileID: 7898868306004621137}
@@ -1835,27 +1835,6 @@ Transform:
   - {fileID: 1695524547826117909}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -179.487, z: 0}
---- !u!95 &2654759320713316378
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3724347164852896666}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 2255221d850daf642981c1a4eedf85a1, type: 3}
-  m_Controller: {fileID: 9100000, guid: 5a6e8f5c31bd9224180b2924ffa0ed76, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &8103881619842969174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1869,35 +1848,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 3116865600634008479}
+  animate: {fileID: 2654759320713316378}
   speed: 10
   sprintMod: 2
   gravity: 10
   jumpMax: 1
   jumpSpeed: 3
-  shootPosition: {fileID: 4185506747812628586}
-  combatObjects:
-  - {fileID: 2534988432703087702, guid: 0484adfc589ea004caa211680812ec51, type: 3}
-  - {fileID: 6186270549528748386}
-  - {fileID: 2534988432703087702, guid: 79f14246f9fb55b4382c274a1eb6290a, type: 3}
-  - {fileID: 2388995724689237375}
-  - {fileID: 1377214065161546418}
-  - {fileID: 4865309214770636011, guid: fa791d212d613d94682ea14779e305ac, type: 3}
-  useStamina: 1
-  isBlocking: 0
   hp: 10
   fullHealth: {r: 0.24978681, g: 0.42352942, b: 0.20718746, a: 1}
   midHealth: {r: 0.9892183, g: 0.43262324, b: 0.046661116, a: 1}
   criticalHealth: {r: 0.7058824, g: 0, b: 0, a: 1}
   hpShake: {fileID: 0}
   stamina: 10
-  staminaRegenerate: 50
+  staminaRegenerate: 10
   fullStamina: {r: 0, g: 0.0030903816, b: 1, a: 0}
   midStamina: {r: 0.46540874, g: 0, b: 0.42016062, a: 0}
   criticalStamina: {r: 0.34591186, g: 0, b: 0.13190229, a: 0}
   stamShake: {fileID: 0}
-  animate: {fileID: 2654759320713316378}
-  animationTransSpeed: 1
-  sprite: {fileID: 21300000, guid: 8e4680958c649e642b0dae1c48a3e1ca, type: 3}
+  shootPosition: {fileID: 4185506747812628586}
+  arrowPosition: {fileID: 4325618518892949284}
+  combatObjects:
+  - {fileID: 2534988432703087702, guid: 0484adfc589ea004caa211680812ec51, type: 3}
+  - {fileID: 6186270549528748386}
+  - {fileID: 2534988432703087702, guid: 79f14246f9fb55b4382c274a1eb6290a, type: 3}
+  - {fileID: 2388995724689237375}
+  - {fileID: 1377214065161546418}
+  - {fileID: 5218697179704809624, guid: d8d3091eaa34b60498c31bb0f4379ac4, type: 3}
+  - {fileID: 7305093251907783399}
+  playerClass: {fileID: 11400000, guid: aecd08a9e5e48a145914c754caeea9e3, type: 2}
+  useStamina: 1
+  isBlocking: 0
+  classCase: 0
+  mage: {fileID: 0}
+  warrior: {fileID: 0}
+  archer: {fileID: 0}
   audioSource: {fileID: 7898868306004621137}
   footsteps:
   - {fileID: 8300000, guid: 1f634153d05cb0b4e99f723587ca5ee0, type: 3}
@@ -1922,6 +1906,8 @@ MonoBehaviour:
   noSprint:
   - {fileID: 8300000, guid: 4a5823ac4669ca2489afe114f796893f, type: 3}
   noSprintVol: 0.5
+  isPlayingStamina: 0
+  isPlayingNoSprinting: 0
   staminaAudioSource: {fileID: 7898868306004621137}
   noHP:
   - {fileID: 8300000, guid: a2155caa9dc9b2c45ad55e311481098d, type: 3}
@@ -1929,14 +1915,28 @@ MonoBehaviour:
   noAttack:
   - {fileID: 8300000, guid: 4a5823ac4669ca2489afe114f796893f, type: 3}
   noAttackVol: 0.5
-  playerClass: {fileID: 11400000, guid: aecd08a9e5e48a145914c754caeea9e3, type: 2}
-  classCase: 0
-  mage: {fileID: 0}
-  warrior: {fileID: 0}
-  archer: {fileID: 0}
-  isPlayingStamina: 0
-  isPlayingNoSprinting: 0
   isPlayingNoHP: 0
+--- !u!95 &2654759320713316378
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3724347164852896666}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 2255221d850daf642981c1a4eedf85a1, type: 3}
+  m_Controller: {fileID: 9100000, guid: 5a6e8f5c31bd9224180b2924ffa0ed76, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!136 &4363267446184540556
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2339,6 +2339,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: Warrior2
+  - Type: 4
+    SynchronizeType: 0
+    Name: Archer1
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -2352,6 +2355,10 @@ MonoBehaviour:
     LayerIndex: 4
   - SynchronizeType: 1
     LayerIndex: 5
+  - SynchronizeType: 0
+    LayerIndex: 6
+  - SynchronizeType: 0
+    LayerIndex: 7
 --- !u!1 &3797678969013287520
 GameObject:
   m_ObjectHideFlags: 0
@@ -3046,7 +3053,8 @@ Transform:
   m_LocalPosition: {x: 0.116775215, y: 0.003538363, z: 0.036435228}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7938499478902886493}
   m_Father: {fileID: 3264328668762492033}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4351090624045192134
@@ -6120,6 +6128,77 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1732661724855458653, guid: 22808a4b1e84b1c4d8d80311053e01f7, type: 3}
   m_PrefabInstance: {fileID: 3631903443752051864}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5434613867402205721
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1786990665355691667}
+    m_Modifications:
+    - target: {fileID: 2684312175388576324, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.021
+      objectReference: {fileID: 0}
+    - target: {fileID: 2684312175388576324, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2684312175388576324, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.002
+      objectReference: {fileID: 0}
+    - target: {fileID: 2684312175388576324, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2684312175388576324, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2684312175388576324, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2684312175388576324, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2684312175388576324, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2684312175388576324, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 2684312175388576324, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3317823749142253822, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+      propertyPath: m_Name
+      value: Bow_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3317823749142253822, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+--- !u!1 &7305093251907783399 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3317823749142253822, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+  m_PrefabInstance: {fileID: 5434613867402205721}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7938499478902886493 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2684312175388576324, guid: d4958227484245e4592c41ab2c02ad22, type: 3}
+  m_PrefabInstance: {fileID: 5434613867402205721}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6187878378916958594
 PrefabInstance:

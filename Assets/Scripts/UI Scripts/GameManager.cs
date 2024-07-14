@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
     public float displayTime;
     public bool hasRespawned = false;
     public static bool selectedMultiplayer = false;
+    public ClassSelection classSelector;
 
     [Header("------ Audio ------")]
     [SerializeField] AudioSource soundTrackAud;
@@ -61,6 +62,7 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         player = GameObject.FindWithTag("Player");
+        classSelector = GameObject.FindWithTag("ClassSelector").GetComponent<ClassSelection>();
         if (player != null) {
             playerScript = player.GetComponent<PlayerController>();
             //playerLocation = player.transform.position;

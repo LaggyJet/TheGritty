@@ -52,7 +52,6 @@ public class Class_Mage : MonoBehaviourPun
 
     public void OnPrimaryFire(InputAction.CallbackContext ctxt)
     {
-        Debug.Log("The issue isn't here");
         //checks for if our input was performed and if its valid to attack
         //check the ValidAttack Function to see what quantifies as valid
         //also checks if we have the stamina to attack

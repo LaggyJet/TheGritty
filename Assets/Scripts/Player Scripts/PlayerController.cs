@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     [SerializeField] int jumpSpeed;
     int jumpsAvailable;
     Vector3 moveDir;
-    Vector3 playerV;
+    public Vector3 playerV;
     Vector3 networkPos;
     Quaternion networkRot;
     public static Vector3 spawnLocation;
@@ -62,8 +62,9 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
 
     [Header("------- Combat -------")]
     [SerializeField] public GameObject shootPosition;
+    [SerializeField] public GameObject arrowPosition;
     [SerializeField] public GameObject[] combatObjects;
-    [SerializeField] private ClassSelection playerClass;
+    ClassSelection classSelector;
     public bool useStamina = true;
     public bool isBlocking = false;
     public int classCase;
@@ -106,7 +107,8 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     private void Start()
     {
         //assigns our player class
-        AssignClass(playerClass.MyClass);
+        classSelector = GameObject.FindWithTag("ClassSelector").GetComponent<ClassSelection>();
+        AssignClass(classSelector.MyClass);
 
         // Prevents your inputs from moving other players in multiplayer
         // Checks if the player is the actual player and in multiplayer
@@ -234,12 +236,19 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
         {
             mage.OnAbility(ctxt);
         }
+        else if (warrior != null)
+        {
+            warrior.OnAbility(ctxt);
+        }
+        else if (archer != null)
+        {
+            archer.OnAbility(ctxt);
+        }
     }
     public void OnPrimaryFire(InputAction.CallbackContext ctxt) //primary attack
     {
         if (mage != null)
         {
-            Debug.Log("Go on through");
             mage.OnPrimaryFire(ctxt);
         }
         else if (warrior != null)
@@ -272,13 +281,18 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
     {
         //gets our input and adjusts the players position using a velocity formula
         Vector3 movement = moveDir.x * transform.right + moveDir.z * transform.forward;
-        controller.Move(movement * speed * Time.deltaTime);
+        controller.Move(speed * Time.deltaTime * movement);
         playerV.y -= gravity * Time.deltaTime;
         controller.Move(playerV * Time.deltaTime);
         //if we are on the ground play footstep sounds
         if (controller.isGrounded && movement.magnitude > 0.3 && !isPlayingSteps)
         {
+            animate.SetBool("Walk", true);
             StartCoroutine(playSteps());
+        }
+        else if (!controller.isGrounded || movement.magnitude < 0.3)
+        {
+            animate.SetBool("Walk", false);
         }
         //makes sure gravity doesn't build up on a grounded player
         if (controller.isGrounded)
@@ -500,12 +514,10 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
                         staminaAudioSource.PlayOneShot(noHP[Random.Range(0, noHP.Length)], noHPvol);
                         isPlayingNoHP = true;
                         isPlayingNoHP = staminaAudioSource.isPlaying;
-                        Debug.Log("No HP :(");
                     }
                 }
 
                 isPlayingNoHP = staminaAudioSource.isPlaying;
-                Debug.Log("No HP :(");
                
                  if(healthRatio <= 0.5f )
                  {
@@ -581,26 +593,10 @@ public class PlayerController : MonoBehaviourPun, IDamage, IDataPersistence
                 break;
         }
     }
-    void CallClassFunction(string function)
-    {
-        switch(classCase)
-        {
-            case 1:
-                warrior.Invoke(function, 0);
-                break;
-            case 2:
-                mage.Invoke(function, 0);
-                break;
-            case 3:
-                archer.Invoke(function, 0);
-                break;
-        }
-    }
 
     //public functions for our class scripts to call in order to attack properly
     public void SetAnimationTrigger(string triggerName)
     {
-        Debug.Log("pls dont make me work with more animations");
         animate.SetTrigger(triggerName);
     }
     public void SetAnimationBool(string boolName, bool state)

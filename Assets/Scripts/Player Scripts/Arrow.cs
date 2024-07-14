@@ -43,7 +43,7 @@ public class Arrow : MonoBehaviour
             //deal double damage to the object hit
             dmg.TakeDamage(damage * 2);
             //destroy our projectile
-            DestroyObject(gameObject);
+            DestroyObject();
         }
         //if there is an IDamage component we run the inside code
         else if (dmg != null && !other.gameObject.CompareTag("Player"))
@@ -51,14 +51,14 @@ public class Arrow : MonoBehaviour
             //deal damage to the object hit
             dmg.TakeDamage(damage);
             //destroy our projectile
-            DestroyObject(gameObject);
+            DestroyObject();
         }
         else if (!other.gameObject.CompareTag("Player") && !other.isTrigger)
-            DestroyObject(gameObject);
+            DestroyObject();
 
     }
 
-    void DestroyObject(GameObject obj)
+    void DestroyObject()
     {
         if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
             PhotonNetwork.Destroy(gameObject);

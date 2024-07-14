@@ -57,14 +57,14 @@ public class FireBall : MonoBehaviour
             dmg.TakeDamage(damage);
             dmg.Afflict(type);
             //destroy our projectile
-            DestroyObject(gameObject);
+            DestroyObject();
         }
         else if (!other.gameObject.CompareTag("Player") && !other.isTrigger)
-            DestroyObject(gameObject);
+            DestroyObject();
 
     }
 
-    void DestroyObject(GameObject obj) {
+    void DestroyObject() {
         if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
             PhotonNetwork.Destroy(gameObject);
         else if (!PhotonNetwork.InRoom)

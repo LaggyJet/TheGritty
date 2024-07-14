@@ -99,7 +99,7 @@ public class ButtonFunctions : MonoBehaviour
     //CLASS SELECTION
     public void warrior()
     {
-        playerClass.MyClass = 1;
+        GameManager.instance.classSelector.MyClass = 1;
 
         if (GameManager.selectedMultiplayer)
             SceneManager.LoadScene("Lobby");
@@ -108,7 +108,7 @@ public class ButtonFunctions : MonoBehaviour
     }
     public void mage()
     {
-        playerClass.MyClass = 2;
+        GameManager.instance.classSelector.MyClass = 2;
         if (GameManager.selectedMultiplayer)
             SceneManager.LoadScene("Lobby");
         else
@@ -117,7 +117,7 @@ public class ButtonFunctions : MonoBehaviour
     }
     public void archer()
     {
-        playerClass.MyClass = 3;
+        GameManager.instance.classSelector.MyClass = 3;
         if (GameManager.selectedMultiplayer)
             SceneManager.LoadScene("Lobby");
         else
