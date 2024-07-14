@@ -10315,9 +10315,9 @@ MonoBehaviour:
   distanceFromPlayer: 20
   spitCooldown: 10
   spitEffectPS: {fileID: 1477472683759678934}
-  acidStream: {fileID: 7018234176948441983, guid: d16fda35bee13724584070df2ba8281f, type: 3}
-  acidPuddle: {fileID: 3229947818037046156, guid: ea47a124da4e9ce4a9d89ebb914bb75d, type: 3}
-  spider: {fileID: 639156844943288045, guid: 70971999df85ec24e9e038d5a65f782a, type: 3}
+  acidStream: {fileID: 7018234176948441983, guid: 6b7b632ca64dd0a4d93b491de44b375b, type: 3}
+  acidPuddle: {fileID: 3229947818037046156, guid: 2f444641fd2449e4c84ded035b431931, type: 3}
+  spider: {fileID: 639156844943288045, guid: d2f542e526b30734d9373f22a2ac0696, type: 3}
   spawnRate: 10
   spawnAmount: 2
 --- !u!95 &2018609553278251301

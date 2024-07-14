@@ -152,7 +152,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
             EnemyManager.Instance.UpdateKillCounter(enemyLimiter);
             gameObject.GetComponent<Collider>().enabled = false;
             wasKilled = true;
-            StartCoroutine(DeathAnimation());
+            if (PhotonNetwork.InRoom)
+                photonView.RPC(nameof(StartDeath), RpcTarget.All);
+            else if (!PhotonNetwork.IsConnected)
+                StartDeath();
         }
     }
 
@@ -183,6 +186,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
         yield return new WaitForSeconds(0.1f);
         model.material.color = Color.white;
     }
+
+    [PunRPC]
+    void StartDeath() { StartCoroutine(DeathAnimation()); }
 
     IEnumerator DeathAnimation() {
         agent.isStopped = true;

@@ -44,25 +44,31 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     // Health bar colors and script for shaking the ui
     [Range(0f, 10f)] public float hp; 
     public float hpBase; 
+    private float HpDisplay;
+
 
     // Health bar gradual fill 
     [SerializeField] Color fullHealth; 
     [SerializeField] Color midHealth; 
     [SerializeField] Color criticalHealth;
-    [SerializeField] public Shake hpShake;
+    [SerializeField] Shake hpShake;
+    
 
 
     [Header("------- Stamina -------")]
     [Range(0f, 10f)] public float stamina;
-    [Range(0f, 50f)] public float staminaRegenerate;
+    public float staminaBase;
+    private float StaminaDisplay;
     public static float spawnStamina;
-    bool isRegenerating;
 
+    [Range(0f, 50f)] public float staminaRegenerate;  
+    
+    
+     // stamina bar gradual fill 
     [SerializeField] Color fullStamina; 
     [SerializeField] Color midStamina; 
     [SerializeField] Color criticalStamina;
-    [SerializeField] public Shake stamShake; 
-    public float staminaBase;
+    [SerializeField] Shake stamShake; 
 
     [Header("------- Combat -------")]
     [SerializeField] public GameObject shootPosition;
@@ -75,6 +81,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     public Class_Mage mage = null;
     public Class_Warrior warrior = null;
     public Class_Archer archer = null;
+    //these are animation variables
+    [SerializeField] float animationTransSpeed;
+    [Range(0f, 10f)] public float lerpSpeed;
+    
 
 
     [Header("------ Audio ------")]
@@ -106,6 +116,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     [SerializeField] public AudioClip[] noAttack;
     [SerializeField] public float noAttackVol; 
     public bool isPlayingNoHP = false;
+    private bool isRegenerating = false;
 
     private const string CLASS_SELECTED = "ClassSelected";
     ClassSelection currentClassSelection;
@@ -154,6 +165,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         staminaBase = stamina;
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.identity;
+
+        // For smooth Transition UI - not the same as above 
+        HpDisplay = hp / hpBase;
+        StaminaDisplay = stamina / staminaBase;
 
         //calls a function to set the player variable in the game manager
         GameManager.instance.SetPlayer();
@@ -430,6 +445,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         {
             audioSource.PlayOneShot(hurt[Random.Range(0, hurt.Length)], hurtVol);
         }
+        
         //if health drops below zero run our lose condition
         if(hp <= 0 && !isDead)
         {
@@ -545,23 +561,27 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         float healthRatio = (float)hp / hpBase;
         float staminaRatio = (float)stamina / staminaBase; 
 
+        // Smoothly lerping through values 
+        HpDisplay = Mathf.Lerp(HpDisplay, healthRatio, Time.deltaTime * lerpSpeed);
+        StaminaDisplay = Mathf.Lerp(StaminaDisplay, staminaRatio, Time.deltaTime * lerpSpeed);
+
         // Storing 
-        GameManager.instance.playerHPBar.fillAmount = healthRatio; 
-        GameManager.instance.staminaBar.fillAmount = staminaRatio;
+        GameManager.instance.playerHPBar.fillAmount = HpDisplay; 
+        GameManager.instance.staminaBar.fillAmount = StaminaDisplay;
 
     
     
             // If health is more than 50% full
-            if (healthRatio > 0.5f || GameManager.instance.playerHPBar.color != midHealth) 
+            if (HpDisplay > 0.5f || GameManager.instance.playerHPBar.color != midHealth) 
             {
-                GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (healthRatio - 0.5f) * 2);
+                GameManager.instance.playerHPBar.color = Color.Lerp(midHealth, fullHealth, (HpDisplay - 0.5f) * 2);
                 isPlayingNoHP = false;
             }
             else // If the health is less than 50%
             {
-                GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, healthRatio * 2);
+                GameManager.instance.playerHPBar.color = Color.Lerp(criticalHealth, midHealth, HpDisplay * 2);
 
-                if(healthRatio <= 0.5f )
+                if(HpDisplay <= 0.5f )
                 {
                     hpShake.Shaking(); 
                 }
@@ -587,20 +607,22 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             }
 
             // If stamina is more than 50% full 
-            if (staminaRatio > 0.5f || GameManager.instance.staminaBar.color != midStamina) 
+            if (StaminaDisplay > 0.5f || GameManager.instance.staminaBar.color != midStamina) 
             {
-                GameManager.instance.staminaBar.color = Color.Lerp(midStamina, fullStamina, (staminaRatio - 0.5f) * 2);
-                Color color = GameManager.instance.staminaBar.color;
-                color.a = Mathf.Clamp(255, 0, 1);
-                GameManager.instance.staminaBar.color = color;
-        }
-            else if (staminaRatio <= 0.5f) // If the stamina is less than 50%
+                GameManager.instance.staminaBar.color = Color.Lerp(midStamina, fullStamina, (StaminaDisplay - 0.5f) * 2); 
+            }
+            else // If the stamina is less than 50%
             {
-                GameManager.instance.staminaBar.color = Color.Lerp(criticalStamina, midStamina, staminaRatio * 2);
-                stamShake.Shaking();
+                GameManager.instance.staminaBar.color = Color.Lerp(criticalStamina, midStamina, StaminaDisplay * 2);
+                if(StaminaDisplay <= 0.5f)
+                {
+                    stamShake.Shaking(); 
+                }
+                
             }
 
     }
+
     
     //a simple function for respawning the player
     public void Respawn()

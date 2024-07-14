@@ -52,6 +52,7 @@ MonoBehaviour:
   - RpcTakeDamage
   - SetEveryPlayerPauseState
   - SetEveryPlayerUnpauseState
+  - StartDeath
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

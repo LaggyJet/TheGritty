@@ -293,6 +293,13 @@ public class GameManager : MonoBehaviour
 
     private void SoundTrackswitch(GameMusic music)
     {
+
+        // Check persistence with music 
+        if(soundTrackAud.isPlaying && ((music == GameMusic.Menu && soundTrackAud.clip == menuMusic) || (music == GameMusic.Gameplay && soundTrackAud.clip == gamePlayMusic)))
+        {
+           return;
+        }
+
        switch(music)
        {
           case GameMusic.Menu:
