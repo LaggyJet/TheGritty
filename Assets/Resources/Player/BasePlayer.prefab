@@ -1857,12 +1857,16 @@ MonoBehaviour:
   playerV: {x: 0, y: 0, z: 0}
   hp: 10
   hpBase: 0
-  fullHealth: {r: 0.24978681, g: 0.42352942, b: 0.20718746, a: 1}
-  midHealth: {r: 0.9892183, g: 0.43262324, b: 0.046661116, a: 1}
-  criticalHealth: {r: 0.7058824, g: 0, b: 0, a: 1}
+  HpDisplay: 0
+  aboveThresholdHP: 0
+  fullHealth: {r: 0.14509805, g: 0.1764706, b: 0.098039225, a: 1}
+  midHealth: {r: 0.5372549, g: 0.2509804, b: 0.121568635, a: 1}
+  criticalHealth: {r: 0.4509804, g: 0, b: 0, a: 1}
   hpShake: {fileID: 0}
   stamina: 10
   staminaBase: 0
+  StaminaDisplay: 0
+  abovethresholdSTAM: 0
   staminaRegenerate: 50
   fullStamina: {r: 0.09740917, g: 0.24786167, b: 0.46630716, a: 1}
   midStamina: {r: 0.342318, g: 0.13425139, b: 0.32133654, a: 1}
@@ -1884,22 +1888,6 @@ MonoBehaviour:
   mage: {fileID: 0}
   warrior: {fileID: 0}
   archer: {fileID: 0}
-  hp: 10
-  HpDisplay: 0
-  aboveThresholdHP: 0
-  fullHealth: {r: 0.14509805, g: 0.1764706, b: 0.098039225, a: 1}
-  midHealth: {r: 0.5372549, g: 0.2509804, b: 0.121568635, a: 1}
-  criticalHealth: {r: 0.4509804, g: 0, b: 0, a: 1}
-  hpShake: {fileID: 0}
-  stamina: 10
-  StaminaDisplay: 0
-  abovethresholdSTAM: 0
-  staminaRegenerate: 50
-  fullStamina: {r: 0.09740917, g: 0.24786167, b: 0.46630716, a: 1}
-  midStamina: {r: 0.342318, g: 0.13425139, b: 0.32133654, a: 1}
-  criticalStamina: {r: 0, g: 0, b: 0, a: 1}
-  stamShake: {fileID: 0}
-  animate: {fileID: 2654759320713316378}
   animationTransSpeed: 1
   lerpSpeed: 3
   audioSource: {fileID: 7898868306004621137}
