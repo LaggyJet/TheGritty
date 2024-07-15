@@ -10247,7 +10247,7 @@ GameObject:
   - component: {fileID: 2018609553278251301}
   - component: {fileID: 8342322373404260951}
   m_Layer: 0
-  m_Name: QueenSpider
+  m_Name: QueenSpider - Old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

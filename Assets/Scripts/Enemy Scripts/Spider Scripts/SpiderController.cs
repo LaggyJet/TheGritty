@@ -1,4 +1,4 @@
-// Worked on by - Joshua Furber
+// Worked on by - Joshua Furber, Kheera 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +9,18 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator anim;
+
+
+    [Header("------ Audio ------")]
+    [SerializeField] public AudioSource spiderAud;
+    [SerializeField] AudioClip spiderWalking;
+    [SerializeField] public float spiderWalkingVol;
+    public bool isPlayingSpiderWalking;
+
+    // For access
+    public static SpiderController instance;
+
+
     [SerializeField] float hp;
     [SerializeField] int faceTargetSpeed, distanceFromPlayer, spitCooldown;
     [SerializeField] GameObject spitEffectPS, acidStream, acidPuddle, spider;
@@ -19,6 +31,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
     Vector3 playerDirection, target, networkPosition;
     Quaternion networkRotation;
     float currentAngle;
+    
 
     void Start() {
         spitEffectPS.SetActive(false);
@@ -37,6 +50,19 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
             HandleHostLogic();
         else if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
             SmoothMovement();
+
+            // Play spider sounds when spider is walking 
+        if(agent.velocity.magnitude > 0.1f && !spiderAud.isPlaying)
+        {
+            spiderAud.PlayOneShot(spiderWalking, spiderWalkingVol);
+            isPlayingSpiderWalking = true;
+            Debug.Log("Spider Walking sounds playing");
+        }
+        else if(agent.velocity.magnitude <= 0.1f && spiderAud.isPlaying)
+        {
+            spiderAud.Stop();
+            isPlayingSpiderWalking = false;
+        }
     }
 
     void HandleHostLogic() {
@@ -51,6 +77,27 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
     void SmoothMovement() {
         agent.transform.position = Vector3.Lerp(agent.transform.position, networkPosition, Time.deltaTime * 10);
         agent.transform.rotation = Quaternion.Lerp(agent.transform.rotation, networkRotation, Time.deltaTime * 10);
+
+        
+    }
+
+    public void PauseSpiderSounds()
+    {
+      if(spiderAud.isPlaying)
+      {
+        spiderAud.Pause();
+        isPlayingSpiderWalking = false;
+      }
+    }
+
+    public void ResumeSpiderSounds()
+    {
+       if (!spiderAud.isPlaying && agent.velocity.magnitude > 0.1f)
+        {
+            spiderAud.PlayOneShot(spiderWalking, spiderWalkingVol);
+            isPlayingSpiderWalking = true;
+            Debug.Log("Spider Walking sounds playing");
+        }
     }
 
     IEnumerator SpawnSpiders() {
