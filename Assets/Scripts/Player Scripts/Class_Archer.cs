@@ -14,8 +14,6 @@ public class Class_Archer : MonoBehaviourPun
     float primaryStamCost = 0.3f;
     float secondaryStamCost = 0.3f;
     float abilityStamCost = 1.5f;
-    float dashSpeed = 125f;
-
     bool isCounting = false;
     int abilityCoolDown = 0;
 
@@ -96,16 +94,41 @@ public class Class_Archer : MonoBehaviourPun
         if (ctxt.performed && ValidAttack() && StaminaCheck(abilityStamCost) && abilityCoolDown == 0)
         {
             StartCoroutine(DashLength());
-
             abilityCoolDown = 2;
         }
     }
 
     IEnumerator DashLength() {
         PlayerController player = GetComponent<PlayerController>();
-        player.controller.Move((player.speed * dashSpeed) * Time.deltaTime * player.movement);
-        yield return new WaitForSeconds(1);
-        player.controller.Move(dashSpeed * Time.deltaTime * player.movement);
+
+        float dashDuration = 0.25f; 
+        float speedUpDuration = 0.075f;
+        float slowDownDuration = 0.05f;
+        float dashSpeedMultiplier = 30f;
+        float timeElapsed = 0f;
+        float normalSpeed = player.speed;
+
+        while (timeElapsed < speedUpDuration) {
+            player.controller.Move(Mathf.Lerp(normalSpeed, dashSpeedMultiplier, (timeElapsed / speedUpDuration)) * Time.deltaTime * player.movement);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        timeElapsed = 0f;
+        while (timeElapsed < dashDuration - (speedUpDuration + slowDownDuration)) {
+            player.controller.Move(dashSpeedMultiplier * Time.deltaTime * player.movement);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        timeElapsed = 0f;
+        while (timeElapsed < slowDownDuration) {
+            player.controller.Move(Mathf.Lerp(dashSpeedMultiplier, normalSpeed, (timeElapsed / slowDownDuration)) * Time.deltaTime * player.movement);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        player.controller.Move(normalSpeed * Time.deltaTime * player.movement);
     }
 
     //function for counting down our cooldown
@@ -138,25 +161,15 @@ public class Class_Archer : MonoBehaviourPun
 
     void TripleShot()
     {
-        if (PhotonNetwork.InRoom && photonView.IsMine)
-        {
-            Vector3 pos = player.arrowPosition.transform.position;
-            Quaternion rot = player.transform.rotation;
-            PhotonNetwork.Instantiate("Player/" + player.combatObjects[5].name, pos, rot);
-            pos.x -= .5f;
-            pos.y -= .5f;
-            PhotonNetwork.Instantiate("Player/" + player.combatObjects[5].name, pos, rot);
-            pos.x += 1f;
-            PhotonNetwork.Instantiate("Player/" + player.combatObjects[5].name, pos, rot);
-        }
-        // Otherwise spawn regularly 
-        else if (!PhotonNetwork.IsConnected)
-        {
-            Quaternion rot = player.transform.rotation;
-            for (int i = 1; i <= 3; i++) {
-                rot.x = i * 15;
-                Instantiate(player.combatObjects[5], player.arrowPosition.transform.position, rot);
-            }
+        Vector3 pos = player.arrowPosition.transform.position;
+        Quaternion rot = player.transform.rotation;
+
+        float[] angles = { -5, 0, 5 };
+        for (int i = 0; i < angles.Length; i++) {
+            if (PhotonNetwork.InRoom && photonView.IsMine)
+                PhotonNetwork.Instantiate("Player/" + player.combatObjects[5].name, pos, (rot * Quaternion.Euler(0, angles[i], 0)));
+            else if (!PhotonNetwork.IsConnected)
+                Instantiate(player.combatObjects[5], pos, (rot * Quaternion.Euler(0, angles[i], 0)));
         }
 
         GameManager.instance.isShooting = false;
