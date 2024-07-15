@@ -51,7 +51,7 @@ public class FireBall : MonoBehaviour
         IDamage dmg = other.GetComponent<IDamage>();
 
         //if there is an IDamage component we run the inside code
-        if (dmg != null && !other.gameObject.CompareTag("Player"))
+        if (dmg != null && !other.gameObject.CompareTag("Player") && !other.gameObject.CompareTag("PlayerChild"))
         {
             //deal damage to the object hit
             dmg.TakeDamage(damage);
@@ -59,7 +59,7 @@ public class FireBall : MonoBehaviour
             //destroy our projectile
             DestroyObject();
         }
-        else if (!other.gameObject.CompareTag("Player") && !other.isTrigger)
+        else if (!other.gameObject.CompareTag("Player") && !other.isTrigger && !other.gameObject.CompareTag("PlayerChild"))
             DestroyObject();
 
     }

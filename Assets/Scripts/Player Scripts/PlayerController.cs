@@ -22,16 +22,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     [SerializeField] Animator animate;
 
     [Header("------- Movement and Position -------")]
-    [SerializeField] float speed;
+    [SerializeField] public float speed;
     [SerializeField] int sprintMod;
     [SerializeField] int gravity;
     [SerializeField] int jumpMax;
     [SerializeField] int jumpSpeed;
     int jumpsAvailable;
     Vector3 moveDir;
-    public Vector3 playerV;
-    Vector3 networkPos;
-    Quaternion networkRot;
+    public Vector3 playerV, movement;
     public static Vector3 spawnLocation;
     public static Quaternion spawnRotation;
 
@@ -363,7 +361,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     void Movement()
     {
         //gets our input and adjusts the players position using a velocity formula
-        Vector3 movement = moveDir.x * transform.right + moveDir.z * transform.forward;
+        movement = moveDir.x * transform.right + moveDir.z * transform.forward;
         controller.Move(speed * Time.deltaTime * movement);
         playerV.y -= gravity * Time.deltaTime;
         controller.Move(playerV * Time.deltaTime);
