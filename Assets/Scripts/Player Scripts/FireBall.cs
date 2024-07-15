@@ -3,6 +3,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Unity.VisualScripting;
 
 public class FireBall : MonoBehaviour
 {
@@ -10,9 +12,14 @@ public class FireBall : MonoBehaviour
     [SerializeField] Rigidbody rb;
 
     //game variables that may be tweaked
-    [SerializeField] int damage;
+    [SerializeField] float damage;
     [SerializeField] int speed;
     [SerializeField] int destroyTime;
+    [SerializeField] DamageStats type;
+    [SerializeField] float minimumLight, maximumLight;
+
+    //variable to be used in the lighting
+    [SerializeField] new Light light;
 
 
     // Start is called before the first frame update
@@ -21,7 +28,21 @@ public class FireBall : MonoBehaviour
         //moves our projectile forward based on its speed
         rb.velocity = transform.forward * speed;
         //after being alive so long our projectile will die
-        Destroy(gameObject, destroyTime);
+        if (PhotonNetwork.InRoom)
+            StartCoroutine(WaitThenDestroy(gameObject, destroyTime));
+        else if (!PhotonNetwork.InRoom)
+            Destroy(gameObject, destroyTime);
+        light.intensity = Random.Range(minimumLight, maximumLight);
+    }
+
+    void Update() 
+    {
+        light.intensity = Random.Range(light.intensity + 0.2f, light.intensity - 0.2f);
+    }    
+
+    IEnumerator WaitThenDestroy(GameObject obj, float destroyTime) {
+        yield return new WaitForSeconds(destroyTime);
+        PhotonNetwork.Destroy(obj);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -34,13 +55,19 @@ public class FireBall : MonoBehaviour
         {
             //deal damage to the object hit
             dmg.TakeDamage(damage);
+            dmg.Afflict(type);
             //destroy our projectile
-            Destroy(gameObject);
+            DestroyObject();
         }
-        else if (!other.gameObject.CompareTag("Player"))
-        {
-            Destroy(gameObject);
-        }
+        else if (!other.gameObject.CompareTag("Player") && !other.isTrigger)
+            DestroyObject();
 
+    }
+
+    void DestroyObject() {
+        if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
+            PhotonNetwork.Destroy(gameObject);
+        else if (!PhotonNetwork.InRoom)
+            Destroy(gameObject);
     }
 }

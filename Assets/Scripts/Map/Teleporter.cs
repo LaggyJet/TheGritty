@@ -7,17 +7,16 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
-    public GameObject Player;
     public GameObject TPPoint;
 
     private void OnTriggerEnter(Collider collide)
     {
         if (collide.gameObject.CompareTag("Player"))
         {
-            Player.SetActive(false);
-            Player.transform.position = TPPoint.transform.position;
-            GameManager.instance.playerLocation = Player.transform.position;
-            Player.SetActive(true);
+            GameManager.instance.playerScript.controller.enabled = false;
+            GameManager.instance.player.transform.position = TPPoint.transform.position;
+            GameManager.playerLocation = GameManager.instance.player.transform.position;
+            GameManager.instance.playerScript.controller.enabled = true;
         }
     }
 }
