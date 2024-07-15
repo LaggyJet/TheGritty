@@ -216,14 +216,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.IsWriting) {
-            stream.SendNext(agent.transform.position);
-            stream.SendNext(agent.transform.rotation);
             stream.SendNext(enemyTargetPosition);
             stream.SendNext(isChasing);
         }
         else {
-            networkPosition = (Vector3)stream.ReceiveNext();
-            networkRotation = (Quaternion)stream.ReceiveNext();
             enemyTargetPosition = (Vector3)stream.ReceiveNext();
             isChasing = (bool)stream.ReceiveNext();
         }

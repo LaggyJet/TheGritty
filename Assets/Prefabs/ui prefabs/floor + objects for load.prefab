@@ -403,6 +403,7 @@ MonoBehaviour:
   textMeshPro: {fileID: 0}
   displayTime: 0
   hasRespawned: 0
+  classSelector: {fileID: 0}
   soundTrackAud: {fileID: 4812126170991636316}
   menuMusic: {fileID: 8300000, guid: f39b92c74b1b2ca4dabdc1ae1b4a40f6, type: 3}
   menuVol: 1

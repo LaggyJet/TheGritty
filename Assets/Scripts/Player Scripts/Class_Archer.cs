@@ -14,7 +14,7 @@ public class Class_Archer : MonoBehaviourPun
     float primaryStamCost = 0.3f;
     float secondaryStamCost = 0.3f;
     float abilityStamCost = 1.5f;
-    float dashSpeed = 3.5f;
+    float dashSpeed = 125f;
 
     bool isCounting = false;
     int abilityCoolDown = 0;
@@ -95,17 +95,17 @@ public class Class_Archer : MonoBehaviourPun
         //checks that we are not on cooldown and not using the ability
         if (ctxt.performed && ValidAttack() && StaminaCheck(abilityStamCost) && abilityCoolDown == 0)
         {
-            //if (player.playerV.x > player.playerV.z)
-            //{
-            //    player.playerV.x = dashSpeed;
-            //    abilityCoolDown = 3;
-            //}
-            //else if(player.playerV.z > player.playerV.x)
-            //{
-            //    player.playerV.z = dashSpeed;
-            //    abilityCoolDown = 3;
-            //}
+            StartCoroutine(DashLength());
+
+            abilityCoolDown = 2;
         }
+    }
+
+    IEnumerator DashLength() {
+        PlayerController player = GetComponent<PlayerController>();
+        player.controller.Move((player.speed * dashSpeed) * Time.deltaTime * player.movement);
+        yield return new WaitForSeconds(1);
+        player.controller.Move(dashSpeed * Time.deltaTime * player.movement);
     }
 
     //function for counting down our cooldown
@@ -125,21 +125,23 @@ public class Class_Archer : MonoBehaviourPun
     {
         if (PhotonNetwork.InRoom && photonView.IsMine)
         {
-            PhotonNetwork.Instantiate("Player/" + player.combatObjects[5].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
+            PhotonNetwork.Instantiate("Player/" + player.combatObjects[5].name, player.arrowPosition.transform.position, player.transform.rotation);
         }
         // Otherwise spawn regularly 
         else if (!PhotonNetwork.IsConnected)
         {
-            Instantiate(player.combatObjects[5], player.shootPosition.transform.position, player.shootPosition.transform.rotation);
+            Instantiate(player.combatObjects[5], player.arrowPosition.transform.position, player.transform.rotation);
         }
+
+        GameManager.instance.isShooting = false;
     }
 
     void TripleShot()
     {
         if (PhotonNetwork.InRoom && photonView.IsMine)
         {
-            Vector3 pos = player.shootPosition.transform.position;
-            Quaternion rot = player.shootPosition.transform.rotation;
+            Vector3 pos = player.arrowPosition.transform.position;
+            Quaternion rot = player.transform.rotation;
             PhotonNetwork.Instantiate("Player/" + player.combatObjects[5].name, pos, rot);
             pos.x -= .5f;
             pos.y -= .5f;
@@ -150,15 +152,14 @@ public class Class_Archer : MonoBehaviourPun
         // Otherwise spawn regularly 
         else if (!PhotonNetwork.IsConnected)
         {
-            Vector3 pos = player.shootPosition.transform.position;
-            Quaternion rot = player.shootPosition.transform.rotation;
-            Instantiate(player.combatObjects[5], pos, rot);
-            pos.x -= .5f;
-            pos.y -= .5f;
-            Instantiate(player.combatObjects[5], pos, rot);
-            pos.x += 1f;
-            Instantiate(player.combatObjects[5], pos, rot);
+            Quaternion rot = player.transform.rotation;
+            for (int i = 1; i <= 3; i++) {
+                rot.x = i * 15;
+                Instantiate(player.combatObjects[5], player.arrowPosition.transform.position, rot);
+            }
         }
+
+        GameManager.instance.isShooting = false;
     }
 
     //a function for checking certain conditions to see if it is appropriate to perform an action
