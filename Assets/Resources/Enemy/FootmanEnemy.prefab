@@ -432,7 +432,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 3116929254137260313}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.75
+  m_Radius: 0.5
   m_Speed: 3
   m_Acceleration: 32
   avoidancePriority: 50
@@ -554,8 +554,8 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
+  Synchronization: 2
+  OwnershipTransfer: 1
   observableSearch: 2
   ObservedComponents:
   - {fileID: 4052586374137224699}

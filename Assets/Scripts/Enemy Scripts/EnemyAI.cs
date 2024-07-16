@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 
-public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
+public class EnemyAI : MonoBehaviourPun, IDamage, IPunObservable {
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator anim;
@@ -22,38 +22,27 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
     [SerializeField] int range;
 
     DamageStats status;
-    bool isAttacking, wasKilled, isDOT, isChasing;
-    Vector3 playerDirection, enemyTargetPosition, networkPosition;
-    Quaternion networkRotation;
+    bool isAttacking, wasKilled, isDOT;
+    Vector3 playerDirection, enemyTargetPosition;
     float originalStoppingDistance, adjustedStoppingDistance, angleToPlayer;
     int id;
 
     void Start() {
-        isAttacking = wasKilled = isDOT = isChasing = false;
+        isAttacking = wasKilled = isDOT = false;
         GameManager.instance.updateEnemy(1);
         weapon.AddComponent<WeaponController>().SetWeapon(damage, canDOT, type);
         EnemyManager.Instance.AddEnemyType(enemyLimiter);
         originalStoppingDistance = agent.stoppingDistance;
         adjustedStoppingDistance = originalStoppingDistance * enemyLimiter.rangeMultiplier;
         id = gameObject.GetInstanceID();
-        networkPosition = transform.position;
-        networkRotation = transform.rotation;
+        if (!photonView.IsMine && PhotonNetwork.IsMasterClient)
+            photonView.TransferOwnership(PhotonNetwork.MasterClient);
     }
 
     void Update() {
         anim.SetFloat("Speed", Mathf.Lerp(anim.GetFloat("Speed"), agent.velocity.normalized.magnitude, Time.deltaTime * animationTransitionSpeed));
 
-        if (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected)
-            HandleHostLogic();
-        else if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
-            SmoothMovement();
-    }
-
-    public EnemyLimiter GetEnemyLimiter() { return enemyLimiter; }
-
-    void HandleHostLogic() {
-        if (CanSeePlayer()) {
-            isChasing = true;
+        if (CanSeePlayer() && (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected)) {
             agent.SetDestination(enemyTargetPosition);
 
             if (agent.remainingDistance < agent.stoppingDistance)
@@ -73,14 +62,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
             if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter))
                 StartCoroutine(Swing());
         }
-        else
-            isChasing = false;
     }
 
-    void SmoothMovement() {
-        agent.transform.position = Vector3.Lerp(agent.transform.position, networkPosition, Time.deltaTime * 10);
-        agent.transform.rotation = Quaternion.Lerp(agent.transform.rotation, networkRotation, Time.deltaTime * 10);
-    }
+    public EnemyLimiter GetEnemyLimiter() { return enemyLimiter; }
 
     bool CanSeePlayer() {
         GameObject closestPlayer = FindClosestPlayer();
@@ -216,16 +200,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.IsWriting && PhotonNetwork.IsMasterClient) {
-            stream.SendNext(agent.transform.position);
-            stream.SendNext(agent.transform.rotation);
-            stream.SendNext(enemyTargetPosition);
-            stream.SendNext(isChasing);
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
         }
-        else if (!PhotonNetwork.IsMasterClient && stream.IsReading) {
-            networkPosition = (Vector3)stream.ReceiveNext();
-            networkRotation = (Quaternion)stream.ReceiveNext();
-            enemyTargetPosition = (Vector3)stream.ReceiveNext();
-            isChasing = (bool)stream.ReceiveNext();
+        else if (stream.IsReading && !PhotonNetwork.IsMasterClient) {
+            transform.position = (Vector3)stream.ReceiveNext();
+            transform.rotation = (Quaternion)stream.ReceiveNext();
         }
     }
 }
