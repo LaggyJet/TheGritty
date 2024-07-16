@@ -533,22 +533,35 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     // Preventing Stamina from regenerating too fast
     private IEnumerator RegenStaminaDelay()
     {
+        // Function has been called
         isRegenerating = true; 
 
-        yield return new WaitForSeconds(5);
+        // Current stamina
+        float initial = stamina;
+        
+        // 3 second hold
+        yield return new WaitForSeconds(3);
 
-        if(stamina < staminaBase)
+        // If current stamina after 3 secs is not lower than initial
+        if(stamina >= initial && stamina < staminaBase)
         {
-            stamina += staminaRegenerate * Time.deltaTime;
-
-            if(stamina > staminaBase)
+            // If stamina isn't full 
+            while(stamina < staminaBase)
             {
-                stamina = staminaBase;
+                // Can adjust staminaRegenerate in Unity
+               stamina += staminaRegenerate * Time.deltaTime;
+
+                // Cap at 10, then store to make new stamina value
+                if(stamina > staminaBase)
+                {
+                    stamina = staminaBase;
+                }
+
+               yield return null;
             }
-
-            yield return null;
         }
-
+        
+        // Function off
         isRegenerating = false;
     }
 
