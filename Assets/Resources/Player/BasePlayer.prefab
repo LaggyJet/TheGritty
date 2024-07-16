@@ -2374,7 +2374,7 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: Warrior3
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Archer2
   m_SynchronizeLayers:
   - SynchronizeType: 1

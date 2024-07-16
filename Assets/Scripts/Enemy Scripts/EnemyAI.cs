@@ -23,7 +23,8 @@ public class EnemyAI : MonoBehaviourPun, IDamage, IPunObservable {
 
     DamageStats status;
     bool isAttacking, wasKilled, isDOT;
-    Vector3 playerDirection, enemyTargetPosition;
+    Vector3 playerDirection, enemyTargetPosition, netPos;
+    Quaternion netRot;
     float originalStoppingDistance, adjustedStoppingDistance, angleToPlayer;
     int id;
 
@@ -59,11 +60,19 @@ public class EnemyAI : MonoBehaviourPun, IDamage, IPunObservable {
                 agent.stoppingDistance = originalStoppingDistance;
             }
 
-            if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter))
-                StartCoroutine(Swing());
+            if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter)) {
+                if (PhotonNetwork.IsConnected)
+                    photonView.RPC(nameof(StartSwing), RpcTarget.All);
+                else
+                    StartSwing();
         }
     }
 
+    if (!PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom) {
+        transform.position = Vector3.Lerp(transform.position, netPos, Time.deltaTime * 10);
+        transform.rotation = Quaternion.Lerp(transform.rotation, netRot, Time.deltaTime * 10);
+    }
+}
     public EnemyLimiter GetEnemyLimiter() { return enemyLimiter; }
 
     bool CanSeePlayer() {
@@ -104,6 +113,9 @@ public class EnemyAI : MonoBehaviourPun, IDamage, IPunObservable {
         Quaternion rotation = Quaternion.LookRotation(playerDirection) * Quaternion.Euler(0, (flipEnemyDirection ? 180 : 0), 0);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * faceTargetSpeed);
     }
+
+    [PunRPC]
+    void StartSwing() { if (!isAttacking) StartCoroutine(Swing()); }
 
     IEnumerator Swing() {
         isAttacking = true;
@@ -146,7 +158,7 @@ public class EnemyAI : MonoBehaviourPun, IDamage, IPunObservable {
 
     public void TakeDamage(float damage) { 
         if (PhotonNetwork.InRoom)
-            photonView.RPC(nameof(RpcTakeDamage), RpcTarget.AllBuffered, damage);
+            photonView.RPC(nameof(RpcTakeDamage), RpcTarget.All, damage);
         else if (!PhotonNetwork.IsConnected)
             RpcTakeDamage(damage); 
     }
@@ -199,13 +211,18 @@ public class EnemyAI : MonoBehaviourPun, IDamage, IPunObservable {
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
-        if (stream.IsWriting && PhotonNetwork.IsMasterClient) {
+        if (stream.IsWriting) {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
+            stream.SendNext(isAttacking);
         }
-        else if (stream.IsReading && !PhotonNetwork.IsMasterClient) {
-            transform.position = (Vector3)stream.ReceiveNext();
-            transform.rotation = (Quaternion)stream.ReceiveNext();
+        else if (stream.IsReading) {
+            netPos = (Vector3)stream.ReceiveNext();
+            netRot = (Quaternion)stream.ReceiveNext();
+            isAttacking = (bool)stream.ReceiveNext();
+
+            if (isAttacking)
+                photonView.RPC(nameof(StartSwing), RpcTarget.All);
         }
     }
 }
