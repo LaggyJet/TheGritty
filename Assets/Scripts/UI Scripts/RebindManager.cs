@@ -15,6 +15,7 @@ public class RebindManager : MonoBehaviour
     public InputActionReference primaryFireRef;
     public InputActionReference secondaryFireRef;
     public InputActionReference abilityRef;
+    public InputActionReference skillTreeRef;
     // Start is called before the first frame update
     private void Start()
     {
@@ -27,6 +28,7 @@ public class RebindManager : MonoBehaviour
         primaryFireRef.action.Disable();
         secondaryFireRef.action.Disable();
         abilityRef.action.Disable();
+        skillTreeRef.action.Disable();
         var rebinds = PlayerPrefs.GetString("rebinds");
         if (!string.IsNullOrEmpty(rebinds))
             controls.LoadBindingOverridesFromJson(rebinds);
@@ -39,6 +41,7 @@ public class RebindManager : MonoBehaviour
         primaryFireRef.action.Enable();
         secondaryFireRef.action.Enable();
         abilityRef.action.Enable();
+        skillTreeRef.action.Enable();
         var rebinds = controls.SaveBindingOverridesAsJson();
         PlayerPrefs.SetString("rebinds", rebinds);
     }
