@@ -192,6 +192,9 @@ public class EnemyAI : MonoBehaviourPun, IDamage, IPunObservable {
         enemyTargetPosition = transform.position;
         agent.SetDestination(enemyTargetPosition);
         agent.radius = 0;
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        foreach (Collider collider in colliders)
+            collider.enabled = false;
         anim.SetTrigger("Death");
         var renderers = new List<Renderer>();
         Renderer[] childRenders = transform.GetComponentsInChildren<Renderer>();
