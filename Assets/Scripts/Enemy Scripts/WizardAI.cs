@@ -20,7 +20,6 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
     [SerializeField] float meleeDamage;
     [SerializeField] EnemyLimiter enemyLimiter;
     [SerializeField] int range;
-    [SerializeField] private List<GameObject> VFXList;
 
     DamageStats status;
     bool isAttacking, wasKilled, isDOT, iceBallShooting;
@@ -231,16 +230,16 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
     void StartDeath() { StartCoroutine(DeathAnimation()); }
 
     [PunRPC]
-    void UpdateRenderMode() {
-        //ALSO LOOK MORE INTO
-        mat.GetComponent<Renderer>().material.SetOverrideTag("RenderType", "Transparent");
-    }
+    void SetRenderModeTransparent() { RenderModeAdjuster.SetTransparent(mat); }
+
+    [PunRPC]
+    void SetRenderModeOpaque() { RenderModeAdjuster.SetOpaque(mat); }
 
     IEnumerator DeathAnimation() {
         if (PhotonNetwork.InRoom)
-            photonView.RPC(nameof(UpdateRenderMode), RpcTarget.All);
+            photonView.RPC(nameof(SetRenderModeTransparent), RpcTarget.All);
         else if (!PhotonNetwork.IsConnected)
-            UpdateRenderMode();
+            SetRenderModeTransparent();
         agent.isStopped = true;
         enemyTargetPosition = transform.position;
         agent.SetDestination(enemyTargetPosition);
@@ -255,11 +254,19 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
         yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
         while (model.material.color.a > 0) {
             foreach (Renderer render in renderers) {
-                float fadeSpeed = render.material.color.a - Time.deltaTime;
-                render.material.color = new Color(render.material.color.r, render.material.color.g, render.material.color.b, fadeSpeed);
+                if (render.material.HasProperty("_Color")) {
+                    float fadeSpeed = render.material.color.a - Time.deltaTime;
+                    render.material.color = new Color(render.material.color.r, render.material.color.g, render.material.color.b, fadeSpeed);
+                }
                 yield return null;
             }
         }
+
+        if (PhotonNetwork.InRoom)
+            photonView.RPC(nameof(SetRenderModeOpaque), RpcTarget.All);
+        else if (!PhotonNetwork.IsConnected)
+            SetRenderModeOpaque();
+
         if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
             PhotonNetwork.Destroy(gameObject);
         else if (!PhotonNetwork.InRoom)
@@ -271,14 +278,20 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             stream.SendNext(isAttacking);
+            stream.SendNext(iceBallShooting);
+            stream.SendNext(curTime);
         }
         else if (stream.IsReading) {
             netPos = (Vector3)stream.ReceiveNext();
             netRot = (Quaternion)stream.ReceiveNext();
             isAttacking = (bool)stream.ReceiveNext();
+            iceBallShooting = (bool)stream.ReceiveNext();
+            curTime = (float)stream.ReceiveNext();
 
-            if (isAttacking)
+            if (isAttacking && agent.remainingDistance < swingRadius)
                 photonView.RPC(nameof(StartSwing), RpcTarget.All);
+            else if (iceBallShooting)
+                photonView.RPC(nameof(StartIceBall), RpcTarget.All);
         }
     }
 }

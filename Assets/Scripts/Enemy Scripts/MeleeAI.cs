@@ -7,6 +7,7 @@ using Photon.Pun;
 
 public class MeleeAI : MonoBehaviourPun, IDamage, IPunObservable {
     [SerializeField] Renderer model;
+    [SerializeField] Material mat;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator anim;
     [SerializeField] bool flipEnemyDirection;
@@ -187,7 +188,17 @@ public class MeleeAI : MonoBehaviourPun, IDamage, IPunObservable {
     [PunRPC]
     void StartDeath() { StartCoroutine(DeathAnimation()); }
 
+    [PunRPC]
+    void SetRenderModeTransparent() { RenderModeAdjuster.SetTransparent(mat); }
+
+    [PunRPC]
+    void SetRenderModeOpaque() { RenderModeAdjuster.SetOpaque(mat); }
+
     IEnumerator DeathAnimation() {
+        if (PhotonNetwork.InRoom)
+            photonView.RPC(nameof(SetRenderModeTransparent), RpcTarget.All);
+        else if (!PhotonNetwork.IsConnected)
+            SetRenderModeTransparent();
         agent.isStopped = true;
         enemyTargetPosition = transform.position;
         agent.SetDestination(enemyTargetPosition);
@@ -207,6 +218,12 @@ public class MeleeAI : MonoBehaviourPun, IDamage, IPunObservable {
                 yield return null;
             }
         }
+
+        if (PhotonNetwork.InRoom)
+            photonView.RPC(nameof(SetRenderModeOpaque), RpcTarget.All);
+        else if (!PhotonNetwork.IsConnected)
+            SetRenderModeOpaque();
+
         if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
             PhotonNetwork.Destroy(gameObject);
         else if (!PhotonNetwork.InRoom)

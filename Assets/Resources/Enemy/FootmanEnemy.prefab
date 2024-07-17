@@ -479,6 +479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 6040238113782857933}
+  mat: {fileID: 2100000, guid: eed0f13a7184adf43b5caddd9973a998, type: 2}
   agent: {fileID: 177522156451135462}
   anim: {fileID: 4177812466157729367}
   flipEnemyDirection: 0
