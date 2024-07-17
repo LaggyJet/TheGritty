@@ -36,7 +36,12 @@ public class Class_Mage : MonoBehaviourPun
 
     private void Update()
     {
-        if(abilityActive > 0)
+        if (SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.STAMINA_USE_DOWN)) {
+            primaryStamCost = 0.03f;
+            secondaryStamCost = 0.2f;
+        }
+
+        if (abilityActive > 0)
         {
             StartCoroutine(AbilityActive());
         }

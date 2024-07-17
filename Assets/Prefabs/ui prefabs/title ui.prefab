@@ -2488,6 +2488,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: skill tree
       objectReference: {fileID: 0}
+    - target: {fileID: 4503018401794593193, guid: 4a4e85f43add02046bdccf43586d1fab, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6427244357362939110, guid: 4a4e85f43add02046bdccf43586d1fab, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7167773965843546163, guid: 4a4e85f43add02046bdccf43586d1fab, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1506.8646

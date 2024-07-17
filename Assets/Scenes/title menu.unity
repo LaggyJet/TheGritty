@@ -496,7 +496,7 @@ PrefabInstance:
     - target: {fileID: 6281002284272563087, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
       propertyPath: skillTreeScreen
       value: 
-      objectReference: {fileID: 1667560796}
+      objectReference: {fileID: 0}
     - target: {fileID: 7842770739436428333, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
       propertyPath: resDropDown
       value: 
@@ -780,11 +780,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f01b5103ba86e3d44bb28b2e74391c2c, type: 3}
---- !u!1 &1667560796 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8892917144442275814, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
-  m_PrefabInstance: {fileID: 3848136598217511954}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1770906995 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7984658471873960647, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}

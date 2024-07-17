@@ -38,6 +38,12 @@ public class Class_Warrior : MonoBehaviour
 
     private void Update()
     {
+        if (SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.STAMINA_USE_DOWN)) {
+            primaryStamCost = 0.2f;
+            secondaryStamCost = 0.02f;
+            abilityStamCost = 0.7f;
+        }
+        
         if (abilityActive > 0)
         {
             StartCoroutine(AbilityActive());

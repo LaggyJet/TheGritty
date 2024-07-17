@@ -28,6 +28,12 @@ public class Class_Archer : MonoBehaviourPun
 
     private void Update()
     {
+        if (SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.STAMINA_USE_DOWN)) {
+            primaryStamCost = 0.2f;
+            secondaryStamCost = 0.2f;
+            abilityStamCost = 1f;
+        }
+
         if (abilityCoolDown > 0)
         {
             StartCoroutine(AbilityCountDown());
