@@ -92,7 +92,7 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence {
     public string SaveSkills() {
         string state = "";
         for (int i = 0; i < skillState.Count; i++)
-            state += skillState[i].Item2;
+            state += skillState[i].Item2 ? '1' : '0';
 
         return state;
     }
