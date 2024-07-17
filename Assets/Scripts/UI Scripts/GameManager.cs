@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
                 skillTreeScreen.SetActive(true);
                 statePause();
                 isSkTrActive = !isSkTrActive;
+                SkillTreeManager.Instance.LoadData(DataPersistenceManager.gameData);
             }
             else if (ctxt.performed && isSkTrActive && SceneManager.GetActiveScene().name == "Build Scene")
             {
@@ -98,6 +99,8 @@ public class GameManager : MonoBehaviour
                 stateResumeGameLoads();
                 isSkTrActive = !isSkTrActive;
                 SoundTrackswitch(GameMusic.Gameplay);
+               SkillTreeManager.Instance.SaveData(ref DataPersistenceManager.gameData);
+                
             }
         }
     }

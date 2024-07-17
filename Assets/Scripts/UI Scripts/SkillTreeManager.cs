@@ -6,8 +6,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
-public class SkillTreeManager : MonoBehaviour {
+public class SkillTreeManager : MonoBehaviour, IDataPersistence {
     public static SkillTreeManager Instance;
     public enum Skills {
         ATTACK_DAMAGE_UP = 0,
@@ -51,13 +52,26 @@ public class SkillTreeManager : MonoBehaviour {
         Instance = this;
         gameObject.transform.Find("Canvas").gameObject.SetActive(true);
         gameObject.SetActive(false);
+        if(SceneManager.GetActiveScene().name == "BuildScene")
+        LoadData(DataPersistenceManager.gameData);
     }
 
     void Start() {
-        foreach (Skills skill in Enum.GetValues(typeof(Skills))) {
+        foreach (Skills skill in Enum.GetValues(typeof(Skills)))
+        {
             skillState.Add(new Tuple<Skills, bool>(skill, false));
             AddPoint();
         }
+        //LoadData(DataPersistenceManager.gameData);
+        if (skillState[0].Item2 == true) { attackDmgLock.enabled = false;}
+        if (skillState[1].Item2 == true) { attackSpdLock.enabled = false; }
+        if (skillState[2].Item2 == true) { staminaUseLock.enabled = false; }
+        if (skillState[3].Item2 == true) { ability1Lock.enabled = false; }
+        if (skillState[4].Item2 == true) { ability2Lock.enabled = false; }
+        if (skillState[5].Item2 == true) { ability3Lock.enabled = false; }
+        if (skillState[6].Item2 == true) { hpAmtLock.enabled = false; }
+        if (skillState[7].Item2 == true) { unlockShieldLock.enabled = false; }
+        if (skillState[8].Item2 == true) { attackDmgLock.enabled = false; }
     }
 
     public void AddPoint() {
@@ -120,6 +134,7 @@ public class SkillTreeManager : MonoBehaviour {
         if (CanUnlockSkill(Skills.ATTACK_DAMAGE_UP) && !skillState[0].Item2) {
             attackDmgLock.enabled = false;
             skillState[0] = new Tuple<Skills, bool>(skillState[0].Item1, true);
+            
             LosePoint();
             UnlockedSkillSound();
         }
@@ -213,5 +228,17 @@ public class SkillTreeManager : MonoBehaviour {
         }
         else
             CannotUnlockSkillSound();
+    }
+
+    //load data of a previous game
+    public void LoadData(GameData data)
+    {
+        LoadSkills(data.skills);
+    }
+
+    //saves all important current data
+    public void SaveData(ref GameData data)
+    {
+        data.skills = SaveSkills();
     }
 }
