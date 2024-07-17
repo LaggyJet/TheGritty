@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class SkillTreeManager : MonoBehaviour {
     public static SkillTreeManager Instance;
@@ -69,17 +70,17 @@ public class SkillTreeManager : MonoBehaviour {
         curPointsText.text = curPoints.ToString("F0");
     }
 
-    public void LoadSkills(List<bool> skills) {
+    public void LoadSkills(string skills) {
         for (int i = 0; i < skillState.Count; i++)
-            skillState[i] = new Tuple<Skills, bool>((Skills)i, skills[i]);
+            skillState[i] = new Tuple<Skills, bool>((Skills)i, (skills[i] == '1'));            
     }
 
-    public List<bool> SaveSkills() {
-        List<bool> states = new();
+    public string SaveSkills() {
+        string state = "";
         for (int i = 0; i < skillState.Count; i++)
-            states.Add(skillState[i].Item2);
+            state += skillState[i].Item2;
 
-        return states;
+        return state;
     }
 
     bool CanUnlockSkill(Skills skill) {
