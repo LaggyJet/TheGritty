@@ -221,13 +221,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             hasShield = true;
 
         // Check if the player has the damage taken down unlocked and prevent repeat calls if they do
-        if (!damageTakenDownUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.SKills.DAMAGE_TAKEN_DOWN)) {
-            damageTakenDownUnlockedCheck = true;
+        if (!damageReductionUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.DAMAGE_TAKEN_DOWN)) {
+            damageReductionUnlockedCheck = true;
             damageReduction = 0.75f;
         }
 
         // Check if the player has the hp amount up unlocked and prevent repeat calls if they do
-        if (!hpAmountUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.SKills.HP_AMOUNT_UP)) {
+        if (!hpAmountUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.HP_AMOUNT_UP)) {
             hpAmountUnlockedCheck = true;
             hpBase = hp = hpBuff;
         }
