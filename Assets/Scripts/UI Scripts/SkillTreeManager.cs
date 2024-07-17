@@ -69,15 +69,14 @@ public class SkillTreeManager : MonoBehaviour {
         curPointsText.text = curPoints.ToString("F0");
     }
 
-    void LoadSkills(List<bool> skillState) {
-        skillState.clear();
-        foreach (Skills skill in Enum.GetValues(typeof(Skills)))
-            skillState.Add(new Tuple<Skills, bool>(skill, skillState));
+    public void LoadSkills(List<bool> skills) {
+        for (int i = 0; i < skillState.Count; i++)
+            skillState[i] = new Tuple<Skills, bool>((Skills)i, skills[i]);
     }
 
-    List<bool> SaveSkills() {
+    public List<bool> SaveSkills() {
         List<bool> states = new();
-        for (int i = 0; i < skillState.length; i++)
+        for (int i = 0; i < skillState.Count; i++)
             states.Add(skillState[i].Item2);
 
         return states;
