@@ -24216,7 +24216,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5979591942055201793, guid: 7590d778c04698a41bd24210f4351062, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.4800034
+      value: -2.9000015
       objectReference: {fileID: 0}
     - target: {fileID: 5979591942055201793, guid: 7590d778c04698a41bd24210f4351062, type: 3}
       propertyPath: m_LocalRotation.w
@@ -24258,6 +24258,11 @@ PrefabInstance:
 --- !u!4 &743670487 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5979591942055201793, guid: 7590d778c04698a41bd24210f4351062, type: 3}
+  m_PrefabInstance: {fileID: 743670486}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &743670488 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3782900674562684275, guid: 7590d778c04698a41bd24210f4351062, type: 3}
   m_PrefabInstance: {fileID: 743670486}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &743743823
@@ -63094,6 +63099,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7904596918992867052}
+    - target: {fileID: 7201814496331577896, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: spawn
+      value: 
+      objectReference: {fileID: 743670488}
     - target: {fileID: 7765248277729462968, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_Name
       value: UI - NEW(week4)
