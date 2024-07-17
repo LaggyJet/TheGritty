@@ -12,7 +12,7 @@ public class GameData
     public Quaternion playerRot;
     public float playerHp;
     public float playerStamina;
-    public List<bool> skills;
+    public string skills;
 
     public GameData()  //constructor - values are the initial values when starting a game
     {
@@ -20,7 +20,7 @@ public class GameData
             this.playerRot = Quaternion.identity;
             this.playerHp = 0;
             this.playerStamina = 0;
-            this.skills = new List<bool>();
+            this.skills = "";
 
     }
 }
