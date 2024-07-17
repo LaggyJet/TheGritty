@@ -233,12 +233,12 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence {
     //load data of a previous game
     public void LoadData(GameData data)
     {
-        LoadSkills(data.skills);
+       // LoadSkills(data.skills);
     }
 
     //saves all important current data
     public void SaveData(ref GameData data)
     {
-        data.skills = SaveSkills();
+       //data.skills = SaveSkills();
     }
 }
