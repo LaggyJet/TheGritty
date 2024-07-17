@@ -23,19 +23,19 @@ public class SkillTreeManager : MonoBehaviour {
     readonly List<Tuple<Skills, bool>> skillState = new();
 
     //Attack
-    [Header("------ Attack ------")]
+    [Header("------ attack ------")]
     [SerializeField] Image attackDmgLock;
     [SerializeField] Image attackSpdLock;
     [SerializeField] Image staminaUseLock;
 
     //Ability
-    [Header("------ Ability ------")]
+    [Header("------ ability ------")]
     [SerializeField] Image ability1Lock;
     [SerializeField] Image ability2Lock;
     [SerializeField] Image ability3Lock;
 
     //Defense
-    [Header("------ Defense ------")]
+    [Header("------ defense ------")]
     [SerializeField] Image hpAmtLock;
     [SerializeField] Image unlockShieldLock;
     [SerializeField] Image takeDmgLock;

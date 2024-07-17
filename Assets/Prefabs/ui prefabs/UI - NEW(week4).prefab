@@ -2147,7 +2147,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 0
+  sceneViewId: 30
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &5065956841418837493
@@ -2515,6 +2515,10 @@ PrefabInstance:
       value: skill tree
       objectReference: {fileID: 0}
     - target: {fileID: 4503018401794593193, guid: 4a4e85f43add02046bdccf43586d1fab, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6427244357362939110, guid: 4a4e85f43add02046bdccf43586d1fab, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -2906,7 +2910,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 665038802203003288, guid: 64ec342c9610b3040af6955fd9a306e5, type: 3}
       propertyPath: sceneViewId
-      value: 0
+      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 2623210209525587913, guid: 64ec342c9610b3040af6955fd9a306e5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
