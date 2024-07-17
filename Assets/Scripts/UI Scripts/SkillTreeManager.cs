@@ -69,6 +69,20 @@ public class SkillTreeManager : MonoBehaviour {
         curPointsText.text = curPoints.ToString("F0");
     }
 
+    void LoadSkills(List<bool> skillState) {
+        skillState.clear();
+        foreach (Skills skill in Enum.GetValues(typeof(Skills)))
+            skillState.Add(new Tuple<Skills, bool>(skill, skillState));
+    }
+
+    List<bool> SaveSkills() {
+        List<bool> states = new();
+        for (int i = 0; i < skillState.length; i++)
+            states.Add(skillState[i].Item2);
+
+        return states;
+    }
+
     bool CanUnlockSkill(Skills skill) {
         if (curPoints > 0) {
             switch (skill) {
