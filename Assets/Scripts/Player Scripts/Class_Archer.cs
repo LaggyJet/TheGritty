@@ -17,7 +17,7 @@ public class Class_Archer : MonoBehaviourPun
     bool isCounting = false;
     int abilityCoolDown = 0;
     float dashMultipler = 30f;
-    bool staminaUnlockedCheck, ability1UnlockedCheck, ability2UnlockedCheck, ability3UnlockedCheck = false;
+    bool staminaUnlockedCheck, attackSpeedUnlockedCheck, ability1UnlockedCheck, ability2UnlockedCheck, ability3UnlockedCheck = false;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +35,14 @@ public class Class_Archer : MonoBehaviourPun
             primaryStamCost = 0.2f;
             secondaryStamCost = 0.2f;
             abilityStamCost = 1f;
+            staminaUnlockedCheck = true;
+        }
+
+        // Check if the player has the attack speed up unlocked and prevent repeat calls if they do
+        if (!attackSpeedUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ATTACK_SPEED_UP))
+        {
+            player.SetAnimationSpeed(0.75f);
+            attackSpeedUnlockedCheck = true;
         }
 
         // Check if the player has the ability strength 1 unlocked and prevent repeat calls if they do

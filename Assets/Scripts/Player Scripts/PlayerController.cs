@@ -127,6 +127,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     float damageReduction = 1f;
     bool hasShield = false;
     int timeUntilShieldRegen = 0;
+    int MAX_REGEN_TIME = 5;
     bool hpAmountUnlockedCheck, damageReductionUnlockedCheck, shieldUnlockedCheck = false;
 
     private void Awake()
@@ -467,6 +468,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
     //Timer that controls the shield regen
     IEnumerator ShieldTimer() {
+        yield return new WaitForSeconds(1);
         while (timeUntilShieldRegen != 0) {
             --timeUntilShieldRegen;
             yield return new WaitForSeconds(1);
@@ -476,19 +478,20 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     //this function happens when the player is called to take damage
     public void TakeDamage(float amount)
     {
-        // If they are hit before regen is over, reset timer
-        if (!hasShield && timeUntilShieldRegen > 0)
-            timeUntilShieldRegen = 3;
-
         // If the player has the shield, turn it off and start regen timer
-        else if (hasShield) {
+        if (hasShield) {
             hasShield = false;
+            timeUntilShieldRegen = MAX_REGEN_TIME;
             StartCoroutine(ShieldTimer());
             return;
         }
 
+        // If they are hit before regen is over, reset timer
+        if (!hasShield && timeUntilShieldRegen > 0)
+            timeUntilShieldRegen = MAX_REGEN_TIME;
+
         //IF BLOCKING TAKE NO DAMAGE TO HEALTH, JUST LOSE STAMINA <3
-        if(isBlocking)
+        if (isBlocking)
         {
             stamina -= 1.5f;
         }
@@ -756,6 +759,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     {
         animate.SetBool(boolName, state);
     }
+
+    public void SetAnimationSpeed(float speed)
+    {
+        animate.speed = speed;
+    }
+
     public void PlaySound(char context) // A for attack, 
     {
         switch (context)

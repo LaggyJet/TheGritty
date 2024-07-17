@@ -24,7 +24,7 @@ public class Class_Warrior : MonoBehaviour
     float damage = 10;
     bool canDOT = false;
     float abilityMultiplier = 2f;
-    bool staminaUnlockedCheck, ability1UnlockedCheck, ability2UnlockedCheck, ability3UnlockedCheck = false;
+    bool staminaUnlockedCheck, attackSpeedUnlockedCheck, ability1UnlockedCheck, ability2UnlockedCheck, ability3UnlockedCheck = false;
 
     //this is our start function that does a few important things
     private void Start()
@@ -46,6 +46,13 @@ public class Class_Warrior : MonoBehaviour
             secondaryStamCost = 0.02f;
             abilityStamCost = 0.7f;
             staminaUnlockedCheck = true;
+        }
+
+        // Check if the player has the attack speed up unlocked and prevent repeat calls if they do
+        if (!attackSpeedUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ATTACK_SPEED_UP))
+        {
+            player.SetAnimationSpeed(0.75f);
+            attackSpeedUnlockedCheck = true;
         }
 
         // Check if the player has the ability strength 1 unlocked and prevent repeat calls if they do

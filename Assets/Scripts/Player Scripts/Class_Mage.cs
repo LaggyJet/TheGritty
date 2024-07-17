@@ -22,7 +22,7 @@ public class Class_Mage : MonoBehaviourPun
     float secondaryFireSpeed = .2f;
 
     int abilityActiveTime = 3;
-    bool staminaUnlockedCheck, ability1UnlockedCheck, ability2UnlockedCheck, ability3UnlockedCheck = false;
+    bool staminaUnlockedCheck, attackSpeedUnlockedCheck, ability1UnlockedCheck, ability2UnlockedCheck, ability3UnlockedCheck = false;
 
     //this is our start function that does a few important things
     private void Start()
@@ -42,6 +42,14 @@ public class Class_Mage : MonoBehaviourPun
         if (!staminaUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.STAMINA_USE_DOWN)) {
             primaryStamCost = 0.03f;
             secondaryStamCost = 0.2f;
+            staminaUnlockedCheck = true;
+        }
+
+        // Check if the player has the attack speed up unlocked and prevent repeat calls if they do
+        if (!attackSpeedUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ATTACK_SPEED_UP))
+        {
+            player.SetAnimationSpeed(0.75f);
+            attackSpeedUnlockedCheck = true;
         }
 
         // Check if the player has the ability strength 1 unlocked and prevent repeat calls if they do
