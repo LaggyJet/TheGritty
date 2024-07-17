@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2012408011436502246}
   - component: {fileID: -7157531119092562621}
   m_Layer: 0
-  m_Name: Ceiling_SquareLarge
+  m_Name: 1 Ceiling Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
