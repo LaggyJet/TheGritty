@@ -1833,6 +1833,7 @@ Transform:
   - {fileID: 4007398756469464205}
   - {fileID: 6007052764040083030}
   - {fileID: 1695524547826117909}
+  - {fileID: 8617888896364006976}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -179.487, z: 0}
 --- !u!114 &8103881619842969174
@@ -1883,6 +1884,7 @@ MonoBehaviour:
   - {fileID: 1377214065161546418}
   - {fileID: 5218697179704809624, guid: d8d3091eaa34b60498c31bb0f4379ac4, type: 3}
   - {fileID: 7305093251907783399}
+  targetPosition: {fileID: 4346028737159617409}
   useStamina: 1
   isBlocking: 0
   classCase: 0
@@ -2256,22 +2258,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 61caaa16-fc53-4674-afbc-d7531ae1e8f2
     m_ActionName: Player - default/Ability 1[/Keyboard/e]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8406811588185526439, guid: 02796a3c749a7014a9868093c5079fbe, type: 3}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OnSkillTreeOpen
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: add42250-34b2-46b5-8207-72d023fd139c
-    m_ActionName: Player/Skill Tree[/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -3094,6 +3080,37 @@ Transform:
   m_Children:
   - {fileID: 7938499478902886493}
   m_Father: {fileID: 3264328668762492033}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4346028737159617409
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8617888896364006976}
+  m_Layer: 0
+  m_Name: TargetPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8617888896364006976
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4346028737159617409}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.016, y: 1.057, z: -0.049}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2555241615034149236}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4351090624045192134
 GameObject:
