@@ -12466,6 +12466,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4240539003346547667, guid: 33463b11b702c3b40ad6578cf40c4b0f, type: 3}
   m_PrefabInstance: {fileID: 377035630}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &377061844 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1321379142516672837, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+  m_PrefabInstance: {fileID: 3695449213913047165}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &377766603
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -63022,6 +63027,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1321379142516672837, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1536078968798751429, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -63146,9 +63155,17 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7904596918992867052}
+    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: skillTreeScreen
+      value: 
+      objectReference: {fileID: 377061844}
     - target: {fileID: 7765248277729462968, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_Name
       value: UI - NEW(week4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8437982652078943242, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8722297960870335626, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: sceneViewId
