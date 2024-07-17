@@ -40,6 +40,7 @@ public class Class_Warrior : MonoBehaviour
 
     private void Update()
     {
+        // Check if the player has the stamina use down unlocked and prevent repeat calls if they do
         if (!staminaUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.STAMINA_USE_DOWN)) {
             primaryStamCost = 0.2f;
             secondaryStamCost = 0.02f;
@@ -47,14 +48,17 @@ public class Class_Warrior : MonoBehaviour
             staminaUnlockedCheck = true;
         }
 
+        // Check if the player has the ability strength 1 unlocked and prevent repeat calls if they do
         if (!ability1UnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ABILITY_STRENGTH_1)) {
             abilityMultiplier = 2.25f;
             ability1UnlockedCheck = true;
         }
+        // Check if the player has the ability strength 2 unlocked and prevent repeat calls if they do
         else if (!ability2UnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ABILITY_STRENGTH_2)) {
             abilityMultiplier = 2.5f;
             ability2UnlockedCheck = true;
         }
+        // Check if the player has the ability strength 3 unlocked and prevent repeat calls if they do
         else if (!ability3UnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ABILITY_STRENGTH_3)) {
             abilityMultiplier = 3f;
             ability3UnlockedCheck = true;

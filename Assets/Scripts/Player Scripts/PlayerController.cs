@@ -122,6 +122,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     private const string CLASS_SELECTED = "ClassSelected";
     ClassSelection currentClassSelection;
 
+    // Skill tree vars
+    float hpBuff = 15f;
+    float damageReduction = 1f;
+    bool hasShield = false;
+    int timeUntilShieldRegen = 0;
+    bool hpAmountUnlockedCheck, damageReductionUnlockedCheck, shieldUnlockedCheck = false;
+
     private void Awake()
     {
         instance = this;
@@ -205,6 +212,27 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
     void Update()
     {
+        // Check if the player has the shield unlocked and prevent repeat calls if they do
+        if (!shieldUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.SHIELD))
+            shieldUnlockedCheck = true;
+
+        // Regen the shield if timer is over
+        if (!hasShield && shieldUnlockedCheck && timeUntilShieldRegen == 0)
+            hasShield = true;
+
+        // Check if the player has the damage taken down unlocked and prevent repeat calls if they do
+        if (!damageTakenDownUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.SKills.DAMAGE_TAKEN_DOWN)) {
+            damageTakenDownUnlockedCheck = true;
+            damageReduction = 0.75f;
+        }
+
+        // Check if the player has the hp amount up unlocked and prevent repeat calls if they do
+        if (!hpAmountUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.SKills.HP_AMOUNT_UP)) {
+            hpAmountUnlockedCheck = true;
+            hpBase = hp = hpBuff;
+        }
+
+
         // Make sure the player keeps their class in multiplayer
         if (photonView.IsMine)
             VerifyClassState();
@@ -437,16 +465,35 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         isDOT = false;
     }
 
+    //Timer that controls the shield regen
+    IEnumerator ShieldTimer() {
+        while (timeUntilShieldRegen != 0) {
+            --timeUntilShieldRegen;
+            yield return new WaitForSeconds(1);
+        }
+    }
+
     //this function happens when the player is called to take damage
     public void TakeDamage(float amount)
     {
+        // If they are hit before regen is over, reset timer
+        if (!hasShield && timeUntilShieldRegen > 0)
+            timeUntilShieldRegen = 3;
+
+        // If the player has the shield, turn it off and start regen timer
+        else if (hasShield) {
+            hasShield = false;
+            StartCoroutine(ShieldTimer());
+            return;
+        }
+
         //IF BLOCKING TAKE NO DAMAGE TO HEALTH, JUST LOSE STAMINA <3
         if(isBlocking)
         {
             stamina -= 1.5f;
         }
         else
-            hp -= amount;
+            hp -= amount * damageReduction;
 
         if (!PhotonNetwork.IsConnected && BluetoothManager.instance != null)
             BluetoothManager.instance.UpdateBarGraphHealth(hp);
