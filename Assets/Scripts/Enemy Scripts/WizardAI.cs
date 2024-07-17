@@ -23,14 +23,14 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
     [SerializeField] private List<GameObject> VFXList;
 
     DamageStats status;
-    bool isAttacking, wasKilled, isDOT;
+    bool isAttacking, wasKilled, isDOT, iceBallShooting;
     Vector3 playerDirection, enemyTargetPosition, netPos;
     Quaternion netRot;
     float originalStoppingDistance, adjustedStoppingDistance, angleToPlayer, curTime;
     int id;
 
     void Start() {
-        isAttacking = wasKilled = isDOT = false;
+        isAttacking = wasKilled = isDOT = iceBallShooting = false;
         GameManager.instance.updateEnemy(1);
         foreach (GameObject melee in meleeWeapons)
             melee.AddComponent<WeaponController>().SetWeapon(meleeDamage, false, null);
@@ -43,12 +43,16 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
 
     }
 
+    bool canSee;
+
     void Update() {
         anim.SetFloat("Speed", Mathf.Lerp(anim.GetFloat("Speed"), agent.velocity.normalized.magnitude, Time.deltaTime * animationTransitionSpeed));
 
-        if (CanSeePlayer() && (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected))
+        canSee = CanSeePlayer();
+        if (canSee && (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected))
         {
-            agent.SetDestination(enemyTargetPosition);
+            if (!iceBallShooting)
+                agent.SetDestination(enemyTargetPosition);
 
             if (agent.remainingDistance < agent.stoppingDistance)
                 FaceTarget();
@@ -130,26 +134,22 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
     void StartIceBall() { if (!isAttacking) StartCoroutine(SpawnIceBall()); }
 
     IEnumerator SpawnIceBall() {
-        isAttacking = true;
-
-        //LOOK MORE INTO
-        foreach (GameObject object_ in VFXList)
-        {
-            Color color = object_.GetComponent<ParticleSystem>().main.startColor.color;
-            color.a = 255;
-            object_.GetComponent<ParticleSystem>().startColor = color;
-        }
-
+        isAttacking = iceBallShooting = true;
+        agent.isStopped = true;
+        agent.SetDestination(transform.position);
         anim.SetTrigger("IceBall");
         EnemyManager.Instance.AddAttackEnemy(enemyLimiter, id);
         yield return new WaitForSeconds(iceBallTimer);
         isAttacking = false;
+        EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
     }
 
     public void IceBallCreation() {
         if (PhotonNetwork.InRoom && photonView.IsMine)
             PhotonNetwork.Instantiate("Enemy/" + projectile.name, shootPos.transform.position, shootPos.transform.rotation);
-        Instantiate(projectile, shootPos.transform.position, shootPos.transform.rotation);
+        else if (!PhotonNetwork.InRoom)
+            Instantiate(projectile, shootPos.transform.position, shootPos.transform.rotation);
+        iceBallShooting = agent.isStopped = false;
     }
 
     [PunRPC]
@@ -180,7 +180,7 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
     public void RpcTakeDamage(float damage) {
         hp -= damage;
         if (!isDOT) {
-            enemyTargetPosition = GameManager.instance.player.transform.position;
+            enemyTargetPosition = FindClosestPlayer().transform.position;
             agent.SetDestination(enemyTargetPosition);
         }
 

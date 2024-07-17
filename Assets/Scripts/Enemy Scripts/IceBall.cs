@@ -11,7 +11,7 @@ public class IceBall : MonoBehaviour {
 
     void Start() {
         //moves our projectile forward based on its speed
-        rb.velocity = FindClosestPlayer().GetComponent<PlayerController>().targetPosition.transform.position;
+        rb.velocity = ((FindClosestPlayer().GetComponent<PlayerController>().targetPosition.transform.position - transform.position).normalized) * speed;
         //after being alive so long our projectile will die
         if (PhotonNetwork.InRoom)
             StartCoroutine(WaitThenDestroy(gameObject, destroyTime));
@@ -33,13 +33,13 @@ public class IceBall : MonoBehaviour {
         IDamage dmg = other.GetComponent<IDamage>();
 
         //if there is an IDamage component we run the inside code
-        if (dmg != null && other.gameObject.CompareTag("Player") && other.gameObject.CompareTag("PlayerChild")) {
+        if (dmg != null && (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("PlayerChild"))) {
             //deal damage to the object hit
             dmg.TakeDamage(damage);
             //destroy our projectile
             DestroyObject();
         }
-        else if (other.gameObject.CompareTag("Player") && !other.isTrigger && other.gameObject.CompareTag("PlayerChild"))
+        else if ((other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("PlayerChild")) && !other.isTrigger)
             DestroyObject();
 
     }

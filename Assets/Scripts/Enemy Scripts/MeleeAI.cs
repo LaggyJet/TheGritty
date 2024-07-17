@@ -137,7 +137,7 @@ public class MeleeAI : MonoBehaviourPun, IDamage, IPunObservable {
     public void RpcTakeDamage(float damage) {
         hp -= damage;
         if (!isDOT) {
-            enemyTargetPosition = GameManager.instance.player.transform.position;
+            enemyTargetPosition = FindClosestPlayer().transform.position;
             agent.SetDestination(enemyTargetPosition);
         }
 
