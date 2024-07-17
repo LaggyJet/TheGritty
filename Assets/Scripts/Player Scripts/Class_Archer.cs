@@ -16,6 +16,8 @@ public class Class_Archer : MonoBehaviourPun
     float abilityStamCost = 1.5f;
     bool isCounting = false;
     int abilityCoolDown = 0;
+    float dashMultipler = 30f;
+    bool staminaUnlockedCheck, ability1UnlockedCheck, ability2UnlockedCheck, ability3UnlockedCheck = false;
 
     // Start is called before the first frame update
     void Start()
@@ -28,10 +30,26 @@ public class Class_Archer : MonoBehaviourPun
 
     private void Update()
     {
-        if (SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.STAMINA_USE_DOWN)) {
+        if (!staminaUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.STAMINA_USE_DOWN)) {
             primaryStamCost = 0.2f;
             secondaryStamCost = 0.2f;
             abilityStamCost = 1f;
+        }
+
+        if (!ability1UnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ABILITY_STRENGTH_1))
+        {
+            dashMultipler = 35f;
+            ability1UnlockedCheck = true;
+        }
+        else if (!ability2UnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ABILITY_STRENGTH_2))
+        {
+            dashMultipler = 40f;
+            ability2UnlockedCheck = true;
+        }
+        else if (!ability3UnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ABILITY_STRENGTH_3))
+        {
+            dashMultipler = 45f;
+            ability3UnlockedCheck = true;
         }
 
         if (abilityCoolDown > 0)
@@ -110,26 +128,26 @@ public class Class_Archer : MonoBehaviourPun
         float dashDuration = 0.25f; 
         float speedUpDuration = 0.075f;
         float slowDownDuration = 0.05f;
-        float dashSpeedMultiplier = 30f;
+        float dashSpeed = dashMultipler;
         float timeElapsed = 0f;
         float normalSpeed = player.speed;
 
         while (timeElapsed < speedUpDuration) {
-            player.controller.Move(Mathf.Lerp(normalSpeed, dashSpeedMultiplier, (timeElapsed / speedUpDuration)) * Time.deltaTime * player.movement);
+            player.controller.Move(Mathf.Lerp(normalSpeed, dashSpeed, (timeElapsed / speedUpDuration)) * Time.deltaTime * player.movement);
             timeElapsed += Time.deltaTime;
             yield return null;
         }
 
         timeElapsed = 0f;
         while (timeElapsed < dashDuration - (speedUpDuration + slowDownDuration)) {
-            player.controller.Move(dashSpeedMultiplier * Time.deltaTime * player.movement);
+            player.controller.Move(dashSpeed * Time.deltaTime * player.movement);
             timeElapsed += Time.deltaTime;
             yield return null;
         }
 
         timeElapsed = 0f;
         while (timeElapsed < slowDownDuration) {
-            player.controller.Move(Mathf.Lerp(dashSpeedMultiplier, normalSpeed, (timeElapsed / slowDownDuration)) * Time.deltaTime * player.movement);
+            player.controller.Move(Mathf.Lerp(dashSpeed, normalSpeed, (timeElapsed / slowDownDuration)) * Time.deltaTime * player.movement);
             timeElapsed += Time.deltaTime;
             yield return null;
         }

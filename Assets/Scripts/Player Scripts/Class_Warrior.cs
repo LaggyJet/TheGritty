@@ -23,6 +23,8 @@ public class Class_Warrior : MonoBehaviour
 
     float damage = 10;
     bool canDOT = false;
+    float abilityMultiplier = 2f;
+    bool staminaUnlockedCheck, ability1UnlockedCheck, ability2UnlockedCheck, ability3UnlockedCheck = false;
 
     //this is our start function that does a few important things
     private void Start()
@@ -38,12 +40,26 @@ public class Class_Warrior : MonoBehaviour
 
     private void Update()
     {
-        if (SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.STAMINA_USE_DOWN)) {
+        if (!staminaUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.STAMINA_USE_DOWN)) {
             primaryStamCost = 0.2f;
             secondaryStamCost = 0.02f;
             abilityStamCost = 0.7f;
+            staminaUnlockedCheck = true;
         }
-        
+
+        if (!ability1UnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ABILITY_STRENGTH_1)) {
+            abilityMultiplier = 2.25f;
+            ability1UnlockedCheck = true;
+        }
+        else if (!ability2UnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ABILITY_STRENGTH_2)) {
+            abilityMultiplier = 2.5f;
+            ability2UnlockedCheck = true;
+        }
+        else if (!ability3UnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ABILITY_STRENGTH_3)) {
+            abilityMultiplier = 3f;
+            ability3UnlockedCheck = true;
+        }
+
         if (abilityActive > 0)
         {
             StartCoroutine(AbilityActive());
@@ -143,7 +159,7 @@ public class Class_Warrior : MonoBehaviour
         {
             //plays our animation and sound for the ability
             player.SetAnimationTrigger("Warrior3");
-            weapon.damage_ *= 2;
+            weapon.damage_ *= abilityMultiplier;        
             player.PlaySound('A');
 
             abilityActive = 5;
