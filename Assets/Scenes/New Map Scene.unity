@@ -5510,6 +5510,159 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 521698669568235935, guid: fbfe031b2a80711449f8f1e9f02dde40, type: 3}
   m_PrefabInstance: {fileID: 45606245}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &56949969
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5526192286781823851, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_Name
+      value: TEST SAVE
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894336194453183952, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.46206445
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894336194453183952, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.46206445
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894336194453183952, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.46206445
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894336194453183952, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894336194453183952, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894336194453183952, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 18.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894336194453183952, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894336194453183952, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894336194453183952, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894336194453183952, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894336194453183952, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894336194453183952, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894336194453183952, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434701602299675430, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_Radius
+      value: 0.5913043
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434701602299675430, guid: bacae234a29827c49897023b7e995649, type: 3}
+      propertyPath: m_Center.z
+      value: -0.091304354
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5526192286781823851, guid: bacae234a29827c49897023b7e995649, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 56949974}
+    - targetCorrespondingSourceObject: {fileID: 5526192286781823851, guid: bacae234a29827c49897023b7e995649, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 56949973}
+    - targetCorrespondingSourceObject: {fileID: 5526192286781823851, guid: bacae234a29827c49897023b7e995649, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 56949972}
+    - targetCorrespondingSourceObject: {fileID: 5526192286781823851, guid: bacae234a29827c49897023b7e995649, type: 3}
+      insertIndex: 5
+      addedObject: {fileID: 56949971}
+  m_SourcePrefab: {fileID: 100100000, guid: bacae234a29827c49897023b7e995649, type: 3}
+--- !u!1 &56949970 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5526192286781823851, guid: bacae234a29827c49897023b7e995649, type: 3}
+  m_PrefabInstance: {fileID: 56949969}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &56949971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56949970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b110224a6bf60345a37b0e4bc91ce5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  secondsB4Start: 8
+  textMeshPro: {fileID: 1183189643}
+  text: "You decide to go inside to look for help\u2026"
+--- !u!114 &56949972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56949970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b110224a6bf60345a37b0e4bc91ce5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  secondsB4Start: 6
+  textMeshPro: {fileID: 1183189643}
+  text: "Or maybe you were pushed\u2026 "
+--- !u!114 &56949973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56949970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b110224a6bf60345a37b0e4bc91ce5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  secondsB4Start: 3
+  textMeshPro: {fileID: 1183189643}
+  text: "The last thing you can remember is falling off of the edge of a cliff\u2026"
+--- !u!114 &56949974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56949970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f6f2d745f199b04cba75caca760f8a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMeshPro: {fileID: 1183189643}
+  text: "You find yourself standing outside a sinistrous-looking building\u2026 "
 --- !u!1001 &60757902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51299,6 +51452,7 @@ SceneRoots:
   - {fileID: 145827204}
   - {fileID: 1126955071}
   - {fileID: 952619611}
+  - {fileID: 56949969}
   - {fileID: 559707674}
   - {fileID: 311559164}
   - {fileID: 286846783}

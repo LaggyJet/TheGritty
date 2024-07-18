@@ -25,6 +25,7 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
     };
 
     static readonly List<Tuple<Skills, bool>> skillState = new();
+    List<Image> locks;
 
     //Attack
     [Header("------ attack ------")]
@@ -67,6 +68,8 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
 
     void Start()
     {
+        locks = new List<Image> { attackDmgLock, attackSpdLock, staminaUseLock, ability1Lock, ability2Lock, ability3Lock, hpAmtLock, unlockShieldLock, takeDmgLock };
+
         if (skillState.Count != 9)
         {
             foreach (Skills skill in Enum.GetValues(typeof(Skills)))
@@ -74,33 +77,20 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
                 skillState.Add(new Tuple<Skills, bool>(skill, false));
             }
         }
-        if (DataPersistenceManager.gameData.skills == "" || ((int)GameManager.instance.player.transform.position.x == (int)spawn.transform.position.x && (int)GameManager.instance.player.transform.position.z == (int)spawn.transform.position.z))
+        if (DataPersistenceManager.gameData.skills == "" || ((int)GameManager.playerLocation.x == (int)spawn.transform.position.x && (int)GameManager.playerLocation.z == (int)spawn.transform.position.z))
         {
             DataPersistenceManager.gameData.skills = "000000000";
-            attackDmgLock.enabled = true;
-            attackSpdLock.enabled = true;
-            staminaUseLock.enabled = true;
-            ability1Lock.enabled = true;
-            ability2Lock.enabled = true;
-            ability3Lock.enabled = true;
-            hpAmtLock.enabled = true;
-            unlockShieldLock.enabled = true;
-            takeDmgLock.enabled = true;
+            LoadData(DataPersistenceManager.gameData);
+            foreach (Image img in locks)
+                img.enabled = true;
             curPoints = 8;
             AddPoint();
         }
         else
         {
             LoadData(DataPersistenceManager.gameData);
-            if (skillState[0].Item2 == true) { attackDmgLock.enabled = false; }
-            if (skillState[1].Item2 == true) { attackSpdLock.enabled = false; }
-            if (skillState[2].Item2 == true) { staminaUseLock.enabled = false; }
-            if (skillState[3].Item2 == true) { ability1Lock.enabled = false; }
-            if (skillState[4].Item2 == true) { ability2Lock.enabled = false; }
-            if (skillState[5].Item2 == true) { ability3Lock.enabled = false; }
-            if (skillState[6].Item2 == true) { hpAmtLock.enabled = false; }
-            if (skillState[7].Item2 == true) { unlockShieldLock.enabled = false; }
-            if (skillState[8].Item2 == true) { takeDmgLock.enabled = false; }
+            for (int i = 0; i < 9; i++)
+                locks[i].enabled = !skillState[i].Item2;
         }
     }
     public void AddPoint()
