@@ -30,10 +30,10 @@ public class ArcherAI : MonoBehaviourPun, IDamage, IPunObservable {
     }
 
     void Update() {
-        if (CanSeePlayer() && (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected)) {
+        if (CanSeePlayer() && (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected) && (Vector3.Distance(FindClosestPlayer().transform.position, transform.position) < range)) {
             FaceTarget();
 
-            if (!isAttacking && (Vector3.Distance(FindClosestPlayer().transform.position, transform.position) < range) && EnemyManager.Instance.CanAttack(enemyLimiter)) {
+            if (!isAttacking && EnemyManager.Instance.CanAttack(enemyLimiter)) {
                 if (PhotonNetwork.IsConnected)
                     photonView.RPC(nameof(Shoot), RpcTarget.All);
                 else
