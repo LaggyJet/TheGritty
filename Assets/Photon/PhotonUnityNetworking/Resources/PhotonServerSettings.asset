@@ -58,6 +58,7 @@ MonoBehaviour:
   - StartIceBall
   - SetRenderModeOpaque
   - SetRenderModeTransparent
+  - Shoot
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

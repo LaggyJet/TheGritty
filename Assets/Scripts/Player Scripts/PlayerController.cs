@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     [SerializeField] public GameObject shootPosition;
     [SerializeField] public GameObject arrowPosition;
     [SerializeField] public GameObject[] combatObjects;
-    [SerializeField] public GameObject targetPosition;
+    [SerializeField] public GameObject targetPosition, headPosition;
     ClassSelection classSelector;
     public bool useStamina = true;
     public bool isBlocking = false;

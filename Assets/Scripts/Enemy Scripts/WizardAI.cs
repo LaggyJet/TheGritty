@@ -42,35 +42,28 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
 
     }
 
-    bool canSee;
-
     void Update() {
         anim.SetFloat("Speed", Mathf.Lerp(anim.GetFloat("Speed"), agent.velocity.normalized.magnitude, Time.deltaTime * animationTransitionSpeed));
 
-        canSee = CanSeePlayer();
-        if (canSee && (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected))
-        {
+        if (CanSeePlayer() && (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected)) {
             if (!iceBallShooting)
                 agent.SetDestination(enemyTargetPosition);
 
             if (agent.remainingDistance < agent.stoppingDistance)
                 FaceTarget();
 
-            if (!EnemyManager.Instance.IsClose(enemyLimiter, id))
-            {
+            if (!EnemyManager.Instance.IsClose(enemyLimiter, id)) {
                 if (EnemyManager.Instance.CanBeClose(enemyLimiter) && agent.remainingDistance < range && !agent.pathPending)
                     EnemyManager.Instance.AddCloseEnemy(enemyLimiter, id);
                 else if (!EnemyManager.Instance.CanBeClose(enemyLimiter))
                     agent.stoppingDistance = adjustedStoppingDistance;
             }
-            else if (EnemyManager.Instance.IsClose(enemyLimiter, id) && agent.remainingDistance > range)
-            {
+            else if (EnemyManager.Instance.IsClose(enemyLimiter, id) && agent.remainingDistance > range) {
                 EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
                 agent.stoppingDistance = originalStoppingDistance;
             }
 
-            if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter))
-            {
+            if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter)) {
                 if (PhotonNetwork.IsConnected)
                     photonView.RPC(nameof(StartSwing), RpcTarget.All);
                 else
@@ -85,8 +78,7 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
             }
         }
 
-        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom)
-        {
+        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom) {
             transform.position = Vector3.Lerp(transform.position, netPos, Time.deltaTime * 10);
             transform.rotation = Quaternion.Lerp(transform.rotation, netRot, Time.deltaTime * 10);
         }

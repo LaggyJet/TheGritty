@@ -1885,6 +1885,7 @@ MonoBehaviour:
   - {fileID: 5218697179704809624, guid: d8d3091eaa34b60498c31bb0f4379ac4, type: 3}
   - {fileID: 7305093251907783399}
   targetPosition: {fileID: 4346028737159617409}
+  headPosition: {fileID: 5031870812856326401}
   useStamina: 1
   isBlocking: 0
   classCase: 0
