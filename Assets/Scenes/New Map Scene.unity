@@ -32299,6 +32299,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 286846784}
     - target: {fileID: 4736023177063227989, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4736023177063227989, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_fontSize
       value: 32
       objectReference: {fileID: 0}
@@ -32405,6 +32409,18 @@ PrefabInstance:
     - target: {fileID: 7765248277729462968, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_Name
       value: UI - NEW(week4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118049844092793669, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118049844092793669, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118049844092793669, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -246
       objectReference: {fileID: 0}
     - target: {fileID: 8722297960870335626, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: sceneViewId
