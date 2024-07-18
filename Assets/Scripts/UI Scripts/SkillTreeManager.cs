@@ -52,7 +52,7 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
 
     //misc.
     [Header("------ misc. ------")]
-    private int points2Save;
+    private static int points2Save;
     [SerializeField] GameObject spawn;
 
     void Awake()
@@ -60,6 +60,9 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
         Instance = this;
         gameObject.transform.Find("Canvas").gameObject.SetActive(true);
         gameObject.SetActive(false);
+        if(points2Save !=0 )
+        curPoints = points2Save;
+        curPointsText.text = curPoints.ToString("F0");
     }
 
     void Start()
@@ -71,7 +74,7 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
                 skillState.Add(new Tuple<Skills, bool>(skill, false));
             }
         }
-        if (DataPersistenceManager.gameData.skills == "" || (GameManager.instance.player.transform.position.x == spawn.transform.position.x && GameManager.instance.player.transform.position.z == spawn.transform.position.z))
+        if (DataPersistenceManager.gameData.skills == "" || ((int)GameManager.instance.player.transform.position.x == (int)spawn.transform.position.x && (int)GameManager.instance.player.transform.position.z == (int)spawn.transform.position.z))
         {
             DataPersistenceManager.gameData.skills = "000000000";
             attackDmgLock.enabled = true;
@@ -83,7 +86,6 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
             hpAmtLock.enabled = true;
             unlockShieldLock.enabled = true;
             takeDmgLock.enabled = true;
-            //FOR TESTING
             curPoints = 8;
             AddPoint();
         }
