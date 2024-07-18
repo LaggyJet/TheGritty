@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/Enemy Prefabs/Archer.meta
+guid: 7aecce0661f417f42ae4f4b6a6d61960
+folderAsset: yes
+DefaultImporter:
+========
 guid: 3f5b5aac9cea98646aa1bcf6056bb92e
 PrefabImporter:
+>>>>>>>> 6f749a3d14a782c9726e2abc634758c1e0009d91:Assets/Prefabs/ui prefabs/mini map.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

@@ -58,7 +58,8 @@ public class FireBall : MonoBehaviour
 
             //deal damage to the object hit
             dmg.TakeDamage(damage);
-            dmg.Afflict(type);
+            if (type != null)
+                dmg.Afflict(type);
             //destroy our projectile
             DestroyObject();
         }

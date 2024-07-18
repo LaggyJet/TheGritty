@@ -56,8 +56,7 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
     private static int points2Save;
     [SerializeField] GameObject spawn;
 
-    void Awake()
-    {
+    void Awake() {
         Instance = this;
         gameObject.transform.Find("Canvas").gameObject.SetActive(true);
         gameObject.SetActive(false);
@@ -71,9 +70,7 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
         locks = new List<Image> { attackDmgLock, attackSpdLock, staminaUseLock, ability1Lock, ability2Lock, ability3Lock, hpAmtLock, unlockShieldLock, takeDmgLock };
 
         if (skillState.Count != 9)
-        {
             foreach (Skills skill in Enum.GetValues(typeof(Skills)))
-            {
                 skillState.Add(new Tuple<Skills, bool>(skill, false));
             }
         }
@@ -86,44 +83,36 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
             curPoints = 8;
             AddPoint();
         }
-        else
-        {
+        else {
             LoadData(DataPersistenceManager.gameData);
             for (int i = 0; i < 9; i++)
                 locks[i].enabled = !skillState[i].Item2;
         }
     }
-    public void AddPoint()
-    {
+    public void AddPoint() {
         ++curPoints;
         curPointsText.text = curPoints.ToString("F0");
         points2Save = curPoints;
     }
 
-    public void LosePoint()
-    {
+    public void LosePoint() {
         --curPoints;
         curPointsText.text = curPoints.ToString("F0");
         points2Save = curPoints;
     }
 
-    public void LoadSkills(string skills)
-    {
+    public void LoadSkills(string skills) {
         // Ensure skillState has been initialized properly
-        if (skillState.Count != skills.Length)
-        {
+        if (skillState.Count != skills.Length) {
             Debug.LogError("skillState count does not match Skills enum count!");
             return;
         }
 
         for (int i = 0; i < skillState.Count; i++)
-        {
             skillState[i] = new Tuple<Skills, bool>((Skills)i, (skills[i] == '1'));
-        }
     }
 
-    public string SaveSkills()
-    {
+    public string SaveSkills() {
         string state = "";
         for (int i = 0; i < skillState.Count; i++)
             state += skillState[i].Item2 ? '1' : '0';
@@ -131,12 +120,9 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
         return state;
     }
 
-    bool CanUnlockSkill(Skills skill)
-    {
-        if (curPoints > 0)
-        {
-            switch (skill)
-            {
+    bool CanUnlockSkill(Skills skill) {
+        if (curPoints > 0) {
+            switch (skill) {
                 case Skills.ATTACK_DAMAGE_UP:
                 case Skills.ABILITY_STRENGTH_1:
                 case Skills.HP_AMOUNT_UP:
@@ -158,20 +144,16 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
 
     public bool IsSkillUnlocked(Skills skill) { return skillState.Any(tuple => tuple.Item1.Equals(skill) && tuple.Item2); }
 
-    void UnlockedSkillSound()
-    {
+    void UnlockedSkillSound() {
         //Whatever here ig
     }
 
-    void CannotUnlockSkillSound()
-    {
+    void CannotUnlockSkillSound() {
         //More whatever here
     }
 
-    public void AttackDmg()
-    {
-        if (CanUnlockSkill(Skills.ATTACK_DAMAGE_UP) && !skillState[0].Item2)
-        {
+    public void AttackDmg() {
+        if (CanUnlockSkill(Skills.ATTACK_DAMAGE_UP) && !skillState[0].Item2) {
             attackDmgLock.enabled = false;
             skillState[0] = new Tuple<Skills, bool>(skillState[0].Item1, true);
 
@@ -181,10 +163,9 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
         else
             CannotUnlockSkillSound();
     }
-    public void AttackSpd()
-    {
-        if (CanUnlockSkill(Skills.ATTACK_SPEED_UP) && !skillState[1].Item2)
-        {
+
+    public void AttackSpd() {
+        if (CanUnlockSkill(Skills.ATTACK_SPEED_UP) && !skillState[1].Item2) {
             attackSpdLock.enabled = false;
             skillState[1] = new Tuple<Skills, bool>(skillState[1].Item1, true);
             LosePoint();
@@ -193,10 +174,9 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
         else
             CannotUnlockSkillSound();
     }
-    public void StaminaUse()
-    {
-        if (CanUnlockSkill(Skills.STAMINA_USE_DOWN) && !skillState[2].Item2)
-        {
+
+    public void StaminaUse() {
+        if (CanUnlockSkill(Skills.STAMINA_USE_DOWN) && !skillState[2].Item2) {
             staminaUseLock.enabled = false;
             skillState[2] = new Tuple<Skills, bool>(skillState[2].Item1, true);
             LosePoint();
@@ -205,10 +185,9 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
         else
             CannotUnlockSkillSound();
     }
-    public void Ability1()
-    {
-        if (CanUnlockSkill(Skills.ABILITY_STRENGTH_1) && !skillState[3].Item2)
-        {
+
+    public void Ability1() {
+        if (CanUnlockSkill(Skills.ABILITY_STRENGTH_1) && !skillState[3].Item2) {
             ability1Lock.enabled = false;
             skillState[3] = new Tuple<Skills, bool>(skillState[3].Item1, true);
             LosePoint();
@@ -217,10 +196,9 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
         else
             CannotUnlockSkillSound();
     }
-    public void Ability2()
-    {
-        if (CanUnlockSkill(Skills.ABILITY_STRENGTH_2) && !skillState[4].Item2)
-        {
+
+    public void Ability2() {
+        if (CanUnlockSkill(Skills.ABILITY_STRENGTH_2) && !skillState[4].Item2) {
             ability2Lock.enabled = false;
             skillState[4] = new Tuple<Skills, bool>(skillState[4].Item1, true);
             LosePoint();
@@ -229,10 +207,9 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
         else
             CannotUnlockSkillSound();
     }
-    public void Ability3()
-    {
-        if (CanUnlockSkill(Skills.ABILITY_STRENGTH_3) && !skillState[5].Item2)
-        {
+
+    public void Ability3() {
+        if (CanUnlockSkill(Skills.ABILITY_STRENGTH_3) && !skillState[5].Item2) {
             ability3Lock.enabled = false;
             skillState[5] = new Tuple<Skills, bool>(skillState[5].Item1, true);
             LosePoint();
@@ -241,10 +218,9 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
         else
             CannotUnlockSkillSound();
     }
-    public void HpAmt()
-    {
-        if (CanUnlockSkill(Skills.HP_AMOUNT_UP) && !skillState[6].Item2)
-        {
+
+    public void HpAmt() {
+        if (CanUnlockSkill(Skills.HP_AMOUNT_UP) && !skillState[6].Item2) {
             hpAmtLock.enabled = false;
             skillState[6] = new Tuple<Skills, bool>(skillState[6].Item1, true);
             LosePoint();
@@ -253,10 +229,9 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
         else
             CannotUnlockSkillSound();
     }
-    public void UnlockShield()
-    {
-        if (CanUnlockSkill(Skills.SHIELD) && !skillState[7].Item2)
-        {
+
+    public void UnlockShield() {
+        if (CanUnlockSkill(Skills.SHIELD) && !skillState[7].Item2) {
             unlockShieldLock.enabled = false;
             skillState[7] = new Tuple<Skills, bool>(skillState[7].Item1, true);
             LosePoint();
@@ -265,10 +240,8 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
         else
             CannotUnlockSkillSound();
     }
-    public void TakeDmg()
-    {
-        if (CanUnlockSkill(Skills.DAMAGE_TAKEN_DOWN) && !skillState[8].Item2)
-        {
+    public void TakeDmg() {
+        if (CanUnlockSkill(Skills.DAMAGE_TAKEN_DOWN) && !skillState[8].Item2) {
             takeDmgLock.enabled = false;
             skillState[8] = new Tuple<Skills, bool>(skillState[8].Item1, true);
             LosePoint();
@@ -279,16 +252,14 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
     }
 
     //load data of a previous game
-    public void LoadData(GameData data)
-    {
+    public void LoadData(GameData data) {
         LoadSkills(data.skills);
         points2Save = data.skillPts;
         curPoints = points2Save;
     }
 
     //saves all important current data
-    public void SaveData(ref GameData data)
-    {
+    public void SaveData(ref GameData data) {
         data.skills = SaveSkills();
         data.skillPts = points2Save;
     }
