@@ -86,13 +86,13 @@ public class GameManager : MonoBehaviour
         {
 
             //checks if our input is called, and if the tree is active or not
-            if (ctxt.performed && !isSkTrActive && SceneManager.GetActiveScene().name == "Build Scene")
+            if (ctxt.performed && !isSkTrActive && SceneManager.GetActiveScene().name == "New Map Scene")
             {
                 skillTreeScreen.SetActive(true);
                 statePause();
                 isSkTrActive = !isSkTrActive;
             }
-            else if (ctxt.performed && isSkTrActive && SceneManager.GetActiveScene().name == "Build Scene")
+            else if (ctxt.performed && isSkTrActive && SceneManager.GetActiveScene().name == "New Map Scene")
             {
                 skillTreeScreen.SetActive(false);
                 stateResumeGameLoads();

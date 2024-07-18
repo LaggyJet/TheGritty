@@ -19,7 +19,6 @@ public class LoadingScreen : MonoBehaviour
             GameManager.enemyCount = 0;
             StartCoroutine(loadSceneAsync(sceneId));
             DataPersistenceManager.Instance.NewGame();
-            DataPersistenceManager.gameData.skills = "000000000";
             GameManager.instance.stateResumeGameLoads();
         }
         else
@@ -44,7 +43,6 @@ public class LoadingScreen : MonoBehaviour
             GameManager.enemyCount = 0;
             StartCoroutine(loadSceneAsync(sceneId));
             DataPersistenceManager.Instance.NewGame();
-            DataPersistenceManager.gameData.skills = "000000000";
             GameManager.instance.stateResumeGameLoads();
         }
         else
