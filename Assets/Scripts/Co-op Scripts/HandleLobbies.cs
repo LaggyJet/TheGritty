@@ -71,7 +71,7 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
         while (PhotonNetwork.CurrentRoom.PlayerCount != PhotonNetwork.CurrentRoom.MaxPlayers)
             yield return null;
         if (PhotonNetwork.IsMasterClient)
-            PhotonNetwork.LoadLevel("Build Scene");
+            PhotonNetwork.LoadLevel("New Map Scene");
     }
 
     void RaiseWarning(string message) {
