@@ -672,6 +672,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         spawnRotation = data.playerRot;
         spawnHP = data.playerHp; 
         spawnStamina = data.playerStamina;
+        SkillTreeManager.Instance.LoadData(data);
     }
 
     //saves all important current data
@@ -681,6 +682,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         data.playerRot = transform.rotation;
         data.playerHp = hp;
         data.playerStamina = stamina;
+        SkillTreeManager.Instance.SaveData(ref data);
     }
 
     //this is the new function for assign a class script to our player
