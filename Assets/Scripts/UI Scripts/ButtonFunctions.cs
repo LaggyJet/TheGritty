@@ -75,7 +75,7 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.instance.leaveSettings();
         if(SettingsManager.instance != null)
-        SettingsManager.instance.SavePrefs();
+            SettingsManager.instance.SavePrefs();
         ResolutionManager.instance.SavePrefs();
     }
 
