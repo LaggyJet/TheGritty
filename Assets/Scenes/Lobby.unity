@@ -892,7 +892,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1067824075}
-  - {fileID: 1996176607}
   - {fileID: 774641673}
   - {fileID: 2009729502}
   m_Father: {fileID: 0}
@@ -4590,6 +4589,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: f1fd54f0006cc834a8ea801cf7d70818, type: 3}
     - target: {fileID: 3447902160871761384, guid: 76359f97a5edfa94aa7e2906a5982755, type: 3}
+      propertyPath: menuSettings
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447902160871761384, guid: 76359f97a5edfa94aa7e2906a5982755, type: 3}
       propertyPath: buttonSoundVol
       value: 0.5
       objectReference: {fileID: 0}
@@ -4685,7 +4688,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Manager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7795242091899162934, guid: 76359f97a5edfa94aa7e2906a5982755, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
