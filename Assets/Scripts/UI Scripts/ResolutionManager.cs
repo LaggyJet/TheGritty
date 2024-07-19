@@ -1,4 +1,4 @@
-//worked on by - natalie lubahn
+//worked on by - natalie lubahn, Kheera
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -75,6 +75,7 @@ public class ResolutionManager : MonoBehaviour
 
     public void SetResolution(int resolutionIndex)
     {
+        GameManager.instance.PlayButtonClick();
         resolution = filteredResolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, true);  
         resDDVal = resDropDown.value;

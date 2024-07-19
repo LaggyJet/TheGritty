@@ -583,22 +583,35 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     // Preventing Stamina from regenerating too fast
     private IEnumerator RegenStaminaDelay()
     {
+        // Function has been called
         isRegenerating = true; 
 
-        yield return new WaitForSeconds(5);
+        // Current stamina
+        float initial = stamina;
+        
+        // 3 second hold
+        yield return new WaitForSeconds(3);
 
-        if(stamina < staminaBase)
+        // If current stamina after 3 secs is not lower than initial
+        if(stamina >= initial && stamina < staminaBase)
         {
-            stamina += staminaRegenerate * Time.deltaTime;
-
-            if(stamina > staminaBase)
+            // If stamina isn't full 
+            while(stamina < staminaBase)
             {
-                stamina = staminaBase;
+                // Can adjust staminaRegenerate in Unity
+               stamina += staminaRegenerate * Time.deltaTime;
+
+                // Cap at 10, then store to make new stamina value
+                if(stamina > staminaBase)
+                {
+                    stamina = staminaBase;
+                }
+
+               yield return null;
             }
-
-            yield return null;
         }
-
+        
+        // Function off
         isRegenerating = false;
     }
 
@@ -659,6 +672,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     //a simple function for respawning the player
     public void Respawn()
     {
+        
         this.transform.position = GameManager.playerLocation;
         hp = hpBase;
         stamina = staminaBase;
@@ -696,18 +710,18 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         {
             //first we add the script, then set out script variable to the added script
             case 1:
-                this.AddComponent<Class_Warrior>();
+                this.gameObject.AddComponent<Class_Warrior>();
                 warrior = this.GetComponent<Class_Warrior>();
                 classCase = 1;
                 break;
             case 2:
-                this.AddComponent<Class_Mage>();
+                this.gameObject.AddComponent<Class_Mage>();
                 mage = this.GetComponent<Class_Mage>();
                 classCase = 2;
                 break;
             
             case 3:
-                this.AddComponent<Class_Archer>();
+                this.gameObject.AddComponent<Class_Archer>();
                 archer = this.GetComponent<Class_Archer>();
                 classCase = 3;
                 break;
@@ -737,18 +751,18 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             case 1:
                 warrior = this.GetComponent<Class_Warrior>();
                 if (warrior == null)
-                    warrior = this.AddComponent<Class_Warrior>();
+                    warrior = this.gameObject.AddComponent<Class_Warrior>();
                 break;
             case 2:
                 mage = this.GetComponent<Class_Mage>();
                 if (mage == null)
-                    mage = this.AddComponent<Class_Mage>();
+                    mage = this.gameObject.AddComponent<Class_Mage>();
                 break;
 
             case 3:
                 archer = this.GetComponent<Class_Archer>();
                 if (archer == null)
-                    archer = this.AddComponent<Class_Archer>();
+                    archer = this.gameObject.AddComponent<Class_Archer>();
                 break;
         }
     }

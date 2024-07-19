@@ -1,4 +1,4 @@
-//worked on by - natalie lubahn
+//worked on by - natalie lubahn, kheera
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +20,9 @@ public class SettingsManager : MonoBehaviour
     public Slider sfxVol;
     public static float sfxVal;
     public AudioMixer audMix;
+    private bool isPlayingSFX;
+    private bool isPlayingBGM;
+    private bool isPlayingMASTER;
 
     private void Awake()
     {
@@ -39,27 +42,48 @@ public class SettingsManager : MonoBehaviour
     }
     public void ChangeGraphicsQuality()
     {
+        GameManager.instance.PlayButtonClick();
         QualitySettings.SetQualityLevel(graphicsDropdown.value); ;
         graphicsDDVal = graphicsDropdown.value;
     }
     public void ChangeMasterVolume()
     {
+        if(!isPlayingMASTER)
+        {
+           GameManager.instance.PlayButtonClick();
+           isPlayingMASTER = true;
+        }
+       
         audMix.SetFloat("masterVol", masterVol.value);
         masterVal = masterVol.value;
     }
     public void ChangeBgmVolume()
     {
+        // To prevent sound replaying during scroll
+        if(!isPlayingBGM)
+        {
+           GameManager.instance.PlayButtonClick();
+           isPlayingBGM = true;
+        }
+        
         audMix.SetFloat("bgmVol", bgmVol.value);
         bgmVal = bgmVol.value;
     }
     public void ChangeSfxVolume()
     {
+        if(!isPlayingSFX)
+        {
+           GameManager.instance.PlayButtonClick();
+           isPlayingSFX = true;
+        }
+
         audMix.SetFloat("sfxVol", sfxVol.value);
         sfxVal = sfxVol.value;
     }
 
     public void defaultAudio()
     {
+        GameManager.instance.PlayMenuSwitchClick();
         masterVol.value = 0;
         bgmVol.value = 0;
         sfxVol.value = 0;

@@ -15,6 +15,7 @@ public class LoadingScreen : MonoBehaviour
     //new game methods - assigns the correct class, starts the coroutine, initializes the new game data, and resumes the game so the player doesn't start paused
     public void loadSceneWARRIOR(int sceneId) //warrior selected
     {
+        GameManager.instance.PlayButtonClick();
         GameManager.instance.classSelector.MyClass = 1;
         if (!GameManager.selectedMultiplayer) {
             GameManager.enemyCount = 0;
@@ -27,6 +28,7 @@ public class LoadingScreen : MonoBehaviour
     }
     public void loadSceneMAGE(int sceneId) //mage selected
     {
+        GameManager.instance.PlayButtonClick();
         GameManager.instance.classSelector.MyClass = 2;
         if (!GameManager.selectedMultiplayer) {
             GameManager.enemyCount = 0;
@@ -39,6 +41,7 @@ public class LoadingScreen : MonoBehaviour
     }
     public void loadSceneARCHER(int sceneId) //archer selected
     {
+        GameManager.instance.PlayButtonClick();
         GameManager.instance.classSelector.MyClass = 3;
         if (!GameManager.selectedMultiplayer) {
             GameManager.enemyCount = 0;
@@ -53,6 +56,7 @@ public class LoadingScreen : MonoBehaviour
     //resume game method - starts the coroutine, loads the saved game data, and resumes the game so the player doesn't start paused
     public void loadSceneResume(int sceneId)
     {
+        GameManager.instance.PlayMenuSwitchClick();
         GameManager.enemyCount = 0;
         DataPersistenceManager.Instance.LoadGame();
         StartCoroutine(loadSceneAsync(sceneId));

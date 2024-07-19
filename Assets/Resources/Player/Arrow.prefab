@@ -157,7 +157,7 @@ MonoBehaviour:
   rb: {fileID: 3034982443708084639}
   damage: 3
   speed: 22.5
-  upSpeed: 3
+  upSpeed: 1
   destroyTime: 2
 --- !u!54 &3034982443708084639
 Rigidbody:
