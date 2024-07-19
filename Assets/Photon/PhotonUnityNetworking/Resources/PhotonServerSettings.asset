@@ -53,6 +53,13 @@ MonoBehaviour:
   - SetEveryPlayerPauseState
   - SetEveryPlayerUnpauseState
   - StartDeath
+  - StartSwing
+  - UpdateRenderMode
+  - StartIceBall
+  - SetRenderModeOpaque
+  - SetRenderModeTransparent
+  - Shoot
+  - DisconnectPhoton
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

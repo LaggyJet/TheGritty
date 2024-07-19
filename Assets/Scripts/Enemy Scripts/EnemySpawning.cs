@@ -7,7 +7,7 @@ public class EnemySpawning : MonoBehaviour {
     [SerializeField] Transform[] SpawnPoints;
     [SerializeField] int numEnemies;
 
-    bool isSpawning;
+    bool isSpawning = false;
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player") && !isSpawning && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected))

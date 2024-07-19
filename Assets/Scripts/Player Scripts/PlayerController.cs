@@ -23,16 +23,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     [SerializeField] Animator animate;
 
     [Header("------- Movement and Position -------")]
-    [SerializeField] float speed;
+    [SerializeField] public float speed;
     [SerializeField] int sprintMod;
     [SerializeField] int gravity;
     [SerializeField] int jumpMax;
     [SerializeField] int jumpSpeed;
     int jumpsAvailable;
     Vector3 moveDir;
-    public Vector3 playerV;
-    Vector3 networkPos;
-    Quaternion networkRot;
+    public Vector3 playerV, movement;
     public static Vector3 spawnLocation;
     public static Quaternion spawnRotation;
 
@@ -77,6 +75,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     [SerializeField] public GameObject shootPosition;
     [SerializeField] public GameObject arrowPosition;
     [SerializeField] public GameObject[] combatObjects;
+    [SerializeField] public GameObject targetPosition, headPosition;
     ClassSelection classSelector;
     public bool useStamina = true;
     public bool isBlocking = false;
@@ -123,6 +122,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
     private const string CLASS_SELECTED = "ClassSelected";
     ClassSelection currentClassSelection;
+
+    // Skill tree vars
+    float hpBuff = 15f;
+    float damageReduction = 1f;
+    bool hasShield = false;
+    int timeUntilShieldRegen = 0;
+    int MAX_REGEN_TIME = 5;
+    bool hpAmountUnlockedCheck, damageReductionUnlockedCheck, shieldUnlockedCheck = false;
 
     private void Awake()
     {
@@ -207,6 +214,27 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
     void Update()
     {
+        // Check if the player has the shield unlocked and prevent repeat calls if they do
+        if (!shieldUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.SHIELD))
+            shieldUnlockedCheck = true;
+
+        // Regen the shield if timer is over
+        if (!hasShield && shieldUnlockedCheck && timeUntilShieldRegen == 0)
+            hasShield = true;
+
+        // Check if the player has the damage taken down unlocked and prevent repeat calls if they do
+        if (!damageReductionUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.DAMAGE_TAKEN_DOWN)) {
+            damageReductionUnlockedCheck = true;
+            damageReduction = 0.75f;
+        }
+
+        // Check if the player has the hp amount up unlocked and prevent repeat calls if they do
+        if (!hpAmountUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.HP_AMOUNT_UP)) {
+            hpAmountUnlockedCheck = true;
+            hpBase = hp = hpBuff;
+        }
+
+
         // Make sure the player keeps their class in multiplayer
         if (photonView.IsMine)
             VerifyClassState();
@@ -364,7 +392,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     void Movement()
     {
         //gets our input and adjusts the players position using a velocity formula
-        Vector3 movement = moveDir.x * transform.right + moveDir.z * transform.forward;
+        movement = moveDir.x * transform.right + moveDir.z * transform.forward;
         controller.Move(speed * Time.deltaTime * movement);
         playerV.y -= gravity * Time.deltaTime;
         controller.Move(playerV * Time.deltaTime);
@@ -439,16 +467,37 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         isDOT = false;
     }
 
+    //Timer that controls the shield regen
+    IEnumerator ShieldTimer() {
+        yield return new WaitForSeconds(1);
+        while (timeUntilShieldRegen != 0) {
+            --timeUntilShieldRegen;
+            yield return new WaitForSeconds(1);
+        }
+    }
+
     //this function happens when the player is called to take damage
     public void TakeDamage(float amount)
     {
+        // If the player has the shield, turn it off and start regen timer
+        if (hasShield) {
+            hasShield = false;
+            timeUntilShieldRegen = MAX_REGEN_TIME;
+            StartCoroutine(ShieldTimer());
+            return;
+        }
+
+        // If they are hit before regen is over, reset timer
+        if (!hasShield && timeUntilShieldRegen > 0)
+            timeUntilShieldRegen = MAX_REGEN_TIME;
+
         //IF BLOCKING TAKE NO DAMAGE TO HEALTH, JUST LOSE STAMINA <3
-        if(isBlocking)
+        if (isBlocking)
         {
             stamina -= 1.5f;
         }
         else
-            hp -= amount;
+            hp -= amount * damageReduction;
 
         if (!PhotonNetwork.IsConnected && BluetoothManager.instance != null)
             BluetoothManager.instance.UpdateBarGraphHealth(hp);
@@ -636,6 +685,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         spawnRotation = data.playerRot;
         spawnHP = data.playerHp; 
         spawnStamina = data.playerStamina;
+        SkillTreeManager.Instance.LoadData(data);
     }
 
     //saves all important current data
@@ -645,6 +695,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         data.playerRot = transform.rotation;
         data.playerHp = hp;
         data.playerStamina = stamina;
+        SkillTreeManager.Instance.SaveData(ref data);
     }
 
     //this is the new function for assign a class script to our player
@@ -724,6 +775,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     {
         animate.SetBool(boolName, state);
     }
+
+    public void SetAnimationSpeed(float speed)
+    {
+        animate.speed = speed;
+    }
+
     public void PlaySound(char context) // A for attack, 
     {
         switch (context)

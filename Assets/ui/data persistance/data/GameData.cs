@@ -12,6 +12,8 @@ public class GameData
     public Quaternion playerRot;
     public float playerHp;
     public float playerStamina;
+    public string skills = "000000000";
+    public int skillPts;
 
     public GameData()  //constructor - values are the initial values when starting a game
     {
@@ -19,5 +21,7 @@ public class GameData
             this.playerRot = Quaternion.identity;
             this.playerHp = 0;
             this.playerStamina = 0;
+            this.skillPts = 0;
+
     }
 }

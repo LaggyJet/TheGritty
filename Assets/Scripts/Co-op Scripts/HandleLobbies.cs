@@ -67,11 +67,13 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
         infoText.color = Color.white;
         if (PhotonNetwork.CurrentRoom.PlayerCount != PhotonNetwork.CurrentRoom.MaxPlayers)
             infoText.text = "Connected: Waiting for other";
+        else if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient)
+            infoText.text = "";
         joinInput.interactable = joinButton.interactable = hostInput.interactable = false;
         while (PhotonNetwork.CurrentRoom.PlayerCount != PhotonNetwork.CurrentRoom.MaxPlayers)
             yield return null;
         if (PhotonNetwork.IsMasterClient)
-            PhotonNetwork.LoadLevel("Build Scene");
+            PhotonNetwork.LoadLevel("New Map Scene");
     }
 
     void RaiseWarning(string message) {

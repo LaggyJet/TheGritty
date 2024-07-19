@@ -13,7 +13,7 @@ public class SlideDoor : MonoBehaviour {
 
     void Start() {
         for (int i = 0; i <  enemies.Length; i++)
-            curLimiters.Add(enemies[i].GetComponent<EnemyAI>().GetEnemyLimiter());
+            curLimiters.Add(enemies[i].GetComponent<MeleeAI>().GetEnemyLimiter());
     }
 
     void Update() {

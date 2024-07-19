@@ -1855,21 +1855,26 @@ MonoBehaviour:
   jumpMax: 1
   jumpSpeed: 3
   playerV: {x: 0, y: 0, z: 0}
+  movement: {x: 0, y: 0, z: 0}
   hp: 10
   hpBase: 0
+  HpDisplay: 0
+  aboveThresholdHP: 0
   fullHealth: {r: 0.24978681, g: 0.42352942, b: 0.20718746, a: 1}
   midHealth: {r: 0.9892183, g: 0.43262324, b: 0.046661116, a: 1}
   criticalHealth: {r: 0.7058824, g: 0, b: 0, a: 1}
   hpShake: {fileID: 0}
   stamina: 10
+  staminaBase: 0
+  StaminaDisplay: 0
+  abovethresholdSTAM: 0
   staminaRegenerate: 10
   fullStamina: {r: 0, g: 0.0030903816, b: 1, a: 0}
   midStamina: {r: 0.46540874, g: 0, b: 0.42016062, a: 0}
   criticalStamina: {r: 0.34591186, g: 0, b: 0.13190229, a: 0}
   stamShake: {fileID: 0}
-  staminaBase: 0
   shootPosition: {fileID: 4185506747812628586}
-  arrowPosition: {fileID: 4325618518892949284}
+  arrowPosition: {fileID: 7305093251907783399}
   combatObjects:
   - {fileID: 2534988432703087702, guid: 0484adfc589ea004caa211680812ec51, type: 3}
   - {fileID: 6186270549528748386}
@@ -1878,12 +1883,16 @@ MonoBehaviour:
   - {fileID: 1377214065161546418}
   - {fileID: 5218697179704809624, guid: d8d3091eaa34b60498c31bb0f4379ac4, type: 3}
   - {fileID: 7305093251907783399}
+  targetPosition: {fileID: 0}
+  headPosition: {fileID: 0}
   useStamina: 1
   isBlocking: 0
   classCase: 0
   mage: {fileID: 0}
   warrior: {fileID: 0}
   archer: {fileID: 0}
+  animationTransSpeed: 0
+  lerpSpeed: 0
   audioSource: {fileID: 7898868306004621137}
   footsteps:
   - {fileID: 8300000, guid: 1f634153d05cb0b4e99f723587ca5ee0, type: 3}
@@ -2350,6 +2359,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 1
     Name: Warrior3
+  - Type: 9
+    SynchronizeType: 0
+    Name: Archer2
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
