@@ -623,6 +623,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     //a simple function for respawning the player
     public void Respawn()
     {
+        
         this.transform.position = GameManager.playerLocation;
         hp = hpBase;
         stamina = staminaBase;

@@ -1,4 +1,4 @@
-//worked on by - natalie lubahn, Jacob Irvin, Joshua Furber
+//worked on by - natalie lubahn, Jacob Irvin, Joshua Furber, Kheera 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,12 +11,14 @@ public class ButtonFunctions : MonoBehaviour
 
     public void resume()
     {
+        GameManager.instance.PlayButtonClick();
         GameManager.instance.stateResume();
     }
     
     [PunRPC]
     public void restart()
     {
+        GameManager.instance.PlayMenuSwitchClick();
         if (PhotonNetwork.InRoom && PhotonNetwork.IsMasterClient)
             PhotonView.Get(this).RPC(nameof(restart), RpcTarget.Others);
 
@@ -32,6 +34,8 @@ public class ButtonFunctions : MonoBehaviour
     }
     public void quitApp()
     {
+        GameManager.instance.PlayMenuSwitchClick();
+
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
         #else
@@ -42,6 +46,8 @@ public class ButtonFunctions : MonoBehaviour
     [PunRPC]
     public void quitGame()
     {
+        GameManager.instance.PlayButtonClick();
+
         //Disconnect player from the server (if possible)
         if (PhotonNetwork.IsConnected)
             StartCoroutine(DisconnectPhoton());
@@ -66,14 +72,17 @@ public class ButtonFunctions : MonoBehaviour
 
     public void respawn()
     {
+        GameManager.instance.PlayMenuSwitchClick();
         GameManager.instance.respawnAfterLost();
     }
     public void settings()
     {
+        GameManager.instance.PlayMenuSwitchClick();
         GameManager.instance.openSettings();
     }
     public void quitSettings()
     {
+        GameManager.instance.PlayButtonClick();
         GameManager.instance.leaveSettings();
         if(SettingsManager.instance != null)
         SettingsManager.instance.SavePrefs();
@@ -82,6 +91,7 @@ public class ButtonFunctions : MonoBehaviour
 
     public void quitSaveWarning()
     {
+        GameManager.instance.PlayButtonClick();
         DataPersistenceManager.gameData = DataPersistenceManager.Instance.dataHandler.Load();
         if ((int)GameManager.playerLocation.x != (int)GameManager.instance.player.transform.position.x && (int)GameManager.playerLocation.z != (int)GameManager.instance.player.transform.position.z 
             || DataPersistenceManager.gameData.playerHp != GameManager.instance.playerScript.hp || DataPersistenceManager.gameData.playerStamina != GameManager.instance.playerScript.stamina)
@@ -97,17 +107,20 @@ public class ButtonFunctions : MonoBehaviour
     //FOR TITLE SCREEN
     public void startNewGamePart1()
     {
+        GameManager.instance.PlayMenuSwitchClick();
         GameManager.instance.Warning4NewGame();
     }
     public void startNewGamePart2()
     {
+        GameManager.instance.PlayMenuSwitchClick();
         GameManager.instance.charSelectionMenu();
     }
     public void credits()
     {
+        GameManager.instance.PlayMenuSwitchClick();
         SceneManager.LoadScene("credits");
     }
 
     // Co-op features
-    public void LoadMultiplayer() { GameManager.selectedMultiplayer = true; GameManager.instance.charSelectionMenu(); }
+    public void LoadMultiplayer() { GameManager.instance.PlayMenuSwitchClick(); GameManager.selectedMultiplayer = true; GameManager.instance.charSelectionMenu(); }
 }

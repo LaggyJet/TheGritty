@@ -51,14 +51,61 @@ public class GameManager : MonoBehaviour
     public GameObject skillTreeScreen;
     public bool isSkTrActive;
 
-    [Header("------ Audio ------")]
+    [Header("------BGM Audio ------")]
     [SerializeField] AudioSource soundTrackAud;
     [SerializeField] AudioClip menuMusic;
     [SerializeField] public float menuVol;
     [SerializeField] AudioClip gamePlayMusic;
     [SerializeField] public float gamePlayVol;
-    public bool isPlayingSTA = false; // Sound Track Audio
+    public bool isPlayingBGM = false; // Sound Track Audio
 
+    [Header("------SFX Audio ------")]
+    [SerializeField] AudioSource sfxAudio;
+    [SerializeField] AudioClip buttonSound;
+    [SerializeField] public float buttonSoundVol;
+    [SerializeField] AudioClip menuSwitchSound; 
+    [SerializeField] public float menuSwitchSoundVol;
+    public bool isPlayingSFX = false; // Sound Effects Audio
+    private bool clickSound = true; // Playing only for pause 
+    
+
+   
+
+    private AudioSource SFXAudio
+    {
+       get
+       {
+          if(sfxAudio == null)
+          {
+            sfxAudio = GetComponent<AudioSource>();
+          }
+          return sfxAudio;
+       }
+    }
+
+    private AudioClip BUTTONSound
+    {
+        get
+        {
+            if (buttonSound == null)
+            {
+                Debug.LogError("Button Sound AudioClip not set.");
+            }
+            return buttonSound;
+        }
+    }
+
+    private AudioClip MENUSwitchSound
+    {
+        get
+        {
+            if (menuSwitchSound == null)
+            {
+                Debug.LogError("Menu Switch Sound AudioClip not set.");
+            }
+            return menuSwitchSound;
+        }
+    }
 
 
     //Calls "Awake" instead to run before the other Start methods
@@ -78,10 +125,23 @@ public class GameManager : MonoBehaviour
             }
 
         }
+
+        // Intializing array for multiple audio sources 
+        AudioSource[] audioSources = GetComponents<AudioSource>();
+        if(audioSources.Length > 1)
+        {
+           soundTrackAud = audioSources[0];
+           sfxAudio = audioSources[1];
+        }
+        else
+        {
+           Debug.Log("Audio source not found");
+        }
     }
 
     public void OnSkillTreeOpen(InputAction.CallbackContext ctxt) //skill tree
     {
+        clickSound = false; 
         if (skillTreeScreen != null)
         {
 
@@ -100,6 +160,7 @@ public class GameManager : MonoBehaviour
                 SoundTrackswitch(GameMusic.Gameplay);
             }
         }
+        clickSound = true; 
     }
 
     // Update is called once per frame
@@ -174,14 +235,22 @@ public class GameManager : MonoBehaviour
     //PAUSE METHODS
     public void statePause()
     {
+        // Sound for button clicked
+        if(clickSound == true)
+        {
+            PlayButtonClick();
+        }
+       
         isPaused = !isPaused;
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
         SoundTrackswitch(GameMusic.Menu);
+   
     }
     public void stateResume()
     {
+        PlayButtonClick();
         isPaused = !isPaused;
         Time.timeScale = 1;
         Cursor.visible = false;
@@ -215,6 +284,7 @@ public class GameManager : MonoBehaviour
         menuActivePublicVers = menuSettings;
         menuActive.SetActive(isPaused);
         SoundTrackswitch(GameMusic.Menu);
+
     }
     public void leaveSettings()
     {
@@ -243,6 +313,7 @@ public class GameManager : MonoBehaviour
     [PunRPC]
     public void gameWon()
     {
+        clickSound = false;
         statePause();
         menuActive = menuWin;
 
@@ -254,11 +325,13 @@ public class GameManager : MonoBehaviour
 
         menuActive.SetActive(isPaused);
         SoundTrackswitch(GameMusic.Menu);
+        clickSound = true;
     }
 
     [PunRPC]
     public void gameLost()
     {
+        clickSound = false;
         statePause();
         menuActive = menuLose;
 
@@ -271,6 +344,7 @@ public class GameManager : MonoBehaviour
 
         menuActive.SetActive(isPaused);
         SoundTrackswitch(GameMusic.Menu);
+        clickSound = true;
     }
 
     public void CallGameLost() { PhotonView.Get(this).RPC(nameof(gameLost), RpcTarget.All); }
@@ -308,13 +382,16 @@ public class GameManager : MonoBehaviour
     }
     public void Warning4NewGame()
     {
+        clickSound = false;
         statePause();
         menuActive = GameWarning;
         menuActive.SetActive(isPaused);
         SoundTrackswitch(GameMusic.Menu);
+        clickSound = true;
     }
     public void Warning4SaveProgress()
     {
+        clickSound = false;
         oldActiveMenu = menuActive;
         isPaused = !isPaused;
         menuActive.SetActive(isPaused);
@@ -323,6 +400,7 @@ public class GameManager : MonoBehaviour
         menuActive = GameWarning;
         menuActive.SetActive(isPaused);
         SoundTrackswitch(GameMusic.Menu);
+        clickSound = true;
     }
 
     // Switch between which sounds you'd like for any created scenes
@@ -345,7 +423,7 @@ public class GameManager : MonoBehaviour
                     soundTrackAud.clip = menuMusic;
                     soundTrackAud.volume = menuVol;
                     soundTrackAud.Play();
-                    isPlayingSTA = true;
+                    isPlayingBGM = true;
                 }
                 break;
 
@@ -355,10 +433,38 @@ public class GameManager : MonoBehaviour
                     soundTrackAud.clip = gamePlayMusic;
                     soundTrackAud.volume = gamePlayVol;
                     soundTrackAud.Play();
-                    isPlayingSTA = true;
+                    isPlayingBGM = true;
                 }
 
                 break;
+        }
+    }
+
+    public void PlayButtonClick()
+    {
+       // Sound for button clicked
+        if(sfxAudio != null && buttonSound != null)
+        {
+           sfxAudio.PlayOneShot(buttonSound, buttonSoundVol);
+           isPlayingSFX = true; 
+        }
+        else
+        {
+           Debug.Log("SFX clip not playing");
+        }
+    }
+
+    public void PlayMenuSwitchClick()
+    {
+        // Sound for button clicked
+        if (sfxAudio != null && menuSwitchSound != null)
+        {
+            sfxAudio.PlayOneShot(menuSwitchSound, menuSwitchSoundVol);
+            isPlayingSFX = true;
+        }
+        else
+        {
+            Debug.Log("SFX clip not playing");
         }
     }
 }
