@@ -696,18 +696,18 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         {
             //first we add the script, then set out script variable to the added script
             case 1:
-                this.AddComponent<Class_Warrior>();
+                this.gameObject.AddComponent<Class_Warrior>();
                 warrior = this.GetComponent<Class_Warrior>();
                 classCase = 1;
                 break;
             case 2:
-                this.AddComponent<Class_Mage>();
+                this.gameObject.AddComponent<Class_Mage>();
                 mage = this.GetComponent<Class_Mage>();
                 classCase = 2;
                 break;
             
             case 3:
-                this.AddComponent<Class_Archer>();
+                this.gameObject.AddComponent<Class_Archer>();
                 archer = this.GetComponent<Class_Archer>();
                 classCase = 3;
                 break;
@@ -737,18 +737,18 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             case 1:
                 warrior = this.GetComponent<Class_Warrior>();
                 if (warrior == null)
-                    warrior = this.AddComponent<Class_Warrior>();
+                    warrior = this.gameObject.AddComponent<Class_Warrior>();
                 break;
             case 2:
                 mage = this.GetComponent<Class_Mage>();
                 if (mage == null)
-                    mage = this.AddComponent<Class_Mage>();
+                    mage = this.gameObject.AddComponent<Class_Mage>();
                 break;
 
             case 3:
                 archer = this.GetComponent<Class_Archer>();
                 if (archer == null)
-                    archer = this.AddComponent<Class_Archer>();
+                    archer = this.gameObject.AddComponent<Class_Archer>();
                 break;
         }
     }
