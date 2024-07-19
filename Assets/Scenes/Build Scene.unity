@@ -63073,6 +63073,42 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7904596918992867052}
+    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: sfxAudio
+      value: 
+      objectReference: {fileID: 3695449213913047166}
+    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: buttonSound
+      value: 
+      objectReference: {fileID: 8300000, guid: f1fd54f0006cc834a8ea801cf7d70818, type: 3}
+    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: buttonSoundVol
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: menuSwitchSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 65802302fafe43542bb2b4fad7eddbc9, type: 3}
+    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: menuSwitchSoundVol
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459796964397982466, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: m_Volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459796964397982466, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459796964397982466, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459796964397982466, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 7552536873580068201, guid: 2750174cd80a8a24487fe1e49daaa371, type: 2}
     - target: {fileID: 7745683219612273339, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -63094,6 +63130,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+--- !u!82 &3695449213913047166 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 7204092341143623332, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+  m_PrefabInstance: {fileID: 3695449213913047165}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5238195275279569733
 PrefabInstance:
   m_ObjectHideFlags: 0

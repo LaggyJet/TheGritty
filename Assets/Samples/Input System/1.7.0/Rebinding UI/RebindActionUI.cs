@@ -216,6 +216,8 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         /// </summary>
         public void ResetToDefault()
         {
+               GameManager.instance.PlayMenuSwitchClick();
+            
             if (!ResolveActionAndBinding(out var action, out var bindingIndex))
                 return;
 
@@ -238,6 +240,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         /// </summary>
         public void StartInteractiveRebind()
         {
+            GameManager.instance.PlayButtonClick();
             
             if (!ResolveActionAndBinding(out var action, out var bindingIndex))
                 return;

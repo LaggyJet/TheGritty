@@ -82,7 +82,7 @@ public class SettingsManager : MonoBehaviour
 
     public void defaultAudio()
     {
-        GameManager.instance.PlayButtonClick();
+        GameManager.instance.PlayMenuSwitchClick();
         masterVol.value = 0;
         bgmVol.value = 0;
         sfxVol.value = 0;

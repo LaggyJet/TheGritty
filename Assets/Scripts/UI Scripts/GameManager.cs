@@ -67,45 +67,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] public float menuSwitchSoundVol;
     public bool isPlayingSFX = false; // Sound Effects Audio
     private bool clickSound = true; // Playing only for pause 
+    private bool quitButtonClicked = false; // Needed for quit game func
     
-
-   
-
-    private AudioSource SFXAudio
-    {
-       get
-       {
-          if(sfxAudio == null)
-          {
-            sfxAudio = GetComponent<AudioSource>();
-          }
-          return sfxAudio;
-       }
-    }
-
-    private AudioClip BUTTONSound
-    {
-        get
-        {
-            if (buttonSound == null)
-            {
-                Debug.LogError("Button Sound AudioClip not set.");
-            }
-            return buttonSound;
-        }
-    }
-
-    private AudioClip MENUSwitchSound
-    {
-        get
-        {
-            if (menuSwitchSound == null)
-            {
-                Debug.LogError("Menu Switch Sound AudioClip not set.");
-            }
-            return menuSwitchSound;
-        }
-    }
 
 
     //Calls "Awake" instead to run before the other Start methods
@@ -443,7 +406,7 @@ public class GameManager : MonoBehaviour
     public void PlayButtonClick()
     {
        // Sound for button clicked
-        if(sfxAudio != null && buttonSound != null)
+        if(sfxAudio != null)
         {
            sfxAudio.PlayOneShot(buttonSound, buttonSoundVol);
            isPlayingSFX = true; 
@@ -457,7 +420,7 @@ public class GameManager : MonoBehaviour
     public void PlayMenuSwitchClick()
     {
         // Sound for button clicked
-        if (sfxAudio != null && menuSwitchSound != null)
+        if (sfxAudio != null)
         {
             sfxAudio.PlayOneShot(menuSwitchSound, menuSwitchSoundVol);
             isPlayingSFX = true;
