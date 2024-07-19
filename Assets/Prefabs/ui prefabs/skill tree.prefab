@@ -2852,7 +2852,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5754025909217174212}
         m_TargetAssemblyTypeName: SkillTreeManager, Assembly-CSharp
-        m_MethodName: attackDmg
+        m_MethodName: AttackDmg
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3601,7 +3601,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5754025909217174212}
         m_TargetAssemblyTypeName: SkillTreeManager, Assembly-CSharp
-        m_MethodName: hpAmt
+        m_MethodName: HpAmt
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3627,7 +3627,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7167773965843546163
 Transform:
   m_ObjectHideFlags: 0
@@ -3665,6 +3665,7 @@ MonoBehaviour:
   hpAmtLock: {fileID: 8649373841263430704}
   unlockShieldLock: {fileID: 50136381255781779}
   takeDmgLock: {fileID: 7811928683838670470}
+  curPointsText: {fileID: 555113320336883389}
 --- !u!1 &4539925275503845891
 GameObject:
   m_ObjectHideFlags: 0
@@ -4197,7 +4198,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5754025909217174212}
         m_TargetAssemblyTypeName: SkillTreeManager, Assembly-CSharp
-        m_MethodName: ability1
+        m_MethodName: Ability1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4330,7 +4331,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5754025909217174212}
         m_TargetAssemblyTypeName: SkillTreeManager, Assembly-CSharp
-        m_MethodName: ability2
+        m_MethodName: Ability2
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4731,7 +4732,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5754025909217174212}
         m_TargetAssemblyTypeName: SkillTreeManager, Assembly-CSharp
-        m_MethodName: unlockShield
+        m_MethodName: UnlockShield
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4998,7 +4999,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5754025909217174212}
         m_TargetAssemblyTypeName: SkillTreeManager, Assembly-CSharp
-        m_MethodName: staminaUse
+        m_MethodName: StaminaUse
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6995,7 +6996,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5754025909217174212}
         m_TargetAssemblyTypeName: SkillTreeManager, Assembly-CSharp
-        m_MethodName: ability3
+        m_MethodName: Ability3
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7412,7 +7413,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5754025909217174212}
         m_TargetAssemblyTypeName: SkillTreeManager, Assembly-CSharp
-        m_MethodName: takeDmg
+        m_MethodName: TakeDmg
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8022,7 +8023,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5754025909217174212}
         m_TargetAssemblyTypeName: SkillTreeManager, Assembly-CSharp
-        m_MethodName: attackSpd
+        m_MethodName: AttackSpd
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

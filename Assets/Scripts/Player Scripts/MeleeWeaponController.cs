@@ -23,6 +23,9 @@ public class MeleeWeaponController : MonoBehaviour
         IDamage damageCheck = other.GetComponent<IDamage>();
         if (damageCheck != null && !other.CompareTag("PlayerChild") && !other.CompareTag("Player") && !didDamage)
         {
+            if (SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ATTACK_DAMAGE_UP))
+                damage_ *= 1.5f;
+
             didDamage = true;
             damageCheck.TakeDamage(damage_);
             if (canDOT)

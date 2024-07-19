@@ -10,6 +10,7 @@ public class LoadingScreen : MonoBehaviour
     [SerializeField] private ClassSelection playerClass;
     public GameObject loadingScreen;
     public Image loadingBarFill;
+    public GameObject ui;
 
     //new game methods - assigns the correct class, starts the coroutine, initializes the new game data, and resumes the game so the player doesn't start paused
     public void loadSceneWARRIOR(int sceneId) //warrior selected
@@ -75,6 +76,7 @@ public class LoadingScreen : MonoBehaviour
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneId);
 
         loadingScreen.SetActive(true);
+        ui.SetActive(false);
 
         while (!operation.isDone)
         {
@@ -83,5 +85,6 @@ public class LoadingScreen : MonoBehaviour
 
             yield return null;
         }
+        ui.SetActive(true);
     }
 }

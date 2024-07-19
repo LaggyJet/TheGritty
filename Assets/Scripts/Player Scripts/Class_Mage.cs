@@ -21,6 +21,8 @@ public class Class_Mage : MonoBehaviourPun
     float secondaryStamCost = 0.35f;
     float secondaryFireSpeed = .2f;
 
+    int abilityActiveTime = 3;
+    bool staminaUnlockedCheck, attackSpeedUnlockedCheck, ability1UnlockedCheck, ability2UnlockedCheck, ability3UnlockedCheck = false;
 
     //this is our start function that does a few important things
     private void Start()
@@ -36,7 +38,40 @@ public class Class_Mage : MonoBehaviourPun
 
     private void Update()
     {
-        if(abilityActive > 0)
+        // Check if the player has the stamina use down unlocked and prevent repeat calls if they do
+        if (!staminaUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.STAMINA_USE_DOWN)) {
+            primaryStamCost = 0.03f;
+            secondaryStamCost = 0.2f;
+            staminaUnlockedCheck = true;
+        }
+
+        // Check if the player has the attack speed up unlocked and prevent repeat calls if they do
+        if (!attackSpeedUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ATTACK_SPEED_UP))
+        {
+            player.SetAnimationSpeed(0.75f);
+            attackSpeedUnlockedCheck = true;
+        }
+
+        // Check if the player has the ability strength 1 unlocked and prevent repeat calls if they do
+        if (!ability1UnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ABILITY_STRENGTH_1))
+        {
+            abilityActiveTime = 4;
+            ability1UnlockedCheck = true;
+        }
+        // Check if the player has the ability strength 2 unlocked and prevent repeat calls if they do
+        else if (!ability2UnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ABILITY_STRENGTH_2))
+        {
+            abilityActiveTime = 5;
+            ability2UnlockedCheck = true;
+        }
+        // Check if the player has the ability strength 3 unlocked and prevent repeat calls if they do
+        else if (!ability3UnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ABILITY_STRENGTH_3))
+        {
+            abilityActiveTime = 6;
+            ability3UnlockedCheck = true;
+        }
+
+        if (abilityActive > 0)
         {
             StartCoroutine(AbilityActive());
         }
@@ -129,7 +164,7 @@ public class Class_Mage : MonoBehaviourPun
             player.SetAnimationTrigger("Mage3");
             player.PlaySound('A');
             //sets our active time to 3 and our cooldown time to 10
-            abilityActive = 3;
+            abilityActive = abilityActiveTime;
             abilityCoolDown = 10;
             //makes stamina maximum so we pass all stamina checks during our ability time
             player.stamina = 10;

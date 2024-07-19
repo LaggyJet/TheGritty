@@ -51,15 +51,19 @@ public class FireBall : MonoBehaviour
         IDamage dmg = other.GetComponent<IDamage>();
 
         //if there is an IDamage component we run the inside code
-        if (dmg != null && !other.gameObject.CompareTag("Player"))
+        if (dmg != null && !other.gameObject.CompareTag("Player") && !other.gameObject.CompareTag("PlayerChild"))
         {
+            if (SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ATTACK_DAMAGE_UP))
+                damage *= 1.5f;
+
             //deal damage to the object hit
             dmg.TakeDamage(damage);
-            dmg.Afflict(type);
+            if (type != null)
+                dmg.Afflict(type);
             //destroy our projectile
             DestroyObject();
         }
-        else if (!other.gameObject.CompareTag("Player") && !other.isTrigger)
+        else if (!other.gameObject.CompareTag("Player") && !other.isTrigger && !other.gameObject.CompareTag("PlayerChild"))
             DestroyObject();
 
     }

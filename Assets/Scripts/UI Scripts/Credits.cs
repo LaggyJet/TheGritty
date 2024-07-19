@@ -14,7 +14,7 @@ public class Credits : MonoBehaviour
 
     IEnumerator returnToTitleMenu()
     {
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(12.3f);
         SceneManager.LoadScene("title menu");
         Time.timeScale = 1f;
     }

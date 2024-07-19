@@ -278,6 +278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 5753919164394827097}
+  mat: {fileID: 2100000, guid: a0c93d0b149163a498fe54b78d3e694f, type: 2}
   agent: {fileID: 3866886637309567587}
   anim: {fileID: 3822989686887913823}
   flipEnemyDirection: 1
@@ -352,8 +353,8 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
+  Synchronization: 2
+  OwnershipTransfer: 1
   observableSearch: 2
   ObservedComponents:
   - {fileID: 2600471494783406786}

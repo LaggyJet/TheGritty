@@ -32,6 +32,7 @@ public class SettingsManager : MonoBehaviour
             LoadPrefs();
         }
     }
+
     private void Start()
     {
         graphicsDropdown.value = graphicsDDVal;
