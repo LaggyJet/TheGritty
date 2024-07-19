@@ -9,6 +9,8 @@ using System.Diagnostics.Contracts;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using Photon.Pun;
+using UnityEngine.InputSystem;
+using UnityEngine.Assertions;
 
 public class GameManager : MonoBehaviour
 {
@@ -46,6 +48,8 @@ public class GameManager : MonoBehaviour
     public bool hasRespawned = false;
     public static bool selectedMultiplayer = false;
     public ClassSelection classSelector;
+    public GameObject skillTreeScreen;
+    public bool isSkTrActive;
 
     [Header("------ Audio ------")]
     [SerializeField] AudioSource soundTrackAud;
@@ -63,16 +67,43 @@ public class GameManager : MonoBehaviour
         instance = this;
         player = GameObject.FindWithTag("Player");
         classSelector = GameObject.FindWithTag("ClassSelector").GetComponent<ClassSelection>();
-        if (player != null) {
+        isSkTrActive = false;
+        if (player != null)
+        {
             playerScript = player.GetComponent<PlayerController>();
             //playerLocation = player.transform.position;
-            if(SceneManager.GetActiveScene().name == "title menu")
+            if (SceneManager.GetActiveScene().name == "title menu")
             {
                 SoundTrackswitch(GameMusic.Menu); // TODO: this will need to change once we solidify awake screen
             }
-            
+
         }
     }
+
+    public void OnSkillTreeOpen(InputAction.CallbackContext ctxt) //skill tree
+    {
+        if (skillTreeScreen != null)
+        {
+
+            //checks if our input is called, and if the tree is active or not
+            if (ctxt.performed && !isSkTrActive && SceneManager.GetActiveScene().name == "New Map Scene")
+            {
+                skillTreeScreen.SetActive(true);
+                statePause();
+                isSkTrActive = !isSkTrActive;
+            }
+            else if (ctxt.performed && isSkTrActive && SceneManager.GetActiveScene().name == "New Map Scene")
+            {
+                skillTreeScreen.SetActive(false);
+                stateResumeGameLoads();
+                isSkTrActive = !isSkTrActive;
+                SoundTrackswitch(GameMusic.Gameplay);
+               SkillTreeManager.Instance.SaveData(ref DataPersistenceManager.gameData);
+                
+            }
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -90,6 +121,10 @@ public class GameManager : MonoBehaviour
                 #else
                     Application.Quit();
                 #endif
+            }
+            else if (skillTreeScreen.activeInHierarchy)
+            {
+                return;
             }
             else if (menuActive == null)
             {
@@ -109,14 +144,16 @@ public class GameManager : MonoBehaviour
     }
 
     [PunRPC]
-    void SetEveryPlayerPauseState() {
+    void SetEveryPlayerPauseState()
+    {
         statePause();
         menuActive = menuPause;
         menuActive.SetActive(isPaused);
     }
 
     [PunRPC]
-    void SetEveryPlayerUnpauseState() {
+    void SetEveryPlayerUnpauseState()
+    {
         stateResume();
     }
 
@@ -128,7 +165,7 @@ public class GameManager : MonoBehaviour
         //playerLocation = player.transform.position;
     }
     //TEXT POP UPS
-    public void ShowText (string message)
+    public void ShowText(string message)
     {
         textMeshPro.text = message;
         textMeshPro.gameObject.SetActive(true);
@@ -215,7 +252,8 @@ public class GameManager : MonoBehaviour
         statePause();
         menuActive = menuWin;
 
-        if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient) {
+        if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient)
+        {
             menuWin.transform.Find("Menu Title").GetComponent<TMP_Text>().text = "Waiting....";
             menuWin.transform.Find("Restart").gameObject.SetActive(false);
         }
@@ -230,7 +268,8 @@ public class GameManager : MonoBehaviour
         statePause();
         menuActive = menuLose;
 
-        if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient) {
+        if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient)
+        {
             menuLose.transform.Find("Menu Title").GetComponent<TMP_Text>().text = "Waiting....";
             menuLose.transform.Find("Respawn").gameObject.SetActive(false);
             menuLose.transform.Find("Restart").gameObject.SetActive(false);
@@ -293,39 +332,39 @@ public class GameManager : MonoBehaviour
     }
 
     // Switch between which sounds you'd like for any created scenes
-    public enum GameMusic {Menu, Gameplay}
+    public enum GameMusic { Menu, Gameplay }
 
     public void SoundTrackswitch(GameMusic music)
     {
 
         // Check persistence with music 
-        if(soundTrackAud.isPlaying && ((music == GameMusic.Menu && soundTrackAud.clip == menuMusic) || (music == GameMusic.Gameplay && soundTrackAud.clip == gamePlayMusic)))
+        if (soundTrackAud.isPlaying && ((music == GameMusic.Menu && soundTrackAud.clip == menuMusic) || (music == GameMusic.Gameplay && soundTrackAud.clip == gamePlayMusic)))
         {
-           return;
+            return;
         }
 
-       switch(music)
-       {
-          case GameMusic.Menu:
-          if(soundTrackAud.clip != menuMusic)
-          {
-            soundTrackAud.clip = menuMusic;
-            soundTrackAud.volume = menuVol; 
-            soundTrackAud.Play();
-            isPlayingSTA = true;
-          }
-          break;
+        switch (music)
+        {
+            case GameMusic.Menu:
+                if (soundTrackAud.clip != menuMusic)
+                {
+                    soundTrackAud.clip = menuMusic;
+                    soundTrackAud.volume = menuVol;
+                    soundTrackAud.Play();
+                    isPlayingSTA = true;
+                }
+                break;
 
-          case GameMusic.Gameplay:
-          if(soundTrackAud.clip != gamePlayMusic)
-          {
-            soundTrackAud.clip = gamePlayMusic;
-            soundTrackAud.volume = gamePlayVol;
-            soundTrackAud.Play();
-            isPlayingSTA = true;
-          }
+            case GameMusic.Gameplay:
+                if (soundTrackAud.clip != gamePlayMusic)
+                {
+                    soundTrackAud.clip = gamePlayMusic;
+                    soundTrackAud.volume = gamePlayVol;
+                    soundTrackAud.Play();
+                    isPlayingSTA = true;
+                }
 
-          break;  
+                break;
         }
     }
 }

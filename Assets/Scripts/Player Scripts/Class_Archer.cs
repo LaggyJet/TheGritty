@@ -16,6 +16,8 @@ public class Class_Archer : MonoBehaviourPun
     float abilityStamCost = 1.5f;
     bool isCounting = false;
     int abilityCoolDown = 0;
+    float dashMultipler = 30f;
+    bool staminaUnlockedCheck, attackSpeedUnlockedCheck, ability1UnlockedCheck, ability2UnlockedCheck, ability3UnlockedCheck = false;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +30,40 @@ public class Class_Archer : MonoBehaviourPun
 
     private void Update()
     {
+        // Check if the player has the stamina use down unlocked and prevent repeat calls if they do
+        if (!staminaUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.STAMINA_USE_DOWN)) {
+            primaryStamCost = 0.2f;
+            secondaryStamCost = 0.2f;
+            abilityStamCost = 1f;
+            staminaUnlockedCheck = true;
+        }
+
+        // Check if the player has the attack speed up unlocked and prevent repeat calls if they do
+        if (!attackSpeedUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ATTACK_SPEED_UP))
+        {
+            player.SetAnimationSpeed(0.75f);
+            attackSpeedUnlockedCheck = true;
+        }
+
+        // Check if the player has the ability strength 1 unlocked and prevent repeat calls if they do
+        if (!ability1UnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ABILITY_STRENGTH_1))
+        {
+            dashMultipler = 35f;
+            ability1UnlockedCheck = true;
+        }
+        // Check if the player has the ability strength 2 unlocked and prevent repeat calls if they do
+        else if (!ability2UnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ABILITY_STRENGTH_2))
+        {
+            dashMultipler = 40f;
+            ability2UnlockedCheck = true;
+        }
+        // Check if the player has the ability strength 3 unlocked and prevent repeat calls if they do
+        else if (!ability3UnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ABILITY_STRENGTH_3))
+        {
+            dashMultipler = 45f;
+            ability3UnlockedCheck = true;
+        }
+
         if (abilityCoolDown > 0)
         {
             StartCoroutine(AbilityCountDown());
@@ -104,26 +140,26 @@ public class Class_Archer : MonoBehaviourPun
         float dashDuration = 0.25f; 
         float speedUpDuration = 0.075f;
         float slowDownDuration = 0.05f;
-        float dashSpeedMultiplier = 30f;
+        float dashSpeed = dashMultipler;
         float timeElapsed = 0f;
         float normalSpeed = player.speed;
 
         while (timeElapsed < speedUpDuration) {
-            player.controller.Move(Mathf.Lerp(normalSpeed, dashSpeedMultiplier, (timeElapsed / speedUpDuration)) * Time.deltaTime * player.movement);
+            player.controller.Move(Mathf.Lerp(normalSpeed, dashSpeed, (timeElapsed / speedUpDuration)) * Time.deltaTime * player.movement);
             timeElapsed += Time.deltaTime;
             yield return null;
         }
 
         timeElapsed = 0f;
         while (timeElapsed < dashDuration - (speedUpDuration + slowDownDuration)) {
-            player.controller.Move(dashSpeedMultiplier * Time.deltaTime * player.movement);
+            player.controller.Move(dashSpeed * Time.deltaTime * player.movement);
             timeElapsed += Time.deltaTime;
             yield return null;
         }
 
         timeElapsed = 0f;
         while (timeElapsed < slowDownDuration) {
-            player.controller.Move(Mathf.Lerp(dashSpeedMultiplier, normalSpeed, (timeElapsed / slowDownDuration)) * Time.deltaTime * player.movement);
+            player.controller.Move(Mathf.Lerp(dashSpeed, normalSpeed, (timeElapsed / slowDownDuration)) * Time.deltaTime * player.movement);
             timeElapsed += Time.deltaTime;
             yield return null;
         }

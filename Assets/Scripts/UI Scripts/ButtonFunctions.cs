@@ -39,19 +39,18 @@ public class ButtonFunctions : MonoBehaviour
         #endif
     }
 
-    [PunRPC]
     public void quitGame()
     {
         //Disconnect player from the server (if possible)
-        if (PhotonNetwork.IsConnected)
-            StartCoroutine(DisconnectPhoton());
-
         if (PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom)
             CallQuitGame();
+        else if (PhotonNetwork.IsConnected)
+            StartCoroutine(DisconnectPhoton());
         else if (!PhotonNetwork.IsConnected)
             SceneManager.LoadScene("title menu");
     }
 
+    [PunRPC]
     IEnumerator DisconnectPhoton() {
         PhotonNetwork.Disconnect();
 
@@ -62,7 +61,7 @@ public class ButtonFunctions : MonoBehaviour
         SceneManager.LoadScene("title menu");
     }
 
-    public void CallQuitGame() { PhotonView.Get(this).RPC(nameof(quitGame), RpcTarget.Others); }
+    public void CallQuitGame() { PhotonView.Get(this).RPC(nameof(DisconnectPhoton), RpcTarget.All); }
 
     public void respawn()
     {
@@ -76,7 +75,7 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.instance.leaveSettings();
         if(SettingsManager.instance != null)
-        SettingsManager.instance.SavePrefs();
+            SettingsManager.instance.SavePrefs();
         ResolutionManager.instance.SavePrefs();
     }
 
