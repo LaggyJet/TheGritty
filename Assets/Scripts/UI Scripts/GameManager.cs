@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public float menuSwitchSoundVol;
     public bool isPlayingSFX = false; // Sound Effects Audio
     private bool clickSound = true; // Playing only for pause 
-    private bool quitButtonClicked = false; // Needed for quit game func
+    
     
 
 
@@ -413,7 +413,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-           Debug.Log("SFX clip not playing");
+           Debug.Log("SFX == null && not playing sound");
         }
     }
 
@@ -427,7 +427,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("SFX clip not playing");
+            Debug.Log("SFX == null && not playing sound");
         }
     }
 }

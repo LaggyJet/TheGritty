@@ -28,6 +28,7 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
 
     // Create room based on user input (max of 2 players)
     public void HostRoom() {
+        GameManager.instance.PlayMenuSwitchClick();
         for (int i = 0; i < rooms.Count; i++) {
             if (rooms[i].Name == hostInput.text.ToLower()) {
                 RaiseWarning("Room with this name already exists");
@@ -47,6 +48,7 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
 
     // Join room based on user input
     public void JoinRoom() {
+        GameManager.instance.PlayMenuSwitchClick();
         for (int i = 0; i < rooms.Count; i++) {
             if (rooms[i].Name == joinInput.text.ToLower()) {
                 if (rooms[i].PlayerCount != rooms[i].MaxPlayers)
