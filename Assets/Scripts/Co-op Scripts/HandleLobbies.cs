@@ -14,7 +14,7 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
     [SerializeField] Button hostButton, joinButton;
 
     List<RoomInfo> rooms = new();
-    const string MAP_SCENE = "JoshScene"; //"New Map Scene";
+    const string MAP_SCENE = "New Map Scene";
 
     // Start the connection when loading screen plays
     void Start() { PhotonNetwork.AutomaticallySyncScene = true; PhotonNetwork.ConnectUsingSettings(); }
