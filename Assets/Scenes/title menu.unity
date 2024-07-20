@@ -638,6 +638,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4812126170991636316, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
+      propertyPath: m_Volume
+      value: 0.321
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812126170991636316, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -657,6 +661,10 @@ PrefabInstance:
       propertyPath: buttonSound
       value: 
       objectReference: {fileID: 8300000, guid: f1fd54f0006cc834a8ea801cf7d70818, type: 3}
+    - target: {fileID: 6281002284272563087, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
+      propertyPath: gamePlayVol
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 6281002284272563087, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
       propertyPath: menuSettings
       value: 
