@@ -1044,6 +1044,10 @@ MonoBehaviour:
   shootPos: {fileID: 7703431413592042901}
   enemyLimiter: {fileID: 11400000, guid: bedc5fd635ff00e4fac23501c907b728, type: 2}
   range: 10
+  dropChance: 0.1
+  itemsToDrop:
+  - {fileID: 1632267034115798544, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
+  - {fileID: 5220469302408313250, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
 --- !u!136 &1812937335656185019
 CapsuleCollider:
   m_ObjectHideFlags: 0
