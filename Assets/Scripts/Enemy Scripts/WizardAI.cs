@@ -221,17 +221,7 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
     [PunRPC]
     void StartDeath() { StartCoroutine(DeathAnimation()); }
 
-    [PunRPC]
-    void SetRenderModeTransparent() { RenderModeAdjuster.SetTransparent(mat); }
-
-    [PunRPC]
-    void SetRenderModeOpaque() { RenderModeAdjuster.SetOpaque(mat); }
-
     IEnumerator DeathAnimation() {
-        if (PhotonNetwork.InRoom)
-            photonView.RPC(nameof(SetRenderModeTransparent), RpcTarget.All);
-        else if (!PhotonNetwork.IsConnected)
-            SetRenderModeTransparent();
         agent.isStopped = true;
         enemyTargetPosition = transform.position;
         agent.SetDestination(enemyTargetPosition);
@@ -247,17 +237,13 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
         while (model.material.color.a > 0) {
             foreach (Renderer render in renderers) {
                 if (render.material.HasProperty("_Color")) {
+                    RenderModeAdjuster.SetTransparent(render.material);
                     float fadeSpeed = render.material.color.a - Time.deltaTime;
                     render.material.color = new Color(render.material.color.r, render.material.color.g, render.material.color.b, fadeSpeed);
                 }
                 yield return null;
             }
         }
-
-        if (PhotonNetwork.InRoom)
-            photonView.RPC(nameof(SetRenderModeOpaque), RpcTarget.All);
-        else if (!PhotonNetwork.IsConnected)
-            SetRenderModeOpaque();
 
         if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
             PhotonNetwork.Destroy(gameObject);

@@ -174,9 +174,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
         ParticleSystem.SubEmittersModule subEmitters = particleSystem.subEmitters;
         for (int i = 0; i < subEmitters.subEmittersCount; i++)
             subEmitters.GetSubEmitterSystem(i)?.Play();
-        Quaternion tempQuat = transform.rotation;
         agent.isStopped = isAttacking = true;
-        transform.rotation = tempQuat;
         yield return new WaitForSeconds(0.1f);
         anim.enabled = false;
         StartCoroutine(SpawnTracers());
@@ -298,35 +296,22 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
         return false;
     }
 
-    [PunRPC]
-    void SetRenderModeTransparent() {  
-        RenderModeAdjuster.SetTransparent(mat); 
-    }
-
-    [PunRPC]
-    void SetRenderModeOpaque() { 
-        RenderModeAdjuster.SetOpaque(mat); 
-    }
-
     IEnumerator DeathAnimation() {
-        if (PhotonNetwork.InRoom)
-            photonView.RPC(nameof(SetRenderModeTransparent), RpcTarget.All);
-        else if (!PhotonNetwork.IsConnected)
-            SetRenderModeTransparent();
         yield return new WaitForSeconds(0.2f);
         agent.isStopped = true;
         agent.SetDestination(transform.position);
         agent.radius = 0;
         anim.SetTrigger("Death");
         var renderers = new List<Renderer>();
-        Renderer[] childRenders = transform.GetComponentsInChildren<Renderer>();
-        renderers.AddRange(childRenders);
+        Renderer[] childRenderers = transform.GetComponentsInChildren<Renderer>();
+        renderers.AddRange(childRenderers);
         yield return new WaitForSeconds(3);
         while (model.material.color.a > 0) {
             foreach (Renderer render in renderers) {
                 if (IsSpitParticles(render.transform))
                     continue;
                 if (render.material.HasProperty("_Color")) {
+                    RenderModeAdjuster.SetTransparent(render.material);
                     float fadeSpeed = render.material.color.a - Time.deltaTime;
                     render.material.color = new Color(render.material.color.r, render.material.color.g, render.material.color.b, fadeSpeed);
                 }
@@ -340,11 +325,6 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
             photonView.RPC(nameof(Win), RpcTarget.All);
         else if (!PhotonNetwork.InRoom)
             Win();
-
-        if (PhotonNetwork.InRoom)
-            photonView.RPC(nameof(SetRenderModeOpaque), RpcTarget.All);
-        else if (!PhotonNetwork.IsConnected)
-            SetRenderModeOpaque();
 
         if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
             PhotonNetwork.Destroy(gameObject);

@@ -148,23 +148,7 @@ public class ArcherAI : MonoBehaviourPun, IDamage, IPunObservable {
     [PunRPC]
     void StartDeath() { StartCoroutine(DeathAnimation()); }
 
-    [PunRPC]
-    void SetRenderModeTransparent() { 
-        foreach (Material mat in mats)    
-            RenderModeAdjuster.SetTransparent(mat); 
-    }
-
-    [PunRPC]
-    void SetRenderModeOpaque() { 
-        foreach (Material mat in mats)
-            RenderModeAdjuster.SetOpaque(mat); 
-    }
-
     IEnumerator DeathAnimation() {
-        if (PhotonNetwork.InRoom)
-            photonView.RPC(nameof(SetRenderModeTransparent), RpcTarget.All);
-        else if (!PhotonNetwork.IsConnected)
-            SetRenderModeTransparent();
         enemyTargetPosition = transform.position;
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (Collider collider in colliders)
@@ -177,17 +161,13 @@ public class ArcherAI : MonoBehaviourPun, IDamage, IPunObservable {
         while (model.material.color.a > 0) {
             foreach (Renderer render in renderers) {
                 if (render.material.HasProperty("_Color")) {
+                    RenderModeAdjuster.SetTransparent(render.material);
                     float fadeSpeed = render.material.color.a - Time.deltaTime;
                     render.material.color = new Color(render.material.color.r, render.material.color.g, render.material.color.b, fadeSpeed);
                 }
                 yield return null;
             }
         }
-
-        if (PhotonNetwork.InRoom)
-            photonView.RPC(nameof(SetRenderModeOpaque), RpcTarget.All);
-        else if (!PhotonNetwork.IsConnected)
-            SetRenderModeOpaque();
 
         if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
             PhotonNetwork.Destroy(gameObject);
