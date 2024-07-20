@@ -11,6 +11,7 @@ public class SoundsManager : MonoBehaviour
 {
     // Access
     public static SoundsManager instance;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -90,8 +91,5 @@ public class SoundsManager : MonoBehaviour
        Shake.instance.isShaking = false;
     }
 
-    public void PlayOrcSound()
-    {
-       
-    }
+    
 }

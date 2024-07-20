@@ -95,6 +95,7 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
     }
     public void AddPoint()
     {
+        PlayerController.instance.PlayAddPointAud();
         ++curPoints;
         curPointsText.text = curPoints.ToString("F0");
         points2Save = curPoints;
@@ -102,6 +103,7 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
 
     public void LosePoint()
     {
+        PlayerController.instance.PlayLosePointAud();
         --curPoints;
         curPointsText.text = curPoints.ToString("F0");
         points2Save = curPoints;
@@ -158,12 +160,12 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
 
     void UnlockedSkillSound()
     {
-        //Whatever here ig
+        PlayerController.instance.PlayUnlockSkillAud();
     }
 
     void CannotUnlockSkillSound()
     {
-        //More whatever here
+        PlayerController.instance.PlayCantUnlockSkillAud();
     }
 
     public void AttackDmg()

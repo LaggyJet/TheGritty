@@ -406,6 +406,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 930219721704288548, guid: a28d99c3e892dae47a2a09c510a94e37, type: 3}
+      propertyPath: sfxAud
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 930219721704288548, guid: a28d99c3e892dae47a2a09c510a94e37, type: 3}
+      propertyPath: playerJump
+      value: 
+      objectReference: {fileID: 8300000, guid: 61ac2b35586b6c34884ae277d29af861, type: 3}
+    - target: {fileID: 930219721704288548, guid: a28d99c3e892dae47a2a09c510a94e37, type: 3}
+      propertyPath: playerJumpVol
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 930219721704288548, guid: a28d99c3e892dae47a2a09c510a94e37, type: 3}
+      propertyPath: playerTeleport
+      value: 
+      objectReference: {fileID: 8300000, guid: 1863147e81782ae4b8aef797f7b20fad, type: 3}
+    - target: {fileID: 930219721704288548, guid: a28d99c3e892dae47a2a09c510a94e37, type: 3}
+      propertyPath: playerWalkingVol
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 930219721704288548, guid: a28d99c3e892dae47a2a09c510a94e37, type: 3}
+      propertyPath: isPlayingTeleport
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 930219721704288548, guid: a28d99c3e892dae47a2a09c510a94e37, type: 3}
+      propertyPath: playerTeleportVol
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4724059703775022588, guid: a28d99c3e892dae47a2a09c510a94e37, type: 3}
       propertyPath: m_Name
       value: SoundsManager
@@ -577,9 +605,41 @@ PrefabInstance:
       propertyPath: graphicsDropdown
       value: 
       objectReference: {fileID: 1877824987}
+    - target: {fileID: 2129574609512790023, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
+      propertyPath: footsteps.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2129574609512790023, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
+      propertyPath: footsteps.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 5a60c311361c1124894cb27fac2c2f44, type: 3}
+    - target: {fileID: 2129574609512790023, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
+      propertyPath: footsteps.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 0a44258bc814f2f4fa8230183afa3666, type: 3}
+    - target: {fileID: 2129574609512790023, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
+      propertyPath: footsteps.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: c35a33b4c0bf23a4d8ffd70dcaaa15b4, type: 3}
+    - target: {fileID: 2129574609512790023, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
+      propertyPath: footsteps.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: dc208c3a2fb017244ae01e09bbbb6024, type: 3}
+    - target: {fileID: 2129574609512790023, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
+      propertyPath: footsteps.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: eaef0e297e7b4724d89ffef605742e4a, type: 3}
+    - target: {fileID: 2129574609512790023, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
+      propertyPath: footsteps.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: eaef0e297e7b4724d89ffef605742e4a, type: 3}
     - target: {fileID: 3565451132386776912, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
       propertyPath: sceneViewId
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812126170991636316, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6281002284272563087, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
       propertyPath: sfxAudio
