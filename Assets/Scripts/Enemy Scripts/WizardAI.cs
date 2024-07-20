@@ -231,9 +231,10 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
             collider.enabled = false;
         anim.SetTrigger("Death");
         var renderers = new List<Renderer>();
-        Renderer[] childRenders = transform.GetComponentsInChildren<Renderer>();
-        renderers.AddRange(childRenders);
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+        Renderer[] childRenderers = transform.GetComponentsInChildren<Renderer>();
+        renderers.AddRange(childRenderers);
+        ParticleSystem[] particleSystems = GetComponentsInChildren<ParticleSystem>();
+        yield return new WaitForSeconds(2.2f);
         while (model.material.color.a > 0) {
             foreach (Renderer render in renderers) {
                 if (render.material.HasProperty("_Color")) {
@@ -241,8 +242,12 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
                     float fadeSpeed = render.material.color.a - Time.deltaTime;
                     render.material.color = new Color(render.material.color.r, render.material.color.g, render.material.color.b, fadeSpeed);
                 }
-                yield return null;
             }
+            foreach (ParticleSystem particleSystem in particleSystems) {
+                var emission = particleSystem.emission;
+                emission.enabled = false;
+            }
+            yield return null;
         }
 
         if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)

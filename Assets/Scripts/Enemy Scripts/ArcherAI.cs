@@ -157,7 +157,7 @@ public class ArcherAI : MonoBehaviourPun, IDamage, IPunObservable {
         var renderers = new List<Renderer>();
         Renderer[] childRenders = transform.GetComponentsInChildren<Renderer>();
         renderers.AddRange(childRenders);
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(3);
         while (model.material.color.a > 0) {
             foreach (Renderer render in renderers) {
                 if (render.material.HasProperty("_Color")) {
