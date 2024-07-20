@@ -1466,8 +1466,20 @@ PrefabInstance:
       value: 329.68
       objectReference: {fileID: 0}
     - target: {fileID: 3741248192091749057, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5.2841215
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741248192091749057, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5.2841215
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741248192091749057, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5.2841215
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741248192091749057, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -36.003
+      value: -245
       objectReference: {fileID: 0}
     - target: {fileID: 3987368209802126220, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
