@@ -25,7 +25,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
     DamageStats status;
     bool isAttacking, wasKilled, isSpawningSpiders, onCooldown, isDOT;
     Vector3 playerDirection, target, networkPosition, randomTargetPosition;
-    Quaternion networkRotation;
+    Quaternion networkRotation, lastRot;
     float currentAngle, lastMovementTime, randomMovementInterval = 15f;
 
     void Start() {
@@ -54,15 +54,19 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
 
     void Update() {
         playerDirection = FindClosetPlayer().transform.position - transform.position;
+        if (!isAttacking)
+            lastRot = transform.rotation;
 
         if (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected) {
-            if (!isAttacking || !wasKilled)
+            if (!wasKilled)
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(playerDirection), Time.deltaTime * faceTargetSpeed);
+            
 
             if (!isSpawningSpiders && !isAttacking && !wasKilled)
                 StartCoroutine(SpawnSpiders());
 
             if (!isAttacking) {
+                agent.isStopped = false;
                 if (Time.time - lastMovementTime >= randomMovementInterval) {
                     SetRandomTargetPosition();
                     lastMovementTime = Time.time;
@@ -70,6 +74,10 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
 
                 if (agent.remainingDistance < 0.1f)
                     SetRandomTargetPosition();
+            }
+            else if (isAttacking) {
+                transform.rotation = lastRot;
+                agent.isStopped = true;
             }
         }
         else if (!PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom) {
@@ -193,27 +201,19 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
         ParticleSystem pS = spitEffectPS.GetComponent<ParticleSystem>();
         ParticleSystem.Particle[] particles = new ParticleSystem.Particle[pS.main.maxParticles];
         List<GameObject> curTracers = new List<GameObject>();
-
-        // Wait for 0.5 seconds before spawning tracers
         yield return new WaitForSeconds(0.5f);
-
-        // Ensure we have exactly 5 tracers
         while (curTracers.Count < 5) {
             curTracers.Add(PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine ? 
                 PhotonNetwork.Instantiate("Enemy/" + acidStream.name, Vector3.zero, Quaternion.identity) : 
                 Instantiate(acidStream));
             yield return null;
         }
-
-        // Main loop to track particles
-        while (true) {
+        while (true) {            
             int particlesLeft = pS.GetParticles(particles);
             
             for (int i = 0; i < curTracers.Count; i++) {
                 if (i < particlesLeft && particles[i].remainingLifetime > 0f) {
                     curTracers[i].transform.position = particles[i].position;
-
-                    // Check if the tracer hits "Boss_Floor"
                     Collider[] hitColliders = Physics.OverlapSphere(curTracers[i].transform.position, 0.1f);
                     foreach (var hitCollider in hitColliders) {
                         if (hitCollider.gameObject.name == "Boss_Floor") {
@@ -241,12 +241,9 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
                     i--;
                 }
             }
-
-            // Exit the loop if all tracers are removed
             if (curTracers.Count == 0) {
                 break;
             }
-
             yield return null;
         }
     }
@@ -344,7 +341,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
     }
 
     IEnumerator WaitForWin() {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         GameManager.instance.gameWon();
         DataPersistenceManager.Instance.SaveGame();
         GameManager.playerLocation = GameManager.instance.player.transform.position;
