@@ -65,7 +65,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
             if (!isSpawningSpiders && !isAttacking && !wasKilled)
                 StartCoroutine(SpawnSpiders());
 
-            if (!isAttacking) {
+            if (!isAttacking && !wasKilled) {
                 agent.isStopped = false;
                 if (Time.time - lastMovementTime >= randomMovementInterval) {
                     SetRandomTargetPosition();
@@ -208,7 +208,12 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
                 Instantiate(acidStream));
             yield return null;
         }
-        while (true) {            
+        while (true) {    
+            if (wasKilled) {
+                spitEffectPS.SetActive(false);
+                yield break;
+            }
+
             int particlesLeft = pS.GetParticles(particles);
             
             for (int i = 0; i < curTracers.Count; i++) {
@@ -248,25 +253,35 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
         }
     }
 
+    [PunRPC]
+    public void RpcTakeDamage(float damage) {
+        if (wasKilled)
+            return;
 
-
-
-    public void TakeDamage(float amount) {
-        hp -= amount;
+        hp -= damage;
         if (hp > 0)
             StartCoroutine(FlashDamage());
 
-        if (hp <= 0 && !wasKilled) {
+        if (hp <= 0 && !wasKilled)
+        {
+            wasKilled = true;
             StopCoroutine(Spit());
             StopCoroutine(SpawnSpiders());
             GameManager.instance.updateEnemy(-1);
             gameObject.GetComponent<Collider>().enabled = false;
             StartCoroutine(DeathAnimation());
-            wasKilled = true;
         }
 
         if (!isAttacking && !onCooldown)
             TrySpit();
+    }
+
+
+    public void TakeDamage(float damage) {
+        if (PhotonNetwork.InRoom)
+            photonView.RPC(nameof(RpcTakeDamage), RpcTarget.All, damage);
+        else if (!PhotonNetwork.IsConnected)
+            RpcTakeDamage(damage); 
     }
 
     public void Afflict(DamageStats type) {
@@ -299,6 +314,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
         agent.SetDestination(transform.position);
         agent.radius = 0;
         anim.SetTrigger("Death");
+        transform.rotation = lastRot;
         var renderers = new List<Renderer>();
         Renderer[] childRenderers = transform.GetComponentsInChildren<Renderer>();
         renderers.AddRange(childRenderers);
@@ -322,11 +338,6 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
             photonView.RPC(nameof(Win), RpcTarget.All);
         else if (!PhotonNetwork.InRoom)
             Win();
-
-        if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
-            PhotonNetwork.Destroy(gameObject);
-        else if (!PhotonNetwork.InRoom)
-            Destroy(gameObject);
     }
 
     IEnumerator FlashDamage() {
@@ -337,11 +348,11 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
 
     [PunRPC]
     private void Win() {
-        StartCoroutine(WaitForWin());
-    }
+        if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
+            PhotonNetwork.Destroy(gameObject);
+        else if (!PhotonNetwork.InRoom)
+            Destroy(gameObject);
 
-    IEnumerator WaitForWin() {
-        yield return new WaitForSeconds(1);
         GameManager.instance.gameWon();
         DataPersistenceManager.Instance.SaveGame();
         GameManager.playerLocation = GameManager.instance.player.transform.position;

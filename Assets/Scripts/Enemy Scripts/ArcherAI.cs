@@ -100,6 +100,9 @@ public class ArcherAI : MonoBehaviourPun, IDamage, IPunObservable {
 
     [PunRPC]
     public void RpcTakeDamage(float damage) {
+        if (wasKilled)
+            return;
+
         hp -= damage;
 
         if (hp > 0)
