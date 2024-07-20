@@ -99,6 +99,45 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     [SerializeField] float attackVol;
     bool isPlayingSteps;
 
+    [Header("-----Player SFX------")]
+    [SerializeField] public AudioClip playerJump;
+    [SerializeField] public float playerJumpVol;
+    public bool isPlayingJump = false;
+    [SerializeField] public AudioClip playerLand;
+    [SerializeField] public float playerLandVol;
+    public bool isPlayingLand = false;
+    [SerializeField] public AudioClip playerTeleport;
+    [SerializeField] public float playerTeleportVol;
+    public bool isPlayingTeleport = false;
+    [SerializeField] public AudioClip[] WeaponHit;
+    [SerializeField] public float weaponHitVol;
+    public bool isPlayingWeaponHit = false;
+    [SerializeField] public AudioClip[] arrowAud;
+    [SerializeField] public float arrowAudVol;
+    public bool isPlayingArrowAud = false;
+    [SerializeField] public AudioClip[] swordHitAud;
+    [SerializeField] public float swordHitAudVol;
+    public bool isPlayingSwordHitAud = false;
+    [SerializeField] public AudioClip[] arrowHitAud;
+    [SerializeField] public float arrowHitAudVol;
+    public bool isPlayingArrowHitAud = false;
+    [SerializeField] public AudioClip[] playerDeadAud;
+    [SerializeField] public float playerDeadAudVol;
+    public bool isPlayingPlayerDeadAud = false;
+    [SerializeField] public AudioClip unlockSkillAud;
+    [SerializeField] public float unlockSkillAudVol;
+    public bool isPlayingUnlockSkillAud = false;
+    [SerializeField] public AudioClip CantUnlockSkillAud;
+    [SerializeField] public float cantUnlockSkillAudVol;
+    public bool isPlayingCantUnlockSkillAud = false;
+    [SerializeField] public AudioClip losePointAud;
+    [SerializeField] public float losePointAudVol;
+    public bool isPlayingLosePointAud = false;
+    [SerializeField] public AudioClip addPointAud;
+    [SerializeField] public float addPointAudVol;
+    public bool isPlayingAddPointAud = false;
+
+
 
     [Header("------ Sprint Audio ------")]
     [SerializeField] public AudioSource sprintAudioSource;
@@ -120,6 +159,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     public bool isPlayingNoHP = false;
     private bool isRegenerating = false;
 
+    
     private const string CLASS_SELECTED = "ClassSelected";
     ClassSelection currentClassSelection;
 
@@ -293,12 +333,28 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         //checks if our input is called, if we have available jumps left, and if we have the stamina to jump
         if (ctxt.performed && jumpsAvailable > 0 && stamina >= .5f)
         {
+            PlayJump();
             //subtracts our stamina and jumps then adds our y velocity to player
             stamina -= .5f;
             jumpsAvailable--;
             playerV.y = jumpSpeed;
+            isPlayingJump = false;
+            StartCoroutine(WaitForLand());
         }
     }
+
+    // To seperate land and jump sound
+    IEnumerator WaitForLand()
+    {
+      while(!controller.isGrounded)
+      {
+        yield return null; 
+      }
+
+      // Play sound when player is grounded
+      PlayLand();
+    }
+    
 
     public void OnSprint(InputAction.CallbackContext ctxt) //sprinting
     {
@@ -513,6 +569,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             hp = 0;
             isDead = true;
 
+            // Player death sound
+            PlayPlayerDeadAud();
+
             //Call lose game for every player in room through RPC calls, otherwise call normally
             if (PhotonNetwork.InRoom)
                 GameManager.instance.CallGameLost();
@@ -667,6 +726,176 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             }
 
     }
+
+    public void PlayJump()
+    {
+       // Sound for jump
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(playerJump, playerJumpVol);
+            isPlayingJump = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing jump");
+        }
+    }
+
+    public void PlayLand()
+    {
+       // Sound for land
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(playerLand, playerLandVol);
+            isPlayingLand = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing land");
+        }
+    }
+
+    public void PlayTeleport()
+    {
+       // Sound for teleportation
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(playerTeleport, playerTeleportVol);
+            isPlayingTeleport = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing teleport");
+        }
+    }
+
+    public void PlayWeaponHit()
+    {
+       // Sound for teleportation
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(WeaponHit[Random.Range(0, WeaponHit.Length)], weaponHitVol);
+            isPlayingWeaponHit = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing weapon hit");
+        }
+    }
+
+    public void PlayArrowAud()
+    {
+       // Sound for teleportation
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(arrowAud[Random.Range(0, arrowAud.Length)], arrowAudVol);
+            isPlayingArrowAud = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing arrow aud");
+        }
+    }
+
+    public void PlaySwordHitAud()
+    {
+       // Sound for teleportation
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(swordHitAud[Random.Range(0, swordHitAud.Length)], swordHitAudVol);
+            isPlayingSwordHitAud = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing sword hit aud");
+        }
+    }
+
+    public void PlayArrowHitAud()
+    {
+       // Sound for teleportation
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(arrowHitAud[Random.Range(0, arrowHitAud.Length)], arrowHitAudVol);
+            isPlayingArrowHitAud = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing arrow hit aud");
+        }
+    }
+
+    public void PlayPlayerDeadAud()
+    {
+       // Sound for teleportation
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(playerDeadAud[Random.Range(0, playerDeadAud.Length)], playerDeadAudVol);
+            isPlayingPlayerDeadAud = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing player dead aud");
+        }
+    }
+
+    public void PlayUnlockSkillAud()
+    {
+       // Sound for teleportation
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(unlockSkillAud, unlockSkillAudVol);
+            isPlayingUnlockSkillAud = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing unlock skill aud");
+        }
+    }
+
+    public void PlayCantUnlockSkillAud()
+    {
+       // Sound for teleportation
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(CantUnlockSkillAud, cantUnlockSkillAudVol);
+            isPlayingCantUnlockSkillAud = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing cant unlock skill aud");
+        }
+    }
+
+    public void PlayLosePointAud()
+    {
+       // Sound for teleportation
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(losePointAud, losePointAudVol);
+            isPlayingLosePointAud = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing lose point aud");
+        }
+    }
+
+    public void PlayAddPointAud()
+    {
+       // Sound for teleportation
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(addPointAud, addPointAudVol);
+            isPlayingAddPointAud = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing add point aud");
+        }
+    }
+
+
 
     
     //a simple function for respawning the player

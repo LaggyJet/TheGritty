@@ -48980,6 +48980,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 930219721704288548, guid: a28d99c3e892dae47a2a09c510a94e37, type: 3}
+      propertyPath: playerTeleport
+      value: 
+      objectReference: {fileID: 8300000, guid: 1863147e81782ae4b8aef797f7b20fad, type: 3}
+    - target: {fileID: 930219721704288548, guid: a28d99c3e892dae47a2a09c510a94e37, type: 3}
+      propertyPath: playerTeleportVol
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4724059703775022588, guid: a28d99c3e892dae47a2a09c510a94e37, type: 3}
       propertyPath: m_Name
       value: SoundsManager
