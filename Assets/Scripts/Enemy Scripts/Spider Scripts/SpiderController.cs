@@ -38,9 +38,8 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
         isAttacking = wasKilled = isSpawningSpiders = onCooldown = isDOT = false;
         GameManager.instance.updateEnemy(1);
         agent.speed = distanceFromPlayer * 0.1875f;
-        StartCoroutine(CirclePlayer());
-        networkPosition = transform.position;
-        networkRotation = transform.rotation;
+        if (!photonView.IsMine && PhotonNetwork.IsMasterClient)
+            photonView.TransferOwnership(PhotonNetwork.MasterClient);
     }
 
     void Update() {
@@ -283,7 +282,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
     IEnumerator FlashDamage() {
         model.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        model.material.color = new Color(0.5f, 0.5f, 0.5f, 1);
+        model.material.color = Color.white;
     }
 
     [PunRPC]
@@ -297,7 +296,6 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
         if (stream.IsWriting) { 
             stream.SendNext(agent.transform.position);
             stream.SendNext(agent.transform.rotation);
-            stream.SendNext(target);
             stream.SendNext(isAttacking);
             stream.SendNext(isSpawningSpiders);
             stream.SendNext(onCooldown);
@@ -305,7 +303,6 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
         else {
             networkPosition = (Vector3)stream.ReceiveNext();
             networkRotation = (Quaternion)stream.ReceiveNext();
-            target = (Vector3)stream.ReceiveNext();
             isAttacking = (bool)stream.ReceiveNext();
             isSpawningSpiders = (bool)stream.ReceiveNext();
             onCooldown = (bool)stream.ReceiveNext();
