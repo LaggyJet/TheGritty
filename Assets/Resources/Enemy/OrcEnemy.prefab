@@ -251,9 +251,8 @@ MonoBehaviour:
   type: {fileID: 11400000, guid: 19c1a9185716ec34884e00e951051bbd, type: 2}
   enemyLimiter: {fileID: 11400000, guid: 69592759934e6014b923381164fcf075, type: 2}
   range: 5
-  dropChance: 0.25
-  itemsToDrop:
-  - {fileID: 1632267034115798544, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
+  dropChance: 0.15
+  itemToDrop: {fileID: 5220469302408313250, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
 --- !u!136 &1421049694574580939
 CapsuleCollider:
   m_ObjectHideFlags: 0

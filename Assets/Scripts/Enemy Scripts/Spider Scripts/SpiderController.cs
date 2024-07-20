@@ -21,6 +21,8 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
     [SerializeField] int faceTargetSpeed, distanceFromPlayer, spitCooldown;
     [SerializeField] GameObject spitEffectPS, poolEmitter, acidStream, acidPuddle, spider;
     [SerializeField] int spawnRate, spawnAmount;
+    [SerializeField] float dropChance;
+    [SerializeField] GameObject itemToDrop;
 
     DamageStats status;
     bool isAttacking, wasKilled, isSpawningSpiders, onCooldown, isDOT;
@@ -262,8 +264,9 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
         if (hp > 0)
             StartCoroutine(FlashDamage());
 
-        if (hp <= 0 && !wasKilled)
-        {
+        if (hp <= 0 && !wasKilled) {
+            //Uncomment line below if adding item for queen spider (make to specify height)
+            //DropItem.TryDropItem(dropChance, itemToDrop, heightofitem, gameObject);
             wasKilled = true;
             StopCoroutine(Spit());
             StopCoroutine(SpawnSpiders());

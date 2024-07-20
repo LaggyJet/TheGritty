@@ -295,6 +295,8 @@ MonoBehaviour:
   type: {fileID: 0}
   enemyLimiter: {fileID: 11400000, guid: 52dd14251c39b40478542e33d3e75e54, type: 2}
   range: 0
+  dropChance: 0.2
+  itemToDrop: {fileID: 1632267034115798544, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
 --- !u!195 &3866886637309567587
 NavMeshAgent:
   m_ObjectHideFlags: 0

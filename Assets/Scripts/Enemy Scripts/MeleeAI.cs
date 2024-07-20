@@ -22,7 +22,7 @@ public class MeleeAI : MonoBehaviourPun, IDamage, IPunObservable {
     [SerializeField] EnemyLimiter enemyLimiter;
     [SerializeField] int range;
     [SerializeField] float dropChance;
-    [SerializeField] GameObject[] itemsToDrop;
+    [SerializeField] GameObject itemToDrop;
 
     DamageStats status;
     bool isAttacking, wasKilled, isDOT;
@@ -151,7 +151,7 @@ public class MeleeAI : MonoBehaviourPun, IDamage, IPunObservable {
             StartCoroutine(FlashDamage());
 
         if (hp <= 0 && !wasKilled) {
-            DropRandomItem.TryDropItem(dropChance, itemsToDrop, gameObject);
+            DropItem.TryDropItem(dropChance, itemToDrop, 0.6f, gameObject);
             GameManager.instance.updateEnemy(-1);
             EnemyManager.Instance.UpdateKillCounter(enemyLimiter);
             gameObject.GetComponent<Collider>().enabled = false;
