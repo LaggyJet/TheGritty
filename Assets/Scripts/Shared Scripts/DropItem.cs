@@ -4,7 +4,7 @@ using System.Collections;
 
 public static class DropItem {
     public static void TryDropItem(float chance, GameObject item, float itemHeight, GameObject enemy) {
-        if (Random.value < chance && item && enemy != null) {
+        if (Random.value < chance && item != null && enemy != null) {
             GameObject itemSpawned;
             Vector3 spawnPosition = enemy.transform.position - new Vector3(0, itemHeight, 0);
 
