@@ -1,7 +1,6 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,6 +19,8 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
     [SerializeField] float meleeDamage;
     [SerializeField] EnemyLimiter enemyLimiter;
     [SerializeField] int range;
+    [SerializeField] float dropChance;
+    [SerializeField] GameObject itemToDrop;
 
     DamageStats status;
     bool isAttacking, wasKilled, isDOT, iceBallShooting;
@@ -169,6 +170,9 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
 
     [PunRPC]
     public void RpcTakeDamage(float damage) {
+        if (wasKilled)
+            return;
+
         hp -= damage;
         if (!isDOT) {
             enemyTargetPosition = FindClosestPlayer().transform.position;
@@ -179,6 +183,7 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
             StartCoroutine(FlashDamage());
 
         if (hp <= 0 && !wasKilled) {
+            DropItem.TryDropItem(dropChance, itemToDrop, 0.6f, gameObject);
             GameManager.instance.updateEnemy(-1);
             EnemyManager.Instance.UpdateKillCounter(enemyLimiter);
             gameObject.GetComponent<Collider>().enabled = false;
@@ -221,17 +226,7 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
     [PunRPC]
     void StartDeath() { StartCoroutine(DeathAnimation()); }
 
-    [PunRPC]
-    void SetRenderModeTransparent() { RenderModeAdjuster.SetTransparent(mat); }
-
-    [PunRPC]
-    void SetRenderModeOpaque() { RenderModeAdjuster.SetOpaque(mat); }
-
     IEnumerator DeathAnimation() {
-        if (PhotonNetwork.InRoom)
-            photonView.RPC(nameof(SetRenderModeTransparent), RpcTarget.All);
-        else if (!PhotonNetwork.IsConnected)
-            SetRenderModeTransparent();
         agent.isStopped = true;
         enemyTargetPosition = transform.position;
         agent.SetDestination(enemyTargetPosition);
@@ -241,23 +236,24 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
             collider.enabled = false;
         anim.SetTrigger("Death");
         var renderers = new List<Renderer>();
-        Renderer[] childRenders = transform.GetComponentsInChildren<Renderer>();
-        renderers.AddRange(childRenders);
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+        Renderer[] childRenderers = transform.GetComponentsInChildren<Renderer>();
+        renderers.AddRange(childRenderers);
+        ParticleSystem[] particleSystems = GetComponentsInChildren<ParticleSystem>();
+        yield return new WaitForSeconds(2.2f);
         while (model.material.color.a > 0) {
             foreach (Renderer render in renderers) {
                 if (render.material.HasProperty("_Color")) {
+                    RenderModeAdjuster.SetTransparent(render.material);
                     float fadeSpeed = render.material.color.a - Time.deltaTime;
                     render.material.color = new Color(render.material.color.r, render.material.color.g, render.material.color.b, fadeSpeed);
                 }
-                yield return null;
             }
+            foreach (ParticleSystem particleSystem in particleSystems) {
+                var emission = particleSystem.emission;
+                emission.enabled = false;
+            }
+            yield return null;
         }
-
-        if (PhotonNetwork.InRoom)
-            photonView.RPC(nameof(SetRenderModeOpaque), RpcTarget.All);
-        else if (!PhotonNetwork.IsConnected)
-            SetRenderModeOpaque();
 
         if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
             PhotonNetwork.Destroy(gameObject);

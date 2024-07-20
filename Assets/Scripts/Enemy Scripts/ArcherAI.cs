@@ -13,6 +13,8 @@ public class ArcherAI : MonoBehaviourPun, IDamage, IPunObservable {
     [SerializeField] GameObject projectile, shootPos;
     [SerializeField] EnemyLimiter enemyLimiter;
     [SerializeField] int range;
+    [SerializeField] float dropChance;
+    [SerializeField] GameObject itemToDrop;
 
     DamageStats status;
     bool isAttacking, wasKilled, isDOT;
@@ -100,12 +102,16 @@ public class ArcherAI : MonoBehaviourPun, IDamage, IPunObservable {
 
     [PunRPC]
     public void RpcTakeDamage(float damage) {
+        if (wasKilled)
+            return;
+
         hp -= damage;
 
         if (hp > 0)
             StartCoroutine(FlashDamage());
 
         if (hp <= 0 && !wasKilled) {
+            DropItem.TryDropItem(dropChance, itemToDrop, 0.6f, gameObject);
             GameManager.instance.updateEnemy(-1);
             EnemyManager.Instance.UpdateKillCounter(enemyLimiter);
             gameObject.GetComponent<Collider>().enabled = false;
@@ -148,23 +154,7 @@ public class ArcherAI : MonoBehaviourPun, IDamage, IPunObservable {
     [PunRPC]
     void StartDeath() { StartCoroutine(DeathAnimation()); }
 
-    [PunRPC]
-    void SetRenderModeTransparent() { 
-        foreach (Material mat in mats)    
-            RenderModeAdjuster.SetTransparent(mat); 
-    }
-
-    [PunRPC]
-    void SetRenderModeOpaque() { 
-        foreach (Material mat in mats)
-            RenderModeAdjuster.SetOpaque(mat); 
-    }
-
     IEnumerator DeathAnimation() {
-        if (PhotonNetwork.InRoom)
-            photonView.RPC(nameof(SetRenderModeTransparent), RpcTarget.All);
-        else if (!PhotonNetwork.IsConnected)
-            SetRenderModeTransparent();
         enemyTargetPosition = transform.position;
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (Collider collider in colliders)
@@ -173,21 +163,17 @@ public class ArcherAI : MonoBehaviourPun, IDamage, IPunObservable {
         var renderers = new List<Renderer>();
         Renderer[] childRenders = transform.GetComponentsInChildren<Renderer>();
         renderers.AddRange(childRenders);
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(3);
         while (model.material.color.a > 0) {
             foreach (Renderer render in renderers) {
                 if (render.material.HasProperty("_Color")) {
+                    RenderModeAdjuster.SetTransparent(render.material);
                     float fadeSpeed = render.material.color.a - Time.deltaTime;
                     render.material.color = new Color(render.material.color.r, render.material.color.g, render.material.color.b, fadeSpeed);
                 }
                 yield return null;
             }
         }
-
-        if (PhotonNetwork.InRoom)
-            photonView.RPC(nameof(SetRenderModeOpaque), RpcTarget.All);
-        else if (!PhotonNetwork.IsConnected)
-            SetRenderModeOpaque();
 
         if (PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine)
             PhotonNetwork.Destroy(gameObject);

@@ -7495,6 +7495,8 @@ MonoBehaviour:
   meleeDamage: 0.5
   enemyLimiter: {fileID: 11400000, guid: 548746eaa4443c741aacc624ba9f6f0e, type: 2}
   range: 2
+  dropChance: 0.15
+  itemToDrop: {fileID: 5220469302408313250, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
 --- !u!114 &8711405345678607992
 MonoBehaviour:
   m_ObjectHideFlags: 0

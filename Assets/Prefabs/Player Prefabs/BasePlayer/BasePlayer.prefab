@@ -1927,6 +1927,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4a5823ac4669ca2489afe114f796893f, type: 3}
   noAttackVol: 0.5
   isPlayingNoHP: 0
+  sfxAud: {fileID: 0}
+  playerJump: {fileID: 0}
+  playerJumpVol: 0
+  isPlayingJump: 0
+  playerTeleport: {fileID: 0}
+  playerTeleportVol: 0
+  isPlayingTeleport: 0
 --- !u!95 &2654759320713316378
 Animator:
   serializedVersion: 5

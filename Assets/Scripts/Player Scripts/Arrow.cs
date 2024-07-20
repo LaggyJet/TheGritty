@@ -42,12 +42,15 @@ public class Arrow : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        PlayerController.instance.PlayArrowAud();
         //when encountering a collision trigger it checks for component IDamage
         IDamage dmg = other.GetComponent<IDamage>();
 
         // Check if arrow hits the head
         if (dmg != null && other.GetComponent<SphereCollider>() != null)
         {
+            // When arrow hits enemy only 
+            PlayerController.instance.PlayArrowHitAud();
             //deal double damage to the object hit
             dmg.TakeDamage(damage * 2);
             //destroy our projectile
@@ -59,6 +62,7 @@ public class Arrow : MonoBehaviour
             if (SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ATTACK_DAMAGE_UP))
                 damage *= 1.5f;
 
+            
             //deal damage to the object hit
             dmg.TakeDamage(damage);
             //destroy our projectile
