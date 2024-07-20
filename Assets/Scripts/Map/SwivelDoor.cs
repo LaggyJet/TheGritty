@@ -25,14 +25,7 @@ public class SwivelDoor : MonoBehaviour
             if (EnemyManager.Instance.GetEnemyIndex(limiter) != -1)
                 currentKills += EnemyManager.Instance.GetKilledEnemyCount(limiter);
 
-        if (currentKills >= killThreshold)
-            Swivel();
-
-        if (count == limit)
-        {
-            Swivel();
-        }
-        if (swivel)
+        if ((count == limit && limit != 0) || (currentKills >= killThreshold && killThreshold != 0) || swivel)
         {
             Swivel();
         }
