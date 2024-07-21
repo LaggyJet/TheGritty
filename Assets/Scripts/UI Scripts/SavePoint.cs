@@ -11,7 +11,7 @@ public class SavePoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" && !activated && !PhotonNetwork.IsConnected)
+        if (other.tag == "Player" && !activated && !PhotonNetwork.InRoom)
         {
             GameManager.instance.ShowText("Saving...");
             DataPersistenceManager.Instance.SaveGame();

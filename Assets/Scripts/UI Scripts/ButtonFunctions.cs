@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
+using Photon.Realtime;
 
-public class ButtonFunctions : MonoBehaviour
+public class ButtonFunctions : MonoBehaviourPun
 {
     [SerializeField] private ClassSelection playerClass;
 
@@ -15,15 +16,17 @@ public class ButtonFunctions : MonoBehaviour
         GameManager.instance.stateResume();
     }
     
-    [PunRPC]
     public void restart()
     {
         GameManager.instance.PlayMenuSwitchClick();
-        if (PhotonNetwork.InRoom)
-            GameManager.instance.GetComponent<PhotonView>().RPC(nameof(restart), RpcTarget.Others);
-        if (!PhotonNetwork.IsMasterClient)
-            Debug.Log("t");
+        if (PhotonNetwork.IsMasterClient)
+            photonView.RPC(nameof(TriggerRestart), RpcTarget.All);
+        else if (!PhotonNetwork.InRoom)
+            restart();
+    }
 
+    [PunRPC]
+    void TriggerRestart() {
         //using previous player - scene needs to know where to put the player
         GameManager.enemyCount = 0;
         GameManager.instance.playerScript.hp = GameManager.instance.playerScript.hpBase;
@@ -70,7 +73,7 @@ public class ButtonFunctions : MonoBehaviour
         SceneManager.LoadScene("title menu");
     }
 
-    public void CallQuitGame() { GameManager.instance.GetComponent<PhotonView>().RPC(nameof(DisconnectPhoton), RpcTarget.All); }
+    public void CallQuitGame() { photonView.RPC(nameof(DisconnectPhoton), RpcTarget.All); }
 
     public void respawn()
     {

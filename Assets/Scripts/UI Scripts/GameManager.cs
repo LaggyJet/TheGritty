@@ -150,35 +150,16 @@ public class GameManager : MonoBehaviour
             {
                 return;
             }
-            else if (menuActive == null)
-            {
-                if (PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom)
-                    PhotonView.Get(this).RPC(nameof(SetEveryPlayerPauseState), RpcTarget.All);
-                else if (!PhotonNetwork.IsConnected)
-                    SetEveryPlayerPauseState();
+            else if (menuActive == null) {
+                statePause();
+                menuActive = menuPause;
+                if (!PhotonNetwork.IsMasterClient)
+                    menuPause.transform.Find("Restart").gameObject.SetActive(false);
+                menuActive.SetActive(isPaused);
             }
             else if (menuActive == menuPause)
-            {
-                if (PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom)
-                    PhotonView.Get(this).RPC(nameof(SetEveryPlayerUnpauseState), RpcTarget.All);
-                else if (!PhotonNetwork.IsConnected)
-                    stateResume();
-            }
+                stateResume();
         }
-    }
-
-    [PunRPC]
-    void SetEveryPlayerPauseState()
-    {
-        statePause();
-        menuActive = menuPause;
-        menuActive.SetActive(isPaused);
-    }
-
-    [PunRPC]
-    void SetEveryPlayerUnpauseState()
-    {
-        stateResume();
     }
 
     //Setter
@@ -211,7 +192,7 @@ public class GameManager : MonoBehaviour
         }
        
         isPaused = !isPaused;
-        Time.timeScale = 0;
+        Time.timeScale = PhotonNetwork.InRoom ? 1 : 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
         SoundTrackswitch(GameMusic.Menu);

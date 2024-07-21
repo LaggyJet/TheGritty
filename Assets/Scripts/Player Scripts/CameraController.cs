@@ -2,6 +2,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -33,11 +34,12 @@ public class CameraController : MonoBehaviour
         //clamp rotX on the xAxis
         rotX = Mathf.Clamp(rotX, lockVertMin, lockVertMax);
 
-        //rotate the camera on the xAxis
-        transform.localRotation = Quaternion.Euler(rotX, 0, 0);
+        if (PhotonNetwork.InRoom && !GameManager.instance.isPaused) {
+            //rotate the camera on the xAxis
+            transform.localRotation = Quaternion.Euler(rotX, 0, 0);
 
-
-        //rotate the player on the yAxis
-        transform.parent.Rotate(Vector3.up * mouseX);
+            //rotate the player on the yAxis
+            transform.parent.Rotate(Vector3.up * mouseX);
+        }
     }
 }

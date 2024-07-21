@@ -42,7 +42,7 @@ public class storyText : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" && !activated && !PhotonNetwork.IsConnected)
+        if (other.tag == "Player" && !activated && !PhotonNetwork.InRoom)
         {
             StartCoroutine(TypeTextUncapped(text));
             activated = true;

@@ -181,7 +181,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         currentClassSelection = GameObject.FindWithTag("ClassSelector")?.GetComponent<ClassSelection>();
 
         // Setting up class for yourself or multiplayer
-        if (PhotonNetwork.InRoom || !PhotonNetwork.IsConnected) {
+        if (PhotonNetwork.InRoom || !PhotonNetwork.InRoom) {
             int selectedClass = currentClassSelection.MyClass;
             AssignClass(selectedClass);
 
@@ -287,7 +287,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         }
 
         // Prevent movement of other players
-        if (!PhotonNetwork.IsConnected || GetComponent<PhotonView>().IsMine)
+        if (!PhotonNetwork.InRoom || GetComponent<PhotonView>().IsMine)
         {
             //runs our movement function to determine the player velocity each frame
             Movement();
@@ -555,7 +555,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         else
             hp -= amount * damageReduction;
 
-        if (!PhotonNetwork.IsConnected && BluetoothManager.instance != null)
+        if (!PhotonNetwork.InRoom && BluetoothManager.instance != null)
             BluetoothManager.instance.UpdateBarGraphHealth(hp);
 
         if (!isPlayingSteps) //plays hurt sounds
@@ -575,7 +575,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             //Call lose game for every player in room through RPC calls, otherwise call normally
             if (PhotonNetwork.InRoom)
                 GameManager.instance.CallGameLost();
-            else if (!PhotonNetwork.IsConnected)
+            else if (!PhotonNetwork.InRoom)
                 GameManager.instance.gameLost();
 
             isDead = false;

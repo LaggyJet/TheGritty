@@ -187,7 +187,7 @@ public class Class_Archer : MonoBehaviourPun
             PhotonNetwork.Instantiate("Player/" + player.combatObjects[5].name, player.arrowPosition.transform.position, player.transform.rotation);
         }
         // Otherwise spawn regularly 
-        else if (!PhotonNetwork.IsConnected)
+        else if (!PhotonNetwork.InRoom)
         {
             Instantiate(player.combatObjects[5], player.arrowPosition.transform.position, player.transform.rotation);
         }
@@ -204,7 +204,7 @@ public class Class_Archer : MonoBehaviourPun
         for (int i = 0; i < angles.Length; i++) {
             if (PhotonNetwork.InRoom && photonView.IsMine)
                 PhotonNetwork.Instantiate("Player/" + player.combatObjects[5].name, pos, (rot * Quaternion.Euler(0, angles[i], 0)));
-            else if (!PhotonNetwork.IsConnected)
+            else if (!PhotonNetwork.InRoom)
                 Instantiate(player.combatObjects[5], pos, (rot * Quaternion.Euler(0, angles[i], 0)));
         }
 

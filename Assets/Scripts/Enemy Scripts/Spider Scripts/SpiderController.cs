@@ -59,7 +59,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
         if (!isAttacking)
             lastRot = transform.rotation;
 
-        if (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected) {
+        if (PhotonNetwork.IsMasterClient || !PhotonNetwork.InRoom) {
             if (!wasKilled)
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(playerDirection), Time.deltaTime * faceTargetSpeed);
             
@@ -155,7 +155,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
     }
 
     void TrySpit() {
-        if (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected)
+        if (PhotonNetwork.IsMasterClient || !PhotonNetwork.InRoom)
             StartCoroutine(Spit());
         else
             photonView.RPC(nameof(CheckSpit), RpcTarget.MasterClient);
@@ -283,7 +283,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
     public void TakeDamage(float damage) {
         if (PhotonNetwork.InRoom)
             photonView.RPC(nameof(RpcTakeDamage), RpcTarget.All, damage);
-        else if (!PhotonNetwork.IsConnected)
+        else if (!PhotonNetwork.InRoom)
             RpcTakeDamage(damage); 
     }
 

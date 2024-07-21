@@ -34,11 +34,11 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     }
 
     void Update() {
-        if (CanSeePlayer() && (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected) && (Vector3.Distance(FindClosestPlayer().transform.position, transform.position) < range)) {
+        if (CanSeePlayer() && (PhotonNetwork.IsMasterClient || !PhotonNetwork.InRoom) && (Vector3.Distance(FindClosestPlayer().transform.position, transform.position) < range)) {
             FaceTarget();
 
             if (!isAttacking && EnemyManager.Instance.CanAttack(enemyLimiter)) {
-                if (PhotonNetwork.IsConnected)
+                if (PhotonNetwork.InRoom)
                     photonView.RPC(nameof(Shoot), RpcTarget.All);
                 else
                     Shoot();
@@ -98,7 +98,7 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     void QuickShot() {
         if (PhotonNetwork.InRoom && photonView.IsMine)
             PhotonNetwork.Instantiate("Enemy/" + projectile.name, shootPos.transform.position, new Quaternion(0, 180, 0, 0));
-        else if (!PhotonNetwork.IsConnected)
+        else if (!PhotonNetwork.InRoom)
             Instantiate(projectile, shootPos.transform.position, new Quaternion(0, 180, 0, 0));
     }
 
@@ -120,7 +120,7 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
             wasKilled = true;
             if (PhotonNetwork.InRoom)
                 photonView.RPC(nameof(StartDeath), RpcTarget.All);
-            else if (!PhotonNetwork.IsConnected)
+            else if (!PhotonNetwork.InRoom)
                 StartDeath();
         }
     }
@@ -128,7 +128,7 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     public void TakeDamage(float damage) { 
         if (PhotonNetwork.InRoom)
             photonView.RPC(nameof(RpcTakeDamage), RpcTarget.All, damage);
-        else if (!PhotonNetwork.IsConnected)
+        else if (!PhotonNetwork.InRoom)
             RpcTakeDamage(damage); 
     }
 

@@ -10,7 +10,7 @@ public static class DropItem {
 
             if (PhotonNetwork.InRoom)
                 itemSpawned = PhotonNetwork.Instantiate("ItemDrops/" + item.name, spawnPosition, enemy.transform.rotation);
-            else if (!PhotonNetwork.IsConnected) {
+            else if (!PhotonNetwork.InRoom) {
                 itemSpawned = Object.Instantiate(item, spawnPosition, enemy.transform.rotation);
                 itemSpawned?.GetComponent<MonoBehaviour>().StartCoroutine(AppearFromGround(itemSpawned.transform, enemy.transform.position, 5f));
             }

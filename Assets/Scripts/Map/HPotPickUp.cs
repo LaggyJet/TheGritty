@@ -16,7 +16,7 @@ public class HPotPickUp : MonoBehaviourPunCallbacks
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected))
+        if (other.CompareTag("Player") && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.InRoom))
         {
             // Sound for player picking up potion 
             Audio.clip = pickUp; 

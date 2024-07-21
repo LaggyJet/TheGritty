@@ -23,7 +23,7 @@ public class EnemySpawning : MonoBehaviour {
         if (!PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom)
             GetComponent<PhotonView>().RPC(nameof(Spawn), RpcTarget.MasterClient, playerPosition);
 
-        if (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected) {
+        if (PhotonNetwork.IsMasterClient || !PhotonNetwork.InRoom) {
             for (int i = 0; i < numEnemies; i++) {
                 int arrayPosition = Random.Range(0, SpawnPoints.Length);
                 Vector3 spawnPos = GetRandomSpawn(SpawnPoints[arrayPosition].position);
@@ -46,7 +46,7 @@ public class EnemySpawning : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player") && !isSpawning && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected)) {
+        if (other.CompareTag("Player") && !isSpawning && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.InRoom)) {
             Vector3 playerPosition = other.transform.position;
             Spawn(playerPosition);
         }

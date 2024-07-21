@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class SwivelDoor : MonoBehaviour
+public class SwivelDoor : MonoBehaviourPun
 {
     [SerializeField] float openAngle;
     [SerializeField] float closeAngle;
@@ -17,19 +18,28 @@ public class SwivelDoor : MonoBehaviour
     private void Update() {
         if (count >= limit|| test)
         {
-            OpenDoor();
+            if (!PhotonNetwork.InRoom)
+                OpenDoor();
+            else
+                photonView.RPC(nameof(OpenDoor), RpcTarget.All);
         }
         else if(close)
         {
-            CloseDoor();
+            if (!PhotonNetwork.InRoom)
+                CloseDoor();
+            else
+                photonView.RPC(nameof(CloseDoor), RpcTarget.All);
         }
     }
 
+    [PunRPC]
     void CloseDoor()
     {
         Quaternion rotation = Quaternion.AngleAxis(closeAngle, transform.up);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, closeSpeed);
     }
+
+    [PunRPC]
     void OpenDoor()
     {
         close = false;
