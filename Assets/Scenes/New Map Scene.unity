@@ -29549,14 +29549,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 286846784}
     - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: doorsToOpen.Array.data[0]
-      value: 
-      objectReference: {fileID: 414040889569256453}
-    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: doorsToOpen.Array.data[1]
-      value: 
-      objectReference: {fileID: 8300000, guid: f1fd54f0006cc834a8ea801cf7d70818, type: 3}
-    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: gamePlayVol
       value: 0.5
       objectReference: {fileID: 0}
@@ -29572,6 +29564,14 @@ PrefabInstance:
       propertyPath: menuSwitchSoundVol
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: doorsToOpen.Array.data[0]
+      value: 
+      objectReference: {fileID: 414040889569256453}
+    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: doorsToOpen.Array.data[1]
+      value: 
+      objectReference: {fileID: 414040889569256452}
     - target: {fileID: 7201814496331577896, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: spawn
       value: 
