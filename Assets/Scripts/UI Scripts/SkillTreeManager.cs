@@ -83,8 +83,6 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
             LoadData(DataPersistenceManager.gameData);
             foreach (Image img in locks)
                 img.enabled = true;
-            curPoints = 8;
-            AddPoint();
         }
         else
         {

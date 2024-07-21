@@ -13,11 +13,15 @@ public class HPotPickUp : MonoBehaviourPunCallbacks
     [SerializeField] AudioSource Audio;  
     [SerializeField] AudioClip pickUp;
     [SerializeField] float pickUpVol;
+    [SerializeField] float audTime;
+    bool wasTriggered = false;
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.InRoom))
+        if (!wasTriggered && other.CompareTag("Player") && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.InRoom))
         {
+            wasTriggered = true;
+
             // Sound for player picking up potion 
             Audio.PlayOneShot(pickUp, pickUpVol);
             // If stamina or health 
@@ -37,20 +41,26 @@ public class HPotPickUp : MonoBehaviourPunCallbacks
             }
 
             // Clean up 
-            if (PhotonNetwork.InRoom) {
-                PhotonView view = PhotonView.Get(this);
-                if (view) {
-                    if (view.IsMine || PhotonNetwork.IsMasterClient)
-                        PhotonNetwork.Destroy(gameObject);
-                    else
-                        photonView.RPC(nameof(MasterDestroy), RpcTarget.MasterClient, view.ViewID);
-                }
+            StartCoroutine(CleanUpPot());
+        }
+    }
+
+    IEnumerator CleanUpPot() {
+        //Let audio finish playing before destroying object
+        yield return new WaitForSeconds(audTime);
+        if (PhotonNetwork.InRoom) {
+            PhotonView view = PhotonView.Get(this);
+            if (view) {
+                if (view.IsMine || PhotonNetwork.IsMasterClient)
+                    PhotonNetwork.Destroy(gameObject);
                 else
-                    Destroy(gameObject);
+                    photonView.RPC(nameof(MasterDestroy), RpcTarget.MasterClient, view.ViewID);
             }
-            else if (!PhotonNetwork.InRoom)
+            else
                 Destroy(gameObject);
         }
+        else if (!PhotonNetwork.InRoom)
+            Destroy(gameObject);
     }
 
     [PunRPC]

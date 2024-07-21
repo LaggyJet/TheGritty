@@ -7,6 +7,7 @@ using UnityEngine;
 public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     [SerializeField] Renderer model;
     [SerializeField] Material[] mats;
+    [SerializeField] UnityEngine.AI.NavMeshAgent agent;
     [SerializeField] Animator anim;
     [SerializeField] float hp;
     [SerializeField] int animationTransitionSpeed, faceTargetSpeed, attackSpeed, viewAngle, shootAngle;
@@ -159,7 +160,10 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     IEnumerator DeathAnimation() {
         EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
         EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
+        agent.isStopped = true;
         enemyTargetPosition = transform.position;
+        agent.SetDestination(enemyTargetPosition);
+        agent.radius = 0;
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (Collider collider in colliders)
             collider.enabled = false;
