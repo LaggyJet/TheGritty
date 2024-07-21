@@ -19,8 +19,10 @@ public class ButtonFunctions : MonoBehaviour
     public void restart()
     {
         GameManager.instance.PlayMenuSwitchClick();
-        if (PhotonNetwork.InRoom && PhotonNetwork.IsMasterClient)
-            PhotonView.Get(this).RPC(nameof(restart), RpcTarget.Others);
+        if (PhotonNetwork.InRoom)
+            GameManager.instance.GetComponent<PhotonView>().RPC(nameof(restart), RpcTarget.Others);
+        if (!PhotonNetwork.IsMasterClient)
+            Debug.Log("t");
 
         //using previous player - scene needs to know where to put the player
         GameManager.enemyCount = 0;
@@ -32,6 +34,7 @@ public class ButtonFunctions : MonoBehaviour
         DataPersistenceManager.Instance.LoadGame();
         GameManager.instance.stateResumeGameLoads();
     }
+
     public void quitApp()
     {
         GameManager.instance.PlayMenuSwitchClick();
@@ -67,7 +70,7 @@ public class ButtonFunctions : MonoBehaviour
         SceneManager.LoadScene("title menu");
     }
 
-    public void CallQuitGame() { PhotonView.Get(this).RPC(nameof(DisconnectPhoton), RpcTarget.All); }
+    public void CallQuitGame() { GameManager.instance.GetComponent<PhotonView>().RPC(nameof(DisconnectPhoton), RpcTarget.All); }
 
     public void respawn()
     {
