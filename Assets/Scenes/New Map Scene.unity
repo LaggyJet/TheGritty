@@ -64935,6 +64935,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 349558871757768155, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+      propertyPath: text
+      value: "You find yourself standing in front of a sinstrous-looking entrance\u2026 "
+      objectReference: {fileID: 0}
+    - target: {fileID: 349558871757768155, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
       propertyPath: textMeshPro
       value: 
       objectReference: {fileID: 1183189643}
@@ -65007,6 +65011,10 @@ PrefabInstance:
       value: 110.01
       objectReference: {fileID: 0}
     - target: {fileID: 3763006568375390903, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+      propertyPath: text
+      value: "With nothing better to do, you decide to go inside to look for help\u2026"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3763006568375390903, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
       propertyPath: textMeshPro
       value: 
       objectReference: {fileID: 1183189643}
@@ -65043,6 +65051,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1183189643}
     - target: {fileID: 4978322033843376999, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+      propertyPath: text
+      value: Maybe you fell off the edge of the nearby cliff...
+      objectReference: {fileID: 0}
+    - target: {fileID: 4978322033843376999, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
       propertyPath: textMeshPro
       value: 
       objectReference: {fileID: 1183189643}
@@ -65061,6 +65073,18 @@ PrefabInstance:
     - target: {fileID: 5764665212448047767, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
       propertyPath: sceneViewId
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792885697376606524, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+      propertyPath: m_Radius
+      value: 10.264515
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792885697376606524, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+      propertyPath: m_Center.x
+      value: -0.5267119
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792885697376606524, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+      propertyPath: m_Center.z
+      value: -0.0176271
       objectReference: {fileID: 0}
     - target: {fileID: 6102431277662666226, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
       propertyPath: sceneViewId
@@ -65176,11 +65200,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8645951697894070782, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.13
+      value: -7.79
       objectReference: {fileID: 0}
     - target: {fileID: 8645951697894070782, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.97
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 8658701059450479192, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
       propertyPath: sceneViewId
@@ -65190,6 +65214,14 @@ PrefabInstance:
       propertyPath: textMeshPro
       value: 
       objectReference: {fileID: 1183189643}
+    - target: {fileID: 8847313286718244810, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.8900375
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847313286718244810, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 6.206996
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
