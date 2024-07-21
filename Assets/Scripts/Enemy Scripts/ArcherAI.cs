@@ -17,7 +17,7 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     [SerializeField] float dropChance;
     [SerializeField] GameObject itemToDrop;
 
-    GameObject[] doors;
+    public List<GameObject> doors;
     DamageStats status;
     bool isAttacking, wasKilled, isDOT;
     Vector3 playerDirection, enemyTargetPosition;
@@ -154,7 +154,7 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     }
 
     [PunRPC]
-    void StartDeath() { if (doors.Length > 0) {CallDoor();} StartCoroutine(DeathAnimation()); }
+    void StartDeath() { if (doors.Count > 0) {CallDoor();} StartCoroutine(DeathAnimation()); }
 
     IEnumerator DeathAnimation() {
         enemyTargetPosition = transform.position;
@@ -192,7 +192,7 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
 
     public void CallDoor()
     {
-        foreach(GameObject object_ in doors)
+        foreach (GameObject object_ in doors)
         {
             object_.GetComponent<SwivelDoor>().Increment(1);
         }
@@ -200,6 +200,6 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
 
     public void PassGameObject(GameObject object_)
     {
-        doors.Append(object_);
+        doors.Add(object_);
     }
 }
