@@ -196,6 +196,8 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     void StartDeath() { if (doors.Count > 0) {CallDoor();} StartCoroutine(DeathAnimation()); }
 
     IEnumerator DeathAnimation() {
+        EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
+        EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
         agent.isStopped = true;
         enemyTargetPosition = transform.position;
         agent.SetDestination(enemyTargetPosition);

@@ -153,7 +153,7 @@ public class GameManager : MonoBehaviour
             else if (menuActive == null) {
                 statePause();
                 menuActive = menuPause;
-                if (!PhotonNetwork.IsMasterClient)
+                if (!PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom)
                     menuPause.transform.Find("Restart").gameObject.SetActive(false);
                 menuActive.SetActive(isPaused);
             }
@@ -292,7 +292,7 @@ public class GameManager : MonoBehaviour
             menuLose.transform.Find("Restart").gameObject.SetActive(false);
         }
 
-        menuActive.SetActive(isPaused);
+        menuActive.SetActive(true);
         SoundTrackswitch(GameMusic.Menu);
         clickSound = true;
     }

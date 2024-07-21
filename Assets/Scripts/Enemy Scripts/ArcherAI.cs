@@ -157,6 +157,8 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     void StartDeath() { if (doors.Count > 0) {CallDoor();} StartCoroutine(DeathAnimation()); }
 
     IEnumerator DeathAnimation() {
+        EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
+        EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
         enemyTargetPosition = transform.position;
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (Collider collider in colliders)

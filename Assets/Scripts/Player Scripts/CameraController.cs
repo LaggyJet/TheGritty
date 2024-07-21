@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour
         //clamp rotX on the xAxis
         rotX = Mathf.Clamp(rotX, lockVertMin, lockVertMax);
 
-        if (PhotonNetwork.InRoom && !GameManager.instance.isPaused) {
+        if ((PhotonNetwork.InRoom && !GameManager.instance.isPaused) || !PhotonNetwork.InRoom) {
             //rotate the camera on the xAxis
             transform.localRotation = Quaternion.Euler(rotX, 0, 0);
 

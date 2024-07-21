@@ -22,7 +22,7 @@ public class ButtonFunctions : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient)
             photonView.RPC(nameof(TriggerRestart), RpcTarget.All);
         else if (!PhotonNetwork.InRoom)
-            restart();
+            TriggerRestart();
     }
 
     [PunRPC]
@@ -56,8 +56,10 @@ public class ButtonFunctions : MonoBehaviourPun
         //Disconnect player from the server (if possible)
         if (PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom)
             CallQuitGame();
-        else if (!PhotonNetwork.InRoom)
+        else if (!PhotonNetwork.InRoom) {
+            GameManager.selectedMultiplayer = false;
             SceneManager.LoadScene("title menu");
+        }
     }
 
     [PunRPC]

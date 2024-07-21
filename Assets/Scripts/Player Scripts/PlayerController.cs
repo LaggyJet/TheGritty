@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
     [Header("------- HP -------")]
     DamageStats status;
-    bool isDead;
+    public bool isDead = false;
     bool isDOT;
     public static float spawnHP;
     // Health bar colors and script for shaking the ui
