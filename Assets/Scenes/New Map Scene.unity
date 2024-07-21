@@ -29461,18 +29461,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 286846784}
-    - target: {fileID: 1888437935057294296, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4943498284895027363, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 286846784}
-    - target: {fileID: 5757823241106493744, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6033403967100570562, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: sceneViewId
       value: 1
@@ -29557,61 +29549,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6553840842946800369, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_text
-      value: You survived the dungeon anf help is on the way!
-      objectReference: {fileID: 0}
     - target: {fileID: 6811055006701957586, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 286846784}
-    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: sfxAudio
-      value: 
-      objectReference: {fileID: 1449590842}
-    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: buttonSound
-      value: 
-      objectReference: {fileID: 8300000, guid: f1fd54f0006cc834a8ea801cf7d70818, type: 3}
-    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: buttonSoundVol
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: menuSwitchSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 65802302fafe43542bb2b4fad7eddbc9, type: 3}
-    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: menuSwitchSoundVol
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 7201814496331577896, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: spawn
       value: 
       objectReference: {fileID: 1126955072}
-    - target: {fileID: 7459796964397982466, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7765248277729462968, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_Name
       value: UI - NEW(week4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7765248277729462968, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8118049844092793669, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8118049844092793669, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8118049844092793669, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -246
       objectReference: {fileID: 0}
     - target: {fileID: 8722297960870335626, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: sceneViewId
@@ -37853,11 +37801,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5357472890152683155, guid: eba44860043fb45469c35ff1861408c9, type: 3}
   m_PrefabInstance: {fileID: 1410997299}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &1449590842 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 7459796964397982466, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
-  m_PrefabInstance: {fileID: 1141598681}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1461903059
 GameObject:

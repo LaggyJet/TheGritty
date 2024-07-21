@@ -1924,11 +1924,11 @@ MonoBehaviour:
   gamePlayMusic: {fileID: 8300000, guid: 86eaf3782e873b5429e27a17f9e4626a, type: 3}
   gamePlayVol: 1
   isPlayingBGM: 0
-  sfxAudio: {fileID: 0}
-  buttonSound: {fileID: 0}
-  buttonSoundVol: 0
-  menuSwitchSound: {fileID: 0}
-  menuSwitchSoundVol: 0
+  sfxAudio: {fileID: 7459796964397982466}
+  buttonSound: {fileID: 8300000, guid: f1fd54f0006cc834a8ea801cf7d70818, type: 3}
+  buttonSoundVol: 0.5
+  menuSwitchSound: {fileID: 8300000, guid: 65802302fafe43542bb2b4fad7eddbc9, type: 3}
+  menuSwitchSoundVol: 0.5
   isPlayingSFX: 0
 --- !u!114 &1018335641024888473
 MonoBehaviour:
@@ -1950,7 +1950,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8179849691187416388}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -1406467276409959815, guid: 2750174cd80a8a24487fe1e49daaa371, type: 2}
   m_audioClip: {fileID: 8300000, guid: f39b92c74b1b2ca4dabdc1ae1b4a40f6, type: 3}
@@ -3080,7 +3080,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3549508234450482760, guid: 0ff656c26f82b4b4f89ece99c2377aa8, type: 3}
       propertyPath: m_text
-      value: Thank you for clearing out the dungeon!
+      value: You survived the dungeon and help is on the way!
       objectReference: {fileID: 0}
     - target: {fileID: 3624975005708342437, guid: 0ff656c26f82b4b4f89ece99c2377aa8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
