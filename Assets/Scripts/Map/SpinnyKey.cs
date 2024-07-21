@@ -30,7 +30,6 @@ public class SpinnyKey : MonoBehaviour, I_Interact
     {
         if(other.gameObject.CompareTag("Player"))
         {
-            SkillTreeManager.Instance.AddPoint();
             CallDoor();
             Destroy(gameObject);
         }

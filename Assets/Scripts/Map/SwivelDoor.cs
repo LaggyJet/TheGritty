@@ -11,6 +11,7 @@ public class SwivelDoor : MonoBehaviourPun
     [SerializeField] float openSpeed;
     [SerializeField] float closeSpeed;
     [SerializeField] int limit;
+    [SerializeField] bool canAddPoint = true;
     int count;
     public bool close = false;
     public bool test;
@@ -61,10 +62,10 @@ public class SwivelDoor : MonoBehaviourPun
     [PunRPC]
     void OpenDoor()
     {
-        if(!addedPoint)
+        if (!addedPoint && canAddPoint)
         {
-            SkillTreeManager.Instance.AddPoint();
             addedPoint = true;
+            SkillTreeManager.Instance.AddPoint();
         }
         close = false;
         Quaternion rotation = Quaternion.AngleAxis(openAngle, transform.up);
@@ -74,11 +75,6 @@ public class SwivelDoor : MonoBehaviourPun
         isMoving = false;
     }
 
-    public void SwivelTo(float angle_,  float speed_)
-    {
-        Quaternion rotation = Quaternion.AngleAxis(angle_, transform.up);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, speed_);
-    }
 
     public void Increment(int amount)
     {
