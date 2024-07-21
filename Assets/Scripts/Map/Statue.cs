@@ -15,7 +15,6 @@ public class Statue : MonoBehaviour, IDamage
         {
             hit = true;
             light.SetActive(true);
-            SkillTreeManager.Instance.AddPoint();
             foreach (GameObject object_ in doors)
             {
                 object_.GetComponent<SwivelDoor>().Increment(1);

@@ -64784,6 +64784,10 @@ PrefabInstance:
       propertyPath: textMeshPro
       value: 
       objectReference: {fileID: 1183189643}
+    - target: {fileID: 1233430407738379331, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+      propertyPath: canAddPoint
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1520716676294452170, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
       propertyPath: textMeshPro
       value: 
