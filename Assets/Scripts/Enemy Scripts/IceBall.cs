@@ -34,6 +34,8 @@ public class IceBall : MonoBehaviour {
 
         //if there is an IDamage component we run the inside code
         if (dmg != null && (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("PlayerChild"))) {
+            // Sound for collsion 
+            PlayerController.instance.PlayIceEnemyAud();
             //deal damage to the object hit
             dmg.TakeDamage(damage);
             //destroy our projectile

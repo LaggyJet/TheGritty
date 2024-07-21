@@ -145,6 +145,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     [SerializeField] public float doorOpenAudVol;
     public bool isPlayingDoorOpenAud = false;
 
+    [Header("------ Enemy Audio ------")]
+    [SerializeField] public AudioClip[] collsionAud;
+    [SerializeField] public float collisionAudVol;
+    public bool isPlayingCollisionAud = false;
+    [SerializeField] public AudioClip[] iceEnemyAud;
+    [SerializeField] public float iceEnemyAudVol;
+    public bool isPlayingIceEnemyAud = false;
+
 
 
     [Header("------ Sprint Audio ------")]
@@ -779,7 +787,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
     public void PlayWeaponHit()
     {
-       // Sound for teleportation
+       // Sound for weapon collision
         if (audioSource != null)
         {
             audioSource.PlayOneShot(WeaponHit[Random.Range(0, WeaponHit.Length)], weaponHitVol);
@@ -793,7 +801,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
     public void PlayArrowAud()
     {
-       // Sound for teleportation
+       // Sound for shooting arrow
         if (audioSource != null)
         {
             audioSource.PlayOneShot(arrowAud[Random.Range(0, arrowAud.Length)], arrowAudVol);
@@ -807,7 +815,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
     public void PlaySwordHitAud()
     {
-       // Sound for teleportation
+       // Sound for sword
         if (audioSource != null)
         {
             audioSource.PlayOneShot(swordHitAud[Random.Range(0, swordHitAud.Length)], swordHitAudVol);
@@ -821,7 +829,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
     public void PlayArrowHitAud()
     {
-       // Sound for teleportation
+       // Sound for arrow collision
         if (audioSource != null)
         {
             audioSource.PlayOneShot(arrowHitAud[Random.Range(0, arrowHitAud.Length)], arrowHitAudVol);
@@ -835,7 +843,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
     public void PlayPlayerDeadAud()
     {
-       // Sound for teleportation
+       // Sound for player death
         if (audioSource != null)
         {
             audioSource.PlayOneShot(playerDeadAud[Random.Range(0, playerDeadAud.Length)], playerDeadAudVol);
@@ -849,7 +857,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
     public void PlayUnlockSkillAud()
     {
-       // Sound for teleportation
+       // Sound for unlock skill
         if (audioSource != null)
         {
             audioSource.PlayOneShot(unlockSkillAud, unlockSkillAudVol);
@@ -863,7 +871,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
     public void PlayCantUnlockSkillAud()
     {
-       // Sound for teleportation
+       // Sound for cant unlock skill
         if (audioSource != null)
         {
             audioSource.PlayOneShot(CantUnlockSkillAud, cantUnlockSkillAudVol);
@@ -877,7 +885,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
     public void PlayLosePointAud()
     {
-       // Sound for teleportation
+       // Sound for loosing point
         if (audioSource != null)
         {
             audioSource.PlayOneShot(losePointAud, losePointAudVol);
@@ -891,7 +899,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
     public void PlayAddPointAud()
     {
-       // Sound for teleportation
+       // Sound for adding point
         if (audioSource != null)
         {
             audioSource.PlayOneShot(addPointAud, addPointAudVol);
@@ -950,6 +958,34 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     {
         yield return new WaitForSeconds(num); 
         isPlayingDoorOpenAud = false;
+    }
+
+    public void PlayEnemyCollsionAud()
+    {
+       // Sound for teleportation
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(collsionAud[Random.Range(0, collsionAud.Length)], collisionAudVol);
+            isPlayingCollisionAud = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing enemy collsion aud");
+        }
+    }
+
+    public void PlayIceEnemyAud()
+    {
+       // Sound for teleportation
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(iceEnemyAud[Random.Range(0, iceEnemyAud.Length)], iceEnemyAudVol);
+            isPlayingIceEnemyAud = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing ice enemy aud");
+        }
     }
 
 

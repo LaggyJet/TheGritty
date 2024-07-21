@@ -18,6 +18,8 @@ public class WeaponController : MonoBehaviour {
 
         IDamage damageCheck = other.GetComponent<IDamage>();
         if (damageCheck != null && other.CompareTag("Player") && !didDamage) {
+            // Adding collsion sound
+            PlayerController.instance.PlayEnemyCollsionAud();
             didDamage = true;
             damageCheck.TakeDamage(damage_);
             if (canDOT)

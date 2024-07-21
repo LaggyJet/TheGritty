@@ -1851,13 +1851,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 3116865600634008479}
   animate: {fileID: 2654759320713316378}
-  speed: 10
+  speed: 8
   sprintMod: 2
   gravity: 10
   jumpMax: 1
   jumpSpeed: 3
   playerV: {x: 0, y: 0, z: 0}
   movement: {x: 0, y: 0, z: 0}
+  isDead: 0
   hp: 10
   hpBase: 0
   HpDisplay: 0
@@ -1973,6 +1974,19 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ac6b3f835598b36409a47fda94684e3a, type: 3}
   doorOpenAudVol: 0.5
   isPlayingDoorOpenAud: 0
+  collsionAud:
+  - {fileID: 8300000, guid: a2a14ed867e16e9459a2b71c147c88b6, type: 3}
+  - {fileID: 8300000, guid: 44c19a0b4b9eac546a2c40b130faee65, type: 3}
+  - {fileID: 8300000, guid: 061aa2cb25c4f724aabcf5a845405323, type: 3}
+  - {fileID: 8300000, guid: 4c983546fe9a1e0458d51de712a8b3e6, type: 3}
+  collisionAudVol: 1.5
+  isPlayingCollisionAud: 0
+  iceEnemyAud:
+  - {fileID: 8300000, guid: a47a91126ecae66468ef74c5e7816103, type: 3}
+  - {fileID: 8300000, guid: bd1500991508a8c4f83ad97f7b34d4f5, type: 3}
+  - {fileID: 8300000, guid: b349ee6cd3326aa4db538926ec25343d, type: 3}
+  iceEnemyAudVol: 0.8
+  isPlayingIceEnemyAud: 0
   sprintAudioSource: {fileID: 7898868306004621137}
   sprintSound: {fileID: 8300000, guid: 2317d27a2bbe7254888ee6e1d65fa753, type: 3}
   sprintVol: 0.5

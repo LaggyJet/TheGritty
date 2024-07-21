@@ -27,6 +27,8 @@ public class EnemyArrow : MonoBehaviour {
         IDamage dmg = other.GetComponent<IDamage>();
 
         if (dmg != null && (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("PlayerChild"))) {
+            // Sound for collsion 
+            PlayerController.instance.PlayArrowHitAud();
             dmg.TakeDamage(damage);
             DestroyObject();
         }
