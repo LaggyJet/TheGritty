@@ -1,10 +1,11 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
+public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     [SerializeField] Renderer model;
     [SerializeField] Material mat;
     [SerializeField] NavMeshAgent agent;
@@ -22,6 +23,7 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
     [SerializeField] float dropChance;
     [SerializeField] GameObject itemToDrop;
 
+    GameObject[] doors;
     DamageStats status;
     bool isAttacking, wasKilled, isDOT, iceBallShooting;
     Vector3 playerDirection, enemyTargetPosition, netPos;
@@ -224,7 +226,7 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
     }
 
     [PunRPC]
-    void StartDeath() { StartCoroutine(DeathAnimation()); }
+    void StartDeath() { if (doors.Length > 0) {CallDoor();}  StartCoroutine(DeathAnimation()); }
 
     IEnumerator DeathAnimation() {
         agent.isStopped = true;
@@ -281,5 +283,18 @@ public class WizardAI : MonoBehaviourPun, IDamage, IPunObservable {
             else if (iceBallShooting)
                 photonView.RPC(nameof(StartIceBall), RpcTarget.All);
         }
+    }
+
+    public void CallDoor()
+    {
+        foreach (GameObject object_ in doors)
+        {
+            object_.GetComponent<SwivelDoor>().Increment(1);
+        }
+    }
+
+    public void PassGameObject(GameObject object_)
+    {
+        doors.Append(object_);
     }
 }

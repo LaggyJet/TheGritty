@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
+using System.Linq;
 
-public class MeleeAI : MonoBehaviourPun, IDamage, IPunObservable {
+public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     [SerializeField] Renderer model;
     [SerializeField] Material mat;
     [SerializeField] NavMeshAgent agent;
@@ -23,7 +24,8 @@ public class MeleeAI : MonoBehaviourPun, IDamage, IPunObservable {
     [SerializeField] int range;
     [SerializeField] float dropChance;
     [SerializeField] GameObject itemToDrop;
-
+    
+    public List<GameObject> doors;
     DamageStats status;
     bool isAttacking, wasKilled, isDOT;
     Vector3 playerDirection, enemyTargetPosition, netPos;
@@ -192,7 +194,7 @@ public class MeleeAI : MonoBehaviourPun, IDamage, IPunObservable {
     }
 
     [PunRPC]
-    void StartDeath() { StartCoroutine(DeathAnimation()); }
+    void StartDeath() { if (doors.Count > 0) {CallDoor();} StartCoroutine(DeathAnimation()); }
 
     IEnumerator DeathAnimation() {
         agent.isStopped = true;
@@ -238,5 +240,18 @@ public class MeleeAI : MonoBehaviourPun, IDamage, IPunObservable {
             if (isAttacking)
                 photonView.RPC(nameof(StartSwing), RpcTarget.All);
         }
+    }
+
+    public void CallDoor()
+    {
+        foreach (GameObject object_ in doors)
+        {
+            object_.GetComponent<SwivelDoor>().Increment(1);
+        }
+    }
+
+    public void PassGameObject(GameObject object_)
+    {
+        doors.Add(object_);
     }
 }

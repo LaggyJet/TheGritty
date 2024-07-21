@@ -17,7 +17,7 @@ public class Statue : MonoBehaviour, IDamage
             light.SetActive(true);
             foreach (GameObject object_ in doors)
             {
-                object_.GetComponent<SwivelDoor>().count++;
+                object_.GetComponent<SwivelDoor>().Increment(1);
             }
         }
         

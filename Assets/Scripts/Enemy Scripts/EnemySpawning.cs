@@ -6,6 +6,7 @@ public class EnemySpawning : MonoBehaviour {
     [SerializeField] GameObject Enemy;
     [SerializeField] Transform[] SpawnPoints;
     [SerializeField] int numEnemies;
+    [SerializeField] GameObject[] doors;
 
     bool isSpawning = false;
 
@@ -29,9 +30,17 @@ public class EnemySpawning : MonoBehaviour {
                 Quaternion spawnRot = Quaternion.LookRotation(playerPosition - spawnPos);
 
                 if (PhotonNetwork.InRoom && Enemy != null)
-                    PhotonNetwork.Instantiate("Enemy/" + Enemy.name, spawnPos, spawnRot);
+                {
+                    GameObject temp = PhotonNetwork.Instantiate("Enemy/" + Enemy.name, spawnPos, spawnRot);
+                    foreach(GameObject object_ in doors)
+                        temp.GetComponent<I_Interact>().PassGameObject(object_);
+                }
                 else if (!PhotonNetwork.InRoom && Enemy != null)
-                    Instantiate(Enemy, spawnPos, spawnRot);
+                {
+                    GameObject temp = Instantiate(Enemy, spawnPos, spawnRot);
+                    foreach (GameObject object_ in doors)
+                        temp.GetComponent<I_Interact>().PassGameObject(object_);
+                }
             }
         }
     }
