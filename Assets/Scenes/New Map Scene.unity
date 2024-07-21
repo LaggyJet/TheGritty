@@ -7030,11 +7030,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 273105721}
   m_Mesh: {fileID: 7855247728046881105, guid: 638dc165572d2a84081d13ce1afb4d52, type: 3}
---- !u!4 &275052471 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 70728676891416622, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
-  m_PrefabInstance: {fileID: 414040889569256448}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &277908410 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5357472890152683155, guid: eba44860043fb45469c35ff1861408c9, type: 3}
@@ -108625,7 +108620,7 @@ PrefabInstance:
     - target: {fileID: 6766118048645203213, guid: 2d9ca4e8965108f4790957820d338a31, type: 3}
       propertyPath: SpawnPoints.Array.data[0]
       value: 
-      objectReference: {fileID: 275052471}
+      objectReference: {fileID: 6790204755533886046}
     - target: {fileID: 7217763871102378243, guid: 2d9ca4e8965108f4790957820d338a31, type: 3}
       propertyPath: sceneViewId
       value: 21
@@ -108644,6 +108639,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d9ca4e8965108f4790957820d338a31, type: 3}
+--- !u!4 &6790204755533886046 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7306344716806805962, guid: 2d9ca4e8965108f4790957820d338a31, type: 3}
+  m_PrefabInstance: {fileID: 6790204755533886045}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6791950038004087534
 GameObject:
   m_ObjectHideFlags: 0
