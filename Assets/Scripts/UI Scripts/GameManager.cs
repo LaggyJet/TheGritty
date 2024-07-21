@@ -84,7 +84,11 @@ public class GameManager : MonoBehaviour
             //playerLocation = player.transform.position;
             if (SceneManager.GetActiveScene().name == "title menu")
             {
-                SoundTrackswitch(GameMusic.Menu); // TODO: this will need to change once we solidify awake screen
+                SoundTrackswitch(GameMusic.Menu); 
+            }
+            else
+            {
+                SoundTrackswitch(GameMusic.Gameplay);
             }
 
         }
@@ -168,6 +172,11 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<PlayerController>();
         //playerLocation = player.transform.position;
+        if (SceneManager.GetActiveScene().name != "title menu")
+        // Making sure bgm plays when player is active
+      {
+        SoundTrackswitch(GameMusic.Gameplay);
+      }
     }
     //TEXT POP UPS
     public void ShowText(string message)
