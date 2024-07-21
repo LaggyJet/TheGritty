@@ -125,7 +125,7 @@ MonoBehaviour:
   type: 1
   Audio: {fileID: 6040254691886888972}
   pickUp: {fileID: 8300000, guid: 8fda0a40e6024ce49add8f8620c53692, type: 3}
-  pickUpVol: 20
+  pickUpVol: 2
   audTime: 2
 --- !u!114 &1764963870660873342
 MonoBehaviour:
