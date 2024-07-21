@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using Photon.Pun;
 
 public class SkillTreeManager : MonoBehaviour, IDataPersistence
 {
