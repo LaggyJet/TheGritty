@@ -56,12 +56,11 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
     [Header("------ misc. ------")]
     private static int points2Save;
     [SerializeField] GameObject spawn;
+    bool dataSet = false;
 
     void Awake()
     {
         Instance = this;
-        gameObject.transform.Find("Canvas").gameObject.SetActive(true);
-        gameObject.SetActive(false);
         if (points2Save != 0)
             curPoints = points2Save;
         curPointsText.text = curPoints.ToString("F0");
@@ -78,6 +77,16 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
                 skillState.Add(new Tuple<Skills, bool>(skill, false));
             }
         }
+
+        if (SceneManager.GetActiveScene().name == "title menu") return;
+
+        
+    }
+
+    void Update() { if (SceneManager.GetActiveScene().name == "New Build Scene" && !dataSet) SetData(); }
+
+    void SetData() {
+        dataSet = true;
         if (!PhotonNetwork.InRoom && DataPersistenceManager.gameData.skills == "" || ((int)GameManager.playerLocation.x == (int)spawn.transform.position.x && (int)GameManager.playerLocation.z == (int)spawn.transform.position.z))
         {
             DataPersistenceManager.gameData.skills = "000000000";
@@ -92,6 +101,7 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
                 locks[i].enabled = !skillState[i].Item2;
         }
     }
+
     public void AddPoint()
     {
         PlayerController.instance.PlayAddPointAud();

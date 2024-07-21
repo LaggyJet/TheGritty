@@ -96,8 +96,8 @@ public class GameManager : MonoBehaviour
         AudioSource[] audioSources = GetComponents<AudioSource>();
         if(audioSources.Length > 1)
         {
-           soundTrackAud = audioSources[0];
-           sfxAudio = audioSources[1];
+            soundTrackAud = audioSources[0];
+            sfxAudio = audioSources[1];
         }
     }
 
@@ -110,17 +110,17 @@ public class GameManager : MonoBehaviour
             //checks if our input is called, and if the tree is active or not
             if (ctxt.performed && !isSkTrActive && SceneManager.GetActiveScene().name == "New Map Scene")
             {
-                skillTreeScreen.SetActive(true);
+                skillTreeScreen.transform.Find("Canvas").gameObject.SetActive(true);
                 statePause();
                 isSkTrActive = !isSkTrActive;
             }
             else if (ctxt.performed && isSkTrActive && SceneManager.GetActiveScene().name == "New Map Scene")
             {
-                skillTreeScreen.SetActive(false);
+                skillTreeScreen.transform.Find("Canvas").gameObject.SetActive(false);
                 stateResumeGameLoads();
                 isSkTrActive = !isSkTrActive;
                 SoundTrackswitch(GameMusic.Gameplay);
-               SkillTreeManager.Instance.SaveData(ref DataPersistenceManager.gameData);
+                SkillTreeManager.Instance.SaveData(ref DataPersistenceManager.gameData);
                 
             }
         }

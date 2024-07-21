@@ -1922,7 +1922,7 @@ MonoBehaviour:
   menuMusic: {fileID: 8300000, guid: f39b92c74b1b2ca4dabdc1ae1b4a40f6, type: 3}
   menuVol: 1
   gamePlayMusic: {fileID: 8300000, guid: 86eaf3782e873b5429e27a17f9e4626a, type: 3}
-  gamePlayVol: 1
+  gamePlayVol: 0.5
   isPlayingBGM: 0
   sfxAudio: {fileID: 7459796964397982466}
   buttonSound: {fileID: 8300000, guid: f1fd54f0006cc834a8ea801cf7d70818, type: 3}
@@ -2531,6 +2531,10 @@ PrefabInstance:
     - target: {fileID: 6427244357362939110, guid: 4a4e85f43add02046bdccf43586d1fab, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6956936743191686824, guid: 4a4e85f43add02046bdccf43586d1fab, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7167773965843546163, guid: 4a4e85f43add02046bdccf43586d1fab, type: 3}
       propertyPath: m_LocalPosition.x
