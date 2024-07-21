@@ -77,7 +77,7 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
                 skillState.Add(new Tuple<Skills, bool>(skill, false));
             }
         }
-        if (DataPersistenceManager.gameData.skills == "" || ((int)GameManager.playerLocation.x == (int)spawn.transform.position.x && (int)GameManager.playerLocation.z == (int)spawn.transform.position.z))
+        if (!PhotonNetwork.InRoom && DataPersistenceManager.gameData.skills == "" || ((int)GameManager.playerLocation.x == (int)spawn.transform.position.x && (int)GameManager.playerLocation.z == (int)spawn.transform.position.z))
         {
             DataPersistenceManager.gameData.skills = "000000000";
             LoadData(DataPersistenceManager.gameData);
