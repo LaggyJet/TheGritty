@@ -157,6 +157,8 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     void StartDeath() { if (doors.Count > 0) {CallDoor();} StartCoroutine(DeathAnimation()); }
 
     IEnumerator DeathAnimation() {
+        // Sound for Death 
+        PlayerController.instance.PlaySkeletonAud();
         EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
         EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
         enemyTargetPosition = transform.position;
