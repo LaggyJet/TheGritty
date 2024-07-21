@@ -19,6 +19,13 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
     // Start the connection when loading screen plays
     void Start() { PhotonNetwork.AutomaticallySyncScene = true; PhotonNetwork.ConnectUsingSettings(); }
 
+    void Update() { 
+        if (PhotonNetwork.IsConnected) {
+            loadMenu.SetActive(false); 
+            lobbyMenu.SetActive(true);
+        }
+    }
+
     // Have the player join the lobby once it loads
     public override void OnConnectedToMaster() { PhotonNetwork.JoinLobby(TypedLobby.Default); }
 

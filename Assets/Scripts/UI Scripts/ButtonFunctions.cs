@@ -56,9 +56,7 @@ public class ButtonFunctions : MonoBehaviourPun
         //Disconnect player from the server (if possible)
         if (PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom)
             CallQuitGame();
-        else if (PhotonNetwork.IsConnected)
-            StartCoroutine(DisconnectPhoton());
-        else if (!PhotonNetwork.IsConnected)
+        else if (!PhotonNetwork.InRoom)
             SceneManager.LoadScene("title menu");
     }
 
