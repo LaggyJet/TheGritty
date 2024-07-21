@@ -1,9 +1,10 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class ArcherAI : MonoBehaviourPun, IDamage, IPunObservable {
+public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     [SerializeField] Renderer model;
     [SerializeField] Material[] mats;
     [SerializeField] Animator anim;
@@ -16,6 +17,7 @@ public class ArcherAI : MonoBehaviourPun, IDamage, IPunObservable {
     [SerializeField] float dropChance;
     [SerializeField] GameObject itemToDrop;
 
+    GameObject[] doors;
     DamageStats status;
     bool isAttacking, wasKilled, isDOT;
     Vector3 playerDirection, enemyTargetPosition;
@@ -152,7 +154,7 @@ public class ArcherAI : MonoBehaviourPun, IDamage, IPunObservable {
     }
 
     [PunRPC]
-    void StartDeath() { StartCoroutine(DeathAnimation()); }
+    void StartDeath() { if (doors.Length > 0) {CallDoor();} StartCoroutine(DeathAnimation()); }
 
     IEnumerator DeathAnimation() {
         enemyTargetPosition = transform.position;
@@ -186,5 +188,18 @@ public class ArcherAI : MonoBehaviourPun, IDamage, IPunObservable {
             stream.SendNext(isAttacking);
         else if (stream.IsReading)
             isAttacking = (bool)stream.ReceiveNext();
+    }
+
+    public void CallDoor()
+    {
+        foreach(GameObject object_ in doors)
+        {
+            object_.GetComponent<SwivelDoor>().Increment(1);
+        }
+    }
+
+    public void PassGameObject(GameObject object_)
+    {
+        doors.Append(object_);
     }
 }
