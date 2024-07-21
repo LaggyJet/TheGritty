@@ -19,10 +19,7 @@ public class HPotPickUp : MonoBehaviourPunCallbacks
         if (other.CompareTag("Player") && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.InRoom))
         {
             // Sound for player picking up potion 
-            Audio.clip = pickUp; 
-            Audio.volume = pickUpVol;
-            Audio.Play();
-            
+            Audio.PlayOneShot(pickUp, pickUpVol);
             // If stamina or health 
             switch(type)
             {
