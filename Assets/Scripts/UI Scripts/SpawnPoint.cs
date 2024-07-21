@@ -9,11 +9,14 @@ public class SpawnPoint : MonoBehaviourPunCallbacks
 
     void Start() {
 
-        if (PhotonNetwork.InRoom && player != null)
+        if (PhotonNetwork.InRoom && player != null) {
             PhotonNetwork.Instantiate("Player/" + player.name, GetRandomSpawn(), Quaternion.identity);
+            GameManager.instance.SoundTrackswitch(GameManager.GameMusic.Gameplay);
+        }
         else if (!PhotonNetwork.InRoom && player != null) {
             Instantiate(player, gameObject.transform.position, Quaternion.identity);
             GameManager.playerLocation = gameObject.transform.position;
+            GameManager.instance.SoundTrackswitch(GameManager.GameMusic.Gameplay);
         }
     }
 

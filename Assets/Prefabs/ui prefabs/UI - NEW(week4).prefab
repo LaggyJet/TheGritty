@@ -1930,6 +1930,9 @@ MonoBehaviour:
   menuSwitchSound: {fileID: 8300000, guid: 65802302fafe43542bb2b4fad7eddbc9, type: 3}
   menuSwitchSoundVol: 0.5
   isPlayingSFX: 0
+  doorsToOpen:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &1018335641024888473
 MonoBehaviour:
   m_ObjectHideFlags: 0

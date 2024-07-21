@@ -67,8 +67,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public float menuSwitchSoundVol;
     public bool isPlayingSFX = false; // Sound Effects Audio
     private bool clickSound = true; // Playing only for pause 
-    
-    
+    [SerializeField] GameObject[] doorsToOpen;
 
 
     //Calls "Awake" instead to run before the other Start methods
@@ -308,7 +307,7 @@ public class GameManager : MonoBehaviour
 
         if (menuActive == menuLose)
         {
-
+            ResetAllDoors();
             playerScript.controller.enabled = false;
             playerScript.Respawn();
             playerScript.controller.enabled = true;
@@ -415,6 +414,12 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.Log("SFX == null && not playing sound");
+        }
+    }
+    public void ResetAllDoors() {
+        foreach (GameObject door in doorsToOpen) {
+            door.GetComponent<SwivelDoor>().close = false;
+            door.GetComponent<SwivelDoor>().OpenDoor();
         }
     }
 }

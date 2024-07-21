@@ -29548,6 +29548,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 286846784}
+    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: doorsToOpen.Array.data[0]
+      value: 
+      objectReference: {fileID: 414040889569256453}
+    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: doorsToOpen.Array.data[1]
+      value: 
+      objectReference: {fileID: 414040889569256452}
     - target: {fileID: 7201814496331577896, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: spawn
       value: 
@@ -65233,6 +65241,16 @@ Transform:
 --- !u!4 &414040889569256450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2163581905625716653, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+  m_PrefabInstance: {fileID: 414040889569256448}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &414040889569256452 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8828399633064861565, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+  m_PrefabInstance: {fileID: 414040889569256448}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &414040889569256453 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4719836549518052849, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
   m_PrefabInstance: {fileID: 414040889569256448}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &719262810049466469
@@ -108535,6 +108553,10 @@ PrefabInstance:
     - target: {fileID: 4867846591286331139, guid: 2d9ca4e8965108f4790957820d338a31, type: 3}
       propertyPath: sceneViewId
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5404290987946333923, guid: 2d9ca4e8965108f4790957820d338a31, type: 3}
+      propertyPath: limit
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5773450835807852160, guid: 2d9ca4e8965108f4790957820d338a31, type: 3}
       propertyPath: textMeshPro

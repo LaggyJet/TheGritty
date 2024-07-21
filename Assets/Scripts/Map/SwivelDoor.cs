@@ -49,7 +49,7 @@ public class SwivelDoor : MonoBehaviourPun
     }
 
     [PunRPC]
-    void CloseDoor()
+    public void CloseDoor()
     {
         Quaternion rotation = Quaternion.AngleAxis(closeAngle, transform.up);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, closeSpeed);
@@ -60,7 +60,7 @@ public class SwivelDoor : MonoBehaviourPun
     }
 
     [PunRPC]
-    void OpenDoor()
+    public void OpenDoor()
     {
         if (!addedPoint && canAddPoint)
         {
