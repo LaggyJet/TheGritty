@@ -17,5 +17,5 @@ public class SpawnPoint : MonoBehaviourPunCallbacks
         }
     }
 
-    Vector3 GetRandomSpawn() { return gameObject.transform.position + new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2)); }
+    Vector3 GetRandomSpawn() { return gameObject.transform.position + new Vector3(Random.Range(-4, 4), 0, Random.Range(-4, 4)); }
 }
