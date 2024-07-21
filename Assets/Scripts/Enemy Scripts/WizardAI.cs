@@ -229,6 +229,7 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     void StartDeath() { if (doors.Count > 0) {CallDoor();}  StartCoroutine(DeathAnimation()); }
 
     IEnumerator DeathAnimation() {
+        PlayerController.instance.PlayIceAud();
         EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
         EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
         agent.isStopped = true;

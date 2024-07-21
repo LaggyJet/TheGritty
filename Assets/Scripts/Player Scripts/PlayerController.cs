@@ -152,6 +152,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     [SerializeField] public AudioClip[] iceEnemyAud;
     [SerializeField] public float iceEnemyAudVol;
     public bool isPlayingIceEnemyAud = false;
+    [SerializeField] public AudioClip iceDeathAud;
+    [SerializeField] public float iceDeathAudVol;
+    public bool isPlayingIceDeathAud = false;
+    [SerializeField] public AudioClip[] skeletonAud;
+    [SerializeField] public float skeletonAudVol;
+    public bool isPlayingskeletonAud = false;
+
 
 
 
@@ -945,6 +952,33 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         else
         {
             Debug.Log("SFX == null && not playing door open aud");
+        }
+    }
+
+    public void PlayIceAud()
+    {
+        // Sound for ice enemy death
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(iceDeathAud, iceDeathAudVol);
+            isPlayingIceDeathAud = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing ice Death aud");
+        }
+    }
+    public void PlaySkeletonAud()
+    {
+       // Sound for skeleton enemy death
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(skeletonAud[Random.Range(0, skeletonAud.Length)], skeletonAudVol);
+            isPlayingskeletonAud = true;
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing skeleton Death aud");
         }
     }
 

@@ -1987,6 +1987,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b349ee6cd3326aa4db538926ec25343d, type: 3}
   iceEnemyAudVol: 0.8
   isPlayingIceEnemyAud: 0
+  iceDeathAud: {fileID: 8300000, guid: df7335a77a24ae44db0abc2d4527c130, type: 3}
+  iceDeathAudVol: 1
+  isPlayingIceDeathAud: 0
+  skeletonAud:
+  - {fileID: 8300000, guid: 8996b73cc2c950e429d6e188c89271e4, type: 3}
+  skeletonAudVol: 0.5
+  isPlayingskeletonAud: 0
   sprintAudioSource: {fileID: 7898868306004621137}
   sprintSound: {fileID: 8300000, guid: 2317d27a2bbe7254888ee6e1d65fa753, type: 3}
   sprintVol: 0.5
