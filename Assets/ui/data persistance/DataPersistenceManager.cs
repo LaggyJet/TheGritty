@@ -21,7 +21,7 @@ public class DataPersistenceManager : MonoBehaviour
     {
         if (Instance != null)
         {
-            Debug.LogError("Found more than one Data Persistence Manager in the scene.");
+            //Debug.LogError("Found more than one Data Persistence Manager in the scene.");
         }
         Instance = this;
         dataPersistenceObjects = new List<IDataPersistence>();
@@ -38,7 +38,7 @@ public class DataPersistenceManager : MonoBehaviour
     {
         if (!GameManager.selectedMultiplayer) {
             gameData = new GameData();
-            Debug.Log("Creating a new game file");
+            //Debug.Log("Creating a new game file");
             dataHandler.Save(gameData);
         }
     }
@@ -58,7 +58,7 @@ public class DataPersistenceManager : MonoBehaviour
         {
             dataPersistenceObj.LoadData(gameData);
         }
-        Debug.Log("Resuming game file");
+        //Debug.Log("Resuming game file");
     }
     public void SaveGame() //save method
     {
@@ -70,7 +70,7 @@ public class DataPersistenceManager : MonoBehaviour
                 dataPersistenceObj.SaveData(ref gameData);
             }
             dataHandler.Save(gameData);
-            Debug.Log("Saving game file");
+            //Debug.Log("Saving game file");
             }
     }
 
