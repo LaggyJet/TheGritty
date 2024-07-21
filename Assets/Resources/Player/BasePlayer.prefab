@@ -1964,6 +1964,16 @@ MonoBehaviour:
   addPointAud: {fileID: 8300000, guid: 5feb1557d4d7b074781ea51b31532d7c, type: 3}
   addPointAudVol: 0.3
   isPlayingAddPointAud: 0
+  doorCloseAud:
+  - {fileID: 8300000, guid: 8ff308cf2b5d6944cbcd5825bf7c67b8, type: 3}
+  - {fileID: 8300000, guid: 354082a899cd59b4596ee2500635174d, type: 3}
+  doorCloseAudVol: 5
+  isPlayingDoorCloseAud: 0
+  doorOpenAud:
+  - {fileID: 8300000, guid: 1ec40de9e6fa3b546a467ee7d2819364, type: 3}
+  - {fileID: 8300000, guid: ac6b3f835598b36409a47fda94684e3a, type: 3}
+  doorOpenAudVol: 5
+  isPlayingDoorOpenAud: 0
   sprintAudioSource: {fileID: 7898868306004621137}
   sprintSound: {fileID: 8300000, guid: 2317d27a2bbe7254888ee6e1d65fa753, type: 3}
   sprintVol: 0.5

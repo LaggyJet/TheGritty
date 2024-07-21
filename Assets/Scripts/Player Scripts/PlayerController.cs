@@ -137,6 +137,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     [SerializeField] public float addPointAudVol;
     public bool isPlayingAddPointAud = false;
 
+    [Header("------ Map Audio ------")]
+    [SerializeField] public AudioClip[] doorCloseAud;
+    [SerializeField] public float doorCloseAudVol;
+    public bool isPlayingDoorCloseAud = false;
+    [SerializeField] public AudioClip[] doorOpenAud;
+    [SerializeField] public float doorOpenAudVol;
+    public bool isPlayingDoorOpenAud = false;
+
 
 
     [Header("------ Sprint Audio ------")]
@@ -895,6 +903,54 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         }
     }
 
+    public void PlayDoorCloseAud()
+    {
+       // Sound for door close
+        if (audioSource != null && !isPlayingDoorCloseAud)
+        {
+            // Random sound from array
+            AudioClip clip = doorCloseAud[Random.Range(0, doorCloseAud.Length)];
+            audioSource.PlayOneShot(clip, doorCloseAudVol);
+            isPlayingDoorCloseAud = true;
+            Debug.Log("door CLOSED audio");
+
+            //Stop at clip length
+            StartCoroutine(ResetCloseDoorSound(clip.length));
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing door close aud");
+        }
+    }
+
+    public void PlayDoorOpenAud()
+    {
+       // Sound for door open
+        if (audioSource != null && !isPlayingDoorOpenAud)
+        {
+            AudioClip clip = doorOpenAud[Random.Range(0, doorOpenAud.Length)];
+            audioSource.PlayOneShot(clip, doorOpenAudVol);
+            isPlayingDoorOpenAud = true;
+            StartCoroutine(ResetOpenDoorSound(clip.length));
+            Debug.Log("door OPEN audio");
+        }
+        else
+        {
+            Debug.Log("SFX == null && not playing door open aud");
+        }
+    }
+
+    private IEnumerator ResetCloseDoorSound(float num)
+    {
+        yield return new WaitForSeconds(num); 
+        isPlayingDoorCloseAud = false;
+    }
+
+    private IEnumerator ResetOpenDoorSound(float num)
+    {
+        yield return new WaitForSeconds(num); 
+        isPlayingDoorOpenAud = false;
+    }
 
 
     
