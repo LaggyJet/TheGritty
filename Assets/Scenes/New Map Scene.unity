@@ -108575,6 +108575,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6385983963169388196, guid: 2d9ca4e8965108f4790957820d338a31, type: 3}
+      propertyPath: text
+      value: The walls are telling you to defeat all the enemies if you want to leave...
+      objectReference: {fileID: 0}
+    - target: {fileID: 6385983963169388196, guid: 2d9ca4e8965108f4790957820d338a31, type: 3}
       propertyPath: textMeshPro
       value: 
       objectReference: {fileID: 1183189643}
@@ -108634,7 +108638,8 @@ PrefabInstance:
       propertyPath: textMeshPro
       value: 
       objectReference: {fileID: 1183189643}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7678826623157003811, guid: 2d9ca4e8965108f4790957820d338a31, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
