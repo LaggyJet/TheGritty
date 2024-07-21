@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class SpinnyKey : MonoBehaviour
+public class SpinnyKey : MonoBehaviour, I_Interact
 {
     [SerializeField] GameObject door;
     bool spinning;
@@ -26,9 +26,23 @@ public class SpinnyKey : MonoBehaviour
         }
     }
 
-    public void OnCollisionEnter(Collision collision)
+    public void OnTriggerEnter(Collider other)
     {
-        door.GetComponent<SwivelDoor>().swivel = true;
-        Destroy(gameObject);
+        if(other.gameObject.CompareTag("Player"))
+        {
+            CallDoor();
+            Destroy(gameObject);
+        }
+        
+    }
+
+    public void CallDoor()
+    {
+        door.GetComponent<SwivelDoor>().Increment(1);
+    }
+
+    public void PassGameObject(GameObject object_)
+    {
+        door = object_;
     }
 }

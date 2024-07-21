@@ -4,43 +4,47 @@ using UnityEngine;
 
 public class SwivelDoor : MonoBehaviour
 {
-    [SerializeField] GameObject[] enemies;
-    [SerializeField] int killThreshold;
-    [SerializeField] public float angle;
-    [SerializeField] public float speed;
-    [SerializeField] public int limit;
-    public int count;
-    public bool swivel;
+    [SerializeField] float openAngle;
+    [SerializeField] float closeAngle;
+    [SerializeField] float openSpeed;
+    [SerializeField] float closeSpeed;
+    [SerializeField] int limit;
+    int count;
+    public bool close = false;
+    public bool test;
 
-    readonly List<EnemyLimiter> curLimiters = new();
-
-    void Start() {
-        for (int i = 0; i < enemies.Length; i++)
-            curLimiters.Add(enemies[i].GetComponent<MeleeAI>().GetEnemyLimiter());
-    }
 
     private void Update() {
-        int currentKills = 0;
-        foreach (EnemyLimiter limiter in curLimiters)
-            if (EnemyManager.Instance.GetEnemyIndex(limiter) != -1)
-                currentKills += EnemyManager.Instance.GetKilledEnemyCount(limiter);
-
-        if (currentKills >= killThreshold)
-            Swivel();
-
-        if (count == limit)
+        if (count >= limit|| test)
         {
-            Swivel();
+            OpenDoor();
         }
-        if (swivel)
+        else if(close)
         {
-            Swivel();
+            CloseDoor();
         }
     }
 
-    public void Swivel()
+    void CloseDoor()
     {
-        Quaternion rotation = Quaternion.AngleAxis(angle, transform.up);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, speed);
+        Quaternion rotation = Quaternion.AngleAxis(closeAngle, transform.up);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, closeSpeed);
+    }
+    void OpenDoor()
+    {
+        close = false;
+        Quaternion rotation = Quaternion.AngleAxis(openAngle, transform.up);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, openSpeed);
+    }
+
+    public void SwivelTo(float angle_,  float speed_)
+    {
+        Quaternion rotation = Quaternion.AngleAxis(angle_, transform.up);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, speed_);
+    }
+
+    public void Increment(int amount)
+    {
+        count += amount;
     }
 }

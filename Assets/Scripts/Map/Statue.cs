@@ -6,12 +6,21 @@ public class Statue : MonoBehaviour, IDamage
 {
 
     [SerializeField] new GameObject light;
-    [SerializeField] GameObject door;
+    [SerializeField] GameObject[] doors;
+    bool hit = false;
 
     public void TakeDamage(float damage)
     {
-        light.SetActive(true);
-        door.GetComponent<SwivelDoor>().count++;
+        if(!hit)
+        {
+            hit = true;
+            light.SetActive(true);
+            foreach (GameObject object_ in doors)
+            {
+                object_.GetComponent<SwivelDoor>().Increment(1);
+            }
+        }
+        
     }
 
     public void Afflict(DamageStats type)

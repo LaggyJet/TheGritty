@@ -14,6 +14,7 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
     [SerializeField] Button hostButton, joinButton;
 
     List<RoomInfo> rooms = new();
+    const string MAP_SCENE = "JoshScene"; //"New Map Scene";
 
     // Start the connection when loading screen plays
     void Start() { PhotonNetwork.AutomaticallySyncScene = true; PhotonNetwork.ConnectUsingSettings(); }
@@ -75,7 +76,7 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
         while (PhotonNetwork.CurrentRoom.PlayerCount != PhotonNetwork.CurrentRoom.MaxPlayers)
             yield return null;
         if (PhotonNetwork.IsMasterClient)
-            PhotonNetwork.LoadLevel("New Map Scene");
+            PhotonNetwork.LoadLevel(MAP_SCENE);
     }
 
     void RaiseWarning(string message) {

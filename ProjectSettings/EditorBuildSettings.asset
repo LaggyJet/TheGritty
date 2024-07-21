@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/credits.unity
     guid: c90a235a7d6f8804ab5e497b49fec3d4
+  - enabled: 1
+    path: Assets/Scenes/JoshScene.unity
+    guid: cd214adb87a6b2945bd117594d215d81
   m_configObjects: {}

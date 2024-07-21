@@ -6,32 +6,49 @@ public class EnemySpawning : MonoBehaviour {
     [SerializeField] GameObject Enemy;
     [SerializeField] Transform[] SpawnPoints;
     [SerializeField] int numEnemies;
+    [SerializeField] GameObject[] doors;
 
     bool isSpawning = false;
-
-    private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player") && !isSpawning && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected))
-            Spawn(other);
-    }
 
     [PunRPC]
     void UpdateSpawnerState() { isSpawning = true; }
 
-    public void Spawn(Collider other) {
+    [PunRPC]
+    public void Spawn(Vector3 playerPosition) {
         isSpawning = true;
 
         if (PhotonNetwork.InRoom)
             GetComponent<PhotonView>().RPC(nameof(UpdateSpawnerState), RpcTarget.Others);
 
-        for (int i = 0; i < numEnemies; i++) {
-            int arrayPosition = Random.Range(0, SpawnPoints.Length);
-            Vector3 spawnPos = GetRandomSpawn(SpawnPoints[arrayPosition].position);
-            Quaternion spawnRot = Quaternion.LookRotation(other.transform.position - spawnPos);
-            
-            if (PhotonNetwork.InRoom && Enemy != null)
-                PhotonNetwork.Instantiate("Enemy/" + Enemy.name, spawnPos, spawnRot);
-            else if (!PhotonNetwork.InRoom && Enemy != null)
-                Instantiate(Enemy, spawnPos, spawnRot);
+        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom)
+            GetComponent<PhotonView>().RPC(nameof(Spawn), RpcTarget.MasterClient, playerPosition);
+
+        if (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected) {
+            for (int i = 0; i < numEnemies; i++) {
+                int arrayPosition = Random.Range(0, SpawnPoints.Length);
+                Vector3 spawnPos = GetRandomSpawn(SpawnPoints[arrayPosition].position);
+                Quaternion spawnRot = Quaternion.LookRotation(playerPosition - spawnPos);
+
+                if (PhotonNetwork.InRoom && Enemy != null)
+                {
+                    GameObject temp = PhotonNetwork.Instantiate("Enemy/" + Enemy.name, spawnPos, spawnRot);
+                    foreach(GameObject object_ in doors)
+                        temp.GetComponent<I_Interact>().PassGameObject(object_);
+                }
+                else if (!PhotonNetwork.InRoom && Enemy != null)
+                {
+                    GameObject temp = Instantiate(Enemy, spawnPos, spawnRot);
+                    foreach (GameObject object_ in doors)
+                        temp.GetComponent<I_Interact>().PassGameObject(object_);
+                }
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("Player") && !isSpawning && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected)) {
+            Vector3 playerPosition = other.transform.position;
+            Spawn(playerPosition);
         }
     }
 
