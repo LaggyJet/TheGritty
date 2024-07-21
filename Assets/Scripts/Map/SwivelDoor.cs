@@ -17,6 +17,7 @@ public class SwivelDoor : MonoBehaviourPun
     private bool isOpen = false;
     private bool isMoving = false;
     private bool closeSoundPlayed = false;
+    private bool addedPoint = false;
 
 
     private void Update() {
@@ -60,6 +61,11 @@ public class SwivelDoor : MonoBehaviourPun
     [PunRPC]
     void OpenDoor()
     {
+        if(!addedPoint)
+        {
+            SkillTreeManager.Instance.AddPoint();
+            addedPoint = true;
+        }
         close = false;
         Quaternion rotation = Quaternion.AngleAxis(openAngle, transform.up);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, openSpeed);
