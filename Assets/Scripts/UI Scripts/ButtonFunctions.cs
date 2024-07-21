@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
+using Photon.Realtime;
 
-public class ButtonFunctions : MonoBehaviour
+public class ButtonFunctions : MonoBehaviourPun
 {
     [SerializeField] private ClassSelection playerClass;
 
@@ -15,13 +16,17 @@ public class ButtonFunctions : MonoBehaviour
         GameManager.instance.stateResume();
     }
     
-    [PunRPC]
     public void restart()
     {
         GameManager.instance.PlayMenuSwitchClick();
-        if (PhotonNetwork.InRoom && PhotonNetwork.IsMasterClient)
-            PhotonView.Get(this).RPC(nameof(restart), RpcTarget.Others);
+        if (PhotonNetwork.IsMasterClient)
+            photonView.RPC(nameof(TriggerRestart), RpcTarget.All);
+        else if (!PhotonNetwork.InRoom)
+            TriggerRestart();
+    }
 
+    [PunRPC]
+    void TriggerRestart() {
         //using previous player - scene needs to know where to put the player
         GameManager.enemyCount = 0;
         GameManager.instance.playerScript.hp = GameManager.instance.playerScript.hpBase;
@@ -32,6 +37,7 @@ public class ButtonFunctions : MonoBehaviour
         DataPersistenceManager.Instance.LoadGame();
         GameManager.instance.stateResumeGameLoads();
     }
+
     public void quitApp()
     {
         GameManager.instance.PlayMenuSwitchClick();
@@ -50,10 +56,10 @@ public class ButtonFunctions : MonoBehaviour
         //Disconnect player from the server (if possible)
         if (PhotonNetwork.IsMasterClient && PhotonNetwork.InRoom)
             CallQuitGame();
-        else if (PhotonNetwork.IsConnected)
-            StartCoroutine(DisconnectPhoton());
-        else if (!PhotonNetwork.IsConnected)
+        else if (!PhotonNetwork.InRoom) {
+            GameManager.selectedMultiplayer = false;
             SceneManager.LoadScene("title menu");
+        }
     }
 
     [PunRPC]
@@ -67,7 +73,7 @@ public class ButtonFunctions : MonoBehaviour
         SceneManager.LoadScene("title menu");
     }
 
-    public void CallQuitGame() { PhotonView.Get(this).RPC(nameof(DisconnectPhoton), RpcTarget.All); }
+    public void CallQuitGame() { photonView.RPC(nameof(DisconnectPhoton), RpcTarget.All); }
 
     public void respawn()
     {

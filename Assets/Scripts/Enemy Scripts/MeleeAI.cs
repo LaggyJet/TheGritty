@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
-using System.Linq;
 
 public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     [SerializeField] Renderer model;
@@ -48,7 +47,7 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     void Update() {
         anim.SetFloat("Speed", Mathf.Lerp(anim.GetFloat("Speed"), agent.velocity.normalized.magnitude, Time.deltaTime * animationTransitionSpeed));
 
-        if (CanSeePlayer() && (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected)) {
+        if (CanSeePlayer() && (PhotonNetwork.IsMasterClient || !PhotonNetwork.InRoom)) {
             agent.SetDestination(enemyTargetPosition);
 
             if (agent.remainingDistance < agent.stoppingDistance)
@@ -66,7 +65,7 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
             }
 
             if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter)) {
-                if (PhotonNetwork.IsConnected)
+                if (PhotonNetwork.InRoom)
                     photonView.RPC(nameof(StartSwing), RpcTarget.All);
                 else
                     StartSwing();
@@ -160,7 +159,7 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
             wasKilled = true;
             if (PhotonNetwork.InRoom)
                 photonView.RPC(nameof(StartDeath), RpcTarget.All);
-            else if (!PhotonNetwork.IsConnected)
+            else if (!PhotonNetwork.InRoom)
                 StartDeath();
         }
     }
@@ -168,7 +167,7 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     public void TakeDamage(float damage) { 
         if (PhotonNetwork.InRoom)
             photonView.RPC(nameof(RpcTakeDamage), RpcTarget.All, damage);
-        else if (!PhotonNetwork.IsConnected)
+        else if (!PhotonNetwork.InRoom)
             RpcTakeDamage(damage); 
     }
 
@@ -197,6 +196,8 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     void StartDeath() { if (doors.Count > 0) {CallDoor();} StartCoroutine(DeathAnimation()); }
 
     IEnumerator DeathAnimation() {
+        EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
+        EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
         agent.isStopped = true;
         enemyTargetPosition = transform.position;
         agent.SetDestination(enemyTargetPosition);

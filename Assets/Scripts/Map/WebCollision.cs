@@ -9,7 +9,7 @@ public class WebCollision : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected))
+        if (other.CompareTag("Player") && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.InRoom))
         {
             GameManager.instance.playerScript.Slow();
         }
@@ -17,7 +17,7 @@ public class WebCollision : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.IsConnected))
+        if (other.CompareTag("Player") && (other.GetComponent<PhotonView>().IsMine || !PhotonNetwork.InRoom))
         {
             GameManager.instance.playerScript.UnSlow();
         }

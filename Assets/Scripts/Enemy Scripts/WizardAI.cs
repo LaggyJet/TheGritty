@@ -23,7 +23,7 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     [SerializeField] float dropChance;
     [SerializeField] GameObject itemToDrop;
 
-    GameObject[] doors;
+    public List<GameObject> doors;
     DamageStats status;
     bool isAttacking, wasKilled, isDOT, iceBallShooting;
     Vector3 playerDirection, enemyTargetPosition, netPos;
@@ -48,7 +48,7 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     void Update() {
         anim.SetFloat("Speed", Mathf.Lerp(anim.GetFloat("Speed"), agent.velocity.normalized.magnitude, Time.deltaTime * animationTransitionSpeed));
 
-        if (CanSeePlayer() && (PhotonNetwork.IsMasterClient || !PhotonNetwork.IsConnected)) {
+        if (CanSeePlayer() && (PhotonNetwork.IsMasterClient || !PhotonNetwork.InRoom)) {
             if (!iceBallShooting)
                 agent.SetDestination(enemyTargetPosition);
 
@@ -67,14 +67,14 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
             }
 
             if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter)) {
-                if (PhotonNetwork.IsConnected)
+                if (PhotonNetwork.InRoom)
                     photonView.RPC(nameof(StartSwing), RpcTarget.All);
                 else
                     StartSwing();
             }
 
             if (!isAttacking && EnemyManager.Instance.CanAttack(enemyLimiter) && curTime == 0) {
-                if (PhotonNetwork.IsConnected)
+                if (PhotonNetwork.InRoom)
                     photonView.RPC(nameof(StartIceBall), RpcTarget.All);
                 else
                     StartIceBall();
@@ -192,7 +192,7 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
             wasKilled = true;
             if (PhotonNetwork.InRoom)
                 photonView.RPC(nameof(StartDeath), RpcTarget.All);
-            else if (!PhotonNetwork.IsConnected)
+            else if (!PhotonNetwork.InRoom)
                 StartDeath();
         }
     }
@@ -200,7 +200,7 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     public void TakeDamage(float damage) { 
         if (PhotonNetwork.InRoom)
             photonView.RPC(nameof(RpcTakeDamage), RpcTarget.All, damage);
-        else if (!PhotonNetwork.IsConnected)
+        else if (!PhotonNetwork.InRoom)
             RpcTakeDamage(damage); 
     }
 
@@ -226,9 +226,11 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     }
 
     [PunRPC]
-    void StartDeath() { if (doors.Length > 0) {CallDoor();}  StartCoroutine(DeathAnimation()); }
+    void StartDeath() { if (doors.Count > 0) {CallDoor();}  StartCoroutine(DeathAnimation()); }
 
     IEnumerator DeathAnimation() {
+        EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
+        EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
         agent.isStopped = true;
         enemyTargetPosition = transform.position;
         agent.SetDestination(enemyTargetPosition);
@@ -295,6 +297,6 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
 
     public void PassGameObject(GameObject object_)
     {
-        doors.Append(object_);
+        doors.Add(object_);
     }
 }

@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Realtime;
 using UnityEngine;
+using Photon.Pun;
 
-public class SwivelDoor : MonoBehaviour
+public class SwivelDoor : MonoBehaviourPun
 {
     [SerializeField] float openAngle;
     [SerializeField] float closeAngle;
@@ -21,27 +22,31 @@ public class SwivelDoor : MonoBehaviour
     private void Update() {
         if (count >= limit|| test)
         {
-            // If door is closed 
-            if(!isOpen && !isMoving)
-            {
-               OpenDoorSound();
-            }
+            // If door is closed
+            if (!isOpen && !isMoving)
+                OpenDoorSound();
 
-            OpenDoor();
-        }   
+            if (!PhotonNetwork.InRoom)
+                OpenDoor();
+            else
+                photonView.RPC(nameof(OpenDoor), RpcTarget.All);
+        }
         // If door is open
         else if(close)
         {
-            if(closeSoundPlayed == false)
-            {
-               CloseDoorSound();
-               closeSoundPlayed = true;
+            if (closeSoundPlayed == false) {
+                CloseDoorSound();
+                closeSoundPlayed = true;
             }
-            
-            CloseDoor();
+
+            if (!PhotonNetwork.InRoom)
+                CloseDoor();
+            else
+                photonView.RPC(nameof(CloseDoor), RpcTarget.All);
         }
     }
 
+    [PunRPC]
     void CloseDoor()
     {
         Quaternion rotation = Quaternion.AngleAxis(closeAngle, transform.up);
@@ -51,6 +56,8 @@ public class SwivelDoor : MonoBehaviour
         isMoving = false;
         closeSoundPlayed = true;
     }
+
+    [PunRPC]
     void OpenDoor()
     {
         close = false;

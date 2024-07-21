@@ -32,7 +32,7 @@ public class Class_Mage : MonoBehaviourPun
 
         // Set the particle system false for activation later
         // Checks for if fire belongs to that player, or they are in singleplayer
-        if (photonView.IsMine || !PhotonNetwork.IsConnected)
+        if (photonView.IsMine || !PhotonNetwork.InRoom)
             player.combatObjects[1].SetActive(false);
     }
 
@@ -147,7 +147,7 @@ public class Class_Mage : MonoBehaviourPun
             //If in multiplayer, call via RPC, otherwise, call normally
             if (PhotonNetwork.InRoom)
                 photonView.RPC(nameof(StopParticles), RpcTarget.All, photonView.ViewID);
-            else if (!PhotonNetwork.IsConnected)
+            else if (!PhotonNetwork.InRoom)
                 StopParticles(-1);
 
             holdingSecondary = false;
@@ -209,7 +209,7 @@ public class Class_Mage : MonoBehaviourPun
         //spawns our projectile either locally or in all lobbies depending on whether your playing solo or multiplayer
         if (PhotonNetwork.InRoom && photonView.IsMine)
             PhotonNetwork.Instantiate("Player/" + player.combatObjects[0].name, player.shootPosition.transform.position, player.shootPosition.transform.rotation);
-        else if (!PhotonNetwork.IsConnected)
+        else if (!PhotonNetwork.InRoom)
             Instantiate(player.combatObjects[0], player.shootPosition.transform.position, player.shootPosition.transform.rotation); GameManager.instance.isShooting = false;
     }
 
@@ -269,7 +269,7 @@ public class Class_Mage : MonoBehaviourPun
         //If in multiplayer, call via RPC, otherwise, call normally
         if (PhotonNetwork.InRoom)
             photonView.RPC(nameof(StopParticles), RpcTarget.All, photonView.ViewID);
-        else if (!PhotonNetwork.IsConnected)
+        else if (!PhotonNetwork.InRoom)
             StopParticles(-1);
 
         holdingSecondary = false;

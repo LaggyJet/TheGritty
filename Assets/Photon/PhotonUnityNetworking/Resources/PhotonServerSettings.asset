@@ -64,6 +64,10 @@ MonoBehaviour:
   - RequestSpit
   - SyncSpit
   - CheckSpit
+  - SyncAppear
+  - TriggerRestart
+  - CloseDoor
+  - OpenDoor
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

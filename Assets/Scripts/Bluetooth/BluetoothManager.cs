@@ -20,7 +20,7 @@ public class BluetoothManager : MonoBehaviour {
     }
 
     void Update() {
-        if (!PhotonNetwork.IsConnected && GameManager.instance.player != null && helper != null && helper.Available) {
+        if (!PhotonNetwork.InRoom && GameManager.instance.player != null && helper != null && helper.Available) {
             string text = helper.Read();
             if (text[0] == 'A') 
                 curState = DebugState.Health;
