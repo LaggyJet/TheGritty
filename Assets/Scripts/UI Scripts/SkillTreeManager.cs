@@ -48,7 +48,7 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
 
 
     //Points
-    int curPoints;
+    int curPoints = 0;
     [Header("------ Points ------")]
     [SerializeField] TMP_Text curPointsText;
 
