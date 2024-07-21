@@ -113,7 +113,6 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
         // Ensure skillState has been initialized properly
         if (skillState.Count != skills.Length)
         {
-            Debug.LogError("skillState count does not match Skills enum count!");
             return;
         }
 

@@ -83,7 +83,11 @@ public class GameManager : MonoBehaviour
             //playerLocation = player.transform.position;
             if (SceneManager.GetActiveScene().name == "title menu")
             {
-                SoundTrackswitch(GameMusic.Menu); // TODO: this will need to change once we solidify awake screen
+                SoundTrackswitch(GameMusic.Menu); 
+            }
+            else
+            {
+                SoundTrackswitch(GameMusic.Gameplay);
             }
 
         }
@@ -94,10 +98,6 @@ public class GameManager : MonoBehaviour
         {
            soundTrackAud = audioSources[0];
            sfxAudio = audioSources[1];
-        }
-        else
-        {
-           Debug.Log("Audio source not found");
         }
     }
 
@@ -167,6 +167,11 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<PlayerController>();
         //playerLocation = player.transform.position;
+        if (SceneManager.GetActiveScene().name != "title menu")
+        // Making sure bgm plays when player is active
+      {
+        SoundTrackswitch(GameMusic.Gameplay);
+      }
     }
     //TEXT POP UPS
     public void ShowText(string message)
@@ -397,10 +402,6 @@ public class GameManager : MonoBehaviour
            sfxAudio.PlayOneShot(buttonSound, buttonSoundVol);
            isPlayingSFX = true; 
         }
-        else
-        {
-           Debug.Log("SFX == null && not playing sound");
-        }
     }
 
     public void PlayMenuSwitchClick()
@@ -410,10 +411,6 @@ public class GameManager : MonoBehaviour
         {
             sfxAudio.PlayOneShot(menuSwitchSound, menuSwitchSoundVol);
             isPlayingSFX = true;
-        }
-        else
-        {
-            Debug.Log("SFX == null && not playing sound");
         }
     }
     public void ResetAllDoors() {

@@ -36,7 +36,6 @@ public class HPotPickUp : MonoBehaviourPunCallbacks
                 break;
 
                 default:
-                Debug.Log("Wine? :)");
                 break;
             }
 

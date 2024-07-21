@@ -758,10 +758,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             audioSource.PlayOneShot(playerJump, playerJumpVol);
             isPlayingJump = true;
         }
-        else
-        {
-            Debug.Log("SFX == null && not playing jump");
-        }
     }
 
     public void PlayLand()
@@ -771,10 +767,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         {
             audioSource.PlayOneShot(playerLand, playerLandVol);
             isPlayingLand = true;
-        }
-        else
-        {
-            Debug.Log("SFX == null && not playing land");
         }
     }
 
@@ -786,10 +778,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             audioSource.PlayOneShot(playerTeleport, playerTeleportVol);
             isPlayingTeleport = true;
         }
-        else
-        {
-            Debug.Log("SFX == null && not playing teleport");
-        }
     }
 
     public void PlayWeaponHit()
@@ -799,10 +787,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         {
             audioSource.PlayOneShot(WeaponHit[Random.Range(0, WeaponHit.Length)], weaponHitVol);
             isPlayingWeaponHit = true;
-        }
-        else
-        {
-            Debug.Log("SFX == null && not playing weapon hit");
         }
     }
 
@@ -814,10 +798,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             audioSource.PlayOneShot(arrowAud[Random.Range(0, arrowAud.Length)], arrowAudVol);
             isPlayingArrowAud = true;
         }
-        else
-        {
-            Debug.Log("SFX == null && not playing arrow aud");
-        }
     }
 
     public void PlaySwordHitAud()
@@ -827,10 +807,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         {
             audioSource.PlayOneShot(swordHitAud[Random.Range(0, swordHitAud.Length)], swordHitAudVol);
             isPlayingSwordHitAud = true;
-        }
-        else
-        {
-            Debug.Log("SFX == null && not playing sword hit aud");
         }
     }
 
@@ -842,10 +818,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             audioSource.PlayOneShot(arrowHitAud[Random.Range(0, arrowHitAud.Length)], arrowHitAudVol);
             isPlayingArrowHitAud = true;
         }
-        else
-        {
-            Debug.Log("SFX == null && not playing arrow hit aud");
-        }
     }
 
     public void PlayPlayerDeadAud()
@@ -855,10 +827,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         {
             audioSource.PlayOneShot(playerDeadAud[Random.Range(0, playerDeadAud.Length)], playerDeadAudVol);
             isPlayingPlayerDeadAud = true;
-        }
-        else
-        {
-            Debug.Log("SFX == null && not playing player dead aud");
         }
     }
 
@@ -870,10 +838,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             audioSource.PlayOneShot(unlockSkillAud, unlockSkillAudVol);
             isPlayingUnlockSkillAud = true;
         }
-        else
-        {
-            Debug.Log("SFX == null && not playing unlock skill aud");
-        }
     }
 
     public void PlayCantUnlockSkillAud()
@@ -883,10 +847,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         {
             audioSource.PlayOneShot(CantUnlockSkillAud, cantUnlockSkillAudVol);
             isPlayingCantUnlockSkillAud = true;
-        }
-        else
-        {
-            Debug.Log("SFX == null && not playing cant unlock skill aud");
         }
     }
 
@@ -898,10 +858,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             audioSource.PlayOneShot(losePointAud, losePointAudVol);
             isPlayingLosePointAud = true;
         }
-        else
-        {
-            Debug.Log("SFX == null && not playing lose point aud");
-        }
     }
 
     public void PlayAddPointAud()
@@ -911,10 +867,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         {
             audioSource.PlayOneShot(addPointAud, addPointAudVol);
             isPlayingAddPointAud = true;
-        }
-        else
-        {
-            Debug.Log("SFX == null && not playing add point aud");
         }
     }
 
@@ -927,14 +879,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             AudioClip clip = doorCloseAud[Random.Range(0, doorCloseAud.Length)];
             audioSource.PlayOneShot(clip, doorCloseAudVol);
             isPlayingDoorCloseAud = true;
-            Debug.Log("door CLOSED audio");
 
             //Stop at clip length
             StartCoroutine(ResetCloseDoorSound(clip.length));
-        }
-        else
-        {
-            Debug.Log("SFX == null && not playing door close aud");
         }
     }
 
@@ -947,11 +894,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             audioSource.PlayOneShot(clip, doorOpenAudVol);
             isPlayingDoorOpenAud = true;
             StartCoroutine(ResetOpenDoorSound(clip.length));
-            Debug.Log("door OPEN audio");
-        }
-        else
-        {
-            Debug.Log("SFX == null && not playing door open aud");
         }
     }
 
@@ -963,10 +905,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             audioSource.PlayOneShot(iceDeathAud, iceDeathAudVol);
             isPlayingIceDeathAud = true;
         }
-        else
-        {
-            Debug.Log("SFX == null && not playing ice Death aud");
-        }
     }
     public void PlaySkeletonAud()
     {
@@ -975,10 +913,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         {
             audioSource.PlayOneShot(skeletonAud[Random.Range(0, skeletonAud.Length)], skeletonAudVol);
             isPlayingskeletonAud = true;
-        }
-        else
-        {
-            Debug.Log("SFX == null && not playing skeleton Death aud");
         }
     }
 
@@ -1002,10 +936,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             audioSource.PlayOneShot(collsionAud[Random.Range(0, collsionAud.Length)], collisionAudVol);
             isPlayingCollisionAud = true;
         }
-        else
-        {
-            Debug.Log("SFX == null && not playing enemy collsion aud");
-        }
     }
 
     public void PlayIceEnemyAud()
@@ -1015,10 +945,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         {
             audioSource.PlayOneShot(iceEnemyAud[Random.Range(0, iceEnemyAud.Length)], iceEnemyAudVol);
             isPlayingIceEnemyAud = true;
-        }
-        else
-        {
-            Debug.Log("SFX == null && not playing ice enemy aud");
         }
     }
 

@@ -91,7 +91,6 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
         if (agent.velocity.magnitude > 0.1f && !spiderAud.isPlaying) {
             spiderAud.PlayOneShot(spiderWalking, spiderWalkingVol);
             isPlayingSpiderWalking = true;
-            Debug.Log("Spider Walking sounds playing");
         }
         else if (agent.velocity.magnitude <= 0.1f && spiderAud.isPlaying) {
             spiderAud.Stop();
@@ -121,7 +120,6 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
         if (!spiderAud.isPlaying && agent.velocity.magnitude > 0.1f) {
             spiderAud.PlayOneShot(spiderWalking, spiderWalkingVol);
             isPlayingSpiderWalking = true;
-            Debug.Log("Spider Walking sounds playing");
         }
     }
 

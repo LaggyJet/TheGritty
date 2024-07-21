@@ -45,7 +45,6 @@ public class SoundsManager : MonoBehaviour
                 
                 // Set is :playing no hp: check back to off after clip is done playing 
                 StartCoroutine(ResetNoHP(PlayerController.instance.noHP[0].length));
-                Debug.Log("No HP");
 
                 // Shake once for critical condition 
                 if(!Shake.instance.isShaking && Shake.instance.hasShakenHP)
