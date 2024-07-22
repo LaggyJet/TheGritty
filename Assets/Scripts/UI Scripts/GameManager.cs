@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
                     Application.Quit();
                 #endif
             }
-            else if (skillTreeScreen.activeInHierarchy)
+            else if (skillTreeScreen.transform.Find("Canvas").gameObject.activeInHierarchy)
             {
                 return;
             }
@@ -312,7 +312,6 @@ public class GameManager : MonoBehaviour
 
         if (menuActive == menuLose)
         {
-            ResetAllDoors();
             playerScript.controller.enabled = false;
             playerScript.Respawn();
             playerScript.controller.enabled = true;
@@ -414,9 +413,7 @@ public class GameManager : MonoBehaviour
         }
     }
     public void ResetAllDoors() {
-        foreach (GameObject door in doorsToOpen) {
-            door.GetComponent<SwivelDoor>().close = false;
-            door.GetComponent<SwivelDoor>().OpenDoor();
-        }
+        foreach (GameObject door in doorsToOpen)
+            door.GetComponent<SwivelDoor>().test = true;
     }
 }

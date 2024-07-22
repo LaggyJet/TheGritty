@@ -12,7 +12,7 @@ public class SwivelDoor : MonoBehaviourPun
     [SerializeField] float closeSpeed;
     [SerializeField] int limit;
     [SerializeField] bool canAddPoint = true;
-    int count;
+    public int count;
     public bool close = false;
     public bool test;
     private bool isOpen = false;
@@ -49,7 +49,7 @@ public class SwivelDoor : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void CloseDoor()
+    void CloseDoor()
     {
         Quaternion rotation = Quaternion.AngleAxis(closeAngle, transform.up);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, closeSpeed);
@@ -60,7 +60,7 @@ public class SwivelDoor : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void OpenDoor()
+    void OpenDoor()
     {
         if (!addedPoint && canAddPoint)
         {

@@ -64978,6 +64978,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 76.087
       objectReference: {fileID: 0}
+    - target: {fileID: 1899747413870993992, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+      propertyPath: Enemy
+      value: 
+      objectReference: {fileID: 3116929254137260313, guid: 3365100de936baf408d3a47a17f92297, type: 3}
     - target: {fileID: 2539290337443176036, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
       propertyPath: textMeshPro
       value: 
@@ -65030,6 +65034,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 2.99
       objectReference: {fileID: 0}
+    - target: {fileID: 4074222467265026321, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+      propertyPath: Enemy
+      value: 
+      objectReference: {fileID: 3116929254137260313, guid: 3365100de936baf408d3a47a17f92297, type: 3}
     - target: {fileID: 4336274446983198991, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
       propertyPath: sceneViewId
       value: 10
@@ -65182,6 +65190,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7377484474617312303, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+      propertyPath: Enemy
+      value: 
+      objectReference: {fileID: 3116929254137260313, guid: 3365100de936baf408d3a47a17f92297, type: 3}
     - target: {fileID: 8250777550631080019, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
       propertyPath: sceneViewId
       value: 12
@@ -76001,6 +76013,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 22
       objectReference: {fileID: 0}
+    - target: {fileID: 972353914391348442, guid: 5b1375248ef111843ab852264062a817, type: 3}
+      propertyPath: Enemy
+      value: 
+      objectReference: {fileID: 3116929254137260313, guid: 3365100de936baf408d3a47a17f92297, type: 3}
     - target: {fileID: 2593013603159371144, guid: 5b1375248ef111843ab852264062a817, type: 3}
       propertyPath: textMeshPro
       value: 
@@ -108566,6 +108582,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 6035192236126391577, guid: 2d9ca4e8965108f4790957820d338a31, type: 3}
+      propertyPath: Enemy
+      value: 
+      objectReference: {fileID: 3116929254137260313, guid: 3365100de936baf408d3a47a17f92297, type: 3}
     - target: {fileID: 6385983963169388196, guid: 2d9ca4e8965108f4790957820d338a31, type: 3}
       propertyPath: text
       value: The walls are telling you to defeat all the enemies if you want to leave...

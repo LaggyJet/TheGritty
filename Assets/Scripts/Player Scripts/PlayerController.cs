@@ -957,7 +957,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         this.transform.position = GameManager.playerLocation;
         hp = hpBase;
         stamina = staminaBase;
-        UpdatePlayerUI(); 
+        UpdatePlayerUI();
+        GameManager.instance.ResetAllDoors();
     }
     
     //load data of a previous game
