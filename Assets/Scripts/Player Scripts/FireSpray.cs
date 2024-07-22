@@ -14,7 +14,6 @@ public class FireSpray : MonoBehaviourPunCallbacks
     [SerializeField] float damage;
     [SerializeField] int speed;
     [SerializeField] int destroyTime;
-    [SerializeField] DamageStats type; 
     [SerializeField] float minimumLight, maximumLight;
 
     //variable to be used in the lighting
@@ -56,7 +55,6 @@ public class FireSpray : MonoBehaviourPunCallbacks
 
             //deal damage to the object hit
             dmg.TakeDamage(damage);
-            dmg.Afflict(type);
             //destroy our projectile
             DestroyObject(gameObject);
         }
