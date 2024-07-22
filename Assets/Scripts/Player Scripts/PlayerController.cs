@@ -969,6 +969,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         spawnHP = data.playerHp; 
         spawnStamina = data.playerStamina;
         SkillTreeManager.Instance.LoadData(data);
+        GameManager.instance.hasBossDied = data.hasBossDied;
     }
 
     //saves all important current data
@@ -979,6 +980,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         data.playerHp = hp;
         data.playerStamina = stamina;
         SkillTreeManager.Instance.SaveData(ref data);
+        data.hasBossDied = GameManager.instance.hasBossDied;
     }
 
     //this is the new function for assign a class script to our player

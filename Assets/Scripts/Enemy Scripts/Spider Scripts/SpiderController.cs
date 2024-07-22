@@ -355,6 +355,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
             Destroy(gameObject);
 
         GameManager.instance.gameWon();
+        GameManager.instance.hasBossDied = true;
         DataPersistenceManager.Instance.SaveGame();
         GameManager.playerLocation = GameManager.instance.player.transform.position;
     }

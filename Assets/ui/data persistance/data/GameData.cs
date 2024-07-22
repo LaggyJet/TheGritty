@@ -14,6 +14,7 @@ public class GameData
     public float playerStamina;
     public string skills = "000000000";
     public int skillPts;
+    public bool hasBossDied;
 
     public GameData()  //constructor - values are the initial values when starting a game
     {
@@ -22,6 +23,7 @@ public class GameData
             this.playerHp = 0;
             this.playerStamina = 0;
             this.skillPts = 0;
+            this.hasBossDied = false;
 
     }
 }

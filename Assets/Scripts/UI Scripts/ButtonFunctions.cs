@@ -25,6 +25,16 @@ public class ButtonFunctions : MonoBehaviourPun
             TriggerRestart();
     }
 
+    public void winRestart()
+    {
+        GameManager.instance.PlayMenuSwitchClick();
+        GameManager.instance.playerScript.controller.enabled = false;
+        GameManager.playerLocation = GameManager.instance.spawn.transform.position;
+        GameManager.instance.playerScript.controller.enabled = true;
+        TriggerRestart();
+
+    }
+
     [PunRPC]
     void TriggerRestart() {
         //using previous player - scene needs to know where to put the player

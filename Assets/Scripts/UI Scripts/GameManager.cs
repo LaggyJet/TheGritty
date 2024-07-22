@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour
     public ClassSelection classSelector;
     public GameObject skillTreeScreen;
     public bool isSkTrActive;
+    public GameObject spawn;
+    public bool hasBossDied;
 
     [Header("------BGM Audio ------")]
     [SerializeField] AudioSource soundTrackAud;
