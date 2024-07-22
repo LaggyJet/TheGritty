@@ -5,7 +5,7 @@ using UnityEngine;
 public class CloseDoorTrigger : MonoBehaviour, I_Interact
 {
     [SerializeField] GameObject[] doors;
-    bool hasClosed = false;
+    public bool hasClosed = false;
 
     private void OnTriggerEnter(Collider other)
     {

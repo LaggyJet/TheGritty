@@ -14,7 +14,7 @@ public class SwivelDoor : MonoBehaviourPun
     [SerializeField] bool canAddPoint = true;
     public int count;
     public bool close = false;
-    public bool test;
+    public bool test = false;
     private bool isOpen = false;
     private bool isMoving = false;
     private bool closeSoundPlayed = false;
