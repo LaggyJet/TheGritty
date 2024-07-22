@@ -69,7 +69,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] public float menuSwitchSoundVol;
     public bool isPlayingSFX = false; // Sound Effects Audio
     private bool clickSound = true; // Playing only for pause 
-    [SerializeField] GameObject[] doorsToOpen;
+    [SerializeField] List<GameObject> doorsToOpen;
+    [SerializeField] List<GameObject> doorTriggers;
 
 
     //Calls "Awake" instead to run before the other Start methods
@@ -415,7 +416,16 @@ public class GameManager : MonoBehaviour
         }
     }
     public void ResetAllDoors() {
-        foreach (GameObject door in doorsToOpen)
-            door.GetComponent<SwivelDoor>().test = true;
+        for (int i = 0; i < doorsToOpen.Count; i++) {
+            doorsToOpen[i].GetComponent<SwivelDoor>().test = true;
+            doorTriggers[i].GetComponent<CloseDoorTrigger>().hasClosed = false;
+        }
+        StartCoroutine(WaitForDoorOpen());
+    }
+
+    IEnumerator WaitForDoorOpen() {
+        yield return new WaitForSeconds(1);
+        foreach (GameObject door in  doorsToOpen)
+            door.GetComponent<SwivelDoor>().test = false;
     }
 }

@@ -1585,7 +1585,7 @@ Transform:
   m_GameObject: {fileID: 3292744602089334630}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.023, y: 1.661, z: -0.383}
+  m_LocalPosition: {x: 0.023, y: 1.693, z: -0.108}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1856,6 +1856,7 @@ MonoBehaviour:
   jumpSpeed: 3
   playerV: {x: 0, y: 0, z: 0}
   movement: {x: 0, y: 0, z: 0}
+  isDead: 0
   hp: 10
   hpBase: 0
   HpDisplay: 0
@@ -1911,6 +1912,60 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7b23b370da80193418f54c9375a7388a, type: 3}
   - {fileID: 8300000, guid: 20e13996ad7bb3d42b207ccd996f63f7, type: 3}
   attackVol: 0.2
+  playerJump: {fileID: 0}
+  playerJumpVol: 0
+  isPlayingJump: 0
+  playerLand: {fileID: 0}
+  playerLandVol: 0
+  isPlayingLand: 0
+  playerTeleport: {fileID: 0}
+  playerTeleportVol: 0
+  isPlayingTeleport: 0
+  WeaponHit: []
+  weaponHitVol: 0
+  isPlayingWeaponHit: 0
+  arrowAud: []
+  arrowAudVol: 0
+  isPlayingArrowAud: 0
+  swordHitAud: []
+  swordHitAudVol: 0
+  isPlayingSwordHitAud: 0
+  arrowHitAud: []
+  arrowHitAudVol: 0
+  isPlayingArrowHitAud: 0
+  playerDeadAud: []
+  playerDeadAudVol: 0
+  isPlayingPlayerDeadAud: 0
+  unlockSkillAud: {fileID: 0}
+  unlockSkillAudVol: 0
+  isPlayingUnlockSkillAud: 0
+  CantUnlockSkillAud: {fileID: 0}
+  cantUnlockSkillAudVol: 0
+  isPlayingCantUnlockSkillAud: 0
+  losePointAud: {fileID: 0}
+  losePointAudVol: 0
+  isPlayingLosePointAud: 0
+  addPointAud: {fileID: 0}
+  addPointAudVol: 0
+  isPlayingAddPointAud: 0
+  doorCloseAud: []
+  doorCloseAudVol: 0
+  isPlayingDoorCloseAud: 0
+  doorOpenAud: []
+  doorOpenAudVol: 0
+  isPlayingDoorOpenAud: 0
+  collsionAud: []
+  collisionAudVol: 0
+  isPlayingCollisionAud: 0
+  iceEnemyAud: []
+  iceEnemyAudVol: 0
+  isPlayingIceEnemyAud: 0
+  iceDeathAud: {fileID: 0}
+  iceDeathAudVol: 0
+  isPlayingIceDeathAud: 0
+  skeletonAud: []
+  skeletonAudVol: 0
+  isPlayingskeletonAud: 0
   sprintAudioSource: {fileID: 7898868306004621137}
   sprintSound: {fileID: 8300000, guid: 2317d27a2bbe7254888ee6e1d65fa753, type: 3}
   sprintVol: 0.5
@@ -1927,13 +1982,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4a5823ac4669ca2489afe114f796893f, type: 3}
   noAttackVol: 0.5
   isPlayingNoHP: 0
-  sfxAud: {fileID: 0}
-  playerJump: {fileID: 0}
-  playerJumpVol: 0
-  isPlayingJump: 0
-  playerTeleport: {fileID: 0}
-  playerTeleportVol: 0
-  isPlayingTeleport: 0
 --- !u!95 &2654759320713316378
 Animator:
   serializedVersion: 5
