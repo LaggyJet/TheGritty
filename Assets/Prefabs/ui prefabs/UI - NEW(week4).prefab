@@ -2055,6 +2055,7 @@ MonoBehaviour:
   skillTreeScreen: {fileID: 1321379142516672837}
   isSkTrActive: 0
   spawn: {fileID: 0}
+  hasBossDied: 0
   soundTrackAud: {fileID: 7204092341143623332}
   menuMusic: {fileID: 8300000, guid: f39b92c74b1b2ca4dabdc1ae1b4a40f6, type: 3}
   menuVol: 1
@@ -2068,6 +2069,9 @@ MonoBehaviour:
   menuSwitchSoundVol: 0.5
   isPlayingSFX: 0
   doorsToOpen:
+  - {fileID: 0}
+  - {fileID: 0}
+  doorTriggers:
   - {fileID: 0}
   - {fileID: 0}
 --- !u!114 &1018335641024888473
