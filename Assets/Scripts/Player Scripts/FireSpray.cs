@@ -55,7 +55,7 @@ public class FireSpray : MonoBehaviourPunCallbacks
                 damage *= 1.5f;
 
             //deal damage to the object hit
-            dmg.TakeDamage(damage);
+            dmg.TakeDamage(3);
             dmg.Afflict(type);
             //destroy our projectile
             DestroyObject(gameObject);
