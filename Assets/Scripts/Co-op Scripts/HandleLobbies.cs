@@ -29,7 +29,7 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
         else {
             curTime += Time.deltaTime;
             if (curTime > MAX_TIMEOUT) {
-                loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Failed to connect...\nRetrying in 5 seconds.";
+                loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Failed to connect...\nRetrying in 5 seconds";
                 PhotonNetwork.ConnectUsingSettings();
                 curTime = 0f;
                 loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Loading...";
@@ -45,6 +45,11 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
     // Create room based on user input (max of 2 players)
     public void HostRoom() {
         GameManager.instance.PlayMenuSwitchClick();
+        if (hostInput.text.Length == 0) {
+            RaiseWarning("Please enter a room name");
+            return;
+        }
+
         for (int i = 0; i < rooms.Count; i++) {
             if (rooms[i].Name == hostInput.text.ToLower()) {
                 RaiseWarning("Room with this name already exists");
@@ -52,18 +57,17 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
             }
         }
 
-        if (hostInput.text.Length == 0) {
-            RaiseWarning("Please enter a room name");
-            return;
-        }
-        
-
         hostButton.interactable = false;
         PhotonNetwork.CreateRoom(hostInput.text.ToLower(), new RoomOptions() { MaxPlayers = 2 }, null);
     }
 
     // Join room based on user input
     public void JoinRoom() {
+        if (joinInput.text.Length == 0) {
+            RaiseWarning("Please enter a room name");
+            return;
+        }
+
         GameManager.instance.PlayMenuSwitchClick();
         for (int i = 0; i < rooms.Count; i++) {
             if (rooms[i].Name == joinInput.text.ToLower()) {
@@ -74,8 +78,8 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
                 return;
             }
         }
-        
-        RaiseWarning("Room doesn't exist");
+
+        RaiseWarning("Room doesn't exist\nRetry shortly if room exists");
     }
 
     // Once player loads, load the scene
