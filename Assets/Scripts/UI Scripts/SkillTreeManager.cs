@@ -296,16 +296,20 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
     //load data of a previous game
     public void LoadData(GameData data)
     {
-        LoadSkills(data.skills);
-        points2Save = data.skillPts;
-        curPoints = points2Save;
+        if (PhotonNetwork.InRoom) {
+            LoadSkills(data.skills);
+            points2Save = data.skillPts;
+            curPoints = points2Save;
+        }
     }
 
     //saves all important current data
     public void SaveData(ref GameData data)
     {
-        data.skills = SaveSkills();
-        data.skillPts = points2Save;
+        if (PhotonNetwork.InRoom) {
+            data.skills = SaveSkills();
+            data.skillPts = points2Save;
+        }
     }
     void ReloadSkillTreeUI()
     {
