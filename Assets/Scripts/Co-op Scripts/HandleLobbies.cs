@@ -15,7 +15,7 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
 
     List<RoomInfo> rooms = new();
     const string MAP_SCENE = "New Map Scene";
-    const float MAX_TIMEOUT = 5f;
+    const float MAX_TIMEOUT = 7f;
     float curTime = 0f;
 
     // Start the connection when loading screen plays
@@ -35,10 +35,10 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
     }
 
     IEnumerator RetryText() {
-        loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Failed to connect...\nRetrying in 5 seconds";
+        loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Failed to connect...\nRetrying in 7 seconds";
         PhotonNetwork.ConnectUsingSettings();
         curTime = 0f;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2.5f);
         loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Loading...";
     }
 
