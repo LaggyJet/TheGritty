@@ -26,9 +26,9 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     public List<GameObject> doors;
     DamageStats status;
     bool isAttacking, wasKilled, isDOT, iceBallShooting;
-    Vector3 playerDirection, enemyTargetPosition, netPos;
+    Vector3 playerDirection, netPos;
     Quaternion netRot;
-    float originalStoppingDistance, adjustedStoppingDistance, angleToPlayer, curTime;
+    float originalStoppingDistance, adjustedStoppingDistance, curTime;
     int id;
 
     void Start() {
@@ -48,11 +48,15 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     void Update() {
         anim.SetFloat("Speed", Mathf.Lerp(anim.GetFloat("Speed"), agent.velocity.normalized.magnitude, Time.deltaTime * animationTransitionSpeed));
 
-        if (CanSeePlayer() && (PhotonNetwork.IsMasterClient || !PhotonNetwork.InRoom)) {
-            if (!iceBallShooting)
-                agent.SetDestination(enemyTargetPosition);
+        if (PhotonNetwork.IsMasterClient || !PhotonNetwork.InRoom) {
+            GameObject closestPlayer = FindClosestPlayer();
+            if (closestPlayer == null) return;
+            playerDirection = (closestPlayer.transform.position - transform.position).normalized;
 
-            if (agent.remainingDistance < agent.stoppingDistance)
+            if (!iceBallShooting)
+                agent.SetDestination(closestPlayer.transform.position);
+
+            if (!wasKilled)
                 FaceTarget();
 
             if (!EnemyManager.Instance.IsClose(enemyLimiter, id)) {
@@ -88,20 +92,6 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     }
 
     public EnemyLimiter GetEnemyLimiter() { return enemyLimiter; }
-
-    bool CanSeePlayer() {
-        GameObject closestPlayer = FindClosestPlayer();
-        if (closestPlayer == null) return false;
-
-        playerDirection = closestPlayer.transform.position - headPosition.position;
-        angleToPlayer = Vector3.Angle(new Vector3(playerDirection.x, playerDirection.y + 1, playerDirection.z), transform.forward);
-
-        if (Physics.Raycast(headPosition.position, playerDirection, out RaycastHit hit) && hit.collider.CompareTag("Player") && angleToPlayer < viewAngle && !wasKilled) {
-            enemyTargetPosition = closestPlayer.transform.position;
-            return true;
-        }
-        return false;
-    }
 
     GameObject FindClosestPlayer() {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
@@ -177,8 +167,7 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
 
         hp -= damage;
         if (!isDOT) {
-            enemyTargetPosition = FindClosestPlayer().transform.position;
-            agent.SetDestination(enemyTargetPosition);
+            agent.SetDestination(FindClosestPlayer().transform.position);
         }
 
         if (hp > 0)
@@ -233,8 +222,7 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
         EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
         EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
         agent.isStopped = true;
-        enemyTargetPosition = transform.position;
-        agent.SetDestination(enemyTargetPosition);
+        agent.SetDestination(transform.position);
         agent.radius = 0;
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (Collider collider in colliders)

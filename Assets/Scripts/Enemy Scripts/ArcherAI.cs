@@ -17,28 +17,49 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     [SerializeField] int range;
     [SerializeField] float dropChance;
     [SerializeField] GameObject itemToDrop;
+    [SerializeField] int retreatRange;
+    [SerializeField] bool canMove;
 
     public List<GameObject> doors;
     DamageStats status;
-    bool isAttacking, wasKilled, isDOT;
-    Vector3 playerDirection, enemyTargetPosition;
-    float angleToPlayer;
+    bool isAttacking, wasKilled, isDOT, isRetreating;
+    Vector3 playerDirection, lastPos;
+    float retreatSpeed = 10f, stuckTimeThreshold = 3f, stuckTime = 0f;
     int id;
 
     void Start() {
-        isAttacking = wasKilled = isDOT = false;
+        isAttacking = wasKilled = isDOT = isRetreating = false;
         GameManager.instance.updateEnemy(1);
         EnemyManager.Instance.AddEnemyType(enemyLimiter);
         id = gameObject.GetInstanceID();
+        lastPos = transform.position;
         if (!photonView.IsMine && PhotonNetwork.IsMasterClient)
             photonView.TransferOwnership(PhotonNetwork.MasterClient);
     }
 
     void Update() {
-        if (CanSeePlayer() && (PhotonNetwork.IsMasterClient || !PhotonNetwork.InRoom) && (Vector3.Distance(FindClosestPlayer().transform.position, transform.position) < range)) {
-            FaceTarget();
+        if (!isRetreating)
+            anim.SetFloat("Speed", Mathf.Lerp(anim.GetFloat("Speed"), agent.velocity.normalized.magnitude, Time.deltaTime * animationTransitionSpeed));
+        
+        if (PhotonNetwork.IsMasterClient || !PhotonNetwork.InRoom) {
+            GameObject closestPlayer = FindClosestPlayer();
+            if (closestPlayer == null) return;
+            playerDirection = (closestPlayer.transform.position - transform.position).normalized;
 
-            if (!isAttacking && EnemyManager.Instance.CanAttack(enemyLimiter)) {
+            if (!wasKilled)
+                FaceTarget();
+
+            if (canMove) {
+                if (!isAttacking && !isRetreating)
+                    agent.SetDestination(closestPlayer.transform.position);
+                else if (isAttacking && !isRetreating)
+                    agent.SetDestination(transform.position);
+                
+                if (!isRetreating && (Vector3.Distance(closestPlayer.transform.position, transform.position) < retreatRange))
+                    StartCoroutine(Retreat());
+            }
+
+            if (!isAttacking && EnemyManager.Instance.CanAttack(enemyLimiter) && (Vector3.Distance(closestPlayer.transform.position, transform.position) < range)) {
                 if (PhotonNetwork.InRoom)
                     photonView.RPC(nameof(Shoot), RpcTarget.All);
                 else
@@ -49,25 +70,11 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
 
     public EnemyLimiter GetEnemyLimiter() { return enemyLimiter; }
 
-    bool CanSeePlayer() {
-        GameObject closestPlayer = FindClosestPlayer();
-        if (closestPlayer == null) return false;
-
-        playerDirection = closestPlayer.GetComponent<PlayerController>().headPosition.transform.position - headPosition.position;
-        angleToPlayer = Vector3.Angle(new Vector3(playerDirection.x, playerDirection.y + 2, playerDirection.z), transform.forward);
-
-        if (Physics.Raycast(headPosition.position, playerDirection, out RaycastHit hit) && (hit.collider.CompareTag("Player") || hit.collider.CompareTag("PlayerChild")) && angleToPlayer < viewAngle && !wasKilled) {
-            enemyTargetPosition = closestPlayer.transform.position;
-            return true;
-        }
-        return false;
-    }
-
     GameObject FindClosestPlayer() {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         GameObject closestPlayer = null;
         float closestDistance = Mathf.Infinity;
-
+        
         foreach (GameObject player in players) {
             float distance = Vector3.Distance(transform.position, player.transform.position);
             if (distance < closestDistance) {
@@ -75,7 +82,7 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
                 closestPlayer = player;
             }
         }
-
+        
         return closestPlayer;
     }
 
@@ -103,16 +110,54 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
             Instantiate(projectile, shootPos.transform.position, new Quaternion(0, 180, 0, 0));
     }
 
+    IEnumerator Retreat() {
+        isRetreating = true;
+        anim.SetTrigger("Retreat");
+        GameObject closestPlayer = FindClosestPlayer();
+        if (closestPlayer == null) {
+            isRetreating = false;
+            yield break;
+        }
+        Vector3 retreatDirection = (transform.position - closestPlayer.transform.position).normalized;
+        float stoppingDistance = agent.stoppingDistance;
+        Vector3 retreatTargetPosition = transform.position + retreatDirection * (retreatSpeed + stoppingDistance);
+        lastPos = transform.position;
+        while (Vector3.Distance(closestPlayer.transform.position, transform.position) < retreatRange) {
+            Vector3 targetPosition = transform.position + retreatDirection * (retreatSpeed + stoppingDistance);
+            if (UnityEngine.AI.NavMesh.SamplePosition(targetPosition, out UnityEngine.AI.NavMeshHit hit, 10f, UnityEngine.AI.NavMesh.AllAreas))
+                retreatTargetPosition = hit.position;
+            
+            agent.SetDestination(retreatTargetPosition); 
+            Quaternion targetRotation = Quaternion.LookRotation(retreatDirection);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * faceTargetSpeed);
+            if (Vector3.Distance(transform.position, lastPos) < 0.05f)
+                stuckTime += Time.deltaTime;
+            else
+                stuckTime = 0f;
+            
+            if (stuckTime >= stuckTimeThreshold) {
+                float randomAngle = Random.Range(0f, 360f);
+                retreatDirection = Quaternion.Euler(0, randomAngle, 0) * retreatDirection;
+                retreatTargetPosition = transform.position + retreatDirection * (retreatSpeed + stoppingDistance);
+                stuckTime = 0f;
+            }
+            lastPos = transform.position;
+            yield return null;
+        }
+        isRetreating = false;
+    }
+
+
     [PunRPC]
     public void RpcTakeDamage(float damage) {
         if (wasKilled)
             return;
-
+        
         hp -= damage;
-
+        
         if (hp > 0)
             StartCoroutine(FlashDamage());
-
+        
         if (hp <= 0 && !wasKilled) {
             DropItem.TryDropItem(dropChance, itemToDrop, 0.6f, gameObject);
             GameManager.instance.updateEnemy(-1);
@@ -163,8 +208,7 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
         EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
         EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
         agent.isStopped = true;
-        enemyTargetPosition = transform.position;
-        agent.SetDestination(enemyTargetPosition);
+        agent.SetDestination(transform.position);
         agent.radius = 0;
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (Collider collider in colliders)

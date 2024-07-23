@@ -27,9 +27,9 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     public List<GameObject> doors;
     DamageStats status;
     bool isAttacking, wasKilled, isDOT;
-    Vector3 playerDirection, enemyTargetPosition, netPos;
+    Vector3 playerDirection, netPos;
     Quaternion netRot;
-    float originalStoppingDistance, adjustedStoppingDistance, angleToPlayer;
+    float originalStoppingDistance, adjustedStoppingDistance;
     int id;
 
     void Start() {
@@ -47,10 +47,13 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     void Update() {
         anim.SetFloat("Speed", Mathf.Lerp(anim.GetFloat("Speed"), agent.velocity.normalized.magnitude, Time.deltaTime * animationTransitionSpeed));
 
-        if (CanSeePlayer() && (PhotonNetwork.IsMasterClient || !PhotonNetwork.InRoom)) {
-            agent.SetDestination(enemyTargetPosition);
+        if (PhotonNetwork.IsMasterClient || !PhotonNetwork.InRoom) {
+            GameObject closestPlayer = FindClosestPlayer();
+            if (closestPlayer == null) return;
+            playerDirection = (closestPlayer.transform.position - transform.position).normalized;
+            agent.SetDestination(closestPlayer.transform.position);
 
-            if (agent.remainingDistance < agent.stoppingDistance)
+            if (!wasKilled)
                 FaceTarget();
 
             if (!EnemyManager.Instance.IsClose(enemyLimiter, id)) {
@@ -79,24 +82,6 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     }
     public EnemyLimiter GetEnemyLimiter() { return enemyLimiter; }
 
-    bool CanSeePlayer() {
-        GameObject closestPlayer = FindClosestPlayer();
-        if (closestPlayer == null) return false;
-
-        playerDirection = closestPlayer.transform.position - headPosition.position;
-        angleToPlayer = Vector3.Angle(new Vector3(playerDirection.x, playerDirection.y + 1, playerDirection.z), transform.forward);
-        if (flipEnemyDirection) {
-            FaceTarget();
-            angleToPlayer = 180 - angleToPlayer;
-        }
-
-        if (Physics.Raycast(headPosition.position, playerDirection, out RaycastHit hit) && hit.collider.CompareTag("Player") && angleToPlayer < viewAngle && !wasKilled) {
-            enemyTargetPosition = closestPlayer.transform.position;
-            return true;
-        }
-        return false;
-    }
-
     GameObject FindClosestPlayer() {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         GameObject closestPlayer = null;
@@ -114,9 +99,10 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     }
 
     void FaceTarget() {
-        Quaternion rotation = Quaternion.LookRotation(playerDirection) * Quaternion.Euler(0, (flipEnemyDirection ? 180 : 0), 0);
+        Quaternion rotation = Quaternion.LookRotation(playerDirection);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * faceTargetSpeed);
     }
+
 
     [PunRPC]
     void StartSwing() { if (!isAttacking) StartCoroutine(Swing()); }
@@ -143,10 +129,8 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
             return;
 
         hp -= damage;
-        if (!isDOT) {
-            enemyTargetPosition = FindClosestPlayer().transform.position;
-            agent.SetDestination(enemyTargetPosition);
-        }
+        if (!isDOT)
+            agent.SetDestination(FindClosestPlayer().transform.position);
 
         if (hp > 0)
             StartCoroutine(FlashDamage());
@@ -199,8 +183,7 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
         EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
         EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
         agent.isStopped = true;
-        enemyTargetPosition = transform.position;
-        agent.SetDestination(enemyTargetPosition);
+        agent.SetDestination(transform.position);
         agent.radius = 0;
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (Collider collider in colliders)
