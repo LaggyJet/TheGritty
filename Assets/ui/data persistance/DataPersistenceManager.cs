@@ -49,7 +49,7 @@ public class DataPersistenceManager : MonoBehaviour
         gameData = dataHandler.Load();
         //load saved data using data handler + and send data to needed scripts
         //if no data to load, create new game
-        if (gameData == null)
+        if (gameData == null || gameData.hasBossDied == true)
         {
             NewGame();
         }

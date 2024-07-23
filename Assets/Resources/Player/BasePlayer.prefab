@@ -1863,8 +1863,8 @@ MonoBehaviour:
   hpBase: 0
   HpDisplay: 0
   aboveThresholdHP: 0
-  fullHealth: {r: 0.14509805, g: 0.1764706, b: 0.098039225, a: 1}
-  midHealth: {r: 0.5372549, g: 0.2509804, b: 0.121568635, a: 1}
+  fullHealth: {r: 0.28823528, g: 0.35, b: 0.19215685, a: 1}
+  midHealth: {r: 0.601, g: 0.28075913, b: 0.13599269, a: 1}
   criticalHealth: {r: 0.4509804, g: 0, b: 0, a: 1}
   hpShake: {fileID: 0}
   stamina: 10

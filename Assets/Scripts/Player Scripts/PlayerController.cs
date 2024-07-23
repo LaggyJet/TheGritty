@@ -555,6 +555,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         }
     }
 
+    // To update HUD reflecting zero health for player
+    public void SetHUDzero()
+    {
+       GameManager.instance.playerHPBar.fillAmount = 0f; 
+       HpDisplay = 0f;
+    }
+
     //this function happens when the player is called to take damage
     public void TakeDamage(float amount)
     {
@@ -592,6 +599,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
             hp = 0;
             isDead = true;
 
+            // Settings HUD to reflect zero health 
+            SetHUDzero();
+
             // Player death sound
             PlayPlayerDeadAud();
 
@@ -603,6 +613,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
             isDead = false;
         }
+        
     }
 
     // The function for updating currentHP bar
@@ -713,6 +724,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     //the function for updating our ui
     public void UpdatePlayerUI()
     {
+        if(isDead)
+        {
+            // If dead, update using setHUDzero
+            SetHUDzero();
+            return; 
+        } 
         // Variable for filling health bar 
         float healthRatio = (float)hp / hpBase;
         float staminaRatio = (float)stamina / staminaBase; 
@@ -969,6 +986,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         spawnHP = data.playerHp; 
         spawnStamina = data.playerStamina;
         SkillTreeManager.Instance.LoadData(data);
+        GameManager.instance.hasBossDied = data.hasBossDied;
     }
 
     //saves all important current data
@@ -979,6 +997,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         data.playerHp = hp;
         data.playerStamina = stamina;
         SkillTreeManager.Instance.SaveData(ref data);
+        data.hasBossDied = GameManager.instance.hasBossDied;
     }
 
     //this is the new function for assign a class script to our player
