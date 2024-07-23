@@ -185,6 +185,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     
     private const string CLASS_SELECTED = "ClassSelected";
     ClassSelection currentClassSelection;
+    int selectedClass;
+    int loadedClass = 0;
 
     // Skill tree vars
     float hpBuff = 15f;
@@ -200,42 +202,59 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     }
 
     private void Start() {
-        // Get base selection (if possible)
-        currentClassSelection = GameObject.FindWithTag("ClassSelector")?.GetComponent<ClassSelection>();
-
-        // Setting up class for yourself or multiplayer
-        if (PhotonNetwork.InRoom || !PhotonNetwork.InRoom) {
-            int selectedClass = currentClassSelection.MyClass;
-            AssignClass(selectedClass);
-
-            // If multiplayer, update the localplayer's hash table for other clients
-            if (PhotonNetwork.InRoom && photonView.IsMine) {
-                ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
-                properties[CLASS_SELECTED] = selectedClass;
-                PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
-            }
+        if (DataPersistenceManager.Instance != null && DataPersistenceManager.gameData != null)
+        {
+            loadedClass = DataPersistenceManager.gameData.playerClass;
         }
+            // Get base selection (if possible)
+            currentClassSelection = GameObject.FindWithTag("ClassSelector")?.GetComponent<ClassSelection>();
 
-        // Prevents your inputs from moving other players in multiplayer
-        // Checks if the player is the actual player and in multiplayer
-        // Also assigns the proper class to other player on your end
-        if (!photonView.IsMine && PhotonNetwork.InRoom) {
-            // Prevent 2 instances of camera/audio listener
-            Destroy(GetComponentInChildren<Camera>().gameObject);
-            Destroy(GetComponentInChildren<AudioListener>());
+            // Setting up class for yourself or multiplayer
+            if (PhotonNetwork.InRoom || !PhotonNetwork.InRoom)
+            {
+                if(loadedClass == 0)
+                {
+                selectedClass = currentClassSelection.MyClass;
+                AssignClass(selectedClass);
+                }
+                else if (loadedClass != 0)
+                {
+                    AssignClass(loadedClass);
+                }
 
-            //Make other player visible
-            UpdateOtherPlayer(gameObject);
 
-            // Update local player class on server to update on other clients
-            if (photonView.Owner.CustomProperties.TryGetValue(CLASS_SELECTED, out object classSelection)) {
-                int newClassSelection = (int)classSelection;
-                if (newClassSelection != currentClassSelection.MyClass) {
-                    AssignClass(newClassSelection);
-                    currentClassSelection.MyClass = newClassSelection;
+                // If multiplayer, update the local player's hash table for other clients
+                if (PhotonNetwork.InRoom && photonView.IsMine)
+                {
+                    ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
+                    properties[CLASS_SELECTED] = selectedClass;
+                    PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
                 }
             }
-        }
+
+            // Prevents your inputs from moving other players in multiplayer
+            // Checks if the player is the actual player and in multiplayer
+            // Also assigns the proper class to other player on your end
+            if (!photonView.IsMine && PhotonNetwork.InRoom)
+            {
+                // Prevent 2 instances of camera/audio listener
+                Destroy(GetComponentInChildren<Camera>().gameObject);
+                Destroy(GetComponentInChildren<AudioListener>());
+
+                //Make other player visible
+                UpdateOtherPlayer(gameObject);
+
+                // Update local player class on server to update on other clients
+                if (photonView.Owner.CustomProperties.TryGetValue(CLASS_SELECTED, out object classSelection))
+                {
+                    int newClassSelection = (int)classSelection;
+                    if (newClassSelection != currentClassSelection.MyClass)
+                    {
+                        AssignClass(newClassSelection);
+                        currentClassSelection.MyClass = newClassSelection;
+                    }
+                }
+            }
 
 
         //tracks our base currentHP and the current currentHP that will update as our player takes damage or gets health
@@ -987,6 +1006,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         spawnStamina = data.playerStamina;
         SkillTreeManager.Instance.LoadData(data);
         GameManager.instance.hasBossDied = data.hasBossDied;
+        loadedClass = data.playerClass;
+        AssignClass(loadedClass);
     }
 
     //saves all important current data
@@ -998,6 +1019,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         data.playerStamina = stamina;
         SkillTreeManager.Instance.SaveData(ref data);
         data.hasBossDied = GameManager.instance.hasBossDied;
+        data.playerClass = selectedClass;
     }
 
     //this is the new function for assign a class script to our player

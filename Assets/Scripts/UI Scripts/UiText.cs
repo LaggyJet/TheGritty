@@ -13,6 +13,7 @@ public class UiText : MonoBehaviour
     {
         if (!activated)
         {
+            textMeshPro.enabled = true;
             yield return new WaitForSeconds(2f);
             textMeshPro.enabled = false;
         }

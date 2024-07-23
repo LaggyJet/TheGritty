@@ -15,15 +15,17 @@ public class GameData
     public string skills = "000000000";
     public int skillPts;
     public bool hasBossDied;
+    public int playerClass;
 
     public GameData()  //constructor - values are the initial values when starting a game
     {
-            this.playerPos = Vector3.zero;
-            this.playerRot = Quaternion.identity;
-            this.playerHp = 0;
-            this.playerStamina = 0;
-            this.skillPts = 0;
-            this.hasBossDied = false;
+        this.playerPos = Vector3.zero;
+        this.playerRot = Quaternion.identity;
+        this.playerHp = 0;
+        this.playerStamina = 0;
+        this.skillPts = 0;
+        this.hasBossDied = false;
+        this.playerClass = 0;
 
     }
 }

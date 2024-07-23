@@ -89,6 +89,7 @@ public class ButtonFunctions : MonoBehaviourPun
     {
         GameManager.instance.PlayMenuSwitchClick();
         GameManager.instance.respawnAfterLost();
+        GameManager.instance.menuActive = null;
     }
     public void settings()
     {
