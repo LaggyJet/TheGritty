@@ -15,22 +15,29 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
 
     List<RoomInfo> rooms = new();
     const string MAP_SCENE = "New Map Scene";
+    const float MAX_TIMEOUT = 5f;
+    float curTime = 0f;
 
     // Start the connection when loading screen plays
     void Start() { PhotonNetwork.AutomaticallySyncScene = true; PhotonNetwork.ConnectUsingSettings(); }
 
     void Update() { 
-        if (PhotonNetwork.IsConnected) {
+        if (PhotonNetwork.IsConnectedAndReady) {
             loadMenu.SetActive(false); 
             lobbyMenu.SetActive(true);
+        }
+        else {
+            curTime += Time.deltaTime;
+            if (curTime > MAX_TIMEOUT) {
+                loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Failed to connect...\nRetrying...";
+                PhotonNetwork.ConnectUsingSettings();
+                curTime = 0f;
+            }
         }
     }
 
     // Have the player join the lobby once it loads
     public override void OnConnectedToMaster() { PhotonNetwork.JoinLobby(TypedLobby.Default); }
-
-    // Display the lobby menu
-    public override void OnJoinedLobby() { loadMenu.SetActive(false); lobbyMenu.SetActive(true); }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList) { rooms = roomList; }
 
