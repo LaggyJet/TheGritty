@@ -29,9 +29,10 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
         else {
             curTime += Time.deltaTime;
             if (curTime > MAX_TIMEOUT) {
-                loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Failed to connect...\nRetrying...";
+                loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Failed to connect...\nRetrying in 5 seconds.";
                 PhotonNetwork.ConnectUsingSettings();
                 curTime = 0f;
+                loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Loading...";
             }
         }
     }
