@@ -29,12 +29,17 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
         else {
             curTime += Time.deltaTime;
             if (curTime > MAX_TIMEOUT) {
-                loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Failed to connect...\nRetrying in 5 seconds";
-                PhotonNetwork.ConnectUsingSettings();
-                curTime = 0f;
-                loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Loading...";
+                StartCoroutine(RetryText());
             }
         }
+    }
+
+    IEnumerator RetryText() {
+        loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Failed to connect...\nRetrying in 5 seconds";
+        PhotonNetwork.ConnectUsingSettings();
+        curTime = 0f;
+        yield return new WaitForSeconds(1f);
+        loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Loading...";
     }
 
     // Have the player join the lobby once it loads
