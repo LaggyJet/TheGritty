@@ -79,8 +79,8 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
         }
 
         if (SceneManager.GetActiveScene().name == "title menu") return;
+        ReloadSkillTreeUI();
 
-        
     }
 
     void Update() { if (SceneManager.GetActiveScene().name == "New Build Scene" && !dataSet) SetData(); }
@@ -306,5 +306,21 @@ public class SkillTreeManager : MonoBehaviour, IDataPersistence
     {
         data.skills = SaveSkills();
         data.skillPts = points2Save;
+    }
+    void ReloadSkillTreeUI()
+    {
+        // Load data if not already loaded
+        if (!dataSet)
+        {
+            SetData();
+        }
+        else
+        {
+            // Update UI based on skill state
+            for (int i = 0; i < 9; i++)
+            {
+                locks[i].enabled = !skillState[i].Item2;
+            }
+        }
     }
 }

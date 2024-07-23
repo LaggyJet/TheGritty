@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     [Header("------ UI ------")]
 
     //serialized fields
-    [SerializeField] GameObject menuActive;
+    [SerializeField] public GameObject menuActive;
     [SerializeField] public GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
     public void OnSkillTreeOpen(InputAction.CallbackContext ctxt) //skill tree
     {
         clickSound = false; 
-        if (skillTreeScreen != null)
+        if (skillTreeScreen != null && menuActive == null)
         {
 
             //checks if our input is called, and if the tree is active or not
@@ -121,6 +121,9 @@ public class GameManager : MonoBehaviour
             {
                 skillTreeScreen.transform.Find("Canvas").gameObject.SetActive(false);
                 stateResumeGameLoads();
+                Time.timeScale = 1;
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
                 isSkTrActive = !isSkTrActive;
                 SoundTrackswitch(GameMusic.Gameplay);
                 SkillTreeManager.Instance.SaveData(ref DataPersistenceManager.gameData);

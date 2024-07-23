@@ -3602,7 +3602,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1141598681}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -30611,10 +30611,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 286846784}
+    - target: {fileID: 4311893880723025178, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4943498284895027363, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 286846784}
+    - target: {fileID: 5626997551742508122, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6033403967100570562, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: sceneViewId
       value: 1
@@ -30707,6 +30715,10 @@ PrefabInstance:
       propertyPath: spawn
       value: 
       objectReference: {fileID: 1126955072}
+    - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
+      propertyPath: uiText
+      value: 
+      objectReference: {fileID: 135677192}
     - target: {fileID: 7061898335797996727, guid: 401bca9003f987b49829aff9725f74d4, type: 3}
       propertyPath: doorsToOpen.Array.data[0]
       value: 
@@ -67247,6 +67259,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -14.832
       objectReference: {fileID: 0}
+    - target: {fileID: 8645951697894070782, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.25
+      objectReference: {fileID: 0}
     - target: {fileID: 8658701059450479192, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
       propertyPath: sceneViewId
       value: 14
@@ -67255,6 +67271,14 @@ PrefabInstance:
       propertyPath: textMeshPro
       value: 
       objectReference: {fileID: 1183189643}
+    - target: {fileID: 8847313286718244810, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847313286718244810, guid: e80de4fa3db2c3f41b8f164990c0d67e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 10.01
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
