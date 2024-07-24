@@ -549,13 +549,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     IEnumerator DamageOverTime()
     {
         isDOT = true;
+        ParticleSystem.MainModule main = dotColor.GetComponent<ParticleSystem>().main;
         switch (status.type)
         {
             case DamageStats.DoTType.BURN:
-                dotColor.GetComponent<ParticleSystem>().startColor = Color.red;
+                main.startColor = Color.red;
+                
                 break;
             case DamageStats.DoTType.POISON:
-                dotColor.GetComponent<ParticleSystem>().startColor = Color.green;
+                main.startColor = Color.green;
                 break;
         }
         dotColor.SetActive(true);

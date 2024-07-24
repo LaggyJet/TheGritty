@@ -18,12 +18,14 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
     const string MAP_SCENE = "New Map Scene";
     const float MAX_TIMEOUT = 7f;
     float curTime = 0f;
+    bool gotConnected = false;
 
     // Start the connection when loading screen plays
     void Start() { PhotonNetwork.AutomaticallySyncScene = true; PhotonNetwork.ConnectUsingSettings(); }
 
     void Update() { 
         if (PhotonNetwork.IsConnectedAndReady) {
+            gotConnected = true;
             loadMenu.SetActive(false); 
             lobbyMenu.SetActive(true);
         }
@@ -43,13 +45,18 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
         loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Loading...";
     }
 
-    //Look into this override to set screen back to loading upon disconnect (if in room, disconnect them)
-    //public override void OnStatusChanged(StatusCode statusCode){
-    //    base.OnStatusChanged;
-    //}
-
     // Have the player join the lobby once it loads
     public override void OnConnectedToMaster() { PhotonNetwork.JoinLobby(TypedLobby.Default); }
+
+    public override void OnDisconnected(DisconnectCause cause) {
+        if (gotConnected) { 
+            loadMenu.SetActive(true);
+            lobbyMenu.SetActive(false);
+            loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Disconnected from server";
+            PhotonNetwork.ConnectUsingSettings();
+            gotConnected = false;
+        }
+    }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList) { rooms = roomList; }
 
