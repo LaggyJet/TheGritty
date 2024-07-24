@@ -12,6 +12,15 @@ public class Credits : MonoBehaviour
         StartCoroutine(returnToTitleMenu());
     }
 
+    private void Update()
+    {
+        if (Input.GetButtonDown("Cancel"))
+        {
+            LoadingScreen.instance.loadSceneTitle(0);
+            //SceneManager.LoadScene("title menu");
+        }
+    }
+
     IEnumerator returnToTitleMenu()
     {
         yield return new WaitForSeconds(12.3f);

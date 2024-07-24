@@ -329,6 +329,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             s_RebindActionUIs.Add(this);
             if (s_RebindActionUIs.Count == 1)
                 InputSystem.onActionChange += OnActionChange;
+            UpdateBindingDisplay();
         }
 
         protected void OnDisable()

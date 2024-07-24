@@ -27,7 +27,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuSettings;
     [SerializeField] TMP_Text enemyCountText;
     [SerializeField] GameObject charSelect;
-    [SerializeField] GameObject GameWarning;
+    [SerializeField] public GameObject GameWarning;
+    [SerializeField] public GameObject noSave;
 
     //public variables
     public Image playerHPBar;
@@ -323,6 +324,11 @@ public class GameManager : MonoBehaviour
             playerScript.controller.enabled = true;
         }
         stateResume();
+        if(menuActive != null)
+        {
+            menuActive.SetActive(isPaused);
+            menuActive = null;
+        }
     }
 
     //TITLE SCREEN METHODS
@@ -339,18 +345,18 @@ public class GameManager : MonoBehaviour
         menuActive.SetActive(isPaused);
         SoundTrackswitch(GameMusic.Menu);
     }
-    public void Warning4NewGame()
+    public void Warning4NewGame(GameObject popUp)
     {
         clickSound = false;
         statePause();
-        if(menuActive == GameWarning)
+        if(menuActive == popUp)
         {
             menuActive.SetActive(isPaused);
             menuActive = null;
         }
         else if (menuActive == null)
         {
-            menuActive = GameWarning;
+            menuActive = popUp;
             menuActive.SetActive(isPaused);
         }
         SoundTrackswitch(GameMusic.Menu);

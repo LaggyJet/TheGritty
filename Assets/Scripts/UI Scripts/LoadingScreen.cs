@@ -11,7 +11,13 @@ public class LoadingScreen : MonoBehaviour
     public GameObject loadingScreen;
     public Image loadingBarFill;
     public GameObject ui;
+    public static LoadingScreen instance;
 
+
+    private void Awake()
+    {
+        instance = this;
+    }
     //new game methods - assigns the correct class, starts the coroutine, initializes the new game data, and resumes the game so the player doesn't start paused
     public void loadSceneWARRIOR(int sceneId) //warrior selected
     {
@@ -59,8 +65,15 @@ public class LoadingScreen : MonoBehaviour
         GameManager.instance.PlayMenuSwitchClick();
         GameManager.enemyCount = 0;
         DataPersistenceManager.Instance.LoadGame();
-        StartCoroutine(loadSceneAsync(sceneId));
-        GameManager.instance.stateResumeGameLoads();
+        if (DataPersistenceManager.gameData.playerClass == 0)
+        {
+            GameManager.instance.Warning4NewGame(GameManager.instance.noSave);
+        }
+        else if (DataPersistenceManager.gameData.playerClass != 0)
+        {
+            StartCoroutine(loadSceneAsync(sceneId));
+            GameManager.instance.stateResumeGameLoads();
+        }
     }
 
     //loads title screen method - starts the coroutine, used when the game is quit to return to the title menu

@@ -216,6 +216,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
                 {
                 selectedClass = currentClassSelection.MyClass;
                 AssignClass(selectedClass);
+                loadedClass = selectedClass;
                 }
                 else if (loadedClass != 0)
                 {
@@ -1019,7 +1020,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
         data.playerStamina = stamina;
         SkillTreeManager.Instance.SaveData(ref data);
         data.hasBossDied = GameManager.instance.hasBossDied;
-        data.playerClass = selectedClass;
+        data.playerClass = loadedClass;
     }
 
     //this is the new function for assign a class script to our player
