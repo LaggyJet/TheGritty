@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     //these are animation variables
     [SerializeField] float animationTransSpeed;
     [Range(0f, 10f)] public float lerpSpeed;
+    [SerializeField] GameObject dotColor;
     
 
 
@@ -548,6 +549,16 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     IEnumerator DamageOverTime()
     {
         isDOT = true;
+        switch (status.type)
+        {
+            case DamageStats.DoTType.BURN:
+                dotColor.GetComponent<ParticleSystem>().startColor = Color.red;
+                break;
+            case DamageStats.DoTType.POISON:
+                dotColor.GetComponent<ParticleSystem>().startColor = Color.green;
+                break;
+        }
+        dotColor.SetActive(true);
         for (int i = 0; i < status.length; i++)
         {
             if(hp > status.damage)
@@ -563,6 +574,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
                 isDead = false;
             }
         }
+        dotColor.SetActive(false);
         isDOT = false;
     }
 

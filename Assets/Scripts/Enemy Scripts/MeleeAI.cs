@@ -22,7 +22,7 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     [SerializeField] EnemyLimiter enemyLimiter;
     [SerializeField] int range;
     [SerializeField] float dropChance;
-    [SerializeField] GameObject itemToDrop;
+    [SerializeField] GameObject itemToDrop, dotColor;
     
     public List<GameObject> doors;
     DamageStats status;
@@ -53,25 +53,26 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
             playerDirection = (closestPlayer.transform.position - transform.position).normalized;
             agent.SetDestination(closestPlayer.transform.position);
 
-            if (!wasKilled)
+            if (!wasKilled) {
                 FaceTarget();
 
-            if (!EnemyManager.Instance.IsClose(enemyLimiter, id)) {
-                if (EnemyManager.Instance.CanBeClose(enemyLimiter) && agent.remainingDistance < range && !agent.pathPending)
-                    EnemyManager.Instance.AddCloseEnemy(enemyLimiter, id);
-                else if (!EnemyManager.Instance.CanBeClose(enemyLimiter))
-                    agent.stoppingDistance = adjustedStoppingDistance;
-            }
-            else if (EnemyManager.Instance.IsClose(enemyLimiter, id) && agent.remainingDistance > range) {
-                EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
-                agent.stoppingDistance = originalStoppingDistance;
-            }
+                if (!EnemyManager.Instance.IsClose(enemyLimiter, id)) {
+                    if (EnemyManager.Instance.CanBeClose(enemyLimiter) && agent.remainingDistance < range && !agent.pathPending)
+                        EnemyManager.Instance.AddCloseEnemy(enemyLimiter, id);
+                    else if (!EnemyManager.Instance.CanBeClose(enemyLimiter))
+                        agent.stoppingDistance = adjustedStoppingDistance;
+                }
+                else if (EnemyManager.Instance.IsClose(enemyLimiter, id) && agent.remainingDistance > range) {
+                    EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
+                    agent.stoppingDistance = originalStoppingDistance;
+                }
 
-            if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter)) {
-                if (PhotonNetwork.InRoom)
-                    photonView.RPC(nameof(StartSwing), RpcTarget.All);
-                else
-                    StartSwing();
+                if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter)) {
+                    if (PhotonNetwork.InRoom)
+                        photonView.RPC(nameof(StartSwing), RpcTarget.All);
+                    else
+                        StartSwing();
+                }
             }
         }
 
@@ -136,11 +137,11 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
             StartCoroutine(FlashDamage());
 
         if (hp <= 0 && !wasKilled) {
+            wasKilled = true;
             DropItem.TryDropItem(dropChance, itemToDrop, 0.6f, gameObject);
             GameManager.instance.updateEnemy(-1);
             EnemyManager.Instance.UpdateKillCounter(enemyLimiter);
             gameObject.GetComponent<Collider>().enabled = false;
-            wasKilled = true;
             if (PhotonNetwork.InRoom)
                 photonView.RPC(nameof(StartDeath), RpcTarget.All);
             else if (!PhotonNetwork.InRoom)
@@ -163,10 +164,21 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
 
     IEnumerator DamageOverTime() {
         isDOT = true;
+        switch (status.type)
+        {
+            case DamageStats.DoTType.BURN:
+                dotColor.GetComponent<ParticleSystem>().startColor = Color.red;
+                break;
+            case DamageStats.DoTType.POISON:
+                dotColor.GetComponent<ParticleSystem>().startColor = Color.green;
+                break;
+        }
+        dotColor.SetActive(true);
         for (int i = 0; i < status.length; i++) {
             TakeDamage(status.damage);
             yield return new WaitForSeconds(1);
         }
+        dotColor.SetActive(false);
         isDOT = false;
     }
 

@@ -6,6 +6,7 @@ using TMPro;
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 
 public class HandleLobbies : MonoBehaviourPunCallbacks {
     [SerializeField] TMP_InputField hostInput, joinInput;
@@ -41,6 +42,11 @@ public class HandleLobbies : MonoBehaviourPunCallbacks {
         yield return new WaitForSeconds(2.5f);
         loadMenu.transform.Find("Loading").GetComponent<TMP_Text>().text = "Loading...";
     }
+
+    //Look into this override to set screen back to loading upon disconnect (if in room, disconnect them)
+    //public override void OnStatusChanged(StatusCode statusCode){
+    //    base.OnStatusChanged;
+    //}
 
     // Have the player join the lobby once it loads
     public override void OnConnectedToMaster() { PhotonNetwork.JoinLobby(TypedLobby.Default); }
