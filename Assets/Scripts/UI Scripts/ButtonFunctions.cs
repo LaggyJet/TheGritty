@@ -138,5 +138,10 @@ public class ButtonFunctions : MonoBehaviourPun
     }
 
     // Co-op features
-    public void LoadMultiplayer() { GameManager.instance.PlayMenuSwitchClick(); GameManager.selectedMultiplayer = true; GameManager.instance.charSelectionMenu(); }
+    public void LoadMultiplayer() { 
+        if(GameManager.instance.menuActive != null)
+        {
+            return;
+        }
+        GameManager.instance.PlayMenuSwitchClick(); GameManager.selectedMultiplayer = true; GameManager.instance.charSelectionMenu(); }
 }
