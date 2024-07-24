@@ -549,7 +549,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2171908695948569802}
   serializedVersion: 8
-  lengthInSec: 2.5
+  lengthInSec: 0.5
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 3
@@ -677,7 +677,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 20
+      scalar: 7
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5752,7 +5752,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 4829563099203993730}
-  mat: {fileID: 2100000, guid: 78d88e566e5f7b14aaa719c52b23bd6c, type: 2}
   agent: {fileID: 7455410706412920461}
   anim: {fileID: 3404599855606506587}
   spiderAud: {fileID: 7878574931044780490}
@@ -5770,6 +5769,8 @@ MonoBehaviour:
   spider: {fileID: 639156844943288045, guid: d2f542e526b30734d9373f22a2ac0696, type: 3}
   spawnRate: 10
   spawnAmount: 2
+  dropChance: 0
+  itemToDrop: {fileID: 0}
 --- !u!95 &3404599855606506587
 Animator:
   serializedVersion: 5
@@ -5886,18 +5887,18 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Speed
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Death
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Circle
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 1
     LayerIndex: 0
-  - SynchronizeType: 0
+  - SynchronizeType: 1
     LayerIndex: 1
 --- !u!82 &7878574931044780490
 AudioSource:
@@ -6231,7 +6232,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4726563820432341688
 Transform:
   m_ObjectHideFlags: 0
@@ -6255,7 +6256,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4934818078113673425}
   serializedVersion: 8
-  lengthInSec: 3
+  lengthInSec: 0.5
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 3
@@ -14864,7 +14865,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
     type: 1
     collisionMode: 0
@@ -16130,7 +16131,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7777454586955735574}
   serializedVersion: 8
-  lengthInSec: 7
+  lengthInSec: 0.5
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 3
@@ -16258,7 +16259,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 20
+      scalar: 7
       minScalar: 5
       maxCurve:
         serializedVersion: 2

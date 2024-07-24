@@ -7,7 +7,6 @@ using Photon.Pun;
 
 public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservable {
     [SerializeField] Renderer model;
-    [SerializeField] Material mat;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator anim;
     [Header("------ Audio ------")]
@@ -186,7 +185,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
         yield return new WaitForSeconds(0.1f);
         anim.enabled = false;
         StartCoroutine(SpawnTracers());
-        yield return new WaitForSeconds(particleSystem.main.duration + 1.5f);
+        yield return new WaitForSeconds(particleSystem.main.duration);
         spitEffectPS.SetActive(false);
         anim.enabled = true;
         anim.SetTrigger("Circle");
@@ -196,12 +195,9 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
     }
 
     IEnumerator SpawnTracers() {
-        yield return new WaitForSeconds(1);
-
         ParticleSystem pS = spitEffectPS.GetComponent<ParticleSystem>();
         ParticleSystem.Particle[] particles = new ParticleSystem.Particle[pS.main.maxParticles];
         List<GameObject> curTracers = new List<GameObject>();
-        yield return new WaitForSeconds(0.5f);
         while (curTracers.Count < 5) {
             curTracers.Add(PhotonNetwork.InRoom && GetComponent<PhotonView>().IsMine ? 
                 PhotonNetwork.Instantiate("Enemy/" + acidStream.name, Vector3.zero, Quaternion.identity) : 
