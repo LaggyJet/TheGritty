@@ -6,13 +6,14 @@ public static class DropItem {
     public static void TryDropItem(float chance, GameObject item, float itemHeight, GameObject enemy) {
         if (Random.value < chance && item != null && enemy != null) {
             GameObject itemSpawned;
-            Vector3 spawnPosition = enemy.transform.position - new Vector3(0, PhotonNetwork.InRoom ? 0 : itemHeight, 0);
+            Vector3 spawnPosition = enemy.transform.position;
 
             if (PhotonNetwork.InRoom)
                 itemSpawned = PhotonNetwork.Instantiate("ItemDrops/" + item.name, spawnPosition, enemy.transform.rotation);
             else if (!PhotonNetwork.InRoom) {
                 itemSpawned = Object.Instantiate(item, spawnPosition, enemy.transform.rotation);
-                itemSpawned?.GetComponent<MonoBehaviour>().StartCoroutine(AppearFromGround(itemSpawned.transform, enemy.transform.position, 5f));
+                Vector3 floatingPOS = enemy.transform.position + new Vector3(0, itemHeight, 0);
+                itemSpawned?.GetComponent<MonoBehaviour>().StartCoroutine(AppearFromGround(itemSpawned.transform, floatingPOS, 5f));
             }
             else
                 return;
