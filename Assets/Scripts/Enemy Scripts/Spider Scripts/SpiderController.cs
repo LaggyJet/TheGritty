@@ -21,7 +21,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
     [SerializeField] GameObject spitEffectPS, poolEmitter, acidStream, acidPuddle, spider;
     [SerializeField] int spawnRate, spawnAmount;
     [SerializeField] float dropChance;
-    [SerializeField] GameObject itemToDrop;
+    [SerializeField] GameObject itemToDrop, dotColor;
 
     DamageStats status;
     bool isAttacking, wasKilled, isSpawningSpiders, onCooldown, isDOT;
@@ -59,9 +59,11 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
             lastRot = transform.rotation;
 
         if (PhotonNetwork.IsMasterClient || !PhotonNetwork.InRoom) {
-            if (!wasKilled)
+            if (!wasKilled) { 
+                //Find some way of fixing the spider tilting when looking at player
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(playerDirection), Time.deltaTime * faceTargetSpeed);
-            
+                
+            }
 
             if (!isSpawningSpiders && !isAttacking && !wasKilled)
                 StartCoroutine(SpawnSpiders());
@@ -289,10 +291,21 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
 
     IEnumerator DamageOverTime() {
         isDOT = true;
+        switch (status.type)
+        {
+            case DamageStats.DoTType.BURN:
+                dotColor.GetComponent<ParticleSystem>().startColor = Color.red;
+                break;
+            case DamageStats.DoTType.POISON:
+                dotColor.GetComponent<ParticleSystem>().startColor = Color.green;
+                break;
+        }
+        dotColor.SetActive(true);
         for (int i = 0; i < status.length; i++) {
             TakeDamage(status.damage);
             yield return new WaitForSeconds(1);
         }
+        dotColor.SetActive(false);
         isDOT = false;
     }
 

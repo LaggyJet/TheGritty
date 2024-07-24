@@ -22,7 +22,7 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     [SerializeField] EnemyLimiter enemyLimiter;
     [SerializeField] int range;
     [SerializeField] float dropChance;
-    [SerializeField] GameObject itemToDrop;
+    [SerializeField] GameObject itemToDrop, dotColor;
     
     public List<GameObject> doors;
     DamageStats status;
@@ -164,10 +164,21 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
 
     IEnumerator DamageOverTime() {
         isDOT = true;
+        switch (status.type)
+        {
+            case DamageStats.DoTType.BURN:
+                dotColor.GetComponent<ParticleSystem>().startColor = Color.red;
+                break;
+            case DamageStats.DoTType.POISON:
+                dotColor.GetComponent<ParticleSystem>().startColor = Color.green;
+                break;
+        }
+        dotColor.SetActive(true);
         for (int i = 0; i < status.length; i++) {
             TakeDamage(status.damage);
             yield return new WaitForSeconds(1);
         }
+        dotColor.SetActive(false);
         isDOT = false;
     }
 
