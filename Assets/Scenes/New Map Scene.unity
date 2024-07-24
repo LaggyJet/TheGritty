@@ -78148,6 +78148,18 @@ PrefabInstance:
       propertyPath: textMeshPro
       value: 
       objectReference: {fileID: 1183189643}
+    - target: {fileID: 8935311890890286748, guid: 5b1375248ef111843ab852264062a817, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 8935311890890286748, guid: 5b1375248ef111843ab852264062a817, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 8935311890890286748, guid: 5b1375248ef111843ab852264062a817, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -21.41
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

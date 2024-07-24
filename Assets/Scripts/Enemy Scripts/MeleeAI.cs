@@ -53,25 +53,26 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
             playerDirection = (closestPlayer.transform.position - transform.position).normalized;
             agent.SetDestination(closestPlayer.transform.position);
 
-            if (!wasKilled)
+            if (!wasKilled) {
                 FaceTarget();
 
-            if (!EnemyManager.Instance.IsClose(enemyLimiter, id)) {
-                if (EnemyManager.Instance.CanBeClose(enemyLimiter) && agent.remainingDistance < range && !agent.pathPending)
-                    EnemyManager.Instance.AddCloseEnemy(enemyLimiter, id);
-                else if (!EnemyManager.Instance.CanBeClose(enemyLimiter))
-                    agent.stoppingDistance = adjustedStoppingDistance;
-            }
-            else if (EnemyManager.Instance.IsClose(enemyLimiter, id) && agent.remainingDistance > range) {
-                EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
-                agent.stoppingDistance = originalStoppingDistance;
-            }
+                if (!EnemyManager.Instance.IsClose(enemyLimiter, id)) {
+                    if (EnemyManager.Instance.CanBeClose(enemyLimiter) && agent.remainingDistance < range && !agent.pathPending)
+                        EnemyManager.Instance.AddCloseEnemy(enemyLimiter, id);
+                    else if (!EnemyManager.Instance.CanBeClose(enemyLimiter))
+                        agent.stoppingDistance = adjustedStoppingDistance;
+                }
+                else if (EnemyManager.Instance.IsClose(enemyLimiter, id) && agent.remainingDistance > range) {
+                    EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
+                    agent.stoppingDistance = originalStoppingDistance;
+                }
 
-            if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter)) {
-                if (PhotonNetwork.InRoom)
-                    photonView.RPC(nameof(StartSwing), RpcTarget.All);
-                else
-                    StartSwing();
+                if (!isAttacking && agent.remainingDistance < swingRadius && EnemyManager.Instance.CanAttack(enemyLimiter)) {
+                    if (PhotonNetwork.InRoom)
+                        photonView.RPC(nameof(StartSwing), RpcTarget.All);
+                    else
+                        StartSwing();
+                }
             }
         }
 
@@ -136,11 +137,11 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
             StartCoroutine(FlashDamage());
 
         if (hp <= 0 && !wasKilled) {
+            wasKilled = true;
             DropItem.TryDropItem(dropChance, itemToDrop, 0.6f, gameObject);
             GameManager.instance.updateEnemy(-1);
             EnemyManager.Instance.UpdateKillCounter(enemyLimiter);
             gameObject.GetComponent<Collider>().enabled = false;
-            wasKilled = true;
             if (PhotonNetwork.InRoom)
                 photonView.RPC(nameof(StartDeath), RpcTarget.All);
             else if (!PhotonNetwork.InRoom)
