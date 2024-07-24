@@ -343,8 +343,16 @@ public class GameManager : MonoBehaviour
     {
         clickSound = false;
         statePause();
-        menuActive = GameWarning;
-        menuActive.SetActive(isPaused);
+        if(menuActive == GameWarning)
+        {
+            menuActive.SetActive(isPaused);
+            menuActive = null;
+        }
+        else if (menuActive == null)
+        {
+            menuActive = GameWarning;
+            menuActive.SetActive(isPaused);
+        }
         SoundTrackswitch(GameMusic.Menu);
         clickSound = true;
     }
