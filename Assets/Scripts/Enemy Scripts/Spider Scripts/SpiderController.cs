@@ -59,11 +59,9 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
             lastRot = transform.rotation;
 
         if (PhotonNetwork.IsMasterClient || !PhotonNetwork.InRoom) {
-            if (!wasKilled) { 
-                //Find some way of fixing the spider tilting when looking at player
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(playerDirection), Time.deltaTime * faceTargetSpeed);
-                
-            }
+            if (!wasKilled)
+                transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(new Vector3(playerDirection.x, 0, playerDirection.z)), Time.deltaTime * faceTargetSpeed).eulerAngles.y, transform.rotation.eulerAngles.z);
+
 
             if (!isSpawningSpiders && !isAttacking && !wasKilled)
                 StartCoroutine(SpawnSpiders());
