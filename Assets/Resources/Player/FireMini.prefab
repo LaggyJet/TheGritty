@@ -51,9 +51,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 839220467295417479}
-  damage: 3
+  damage: 1
   speed: 3
   destroyTime: 1
+  type: {fileID: 0}
   minimumLight: 0.5
   maximumLight: 1.5
   light: {fileID: 5568426723305501688}

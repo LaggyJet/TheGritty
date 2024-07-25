@@ -4892,7 +4892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 839220467295417479}
-  damage: 2
+  damage: 2.5
   speed: 12
   destroyTime: 2
   minimumLight: 1.5

@@ -963,9 +963,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2462135438390259963}
+  - component: {fileID: 5199192557377273538}
   - component: {fileID: 6713506416762378601}
   - component: {fileID: 2226835801737125306}
-  - component: {fileID: 5199192557377273538}
   - component: {fileID: 1812937335656185019}
   - component: {fileID: 3635008817639929952}
   - component: {fileID: 7919343773299421591}
@@ -996,6 +996,42 @@ Transform:
   - {fileID: 3025398952815731807}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &5199192557377273538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4598188757038107419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe34594df9f37479dced13dc3bb406, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  model: {fileID: 912636576692771949}
+  mats:
+  - {fileID: 2100000, guid: e46c0206ff70e5f4497bf9551dc75cbe, type: 2}
+  - {fileID: 2100000, guid: 37a84b8a55278d148b43dfe7b612b3b4, type: 2}
+  - {fileID: 2100000, guid: 92045c8472678af48a02a584cadd7bcd, type: 2}
+  agent: {fileID: 2226835801737125306}
+  anim: {fileID: 6713506416762378601}
+  hp: 7.5
+  animationTransitionSpeed: 8
+  faceTargetSpeed: 5
+  attackSpeed: 5
+  viewAngle: 55
+  shootAngle: 10
+  headPosition: {fileID: 5069518960360504742}
+  projectile: {fileID: 5218697179704809624, guid: c1060ba86abf82040a60247a3b553c29, type: 3}
+  shootPos: {fileID: 7703431413592042901}
+  enemyLimiter: {fileID: 11400000, guid: bedc5fd635ff00e4fac23501c907b728, type: 2}
+  range: 10
+  dropChance: 0.15
+  itemToDrop: {fileID: 4355228702644448230, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
+  retreatRange: 5
+  canMove: 1
+  dotColor: {fileID: 0}
+  doors: []
 --- !u!95 &6713506416762378601
 Animator:
   serializedVersion: 5
@@ -1039,42 +1075,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5199192557377273538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4598188757038107419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84fe34594df9f37479dced13dc3bb406, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  model: {fileID: 912636576692771949}
-  mats:
-  - {fileID: 2100000, guid: e46c0206ff70e5f4497bf9551dc75cbe, type: 2}
-  - {fileID: 2100000, guid: 37a84b8a55278d148b43dfe7b612b3b4, type: 2}
-  - {fileID: 2100000, guid: 92045c8472678af48a02a584cadd7bcd, type: 2}
-  agent: {fileID: 2226835801737125306}
-  anim: {fileID: 6713506416762378601}
-  hp: 5
-  animationTransitionSpeed: 8
-  faceTargetSpeed: 5
-  attackSpeed: 5
-  viewAngle: 55
-  shootAngle: 10
-  headPosition: {fileID: 5069518960360504742}
-  projectile: {fileID: 5218697179704809624, guid: c1060ba86abf82040a60247a3b553c29, type: 3}
-  shootPos: {fileID: 7703431413592042901}
-  enemyLimiter: {fileID: 11400000, guid: bedc5fd635ff00e4fac23501c907b728, type: 2}
-  range: 10
-  dropChance: 0.15
-  itemToDrop: {fileID: 4355228702644448230, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
-  retreatRange: 5
-  canMove: 1
-  dotColor: {fileID: 0}
-  doors: []
 --- !u!136 &1812937335656185019
 CapsuleCollider:
   m_ObjectHideFlags: 0

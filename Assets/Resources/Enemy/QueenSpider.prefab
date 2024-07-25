@@ -5685,8 +5685,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5706246549114583271}
-  - component: {fileID: 7455410706412920461}
   - component: {fileID: 3517311757785617493}
+  - component: {fileID: 7455410706412920461}
   - component: {fileID: 3404599855606506587}
   - component: {fileID: 8297371089412616774}
   - component: {fileID: 7878574931044780490}
@@ -5718,6 +5718,39 @@ Transform:
   - {fileID: 9029966016952808958}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 3.825, z: 0}
+--- !u!114 &3517311757785617493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3726324443490231233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21b16406e85170548992ee78673c66f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  model: {fileID: 4829563099203993730}
+  agent: {fileID: 7455410706412920461}
+  anim: {fileID: 3404599855606506587}
+  spiderAud: {fileID: 7878574931044780490}
+  spiderWalking: {fileID: 8300000, guid: 6030cb3904a9390488f229fb2dc18461, type: 3}
+  spiderWalkingVol: 3
+  isPlayingSpiderWalking: 0
+  hp: 45
+  faceTargetSpeed: 90
+  distanceFromPlayer: 20
+  spitCooldown: 10
+  spitEffectPS: {fileID: 7777454586955735574}
+  poolEmitter: {fileID: 2171908695948569802}
+  acidStream: {fileID: 7018234176948441983, guid: 6b7b632ca64dd0a4d93b491de44b375b, type: 3}
+  acidPuddle: {fileID: 3229947818037046156, guid: 2f444641fd2449e4c84ded035b431931, type: 3}
+  spider: {fileID: 639156844943288045, guid: d2f542e526b30734d9373f22a2ac0696, type: 3}
+  spawnRate: 10
+  spawnAmount: 2
+  dropChance: 0
+  itemToDrop: {fileID: 0}
+  dotColor: {fileID: 1486638906487134185}
 --- !u!195 &7455410706412920461
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5740,39 +5773,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3517311757785617493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3726324443490231233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21b16406e85170548992ee78673c66f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  model: {fileID: 4829563099203993730}
-  agent: {fileID: 7455410706412920461}
-  anim: {fileID: 3404599855606506587}
-  spiderAud: {fileID: 7878574931044780490}
-  spiderWalking: {fileID: 8300000, guid: 6030cb3904a9390488f229fb2dc18461, type: 3}
-  spiderWalkingVol: 3
-  isPlayingSpiderWalking: 0
-  hp: 30
-  faceTargetSpeed: 90
-  distanceFromPlayer: 20
-  spitCooldown: 10
-  spitEffectPS: {fileID: 7777454586955735574}
-  poolEmitter: {fileID: 2171908695948569802}
-  acidStream: {fileID: 7018234176948441983, guid: 6b7b632ca64dd0a4d93b491de44b375b, type: 3}
-  acidPuddle: {fileID: 3229947818037046156, guid: 2f444641fd2449e4c84ded035b431931, type: 3}
-  spider: {fileID: 639156844943288045, guid: d2f542e526b30734d9373f22a2ac0696, type: 3}
-  spawnRate: 10
-  spawnAmount: 2
-  dropChance: 0
-  itemToDrop: {fileID: 0}
-  dotColor: {fileID: 1486638906487134185}
 --- !u!95 &3404599855606506587
 Animator:
   serializedVersion: 5

@@ -16,12 +16,12 @@ public class Class_Warrior : MonoBehaviour
     int abilityCoolDown;
     int abilityActive;
 
-    float primaryStamCost = 0.3f;
+    float primaryStamCost = 0.35f;
     float secondaryStamCost = 0.025f;
-    float secondaryTickSpeed = .5f;
-    float abilityStamCost = 1.0f;
+    float secondaryTickSpeed = .2f;
+    float abilityStamCost = 2.5f;
 
-    float damage = 10;
+    float damage = 3.5f;
     bool canDOT = false;
     float abilityMultiplier = 2f;
     bool staminaUnlockedCheck, attackSpeedUnlockedCheck, ability1UnlockedCheck, ability2UnlockedCheck, ability3UnlockedCheck = false;
@@ -172,6 +172,7 @@ public class Class_Warrior : MonoBehaviour
             player.SetAnimationTrigger("Warrior3");
             weapon.damage_ *= abilityMultiplier;        
             player.PlaySound('A');
+            player.stamina -= abilityStamCost;
 
             abilityActive = 5;
             abilityCoolDown = 15;

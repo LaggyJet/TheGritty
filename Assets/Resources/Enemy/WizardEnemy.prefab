@@ -7384,9 +7384,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7569239240791999459}
+  - component: {fileID: 3695412825964196199}
   - component: {fileID: 5105262827861168220}
   - component: {fileID: 622866066717037135}
-  - component: {fileID: 3695412825964196199}
   - component: {fileID: 8711405345678607992}
   - component: {fileID: 3878104813034916755}
   - component: {fileID: 1662135501686811890}
@@ -7420,6 +7420,43 @@ Transform:
   - {fileID: 2286462892235783801}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3695412825964196199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298853715880076967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d8bcc7497a5f6e41ae89a96bebe143f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  model: {fileID: 1725331240622092499}
+  mat: {fileID: 2100000, guid: a9dc79a0fc407b94a8262b1865f2e833, type: 2}
+  agent: {fileID: 5105262827861168220}
+  anim: {fileID: 622866066717037135}
+  hp: 18
+  animationTransitionSpeed: 8
+  faceTargetSpeed: 5
+  attackSpeed: 3
+  viewAngle: 55
+  shootAngle: 10
+  iceBallTimer: 4.5
+  headPosition: {fileID: 771129205689811260}
+  swingRadius: 2.2
+  meleeWeapons:
+  - {fileID: 7972913009229084269}
+  - {fileID: 6624857120898817004}
+  projectile: {fileID: 2534988432703087702, guid: d5fa247147f882f429fd1aba0c0eab85, type: 3}
+  shootPos: {fileID: 3025332954078595456}
+  meleeDamage: 0.5
+  enemyLimiter: {fileID: 11400000, guid: 548746eaa4443c741aacc624ba9f6f0e, type: 2}
+  range: 2
+  dropChance: 0.15
+  itemToDrop: {fileID: 4355228702644448230, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
+  dotColor: {fileID: 8523728497912421486}
+  doors: []
 --- !u!195 &5105262827861168220
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -7463,43 +7500,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3695412825964196199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1298853715880076967}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d8bcc7497a5f6e41ae89a96bebe143f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  model: {fileID: 1725331240622092499}
-  mat: {fileID: 2100000, guid: a9dc79a0fc407b94a8262b1865f2e833, type: 2}
-  agent: {fileID: 5105262827861168220}
-  anim: {fileID: 622866066717037135}
-  hp: 10
-  animationTransitionSpeed: 8
-  faceTargetSpeed: 5
-  attackSpeed: 3
-  viewAngle: 55
-  shootAngle: 10
-  iceBallTimer: 4.5
-  headPosition: {fileID: 771129205689811260}
-  swingRadius: 2.2
-  meleeWeapons:
-  - {fileID: 7972913009229084269}
-  - {fileID: 6624857120898817004}
-  projectile: {fileID: 2534988432703087702, guid: d5fa247147f882f429fd1aba0c0eab85, type: 3}
-  shootPos: {fileID: 3025332954078595456}
-  meleeDamage: 0.5
-  enemyLimiter: {fileID: 11400000, guid: 548746eaa4443c741aacc624ba9f6f0e, type: 2}
-  range: 2
-  dropChance: 0.15
-  itemToDrop: {fileID: 4355228702644448230, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
-  dotColor: {fileID: 8523728497912421486}
-  doors: []
 --- !u!114 &8711405345678607992
 MonoBehaviour:
   m_ObjectHideFlags: 0

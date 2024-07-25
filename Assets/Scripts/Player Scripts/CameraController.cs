@@ -25,16 +25,18 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         //get input
         float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
         float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
-        
+
         rotX -= mouseY;
 
         //clamp rotX on the xAxis
         rotX = Mathf.Clamp(rotX, lockVertMin, lockVertMax);
 
         if ((PhotonNetwork.InRoom && !GameManager.instance.isPaused) || !PhotonNetwork.InRoom) {
+
             //rotate the camera on the xAxis
             transform.localRotation = Quaternion.Euler(rotX, 0, 0);
 

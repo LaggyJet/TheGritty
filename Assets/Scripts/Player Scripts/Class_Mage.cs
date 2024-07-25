@@ -17,9 +17,9 @@ public class Class_Mage : MonoBehaviourPun
     int abilityCoolDown;
     int abilityActive;
 
-    float primaryStamCost = 0.05f;  
+    float primaryStamCost = 0.6f;  
     float secondaryStamCost = 0.35f;
-    float secondaryFireSpeed = .2f;
+    float secondaryFireSpeed = .15f;
 
     int abilityActiveTime = 3;
     bool staminaUnlockedCheck, attackSpeedUnlockedCheck, ability1UnlockedCheck, ability2UnlockedCheck, ability3UnlockedCheck = false;
@@ -40,7 +40,7 @@ public class Class_Mage : MonoBehaviourPun
     {
         // Check if the player has the stamina use down unlocked and prevent repeat calls if they do
         if (!staminaUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.STAMINA_USE_DOWN)) {
-            primaryStamCost = 0.03f;
+            primaryStamCost = 0.3f;
             secondaryStamCost = 0.2f;
             staminaUnlockedCheck = true;
         }
@@ -49,6 +49,7 @@ public class Class_Mage : MonoBehaviourPun
         if (!attackSpeedUnlockedCheck && SkillTreeManager.Instance.IsSkillUnlocked(SkillTreeManager.Skills.ATTACK_SPEED_UP))
         {
             player.SetAnimationSpeed(0.75f);
+            secondaryFireSpeed = .1f;
             attackSpeedUnlockedCheck = true;
         }
 

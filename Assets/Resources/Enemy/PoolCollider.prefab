@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4871486659913198372}
-  - component: {fileID: 2335738390974649146}
   - component: {fileID: 7943685302846997082}
+  - component: {fileID: 2335738390974649146}
   - component: {fileID: 9045230164206739488}
   m_Layer: 6
   m_Name: PoolCollider
@@ -35,6 +35,20 @@ Transform:
   - {fileID: 574239811676374312}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7943685302846997082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3229947818037046156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a87c5a9f666e72419f5e1da4c803022, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats_: {fileID: 11400000, guid: 2f7d49d6d19189248a443272b9e9b73c, type: 2}
+  model: {fileID: 3158842944649053307}
 --- !u!135 &2335738390974649146
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -56,20 +70,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.6
   m_Center: {x: 0, y: -0.25, z: 0}
---- !u!114 &7943685302846997082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3229947818037046156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a87c5a9f666e72419f5e1da4c803022, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stats_: {fileID: 11400000, guid: 2f7d49d6d19189248a443272b9e9b73c, type: 2}
-  model: {fileID: 3158842944649053307}
 --- !u!114 &9045230164206739488
 MonoBehaviour:
   m_ObjectHideFlags: 0

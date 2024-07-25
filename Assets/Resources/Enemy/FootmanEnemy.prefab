@@ -318,10 +318,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3413420340561360909}
+  - component: {fileID: 4052586374137224699}
   - component: {fileID: 6040238113782857933}
   - component: {fileID: 177522156451135462}
   - component: {fileID: 4177812466157729367}
-  - component: {fileID: 4052586374137224699}
   - component: {fileID: 1840865922723293605}
   - component: {fileID: 2127922653580360053}
   - component: {fileID: 3460352046101987459}
@@ -350,6 +350,40 @@ Transform:
   - {fileID: 493219360867765499}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &4052586374137224699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3116929254137260313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc4dfe9f8fbad344792bdff9f77edc5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  model: {fileID: 6040238113782857933}
+  mat: {fileID: 2100000, guid: eed0f13a7184adf43b5caddd9973a998, type: 2}
+  agent: {fileID: 177522156451135462}
+  anim: {fileID: 4177812466157729367}
+  flipEnemyDirection: 0
+  hp: 12
+  animationTransitionSpeed: 8
+  faceTargetSpeed: 5
+  attackSpeed: 3
+  viewAngle: 55
+  headPosition: {fileID: 6869788845210930490}
+  swingRadius: 2
+  weapon: {fileID: 8725635775239810279}
+  damage: 0.8
+  canDOT: 0
+  type: {fileID: 0}
+  enemyLimiter: {fileID: 11400000, guid: 490d4be5063f21941a5097da551ee8ad, type: 2}
+  range: 3
+  dropChance: 0.15
+  itemToDrop: {fileID: 4355228702644448230, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
+  dotColor: {fileID: 8009999863401721580}
+  doors: []
 --- !u!137 &6040238113782857933
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -467,40 +501,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4052586374137224699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3116929254137260313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc4dfe9f8fbad344792bdff9f77edc5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  model: {fileID: 6040238113782857933}
-  mat: {fileID: 2100000, guid: eed0f13a7184adf43b5caddd9973a998, type: 2}
-  agent: {fileID: 177522156451135462}
-  anim: {fileID: 4177812466157729367}
-  flipEnemyDirection: 0
-  hp: 8
-  animationTransitionSpeed: 8
-  faceTargetSpeed: 5
-  attackSpeed: 3
-  viewAngle: 55
-  headPosition: {fileID: 6869788845210930490}
-  swingRadius: 2
-  weapon: {fileID: 8725635775239810279}
-  damage: 2
-  canDOT: 0
-  type: {fileID: 0}
-  enemyLimiter: {fileID: 11400000, guid: 490d4be5063f21941a5097da551ee8ad, type: 2}
-  range: 3
-  dropChance: 0.15
-  itemToDrop: {fileID: 4355228702644448230, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
-  dotColor: {fileID: 8009999863401721580}
-  doors: []
 --- !u!136 &1840865922723293605
 CapsuleCollider:
   m_ObjectHideFlags: 0

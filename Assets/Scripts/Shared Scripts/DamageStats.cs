@@ -7,6 +7,6 @@ public class DamageStats : ScriptableObject {
     public enum DoTType { BURN, POISON };
     
     [Range(0, 1)] public float damage;
-    [Range(1, 5)] public int length;
+    [Range(1, 10)] public int length;
     public DoTType type;
 }

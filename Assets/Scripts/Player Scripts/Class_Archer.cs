@@ -11,8 +11,8 @@ public class Class_Archer : MonoBehaviourPun
     PlayerController player;
 
 
-    float primaryStamCost = 0.3f;
-    float secondaryStamCost = 0.3f;
+    float primaryStamCost = 0.25f;
+    float secondaryStamCost = 0.6f;
     float abilityStamCost = 1.5f;
     bool isCounting = false;
     int abilityCoolDown = 0;
@@ -131,6 +131,7 @@ public class Class_Archer : MonoBehaviourPun
         {
             StartCoroutine(DashLength());
             abilityCoolDown = 2;
+            player.stamina -= abilityStamCost;
         }
     }
 

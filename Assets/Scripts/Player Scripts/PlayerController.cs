@@ -20,11 +20,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     public static PlayerController instance; 
     public CharacterController controller;
 
-    [SerializeField] Animator animate;
+    [SerializeField] public Animator animate;
 
     [Header("------- Movement and Position -------")]
     [SerializeField] public float speed;
-    [SerializeField] int sprintMod;
+    [SerializeField] float sprintMod;
     [SerializeField] int gravity;
     [SerializeField] int jumpMax;
     [SerializeField] int jumpSpeed;
@@ -201,6 +201,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
     {
         instance = this;
     }
+
 
     private void Start() {
         if (DataPersistenceManager.Instance != null && DataPersistenceManager.gameData != null)

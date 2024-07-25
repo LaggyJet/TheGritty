@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cfa8c810068ee44c9d2e5ae793a6e22, type: 3}
   m_Name: DoT - Fire
   m_EditorClassIdentifier: 
-  damage: 0.5
-  length: 4
+  damage: 0.3
+  length: 3
+  type: 0
