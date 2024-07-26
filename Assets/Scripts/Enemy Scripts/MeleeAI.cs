@@ -100,7 +100,9 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     }
 
     void FaceTarget() {
-        Quaternion rotation = Quaternion.LookRotation(playerDirection) * new Quaternion(0, flipEnemyDirection ? 180 : 0, 0, 0);
+        Quaternion rotation = Quaternion.LookRotation(playerDirection);
+        if (flipEnemyDirection)
+            rotation *= Quaternion.Euler(0, 180, 0);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * faceTargetSpeed);
     }
 
