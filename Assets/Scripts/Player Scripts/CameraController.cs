@@ -12,6 +12,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] int sensitivity;
     [SerializeField] int lockVertMin, lockVertMax;
 
+    Animator animator;
+
     float rotX;
 
 
@@ -20,6 +22,7 @@ public class CameraController : MonoBehaviour
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        animator = this.GetComponentInParent<PlayerController>().animate;
     }
 
     // Update is called once per frame
@@ -39,6 +42,8 @@ public class CameraController : MonoBehaviour
 
             //rotate the camera on the xAxis
             transform.localRotation = Quaternion.Euler(rotX, 0, 0);
+
+   
 
             //rotate the player on the yAxis
             transform.parent.Rotate(Vector3.up * mouseX);
