@@ -21,7 +21,7 @@ public class Class_Warrior : MonoBehaviour
     float secondaryTickSpeed = .2f;
     float abilityStamCost = 2.5f;
 
-    float damage = 3.5f;
+    float damage = 4.5f;
     bool canDOT = false;
     float abilityMultiplier = 2f;
     bool staminaUnlockedCheck, attackSpeedUnlockedCheck, ability1UnlockedCheck, ability2UnlockedCheck, ability3UnlockedCheck = false;
