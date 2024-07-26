@@ -43,7 +43,7 @@ public class CameraController : MonoBehaviour
             //rotate the camera on the xAxis
             transform.localRotation = Quaternion.Euler(rotX, 0, 0);
 
-   
+            animator.SetFloat("Blend", transform.localRotation.x);
 
             //rotate the player on the yAxis
             transform.parent.Rotate(Vector3.up * mouseX);
