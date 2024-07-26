@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 36438031}
   - component: {fileID: 36438030}
   - component: {fileID: 36438029}
+  - component: {fileID: 36438032}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -223,12 +224,72 @@ Transform:
   m_GameObject: {fileID: 36438028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 62.88, y: 3.33, z: -33.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &36438032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36438028}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeTrigger: {fileID: 36438031}
+  volumeLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  stopNaNPropagation: 1
+  finalBlitToCameraTarget: 0
+  antialiasingMode: 0
+  temporalAntialiasing:
+    jitterSpread: 0.75
+    sharpness: 0.25
+    stationaryBlending: 0.95
+    motionBlending: 0.85
+  subpixelMorphologicalAntialiasing:
+    quality: 2
+  fastApproximateAntialiasing:
+    fastMode: 0
+    keepAlpha: 0
+  fog:
+    enabled: 1
+    excludeSkybox: 1
+  debugLayer:
+    lightMeter:
+      width: 512
+      height: 256
+      showCurves: 1
+    histogram:
+      width: 512
+      height: 256
+      channel: 3
+    waveform:
+      exposure: 0.12
+      height: 256
+    vectorscope:
+      size: 256
+      exposure: 0.12
+    overlaySettings:
+      linearDepth: 0
+      motionColorIntensity: 4
+      motionGridSize: 64
+      colorBlindnessType: 0
+      colorBlindnessStrength: 1
+  m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
+  m_ShowToolkit: 0
+  m_ShowCustomSorter: 0
+  breakBeforeColorGrading: 0
+  m_BeforeTransparentBundles: []
+  m_BeforeStackBundles: []
+  m_AfterStackBundles: []
 --- !u!114 &77755991 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8578202707388727761, guid: fc8ddf93ebf9a1b4ebc3a7fadc05701e, type: 3}
@@ -1585,6 +1646,67 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2115310933}
   m_CullTransparentMesh: 1
+--- !u!1001 &2216398542790541020
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1764963870660873342, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2187680372477793505, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 62.805
+      objectReference: {fileID: 0}
+    - target: {fileID: 2187680372477793505, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.129
+      objectReference: {fileID: 0}
+    - target: {fileID: 2187680372477793505, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -32.407444
+      objectReference: {fileID: 0}
+    - target: {fileID: 2187680372477793505, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2187680372477793505, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2187680372477793505, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2187680372477793505, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2187680372477793505, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2187680372477793505, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2187680372477793505, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355228702644448230, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
+      propertyPath: m_Name
+      value: HealthPotion
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
 --- !u!1001 &3848136598217511954
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1785,6 +1907,67 @@ PrefabInstance:
       addedObject: {fileID: 1660214781}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45fd2992df1fea142ab86456c797b2e3, type: 3}
+--- !u!1001 &4169130272170848221
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1263244591860506158, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 63.852
+      objectReference: {fileID: 0}
+    - target: {fileID: 1263244591860506158, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1263244591860506158, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -30.550695
+      objectReference: {fileID: 0}
+    - target: {fileID: 1263244591860506158, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1263244591860506158, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1263244591860506158, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1263244591860506158, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1263244591860506158, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1263244591860506158, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1263244591860506158, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1632267034115798544, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
+      propertyPath: m_Name
+      value: StaminaPotion
+      objectReference: {fileID: 0}
+    - target: {fileID: 6076130181889592446, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
+      propertyPath: sceneViewId
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f922ddfd5626a084fa6277119c364b69, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1798,3 +1981,5 @@ SceneRoots:
   - {fileID: 1322292219}
   - {fileID: 164502504}
   - {fileID: 1250568460}
+  - {fileID: 4169130272170848221}
+  - {fileID: 2216398542790541020}
