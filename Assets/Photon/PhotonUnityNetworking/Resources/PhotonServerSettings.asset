@@ -68,6 +68,7 @@ MonoBehaviour:
   - TriggerRestart
   - CloseDoor
   - OpenDoor
+  - SyncBlockParticles
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

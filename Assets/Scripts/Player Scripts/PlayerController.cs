@@ -1131,4 +1131,21 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamage, IDataPersist
 
         }
     }
+
+    public void SetBlockParticles(bool state) { 
+        if (!PhotonNetwork.InRoom)
+            SyncBlockParticles(state);
+        else
+            photonView.RPC(nameof(SyncBlockParticles), RpcTarget.All, state); 
+    }
+
+    [PunRPC]
+    void SyncBlockParticles(bool state) { 
+        if (state) {
+            ParticleSystem.MainModule main = dotColor.GetComponent<ParticleSystem>().main;
+            main.startColor = Color.blue;
+        }
+
+        dotColor.SetActive(state); 
+    }
 }

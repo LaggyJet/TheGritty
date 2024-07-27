@@ -123,6 +123,7 @@ public class Class_Warrior : MonoBehaviour
             player.SetAnimationBool("Warrior2", true);
             holdingSecondary = true;
             player.isBlocking = true;
+            player.SetBlockParticles(true);
         }
         //if input is pressed and the context is valid but we don't have enough stamina run this code
         else if (ctxt.performed && ValidAttack() && !StaminaCheck(secondaryStamCost))
@@ -142,6 +143,7 @@ public class Class_Warrior : MonoBehaviour
             //sets us to not attacking, sets our animation bool to false so we can end the animation, and stops our particle system and coroutine
             GameManager.instance.isShooting = false;
             player.SetAnimationBool("Warrior2", false);
+            player.SetBlockParticles(false);
             holdingSecondary = false;
             player.isBlocking = false;
         }
