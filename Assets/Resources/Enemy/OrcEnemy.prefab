@@ -81,6 +81,7 @@ GameObject:
   - component: {fileID: -7201195909601268897}
   - component: {fileID: 5408299456271429722}
   - component: {fileID: -9163744865968411958}
+  - component: {fileID: 6878957898324074429}
   m_Layer: 0
   m_Name: OrcEnemy
   m_TagString: Untagged
@@ -388,6 +389,27 @@ MonoBehaviour:
     LayerIndex: 1
   - SynchronizeType: 1
     LayerIndex: 2
+--- !u!65 &6878957898324074429
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594817991664589131}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.6, y: 0.6, z: 0.6}
+  m_Center: {x: 0, y: 1.6, z: 0}
 --- !u!1 &1707655113673425182
 GameObject:
   m_ObjectHideFlags: 0

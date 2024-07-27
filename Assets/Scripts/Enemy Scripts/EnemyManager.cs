@@ -10,8 +10,15 @@ public class EnemyManager : MonoBehaviour {
     // Enemy Type, Close Range, Attacking
     readonly List<Tuple<EnemyLimiter, List<int>, List<int>>> currentEnemies = new();
     readonly List<int> enemiesDead = new();
+    readonly List<GameObject> aliveEnemies = new();
 
     void Awake() { Instance = this; }
+
+    public void AddEnemy(GameObject enemy) { aliveEnemies.Add(enemy); }
+
+    public void RemoveEnemy(GameObject enemy) { aliveEnemies.Remove(enemy); }
+
+    public bool IsEnemyAlive(GameObject enemy) { return aliveEnemies.Contains(enemy); }
 
     public void AddEnemyType(EnemyLimiter type) {
         if (!currentEnemies.Any(tuple => tuple.Item1.Equals(type))) {
@@ -88,5 +95,22 @@ public class EnemyManager : MonoBehaviour {
         int index = GetEnemyIndex(type);
         if (index >= 0 && index < currentEnemies.Count)
             currentEnemies[index].Item3.Remove(id);
+    }
+
+    public void ClearEnemies() {
+        for (int i = aliveEnemies.Count - 1; i >= 0;) {
+            MeleeAI meleeAI = aliveEnemies[i].GetComponent<MeleeAI>();
+            if (meleeAI != null) { meleeAI.Kill(); i--; continue; }
+
+            ArcherAI archerAI = aliveEnemies[i].GetComponent<ArcherAI>();
+            if (archerAI != null) { archerAI.Kill(); i--; continue; }
+
+            WizardAI wizardAI = aliveEnemies[i].GetComponent<WizardAI>();
+            if (wizardAI != null) { wizardAI.Kill(); i--; continue; }
+
+            aliveEnemies.RemoveAt(i);
+        }
+        currentEnemies.Clear();
+        enemiesDead.Clear();
     }
 }

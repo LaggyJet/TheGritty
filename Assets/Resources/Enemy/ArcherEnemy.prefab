@@ -970,6 +970,7 @@ GameObject:
   - component: {fileID: 3635008817639929952}
   - component: {fileID: 7919343773299421591}
   - component: {fileID: 3372595058041877719}
+  - component: {fileID: 6423260556642611129}
   m_Layer: 0
   m_Name: ArcherEnemy
   m_TagString: Untagged
@@ -1030,7 +1031,7 @@ MonoBehaviour:
   itemToDrop: {fileID: 4355228702644448230, guid: 60418a9810ff02347b821b5756a17a39, type: 3}
   retreatRange: 5
   canMove: 1
-  dotColor: {fileID: 0}
+  dotColor: {fileID: 4615371976042169928}
   doors: []
 --- !u!95 &6713506416762378601
 Animator:
@@ -1179,6 +1180,27 @@ MonoBehaviour:
     LayerIndex: 2
   - SynchronizeType: 1
     LayerIndex: 3
+--- !u!65 &6423260556642611129
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4598188757038107419}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.06, y: 0.06, z: 0.06}
+  m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!1 &4652167465274634453
 GameObject:
   m_ObjectHideFlags: 0
@@ -2578,5 +2600,10 @@ PrefabInstance:
 --- !u!4 &3025398952815731807 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4195310309621007127, guid: d4eeb094d6b66814e85db9787d5baadf, type: 3}
+  m_PrefabInstance: {fileID: 1424505475656132424}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4615371976042169928 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6037572782984552704, guid: d4eeb094d6b66814e85db9787d5baadf, type: 3}
   m_PrefabInstance: {fileID: 1424505475656132424}
   m_PrefabAsset: {fileID: 0}

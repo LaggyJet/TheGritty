@@ -13,13 +13,16 @@ public class CameraController : MonoBehaviour
     [SerializeField] int lockVertMin, lockVertMax;
 
     Animator animator;
+    static public CameraController Instance;
 
-    float rotX;
+    public float rotX;
+    public float mouseX;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        Instance = this;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         animator = this.GetComponentInParent<PlayerController>().animate;
@@ -31,7 +34,7 @@ public class CameraController : MonoBehaviour
 
         //get input
         float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
-        float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+        mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
 
         rotX -= mouseY;
 
@@ -42,7 +45,6 @@ public class CameraController : MonoBehaviour
 
             //rotate the camera on the xAxis
             transform.localRotation = Quaternion.Euler(rotX, 0, 0);
-            Debug.Log(transform.localRotation.x);
             animator.SetFloat("Blend", (transform.localRotation.x + 0.2f) / 0.6f);
 
             //rotate the player on the yAxis

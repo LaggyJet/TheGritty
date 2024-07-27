@@ -7391,6 +7391,7 @@ GameObject:
   - component: {fileID: 3878104813034916755}
   - component: {fileID: 1662135501686811890}
   - component: {fileID: 697994813235422560}
+  - component: {fileID: 1591355037167800227}
   m_Layer: 0
   m_Name: WizardEnemy
   m_TagString: Untagged
@@ -7602,6 +7603,27 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.3
   m_Center: {x: 0, y: 1.6, z: 0.6}
+--- !u!65 &1591355037167800227
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298853715880076967}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.5, z: 1}
+  m_Center: {x: 0, y: 2.6, z: 0.4}
 --- !u!1 &1301224444235026484
 GameObject:
   m_ObjectHideFlags: 0

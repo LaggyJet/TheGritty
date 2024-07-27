@@ -1637,6 +1637,8 @@ MonoBehaviour:
   sensitivity: 250
   lockVertMin: -20
   lockVertMax: 45
+  rotX: 0
+  mouseX: 0
 --- !u!20 &2219527623056716613
 Camera:
   m_ObjectHideFlags: 0
@@ -1887,7 +1889,7 @@ MonoBehaviour:
   sprintMod: 1.5
   gravity: 25
   jumpMax: 1
-  jumpSpeed: 8
+  jumpSpeed: 6
   playerV: {x: 0, y: 0, z: 0}
   movement: {x: 0, y: 0, z: 0}
   isDead: 0
@@ -2479,7 +2481,7 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: Archer2
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Blend
   m_SynchronizeLayers:
   - SynchronizeType: 1

@@ -319,6 +319,7 @@ public class SpiderController : MonoBehaviourPunCallbacks, IDamage, IPunObservab
     }
 
     IEnumerator DeathAnimation() {
+        EnemyManager.Instance.ClearEnemies();
         yield return new WaitForSeconds(0.2f);
         agent.isStopped = true;
         agent.SetDestination(transform.position);

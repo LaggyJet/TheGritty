@@ -38,6 +38,7 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
         foreach (GameObject melee in meleeWeapons)
             melee.AddComponent<WeaponController>().SetWeapon(meleeDamage, false, null);
         EnemyManager.Instance.AddEnemyType(enemyLimiter);
+        EnemyManager.Instance.AddEnemy(gameObject);
         originalStoppingDistance = agent.stoppingDistance;
         adjustedStoppingDistance = originalStoppingDistance * enemyLimiter.rangeMultiplier;
         id = gameObject.GetInstanceID();
@@ -235,6 +236,8 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
         PlayerController.instance.PlayIceAud();
         EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
         EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
+        if (EnemyManager.Instance.IsEnemyAlive(gameObject))
+            EnemyManager.Instance.RemoveEnemy(gameObject);
         agent.isStopped = true;
         agent.SetDestination(transform.position);
         agent.radius = 0;
@@ -302,4 +305,6 @@ public class WizardAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     {
         doors.Add(object_);
     }
+
+    public void Kill() { TakeDamage(hp); }
 }

@@ -37,6 +37,7 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
         GameManager.instance.updateEnemy(1);
         weapon.AddComponent<WeaponController>().SetWeapon(damage, canDOT, type);
         EnemyManager.Instance.AddEnemyType(enemyLimiter);
+        EnemyManager.Instance.AddEnemy(gameObject);
         originalStoppingDistance = agent.stoppingDistance;
         adjustedStoppingDistance = originalStoppingDistance * enemyLimiter.rangeMultiplier;
         id = gameObject.GetInstanceID();
@@ -198,6 +199,8 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     IEnumerator DeathAnimation() {
         EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
         EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
+        if (EnemyManager.Instance.IsEnemyAlive(gameObject))
+            EnemyManager.Instance.RemoveEnemy(gameObject);
         agent.isStopped = true;
         agent.SetDestination(transform.position);
         agent.radius = 0;
@@ -254,4 +257,6 @@ public class MeleeAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     {
         doors.Add(object_);
     }
+
+    public void Kill() { TakeDamage(hp); }
 }

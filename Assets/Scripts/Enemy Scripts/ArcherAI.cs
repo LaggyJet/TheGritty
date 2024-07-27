@@ -32,6 +32,7 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
         isAttacking = wasKilled = isDOT = isRetreating = false;
         GameManager.instance.updateEnemy(1);
         EnemyManager.Instance.AddEnemyType(enemyLimiter);
+        EnemyManager.Instance.AddEnemy(gameObject);
         id = gameObject.GetInstanceID();
         lastPos = transform.position;
         if (!photonView.IsMine && PhotonNetwork.IsMasterClient)
@@ -221,6 +222,8 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
         PlayerController.instance.PlaySkeletonAud();
         EnemyManager.Instance.RemoveCloseEnemy(enemyLimiter, id);
         EnemyManager.Instance.RemoveAttackEnemy(enemyLimiter, id);
+        if (EnemyManager.Instance.IsEnemyAlive(gameObject))
+            EnemyManager.Instance.RemoveEnemy(gameObject);
         agent.isStopped = true;
         agent.SetDestination(transform.position);
         agent.radius = 0;
@@ -268,4 +271,6 @@ public class ArcherAI : MonoBehaviourPun, IDamage, I_Interact, IPunObservable {
     {
         doors.Add(object_);
     }
+
+    public void Kill() { TakeDamage(hp); }
 }

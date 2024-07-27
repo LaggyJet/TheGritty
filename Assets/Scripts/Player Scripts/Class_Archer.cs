@@ -185,12 +185,12 @@ public class Class_Archer : MonoBehaviourPun
     {
         if (PhotonNetwork.InRoom && photonView.IsMine)
         {
-            PhotonNetwork.Instantiate("Player/" + player.combatObjects[5].name, player.arrowPosition.transform.position, player.transform.rotation);
+            PhotonNetwork.Instantiate("Player/" + player.combatObjects[5].name, player.arrowPosition.transform.position, player.transform.rotation * Quaternion.Euler(CameraController.Instance.rotX, CameraController.Instance.mouseX, 0));
         }
         // Otherwise spawn regularly 
         else if (!PhotonNetwork.InRoom)
         {
-            Instantiate(player.combatObjects[5], player.arrowPosition.transform.position, player.transform.rotation);
+            Instantiate(player.combatObjects[5], player.arrowPosition.transform.position, player.transform.rotation * Quaternion.Euler(CameraController.Instance.rotX, CameraController.Instance.mouseX, 0));
         }
 
         GameManager.instance.isShooting = false;
@@ -199,7 +199,7 @@ public class Class_Archer : MonoBehaviourPun
     void TripleShot()
     {
         Vector3 pos = player.arrowPosition.transform.position;
-        Quaternion rot = player.transform.rotation;
+        Quaternion rot = player.transform.rotation * Quaternion.Euler(CameraController.Instance.rotX, CameraController.Instance.mouseX, 0);
 
         float[] angles = { -5, 0, 5 };
         for (int i = 0; i < angles.Length; i++) {
