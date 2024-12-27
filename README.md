@@ -6,7 +6,6 @@ This is a group project made for class at Full Sail University
 * Natalie Lubahn
 * Jacob Irvin
 * Kheera Maaranu
-* Michael Montero
 
 # -Former Collaborators-
 * Emily Underwood
